@@ -86,7 +86,7 @@ void FlatbufferToObjectReferenceWithMeta(
         &owner_addresses,
     std::vector<unsigned long> &object_meta_virt_address,
     std::vector<int> &object_meta_sizes,
-    std::vector<string> &object_address) {
+    std::vector<std::string> &object_address) {
   RAY_CHECK(object_virt_address.size() == object_sizes.size());
   for (int64_t i = 0; i < object_virt_address.size(); i++) {
     object_meta_virt_address.emplace_back(object_virt_address.Get(i));
@@ -1648,7 +1648,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
-  FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), *message->owner_address(), object_virt_address, object_sizes, object_address);
+  FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), *message->owner_addresses(), object_virt_address, object_sizes, object_address);
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 
