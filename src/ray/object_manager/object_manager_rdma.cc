@@ -346,15 +346,21 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 		// .rq_psn			= dest->psn,
 		.max_dest_rd_atomic	= 1,
 		.min_rnr_timer		= 12,
-		.ah_attr		= {
-			.is_global	= 0,
-			.dlid		= dest->lid,
-			.sl		= cfg_.sl,
-			.src_path_bits	= 0,
-			.port_num	= cfg_.ib_port
-		}
+		// .ah_attr		= {
+		// 	.is_global	= 0,
+		// 	.dlid		= dest->lid,
+		// 	.sl		= cfg_.sl,
+		// 	.src_path_bits	= 0,
+		// 	.port_num	= cfg_.ib_port
+		// }
 	};
   attr.rq_psn = dest->psn;
+  attr.ah_attr.is_global = 0;
+  attr.ah_attr.dlid = dest->lid;
+  attr.ah_attr.sl = cfg_.sl;
+  attr.ah_attr.src_path_bits = 0;
+  attr.ah_attr.port_num = cfg_.ib_port;
+
 	if (dest->gid.global.interface_id) {
 		attr.ah_attr.is_global = 1;
 		attr.ah_attr.grh.hop_limit = 1;
