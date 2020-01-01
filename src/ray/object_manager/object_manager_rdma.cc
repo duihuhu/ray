@@ -343,7 +343,7 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 		.qp_state		= IBV_QPS_RTR,
 		.path_mtu		= cfg_.mtu,
 		.dest_qp_num		= dest->qpn,
-		.rq_psn			= dest->psn,
+		// .rq_psn			= dest->psn,
 		.max_dest_rd_atomic	= 1,
 		.min_rnr_timer		= 12,
 		.ah_attr		= {
@@ -354,7 +354,7 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 			.port_num	= cfg_.ib_port
 		}
 	};
-
+  attr.rq_psn = dest->psn;
 	if (dest->gid.global.interface_id) {
 		attr.ah_attr.is_global = 1;
 		attr.ah_attr.grh.hop_limit = 1;
@@ -417,7 +417,6 @@ int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
 
 void ObjectManagerRdma::PrintRemoteRdmaInfo() {
   for(auto &entry: remote_dest_) {
-    // std::cout<<"PrintRemoteRdmaInfo " << entry.first;
     RAY_LOG(DEBUG) << "PrintRemoteRdmaInfo " << entry.first;
   }
 }
