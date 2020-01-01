@@ -104,7 +104,7 @@ private:
   boost::asio::ip::tcp::socket socket_;
   // struct pingpong_context *ctx_;
   // struct pingpong_dest my_dest_;
-  static struct Config cfg_;
+  struct Config cfg_;
   unsigned long plasma_address_;
   int64_t plasma_size_;
   std::shared_ptr<ray::gcs::GcsClient> gcs_client_;
