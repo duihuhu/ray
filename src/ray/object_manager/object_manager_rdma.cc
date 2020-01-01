@@ -433,8 +433,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     std::string address = object_address[i];
     auto it = remote_dest_.find(address);
     if(it!=remote_dest_.end())
-      continue;
-      // QueryQp(it.second.first);
+      // continue;
+      QueryQp(it.second.first.first);
   }
 }
 
