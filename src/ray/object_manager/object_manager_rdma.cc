@@ -471,6 +471,12 @@ int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *d
 		// 	.port_num	= cfg_.ib_port
 		// }
 	};
+  attr.rq_psn = dest->psn;
+  attr.ah_attr.is_global = 0;
+  attr.ah_attr.dlid = dest->lid;
+  attr.ah_attr.sl = cfg_.sl;
+  attr.ah_attr.src_path_bits = 0;
+  attr.ah_attr.port_num = cfg_.ib_port;
 
 	if (dest->gid.global.interface_id) {
 		attr.ah_attr.is_global = 1;
