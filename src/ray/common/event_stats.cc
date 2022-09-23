@@ -61,6 +61,7 @@ std::string to_human_readable(int64_t duration) {
 
 std::shared_ptr<StatsHandle> EventTracker::RecordStart(
     const std::string &name, int64_t expected_queueing_delay_ns) {
+  RAY_LOG(INFO) << "HUCC\n\n" << "\n\n";
   auto stats = GetOrCreate(name);
   int64_t curr_count = 0;
   {
