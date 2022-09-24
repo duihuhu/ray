@@ -216,8 +216,7 @@ class CoreWorkerClient : public std::enable_shared_from_this<CoreWorkerClient>,
       : addr_(address) {
     grpc_client_ = std::make_unique<GrpcClient<CoreWorkerService>>(
         addr_.ip_address(), addr_.port(), client_call_manager);
-    RAY_LOG(INFO) << "HUCC\n\n" << addr_.ip_address() <<"\n\n";
-
+  // in python-core-worker log 
   };
 
   const rpc::Address &Addr() const override { return addr_; }
