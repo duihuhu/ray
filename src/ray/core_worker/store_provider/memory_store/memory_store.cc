@@ -414,7 +414,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       }
     }
     clock_t te_get_req_obj = clock();
-    RAY_LOG(INFO) << "hucc time for get object from get_request when it is already in local mem" << double(te_get_req_obj - ts_get_req_obj) << "\n";
+    RAY_LOG(INFO) << "hucc time for get object from get_request when it is already in local mem: " << double(te_get_req_obj - ts_get_req_obj)/CLOCKS_PER_SEC << "\n";
     // Remove get request.
     for (const auto &object_id : get_request->ObjectIds()) {
       auto object_request_iter = object_get_requests_.find(object_id);
