@@ -1106,6 +1106,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
   clock_t ts_get_obj_cw = clock();
+  auto ts_get_obj_cw_cur = current_time_ms();
 
   results->resize(ids.size(), nullptr);
 
@@ -1157,6 +1158,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                                                   &got_exception));
     clock_t te_get_obj_plasma = clock();
     RAY_LOG(INFO) << "hucc time for get object from plasma total time: " << double(te_get_obj_plasma - ts_get_obj_plasma)/CLOCKS_PER_SEC <<"\n"; 
+    
   }
 
   // Loop through `ids` and fill each entry for the `results` vector,
@@ -1186,6 +1188,8 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   }
   clock_t te_get_obj_cw = clock();
   RAY_LOG(INFO) << "hucc time add for get object in coreworker total time: " << double(te_get_obj_cw - ts_get_obj_cw)/CLOCKS_PER_SEC <<"\n";
+  
+  RAY_LOG(INFO) << "hucc time for get object from plasma total time: " << (current_time_ms() - ts_get_obj_cw_cur) << "\n";
   return Status::OK();
 }
 
