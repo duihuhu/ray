@@ -1327,9 +1327,13 @@ cdef class CoreWorker:
             CTaskID c_task_id = current_task_id.native()
             c_vector[CObjectID] c_object_ids = ObjectRefsToVector(object_refs)
         with nogil:
+            #hucc time add for get in coreworker py total time
+            ts_get_obj_pcw = time.time()
             check_status(CCoreWorkerProcess.GetCoreWorker().Get(
                 c_object_ids, timeout_ms, &results))
-
+            te_get_obj_pcw = time.time()
+            print(te_get_obj_pcw - ts_get_obj_pcw)
+            
         return RayObjectsToDataMetadataPairs(results)
 
     def get_if_local(self, object_refs):
