@@ -1104,6 +1104,9 @@ Status CoreWorker::SealExisting(const ObjectID &object_id,
 Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        const int64_t timeout_ms,
                        std::vector<std::shared_ptr<RayObject>> *results) {
+  //hucc time for get_object in CoreWorker total time
+  clock_t ts_get_obj_cw = clock();
+
   results->resize(ids.size(), nullptr);
 
   absl::flat_hash_set<ObjectID> plasma_object_ids;
@@ -1181,7 +1184,8 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   if (timeout_ms < 0 && !will_throw_exception) {
     RAY_CHECK(!missing_result);
   }
-
+  clock_t te_get_obj_cw = clock();
+  RAY_LOG(INFO) << "hucc time add for get object in coreworker total time: " << double(te_get_obj_cw - ts_get_obj_cw)/CLOCKS_PER_SEC <<"\n";
   return Status::OK();
 }
 
