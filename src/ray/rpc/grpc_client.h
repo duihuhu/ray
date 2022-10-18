@@ -29,7 +29,7 @@ namespace rpc {
 
 // This macro wraps the logic to call a specific RPC method of a service,
 // to make it easier to implement a new RPC client.
-// RAY_LOG(INFO) << "HUCC\n\n" << rpc_client.channel_.address <<"\n\n"; \
+// RAY_LOG(INFO) << "HUCC\n\n" << rpc_client.channel_.address <<"\n\n"; 
 
 #define INVOKE_RPC_CALL(                                               \
     SERVICE, METHOD, request, callback, rpc_client, method_timeout_ms) \
