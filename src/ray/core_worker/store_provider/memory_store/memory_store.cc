@@ -318,7 +318,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       }
     }
     clock_t te_get_obj_mem = clock();
-    RAY_LOG(INFO)<<"hucc time for get object alread in local mem: "<< double(te_get_ob_mem - ts_get_obj_mem)/CLOCKS_PER_SEC <<"\n";
+    RAY_LOG(INFO)<<"hucc time for get object alread in local mem: "<< double(te_get_obj_mem - ts_get_obj_mem)/CLOCKS_PER_SEC <<"\n";
 
     RAY_CHECK(count <= num_objects);
 
