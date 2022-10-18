@@ -1105,7 +1105,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        const int64_t timeout_ms,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
-  auto ts_get_obj_cw = current_time_ms();
+  auto ts_get_obj_cw = current_sys_time_us();
 
   results->resize(ids.size(), nullptr);
 
@@ -1118,11 +1118,11 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
 
   if (!memory_object_ids.empty()) {
     // hucc time for get from memory total time
-    auto ts_get_obj_tmem = current_time_ms();
+    auto ts_get_obj_tmem = current_sys_time_us();
     RAY_RETURN_NOT_OK(memory_store_->Get(
         memory_object_ids, timeout_ms, worker_context_, &result_map, &got_exception));
 
-    auto te_get_obj_tmem = current_time_ms();
+    auto te_get_obj_tmem = current_sys_time_us();
     RAY_LOG(INFO) << "hucc time for get from memory total time: " << te_get_obj_tmem - ts_get_obj_tmem <<"\n";
   }
 
@@ -1149,13 +1149,13 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_LOG(DEBUG) << "Plasma GET timeout " << local_timeout_ms;
     
     //hucc add time for get object from plasma total time
-    auto ts_get_obj_plasma = current_time_ms();
+    auto ts_get_obj_plasma = current_sys_time_us();
     RAY_RETURN_NOT_OK(plasma_store_provider_->Get(plasma_object_ids,
                                                   local_timeout_ms,
                                                   worker_context_,
                                                   &result_map,
                                                   &got_exception));
-    auto te_get_obj_plasma = current_time_ms();
+    auto te_get_obj_plasma = current_sys_time_us();
     RAY_LOG(INFO) << "hucc time for get object from plasma total time: " << te_get_obj_plasma - ts_get_obj_plasma <<"\n"; 
     
   }
@@ -1185,7 +1185,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   if (timeout_ms < 0 && !will_throw_exception) {
     RAY_CHECK(!missing_result);
   }
-  auto te_get_obj_cw = current_time_ms();
+  auto te_get_obj_cw = current_sys_time_us();
   RAY_LOG(INFO) << "hucc time add for get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw <<"\n";
 
   return Status::OK();
