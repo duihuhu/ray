@@ -340,19 +340,23 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   }
 
   // Only send block/unblock IPCs for non-actor tasks on the main thread.
+  // ShouldReleaseResourcesOnBlockingCalls ony for fuction-tasks, not driver, not actor direct, in main thread, because it need wait for object and in direct call,so this thread need to realease when blocking
   bool should_notify_raylet =
       (raylet_client_ != nullptr && ctx.ShouldReleaseResourcesOnBlockingCalls());
 
-  // hucc add time for NotifyDirectCallTaskBlocked
-  clock_t ts_ndctb = clock();
 
   // Wait for remaining objects (or timeout).
   if (should_notify_raylet) {
+    // hucc add time for NotifyDirectCallTaskBlocked
+    clock_t ts_ndctb = clock();
+
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
+
+    clock_t te_ndctb = clock();
+    RAY_LOG(INFO) << "hucc time for NotifyDirectCallTaskBlocked " << double(te_ndctb - ts_ndctb)/CLOCKS_PER_SEC << "\n";
   }
-  
-  clock_t te_ndctb = clock();
-  RAY_LOG(INFO) << "hucc time for NotifyDirectCallTaskBlocked" << double(te_ndctb - ts_ndctb)/CLOCKS_PER_SEC << "\n";
+
+
 
   bool done = false;
   bool timed_out = false;
