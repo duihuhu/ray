@@ -1322,12 +1322,13 @@ cdef class CoreWorker:
 
     def get_objects(self, object_refs, TaskID current_task_id,
                     int64_t timeout_ms=-1):
-        #hucc time add for get in coreworker py total time
-        ts_get_obj_pcw = time.time()
+
         cdef:
             c_vector[shared_ptr[CRayObject]] results
             CTaskID c_task_id = current_task_id.native()
             c_vector[CObjectID] c_object_ids = ObjectRefsToVector(object_refs)
+        #hucc time add for get in coreworker py total time
+        ts_get_obj_pcw = time.time()
         with nogil:
 
             check_status(CCoreWorkerProcess.GetCoreWorker().Get(
