@@ -1149,14 +1149,14 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_LOG(DEBUG) << "Plasma GET timeout " << local_timeout_ms;
     
     //hucc add time for get object from plasma total time
-    clock_t ts_get_obj_plasma = clock();
+    auto ts_get_obj_plasma = current_time_ms();
     RAY_RETURN_NOT_OK(plasma_store_provider_->Get(plasma_object_ids,
                                                   local_timeout_ms,
                                                   worker_context_,
                                                   &result_map,
                                                   &got_exception));
-    clock_t te_get_obj_plasma = clock();
-    RAY_LOG(INFO) << "hucc time for get object from plasma total time: " << double(te_get_obj_plasma - ts_get_obj_plasma)/CLOCKS_PER_SEC <<"\n"; 
+    auto te_get_obj_plasma = current_time_ms();
+    RAY_LOG(INFO) << "hucc time for get object from plasma total time: " << te_get_obj_plasma - ts_get_obj_plasma <<"\n"; 
     
   }
 
@@ -1185,10 +1185,9 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   if (timeout_ms < 0 && !will_throw_exception) {
     RAY_CHECK(!missing_result);
   }
-  clock_t te_get_obj_cw = clock();
-  RAY_LOG(INFO) << "hucc time add for get object in coreworker total time: " << (double)(te_get_obj_cw - ts_get_obj_cw)/CLOCKS_PER_SEC <<"\n";
+  auto te_get_obj_cw = current_time_ms();
+  RAY_LOG(INFO) << "hucc time add for get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw <<"\n";
 
-  RAY_LOG(INFO) << "hucc time for get object in coreworker time: " << (current_time_ms() - ts_get_obj_cw_cur) << "\n";
   return Status::OK();
 }
 
