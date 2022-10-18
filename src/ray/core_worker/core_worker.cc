@@ -1144,11 +1144,16 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                                   timeout_ms - (current_time_ms() - start_time));
     }
     RAY_LOG(DEBUG) << "Plasma GET timeout " << local_timeout_ms;
+    
+    //hucc add time for get object from plasma total time
+    clock_t ts_get_obj_plasma = clock();
     RAY_RETURN_NOT_OK(plasma_store_provider_->Get(plasma_object_ids,
                                                   local_timeout_ms,
                                                   worker_context_,
                                                   &result_map,
                                                   &got_exception));
+    clock_t te_get_obj_plasma = clock();
+    RAY_LOG(INFO) << "hucc time for get object from plasma total time: " << double(te_get_obj_plasma - ts_get_obj_plasma)/CLOCKS_PER_SEC <<"\n"; 
   }
 
   // Loop through `ids` and fill each entry for the `results` vector,
