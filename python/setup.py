@@ -25,7 +25,7 @@ SUPPORTED_PYTHONS = [(3, 6), (3, 7), (3, 8), (3, 9), (3, 10)]
 # in WORKSPACE file as well.
 
 SUPPORTED_BAZEL = (4, 2, 2)
-
+os.environ["BAZEL_LIMIT_CPUS"] = "35"
 ROOT_DIR = os.path.dirname(__file__)
 BUILD_JAVA = os.getenv("RAY_INSTALL_JAVA") == "1"
 SKIP_BAZEL_BUILD = os.getenv("SKIP_BAZEL_BUILD") == "1"
