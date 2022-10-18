@@ -267,6 +267,8 @@ std::shared_ptr<CoreWorker> CoreWorkerProcessImpl::TryGetCoreWorker() const {
 }
 
 std::shared_ptr<CoreWorker> CoreWorkerProcessImpl::GetCoreWorker() const {
+  //hucc time for get coreworker
+  clock_t ts_get_cworker = clock();
   absl::ReaderMutexLock lock(&mutex_);
   if (!core_worker_) {
     // This could only happen when the worker has already been shutdown.
@@ -285,6 +287,8 @@ std::shared_ptr<CoreWorker> CoreWorkerProcessImpl::GetCoreWorker() const {
     QuickExit();
   }
   RAY_CHECK(core_worker_) << "core_worker_ must not be NULL";
+  clock_t te_get_cworker = clock();
+  RAY_LOG(INFO) <<"hucc time for get coreworker: " << double(te_get_cworker - ts_get_cworker)/CLOCKS_PER_SEC <<"\n";
   return core_worker_;
 }
 
