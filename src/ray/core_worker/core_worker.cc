@@ -1105,8 +1105,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        const int64_t timeout_ms,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
-  clock_t ts_get_obj_cw = clock();
-  auto ts_get_obj_cw_cur = current_time_ms();
+  auto ts_get_obj_cw = current_time_ms();
 
   results->resize(ids.size(), nullptr);
 
@@ -1119,12 +1118,12 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
 
   if (!memory_object_ids.empty()) {
     // hucc time for get from memory total time
-    clock_t ts_get_obj_tmem = clock();
+    auto ts_get_obj_tmem = current_time_ms();
     RAY_RETURN_NOT_OK(memory_store_->Get(
         memory_object_ids, timeout_ms, worker_context_, &result_map, &got_exception));
 
-    clock_t te_get_obj_tmem = clock();
-    RAY_LOG(INFO) << "hucc time for get from memory total time: " << double(te_get_obj_tmem - ts_get_obj_tmem)/CLOCKS_PER_SEC <<"\n";
+    auto te_get_obj_tmem = current_time_ms();
+    RAY_LOG(INFO) << "hucc time for get from memory total time: " << te_get_obj_tmem - ts_get_obj_tmem <<"\n";
   }
 
   // Erase any objects that were promoted to plasma from the results. These get
