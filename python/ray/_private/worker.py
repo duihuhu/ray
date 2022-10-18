@@ -665,7 +665,7 @@ class Worker:
                 )
 
         timeout_ms = int(timeout * 1000) if timeout else -1
-        # hucc add 
+        # hucc add time for core_worker.get_objects
         ts_cw_get_objs = time.time()
         data_metadata_pairs = self.core_worker.get_objects(
             object_refs, self.current_task_id, timeout_ms
