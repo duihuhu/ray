@@ -292,10 +292,14 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   int count = 0;
 
   {
+
+
     absl::flat_hash_set<ObjectID> remaining_ids;
     absl::flat_hash_set<ObjectID> ids_to_remove;
 
     absl::MutexLock lock(&mu_);
+    //hucc add time for calculate time for get object already in mem
+    clock_t ts_get_obj_mem = clock();
     // Check for existing objects and see if this get request can be fullfilled.
     for (size_t i = 0; i < object_ids.size() && count < num_objects; i++) {
       const auto &object_id = object_ids[i];
@@ -313,6 +317,9 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
         remaining_ids.insert(object_id);
       }
     }
+    clock_t te_get_obj_mem = clock();
+    RAY_LOG(INFO)<<"hucc time for get object alread in mem: "<< double(te_get_ob_mem - ts_get_obj_mem)/CLOCKS_PER_SEC <<"\n";
+
     RAY_CHECK(count <= num_objects);
 
     // Clean up the objects if ref counting is off.
@@ -337,6 +344,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     for (const auto &object_id : get_request->ObjectIds()) {
       object_get_requests_[object_id].push_back(get_request);
     }
+    
   }
 
   // Only send block/unblock IPCs for non-actor tasks on the main thread.
@@ -353,7 +361,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
 
     clock_t te_ndctb = clock();
-    RAY_LOG(INFO) << "hucc time for NotifyDirectCallTaskBlocked " << double(te_ndctb - ts_ndctb)/CLOCKS_PER_SEC << "\n";
+    RAY_LOG(INFO) << "hucc time for NotifyDirectCallTaskBlocked: " << double(te_ndctb - ts_ndctb)/CLOCKS_PER_SEC << "\n";
   }
 
 
@@ -372,6 +380,9 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // calls. If timeout_ms == -1, this should run forever until all objects are
   // ready or a signal is received. Else it should run repeatedly until that timeout
   // is reached.
+
+  // hucc add time for Wait for get_request already
+  clock_t ts_get_wobj = clock();
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
     if (check_signals_) {
@@ -384,6 +395,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       timed_out = remaining_timeout <= 0;
     }
   }
+  clock_t te_get_wobj = clock();
+  RAY_LOG(INFO) << "hucc time for Wait for get_request already: " << double(te_get_wobj - ts_get_wobj)/CLOCKS_PER_SEC << "\n";
 
   if (should_notify_raylet) {
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());
@@ -392,13 +405,16 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   {
     absl::MutexLock lock(&mu_);
     // Populate results.
+    //hucc time for get object from get_request
+    clock_t ts_get_req_obj = clock();
     for (size_t i = 0; i < object_ids.size(); i++) {
       const auto &object_id = object_ids[i];
       if ((*results)[i] == nullptr) {
         (*results)[i] = get_request->Get(object_id);
       }
     }
-
+    clock_t te_get_req_obj = clock();
+    RAY_LOG(INFO) << "hucc time for get object from get_request when it is already" << double(te_get_req_obj - ts_get_req_obj) << "\n";
     // Remove get request.
     for (const auto &object_id : get_request->ObjectIds()) {
       auto object_request_iter = object_get_requests_.find(object_id);
@@ -563,8 +579,10 @@ inline void CoreWorkerMemoryStore::EraseObjectAndUpdateStats(const ObjectID &obj
   }
 
   if (it->second->IsInPlasmaError()) {
+    //hucc operate object count in plasma
     num_in_plasma_ -= 1;
   } else {
+    //hucc operate object count in plasma and local mem
     num_local_objects_ -= 1;
     used_object_store_memory_ -= it->second->GetSize();
   }
