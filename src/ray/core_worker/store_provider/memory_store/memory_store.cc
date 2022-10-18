@@ -318,7 +318,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       }
     }
     clock_t te_get_obj_mem = clock();
-    RAY_LOG(INFO)<<"hucc time for get object alread in mem: "<< double(te_get_ob_mem - ts_get_obj_mem)/CLOCKS_PER_SEC <<"\n";
+    RAY_LOG(INFO)<<"hucc time for get object alread in local mem: "<< double(te_get_ob_mem - ts_get_obj_mem)/CLOCKS_PER_SEC <<"\n";
 
     RAY_CHECK(count <= num_objects);
 
@@ -361,7 +361,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
 
     clock_t te_ndctb = clock();
-    RAY_LOG(INFO) << "hucc time for NotifyDirectCallTaskBlocked: " << double(te_ndctb - ts_ndctb)/CLOCKS_PER_SEC << "\n";
+    RAY_LOG(INFO) << "hucc time for NotifyDirectCallTaskBlocked in local mem: " << double(te_ndctb - ts_ndctb)/CLOCKS_PER_SEC << "\n";
   }
 
 
@@ -396,7 +396,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     }
   }
   clock_t te_get_wobj = clock();
-  RAY_LOG(INFO) << "hucc time for Wait for get_request already: " << double(te_get_wobj - ts_get_wobj)/CLOCKS_PER_SEC << "\n";
+  RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << double(te_get_wobj - ts_get_wobj)/CLOCKS_PER_SEC << "\n";
 
   if (should_notify_raylet) {
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());
@@ -414,7 +414,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       }
     }
     clock_t te_get_req_obj = clock();
-    RAY_LOG(INFO) << "hucc time for get object from get_request when it is already" << double(te_get_req_obj - ts_get_req_obj) << "\n";
+    RAY_LOG(INFO) << "hucc time for get object from get_request when it is already in local mem" << double(te_get_req_obj - ts_get_req_obj) << "\n";
     // Remove get request.
     for (const auto &object_id : get_request->ObjectIds()) {
       auto object_request_iter = object_get_requests_.find(object_id);
