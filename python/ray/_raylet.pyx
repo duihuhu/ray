@@ -1332,7 +1332,7 @@ cdef class CoreWorker:
             check_status(CCoreWorkerProcess.GetCoreWorker().Get(
                 c_object_ids, timeout_ms, &results))
             te_get_obj_pcw = time.time()
-            print("hucc time add for get in coreworker py total time: "te_get_obj_pcw - ts_get_obj_pcw)
+            print("hucc time add for get in coreworker py total time: ", te_get_obj_pcw - ts_get_obj_pcw)
 
         return RayObjectsToDataMetadataPairs(results)
 
