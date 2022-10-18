@@ -1328,11 +1328,14 @@ cdef class CoreWorker:
             c_vector[CObjectID] c_object_ids = ObjectRefsToVector(object_refs)
         with nogil:
             #hucc time add for get in coreworker py total time
-            ts_get_obj_pcw = time.time()
+            from libc.stdio cimport printf
+            from libc.time cimport time,time_t
+            cdef time_t ts_get_obj_pcw = time(NULL)
+
             check_status(CCoreWorkerProcess.GetCoreWorker().Get(
                 c_object_ids, timeout_ms, &results))
-            te_get_obj_pcw = time.time()
-            print("hucc time add for get in coreworker py total time: ", te_get_obj_pcw - ts_get_obj_pcw)
+            cdef time_t te_get_obj_pcw = time(NULL)
+            print("hucc time add for get in coreworker py total time: %d", te_get_obj_pcw - ts_get_obj_pcw)
 
         return RayObjectsToDataMetadataPairs(results)
 
