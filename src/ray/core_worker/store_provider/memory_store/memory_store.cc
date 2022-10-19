@@ -382,7 +382,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // is reached.
 
   // hucc add time for Wait for get_request already
-  auto ts_get_wobj = current_sys_time_us();
+  // auto ts_get_wobj = current_sys_time_us();
+  
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
     if (check_signals_) {
@@ -395,7 +396,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       timed_out = remaining_timeout <= 0;
     }
   }
-  auto te_get_wobj = current_sys_time_us();
+  // auto te_get_wobj = current_sys_time_us();
   // RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << te_get_wobj - ts_get_wobj << "\n";
 
   if (should_notify_raylet) {
