@@ -299,7 +299,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
     absl::MutexLock lock(&mu_);
     //hucc add time for calculate time for get object already in mem
-    auto ts_get_obj_mem = current_sys_time_us();
+    // auto ts_get_obj_mem = current_sys_time_us();
     // Check for existing objects and see if this get request can be fullfilled.
     for (size_t i = 0; i < object_ids.size() && count < num_objects; i++) {
       const auto &object_id = object_ids[i];
@@ -317,7 +317,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
         remaining_ids.insert(object_id);
       }
     }
-    auto te_get_obj_mem = current_sys_time_us();
+    // auto te_get_obj_mem = current_sys_time_us();
     // RAY_LOG(INFO)<<"hucc time for get object alread in local mem: "<< te_get_obj_mem - ts_get_obj_mem <<"\n";
 
     RAY_CHECK(count <= num_objects);
@@ -356,11 +356,11 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // Wait for remaining objects (or timeout).
   if (should_notify_raylet) {
     // hucc add time for NotifyDirectCallTaskBlocked
-    auto ts_ndctb = current_sys_time_us();
+    // auto ts_ndctb = current_sys_time_us();
 
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
 
-    auto te_ndctb = current_sys_time_us();
+    // auto te_ndctb = current_sys_time_us();
     // RAY_LOG(INFO) << "hucc time for NotifyDirectCallTaskBlocked in local mem: " << te_ndctb - ts_ndctb << "\n";
   }
 
@@ -383,7 +383,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
   // hucc add time for Wait for get_request already
   // auto ts_get_wobj = current_sys_time_us();
-  
+
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
     if (check_signals_) {
@@ -407,14 +407,14 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     absl::MutexLock lock(&mu_);
     // Populate results.
     //hucc time for get object from get_request
-    auto ts_get_req_obj = current_sys_time_us();
+    // auto ts_get_req_obj = current_sys_time_us();
     for (size_t i = 0; i < object_ids.size(); i++) {
       const auto &object_id = object_ids[i];
       if ((*results)[i] == nullptr) {
         (*results)[i] = get_request->Get(object_id);
       }
     }
-    auto te_get_req_obj = current_sys_time_us();
+    // auto te_get_req_obj = current_sys_time_us();
     // RAY_LOG(INFO) << "hucc time for get object from get_request when it is already in local mem: " << te_get_req_obj - ts_get_req_obj << "\n";
     // Remove get request.
     for (const auto &object_id : get_request->ObjectIds()) {

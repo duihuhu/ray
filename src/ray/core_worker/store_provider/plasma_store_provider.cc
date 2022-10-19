@@ -277,7 +277,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<ObjectID> id_vector(object_ids.begin(), object_ids.end());
   int64_t total_size = static_cast<int64_t>(object_ids.size());
   // hucc time for get obj from local plasma
-  auto ts_get_obj_local_plasma = current_sys_time_us();
+  // auto ts_get_obj_local_plasma = current_sys_time_us();
+  
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
     for (int64_t i = start; i < batch_size && i < total_size; i++) {
@@ -292,8 +293,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  results,
                                                  got_exception));
   }
-  auto te_get_obj_local_plasma = current_sys_time_us();
-  RAY_LOG(INFO) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << "\n";
+  // auto te_get_obj_local_plasma = current_sys_time_us();
+  // RAY_LOG(INFO) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << "\n";
   // If all objects were fetched already, return. Note that we always need to
   // call UnblockIfNeeded() to cancel the get request.
   if (remaining.empty() || *got_exception) {
