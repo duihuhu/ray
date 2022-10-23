@@ -1126,6 +1126,7 @@ void WorkerPool::TryKillingIdleWorkers() {
                 // kill the worker (e.g., when the worker owns the object). Without this,
                 // if the first N workers own objects, it can't kill idle workers that are
                 // >= N+1.
+                RAY_LOG(INFO) << "hucc try again" << "\n";
                 const auto &idle_pair = idle_of_all_languages_.front();
                 idle_of_all_languages_.push_back(idle_pair);
                 idle_of_all_languages_.pop_front();
