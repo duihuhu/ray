@@ -1111,6 +1111,7 @@ void WorkerPool::TryKillingIdleWorkers() {
         rpc_client->Exit(
             request, [this, worker](const ray::Status &status, const rpc::ExitReply &r) {
               RAY_CHECK(pending_exit_idle_workers_.erase(worker->WorkerId()));
+              RAY_LOG(INFO) << "hucc Exit status.ok()" << status.ok() << "\n";
               if (!status.ok()) {
                 RAY_LOG(ERROR) << "Failed to send exit request: " << status.ToString();
               }
