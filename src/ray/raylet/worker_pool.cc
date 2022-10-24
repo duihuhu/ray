@@ -1063,7 +1063,6 @@ void WorkerPool::TryKillingIdleWorkers() {
       // Skip killing the worker process if there's any inflight `Exit` RPC requests to
       // this worker process.
       if (pending_exit_idle_workers_.count(worker->WorkerId())) {
-        RAY_LOG(INFO) << "hucc worker id" << worker->WorkerId() << "\n";
         can_be_killed = false;
         break;
       }
@@ -1096,6 +1095,7 @@ void WorkerPool::TryKillingIdleWorkers() {
         // Register the worker to pending exit so that we can correctly calculate the
         // running_size.
         // This also means that there's an inflight `Exit` RPC request to the worker.
+        RAY_LOG(INFO) << "hucc worker id" << worker->WorkerId() << "\n";
         pending_exit_idle_workers_.emplace(worker->WorkerId(), worker);
         auto rpc_client = worker->rpc_client();
         RAY_CHECK(rpc_client);
