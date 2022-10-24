@@ -620,6 +620,7 @@ void CoreWorker::Exit(
   /// Since this core worker is exiting, it's necessary to release all local references,
   /// otherwise the frontend code may not release its references and this worker will be
   /// leaked. See https://github.com/ray-project/ray/issues/19639.
+  RAY_LOG(INFO) << "hucc ReleaseAllLocalReferences" << "\n";
   reference_counter_->ReleaseAllLocalReferences();
 
   // Callback to shutdown.
