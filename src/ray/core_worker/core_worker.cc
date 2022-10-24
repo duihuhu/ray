@@ -3286,7 +3286,7 @@ void CoreWorker::HandleDeleteSpilledObjects(
 
 void CoreWorker::HandleExit(const rpc::ExitRequest &request,
                             rpc::ExitReply *reply,
-                            rpc::SendReplyCallback send_reply_callback, int driver_size = 0) {
+                            rpc::SendReplyCallback send_reply_callback) {
   
   bool own_objects = reference_counter_->OwnObjects();
   int64_t pins_in_flight = local_raylet_client_->GetPinsInFlight();
@@ -3294,10 +3294,7 @@ void CoreWorker::HandleExit(const rpc::ExitRequest &request,
   // any object pinning RPCs in flight.
   bool is_idle = !own_objects && pins_in_flight == 0;
   RAY_LOG(INFO) << "hucc worker is_idle: " << is_idle << "own_objects: " << own_objects << "pins_in_flight: " << pins_in_flight << "\n";
-  if (driver_size < = 0)
-    is_idle = true;
   reply->set_success(is_idle);
-  
   send_reply_callback(
       Status::OK(),
       [this, is_idle]() {

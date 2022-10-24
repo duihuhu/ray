@@ -158,7 +158,6 @@ class MockCoreWorker : public CoreWorker {
               (const rpc::ExitRequest &request,
                rpc::ExitReply *reply,
                rpc::SendReplyCallback send_reply_callback),
-               int,
               (override));
   MOCK_METHOD(void,
               HandleAssignObjectOwner,

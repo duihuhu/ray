@@ -1107,7 +1107,7 @@ void WorkerPool::TryKillingIdleWorkers() {
         RAY_CHECK(rpc_client);
         RAY_CHECK(running_size > 0);
         running_size--;
-        int driver_size = GetAllRegisteredDrivers().size();
+        GetAllRegisteredDrivers().size() <= 0
         rpc::ExitRequest request;
         rpc_client->Exit(
             request, [this, worker](const ray::Status &status, const rpc::ExitReply &r) {
@@ -1141,7 +1141,7 @@ void WorkerPool::TryKillingIdleWorkers() {
                           idle_of_all_languages_map_.size());
 
               }
-            }, driver_size);
+            });
             // int i = 0;
             // if(GetAllRegisteredDrivers().size() <= 0) {
             //   RAY_LOG(INFO) << "hucc no driver : " << i << "\n";
