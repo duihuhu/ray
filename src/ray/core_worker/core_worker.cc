@@ -2264,6 +2264,7 @@ Status CoreWorker::ExecuteTask(
           std::make_pair<>(dynamic_return_id, std::shared_ptr<RayObject>()));
       RAY_LOG(DEBUG) << "Re-executed task " << task_spec.TaskId()
                      << " should return dynamic object " << dynamic_return_id;
+      RAY_LOG(INFO) << "hucc ExecuteTask:" << "\n";
 
       AddLocalReference(dynamic_return_id, "<temporary (ObjectRefGenerator)>");
       reference_counter_->AddBorrowedObject(
@@ -2469,6 +2470,9 @@ ObjectID CoreWorker::AllocateDynamicReturnId() {
   const auto &task_spec = worker_context_.GetCurrentTask();
   const auto return_id =
       ObjectID::FromIndex(task_spec->TaskId(), worker_context_.GetNextPutIndex());
+    
+  RAY_LOG(INFO) << "hucc AllocateDynamicReturnId" << "\n";
+
   AddLocalReference(return_id, "<temporary (ObjectRefGenerator)>");
   reference_counter_->AddBorrowedObject(
       return_id, ObjectID::Nil(), worker_context_.GetCurrentTask()->CallerAddress());
@@ -2549,6 +2553,8 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
       // ensures that when the task completes, we can retrieve metadata about
       // any borrowed ObjectIDs that were serialized in the argument's value.
       RAY_LOG(DEBUG) << "Incrementing ref for argument ID " << arg_id;
+      
+      RAY_LOG(INFO) << "hucc other Incrementing ref for borrowed ID task: " << "\n";
       reference_counter_->AddLocalReference(arg_id, task.CallSiteString());
       // Attach the argument's owner's address. This is needed to retrieve the
       // value from plasma.
@@ -2695,6 +2701,7 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   // Acquire a reference to the object. This prevents the object from being
   // evicted out from under us while we check the object status and start the
   // Get.
+  RAY_LOG(INFO) << "hucc HandleGetObjectStatus: "<< "\n";
   AddLocalReference(object_id, "<temporary (get object status)>");
 
   rpc::Address owner_address;
