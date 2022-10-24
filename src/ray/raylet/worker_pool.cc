@@ -1051,19 +1051,21 @@ void WorkerPool::TryKillingIdleWorkers() {
     auto workers_in_the_same_process = GetWorkersByProcess(process);
     bool can_be_killed = true;
     for (const auto &worker : workers_in_the_same_process) {
-      RAY_LOG(INFO) << "hucc not all worker in process are idle" << worker_state.idle.count(worker) << "\n";
       if (worker_state.idle.count(worker) == 0 ||
           now - idle_of_all_languages_map_[worker] <
               RayConfig::instance().idle_worker_killing_time_threshold_ms()) {
         // Another worker in this process isn't idle, or hasn't been idle for a while, so
         // this process can't be killed.
+        RAY_LOG(INFO) << "hucc all worker in process not idle: " << worker_state.idle.count(worker) << "\n";
         can_be_killed = false;
         break;
       }
 
       // Skip killing the worker process if there's any inflight `Exit` RPC requests to
       // this worker process.
+      RAY_LOG(INFO) << "hucc pending_exit_idle_workers_ outside: " << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
       if (pending_exit_idle_workers_.count(worker->WorkerId())) {
+        RAY_LOG(INFO) << "hucc pending_exit_idle_workers_ inside" << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
         can_be_killed = false;
         break;
       }
