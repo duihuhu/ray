@@ -161,6 +161,7 @@ class CoreWorker : public rpc::CoreWorkerServiceHandler {
   ///
   /// \param[in] object_id The object ID to increase the reference count for.
   void AddLocalReference(const ObjectID &object_id) {
+    AY_LOG(INFO) << "hucc core_worker.h AddLocalReference" << "\n";
     AddLocalReference(object_id, CurrentCallSite());
   }
 
@@ -934,6 +935,7 @@ class CoreWorker : public rpc::CoreWorkerServiceHandler {
   /// \param[in] object_id The object ID to increase the reference count for.
   /// \param[in] call_site The call site from the language frontend.
   void AddLocalReference(const ObjectID &object_id, std::string call_site) {
+    RAY_LOG(INFO) << "hucc core_worker.h AddLocalReference call_site" << "\n";
     reference_counter_->AddLocalReference(object_id, call_site);
   }
 
