@@ -1076,14 +1076,15 @@ void WorkerPool::TryKillingIdleWorkers() {
     }
 
     RAY_CHECK(running_size >= workers_in_the_same_process.size());
-    RAY_LOG(INFO) << "hucc running_size and num_soft_limit_" << running_size - workers_in_the_same_process.size() << "soft: " << static_cast<size_t>(num_workers_soft_limit_)<<"\n";
     if (running_size - workers_in_the_same_process.size() <
         static_cast<size_t>(num_workers_soft_limit_)) {
       // A Java worker process may contain multiple workers. Killing more workers than we
       // expect may slow the job.
+      RAY_LOG(INFO) << "hucc running_size and num_soft_limit_ inside: " << running_size - workers_in_the_same_process.size() << "soft: " << static_cast<size_t>(num_workers_soft_limit_)<<"\n";
       if (!finished_jobs_.count(job_id)) {
         // Ignore the soft limit for jobs that have already finished, as we
         // should always clean up these workers.
+        RAY_LOG(INFO) << "hucc finished_jobs_" << "\n";
         return;
       }
     }
