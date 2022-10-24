@@ -1134,9 +1134,11 @@ void WorkerPool::TryKillingIdleWorkers() {
                 // if the first N workers own objects, it can't kill idle workers that are
                 // >= N+1.
                 int i = 0;
-                if(GetAllRegisteredDrivers().size()>0) {
+                if(GetAllRegisteredDrivers().size() <= 0) {
                   RAY_LOG(INFO) << "hucc no driver : " << i << "\n";
-                
+                  const auto job_id = worker->GetAssignedJobId();
+                  RAY_LOG(INFO) << "hucc try again: " << job_id.IsNil() << "job id: " << job_id << "\n";
+                  worker->ReleaseAllLocalReferences();
                 // for (const auto &drive : GetAllRegisteredDrivers()) {
                 //   if (drive->IsDead()) {
                 //     i = i + 1;
@@ -1145,14 +1147,14 @@ void WorkerPool::TryKillingIdleWorkers() {
                 //     RAY_LOG(INFO) << "hucc driver not dead: " << i << "\n";
                 //   }
                 // }
-                  const auto job_id = worker->GetAssignedJobId();
-                  RAY_LOG(INFO) << "hucc try again: " << job_id.IsNil() << "job id: " << job_id << "\n";
-                  const auto &idle_pair = idle_of_all_languages_.front();
-                  idle_of_all_languages_.push_back(idle_pair);
-                  idle_of_all_languages_.pop_front();
-                  RAY_CHECK(idle_of_all_languages_.size() ==
-                            idle_of_all_languages_map_.size());
                 }
+
+                const auto &idle_pair = idle_of_all_languages_.front();
+                idle_of_all_languages_.push_back(idle_pair);
+                idle_of_all_languages_.pop_front();
+                RAY_CHECK(idle_of_all_languages_.size() ==
+                          idle_of_all_languages_map_.size());
+
               }
             });
       } else {
