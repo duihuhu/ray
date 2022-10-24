@@ -1009,6 +1009,7 @@ void WorkerPool::TryKillingIdleWorkers() {
       running_size++;
     }
   }
+  RAY_LOG(INFO) << "hucc running_size" << running_size << "\n";
   // Subtract the number of pending exit workers first. This will help us killing more
   // idle workers that it needs to.
   RAY_CHECK(running_size >= pending_exit_idle_workers_.size());
