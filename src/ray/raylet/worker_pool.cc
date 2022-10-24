@@ -1110,7 +1110,7 @@ void WorkerPool::TryKillingIdleWorkers() {
         int driver_size = GetAllRegisteredDrivers().size();
         rpc::ExitRequest request;
         rpc_client->Exit(
-            request, [this, worker](const ray::Status &status, const rpc::ExitReply &r, int::driver_size) {
+            request, [this, worker](const ray::Status &status, const rpc::ExitReply &r) {
               RAY_CHECK(pending_exit_idle_workers_.erase(worker->WorkerId()));
               if (!status.ok()) {
                 RAY_LOG(ERROR) << "Failed to send exit request: " << status.ToString();
@@ -1141,7 +1141,7 @@ void WorkerPool::TryKillingIdleWorkers() {
                           idle_of_all_languages_map_.size());
 
               }
-            });
+            }, driver_size);
             // int i = 0;
             // if(GetAllRegisteredDrivers().size() <= 0) {
             //   RAY_LOG(INFO) << "hucc no driver : " << i << "\n";

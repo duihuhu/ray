@@ -187,7 +187,7 @@ class CoreWorkerClientInterface : public pubsub::SubscriberClientInterface {
   }
 
   virtual void Exit(const ExitRequest &request,
-                    const ClientCallback<ExitReply> &callback) {}
+                    const ClientCallback<ExitReply> &callback, int driver_size) {}
 
   virtual void AssignObjectOwner(const AssignObjectOwnerRequest &request,
                                  const ClientCallback<AssignObjectOwnerReply> &callback) {
