@@ -2582,8 +2582,7 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
         // We do not need to add the ownership information here because it will
         // get added once the language frontend deserializes the value, before
         // the ObjectID can be used.
-        //hucc delete
-        // reference_counter_->AddLocalReference(inlined_id, task.CallSiteString());
+        reference_counter_->AddLocalReference(inlined_id, task.CallSiteString());
         borrowed_ids->push_back(inlined_id);
       }
     }
