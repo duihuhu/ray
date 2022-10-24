@@ -1051,7 +1051,7 @@ void WorkerPool::TryKillingIdleWorkers() {
     auto workers_in_the_same_process = GetWorkersByProcess(process);
     bool can_be_killed = true;
     for (const auto &worker : workers_in_the_same_process) {
-      RAY_LOG(INFO) << "hucc idle time: " << idle_of_all_languages_map_[worker] << "\n";
+      RAY_LOG(INFO) << "hucc idle time: " << now - idle_of_all_languages_map_[worker] << "\n";
       if (worker_state.idle.count(worker) == 0 ||
           now - idle_of_all_languages_map_[worker] <
               RayConfig::instance().idle_worker_killing_time_threshold_ms()) {
@@ -1111,7 +1111,6 @@ void WorkerPool::TryKillingIdleWorkers() {
         rpc_client->Exit(
             request, [this, worker](const ray::Status &status, const rpc::ExitReply &r) {
               RAY_CHECK(pending_exit_idle_workers_.erase(worker->WorkerId()));
-              RAY_LOG(INFO) << "hucc Exit status.ok()" << status.ok() << "\n";
               if (!status.ok()) {
                 RAY_LOG(ERROR) << "Failed to send exit request: " << status.ToString();
               }
