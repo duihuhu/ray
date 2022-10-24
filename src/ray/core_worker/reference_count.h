@@ -587,6 +587,7 @@ class ReferenceCounter : public ReferenceCounterInterface,
     /// - ObjectIDs containing this ObjectID that we own and that are still in
     /// scope.
     size_t RefCount() const {
+      RAY_LOG(INFO) << "hucc local_ref_count: " << local_ref_count << "submitted_task_ref_count: " <<  submitted_task_ref_count << " nested().contained_in_owned.size(): " <<  nested().contained_in_owned.size()<<"\n"
       return local_ref_count + submitted_task_ref_count +
              nested().contained_in_owned.size();
     }
