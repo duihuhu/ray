@@ -2578,6 +2578,7 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
       // time it finishes.
       for (const auto &inlined_ref : task.ArgInlinedRefs(i)) {
         const auto inlined_id = ObjectID::FromBinary(inlined_ref.object_id());
+        RAY_LOG(INFO) << "hucc Incrementing ref for borrowed ID task: " << task.TaskId() << "job id: " << task.JobId() << "\n";
         RAY_LOG(DEBUG) << "Incrementing ref for borrowed ID " << inlined_id;
         // We do not need to add the ownership information here because it will
         // get added once the language frontend deserializes the value, before
