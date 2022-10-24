@@ -1001,7 +1001,7 @@ void WorkerPool::PushWorker(const std::shared_ptr<WorkerInterface> &worker) {
 
 void WorkerPool::TryKillingIdleWorkers() {
   int i = 0;
-  if(!GetAllRegisteredDrivers()) {
+  if(GetAllRegisteredDrivers().size()>0) {
     RAY_LOG(INFO) << "hucc no driver : " << i << "\n";
   }
   for (const auto &drive : GetAllRegisteredDrivers()) {
