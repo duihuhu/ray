@@ -2554,7 +2554,7 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
       // any borrowed ObjectIDs that were serialized in the argument's value.
       RAY_LOG(DEBUG) << "Incrementing ref for argument ID " << arg_id;
       
-      RAY_LOG(INFO) << "hucc other Incrementing ref for borrowed ID task: " << "\n";
+      RAY_LOG(INFO) << "hucc other Incrementing ref for borrowed ID task: " << << task.TaskId() << "job id: " << task.JobId() << "\n";
       reference_counter_->AddLocalReference(arg_id, task.CallSiteString());
       // Attach the argument's owner's address. This is needed to retrieve the
       // value from plasma.
