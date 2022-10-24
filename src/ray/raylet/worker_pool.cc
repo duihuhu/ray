@@ -1056,7 +1056,6 @@ void WorkerPool::TryKillingIdleWorkers() {
               RayConfig::instance().idle_worker_killing_time_threshold_ms()) {
         // Another worker in this process isn't idle, or hasn't been idle for a while, so
         // this process can't be killed.
-        RAY_LOG(INFO) << "hucc worker id" << worker->WorkerId() << "\n";
         can_be_killed = false;
         break;
       }
@@ -1064,6 +1063,7 @@ void WorkerPool::TryKillingIdleWorkers() {
       // Skip killing the worker process if there's any inflight `Exit` RPC requests to
       // this worker process.
       if (pending_exit_idle_workers_.count(worker->WorkerId())) {
+        RAY_LOG(INFO) << "hucc worker id" << worker->WorkerId() << "\n";
         can_be_killed = false;
         break;
       }
