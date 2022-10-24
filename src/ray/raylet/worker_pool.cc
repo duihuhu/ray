@@ -1134,7 +1134,7 @@ void WorkerPool::TryKillingIdleWorkers() {
                 // if the first N workers own objects, it can't kill idle workers that are
                 // >= N+1.
                 const auto job_id = worker->GetAssignedJobId();
-                RAY_LOG(INFO) << "hucc try again: " << job_id.IsNil() <<"\n";
+                RAY_LOG(INFO) << "hucc try again: " << job_id.IsNil() << "job id" << job_id.JobID() << "\n";
                 const auto &idle_pair = idle_of_all_languages_.front();
                 idle_of_all_languages_.push_back(idle_pair);
                 idle_of_all_languages_.pop_front();
