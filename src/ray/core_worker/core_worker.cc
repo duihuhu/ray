@@ -990,7 +990,7 @@ Status CoreWorker::CreateOwnedAndIncrementLocalRef(
     // the current worker. So we need to make sure ref count is > 0
     // by invoking `AddLocalReference` first. Note that in worker.py we set
     // skip_adding_local_ref=True to avoid double referencing the object.
-    RAY_LOG(INFO) << "hucc CreateOwnedAndIncrementLocalRef object_id: " << object_id.ObjectID() << "\n";
+    RAY_LOG(INFO) << "hucc CreateOwnedAndIncrementLocalRef object_id: " << object_id->ObjectID() << "\n";
     AddLocalReference(*object_id);
     RAY_UNUSED(
         reference_counter_->AddBorrowedObject(*object_id,
