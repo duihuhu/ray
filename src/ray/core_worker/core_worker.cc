@@ -620,7 +620,6 @@ void CoreWorker::Exit(
   /// Since this core worker is exiting, it's necessary to release all local references,
   /// otherwise the frontend code may not release its references and this worker will be
   /// leaked. See https://github.com/ray-project/ray/issues/19639.
-  RAY_LOG(INFO) << "hucc ReleaseAllLocalReferences" << "\n";
   reference_counter_->ReleaseAllLocalReferences();
 
   // Callback to shutdown.
@@ -2583,7 +2582,8 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
         // We do not need to add the ownership information here because it will
         // get added once the language frontend deserializes the value, before
         // the ObjectID can be used.
-        reference_counter_->AddLocalReference(inlined_id, task.CallSiteString());
+        //hucc delete
+        // reference_counter_->AddLocalReference(inlined_id, task.CallSiteString());
         borrowed_ids->push_back(inlined_id);
       }
     }
