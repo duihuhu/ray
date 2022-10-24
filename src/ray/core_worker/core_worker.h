@@ -170,7 +170,7 @@ class CoreWorker : public rpc::CoreWorkerServiceHandler {
   ///
   /// \param[in] object_id The object ID to decrease the reference count for.
   void RemoveLocalReference(const ObjectID &object_id) {
-    RAY_LOG(INFO) << "hucc core_worker.h RemoveLocalReference" << "\n";
+    RAY_LOG(INFO) << "hucc core_worker.h RemoveLocalReference: " << object_id <<"\n";
     std::vector<ObjectID> deleted;
     reference_counter_->RemoveLocalReference(object_id, &deleted);
     // TOOD(ilr): better way of keeping an object from being deleted
