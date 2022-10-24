@@ -1138,7 +1138,7 @@ void WorkerPool::TryKillingIdleWorkers() {
                   RAY_LOG(INFO) << "hucc no driver : " << i << "\n";
                   const auto job_id = worker->GetAssignedJobId();
                   RAY_LOG(INFO) << "hucc try again: " << job_id.IsNil() << "job id: " << job_id << "\n";
-                  worker->MarkDead();
+                  RemoveWorker(worker_state.idle, worker);
                 // for (const auto &drive : GetAllRegisteredDrivers()) {
                 //   if (drive->IsDead()) {
                 //     i = i + 1;
