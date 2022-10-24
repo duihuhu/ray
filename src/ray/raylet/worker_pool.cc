@@ -1000,10 +1000,11 @@ void WorkerPool::PushWorker(const std::shared_ptr<WorkerInterface> &worker) {
 }
 
 void WorkerPool::TryKillingIdleWorkers() {
-
-  for (const auto &dirver : GetAllRegisteredDrivers()) {
-    if (driver->IsDead()) {
-      RAY_LOG(INFO) << "hucc driver dead" << "\n";
+  int i = 0;
+  for (const auto &drive : GetAllRegisteredDrivers()) {
+    if (drive->IsDead()) {
+      i = i + 1;
+      RAY_LOG(INFO) << "hucc driver dead: " << i << "\n";
     }
   }
 
