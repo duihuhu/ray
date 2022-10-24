@@ -1095,7 +1095,6 @@ void WorkerPool::TryKillingIdleWorkers() {
         // Register the worker to pending exit so that we can correctly calculate the
         // running_size.
         // This also means that there's an inflight `Exit` RPC request to the worker.
-        RAY_LOG(INFO) << "hucc worker id" << worker->WorkerId() << "\n";
         pending_exit_idle_workers_.emplace(worker->WorkerId(), worker);
         auto rpc_client = worker->rpc_client();
         RAY_CHECK(rpc_client);
@@ -1106,12 +1105,14 @@ void WorkerPool::TryKillingIdleWorkers() {
             request, [this, worker](const ray::Status &status, const rpc::ExitReply &r) {
               RAY_CHECK(pending_exit_idle_workers_.erase(worker->WorkerId()));
               if (!status.ok()) {
+                RAY_LOG(INFO) << "hucc Failed to send exit request: worker id" << worker->WorkerId() << "\n";
                 RAY_LOG(ERROR) << "Failed to send exit request: " << status.ToString();
               }
 
               // In case of failed to send request, we remove it from pool as well
               // TODO (iycheng): We should handle the grpc failure in better way.
               if (!status.ok() || r.success()) {
+                RAY_LOG(INFO) << "hucc Failed to send exit request and remove: worker id" << worker->WorkerId() << "\n";
                 auto &worker_state = GetStateForLanguage(worker->GetLanguage());
                 // If we could kill the worker properly, we remove them from the idle
                 // pool.
