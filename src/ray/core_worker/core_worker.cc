@@ -2331,10 +2331,12 @@ Status CoreWorker::ExecuteTask(
   // borrowing.
   std::vector<ObjectID> deleted;
   if (!borrowed_ids.empty()) {
+    RAY_LOG(INFO) << "hucc ExecuteTask PopAndClearLocalBorrowers " << "task_spec.TaskId(): "  << task_spec.TaskId()"\n";
     reference_counter_->PopAndClearLocalBorrowers(borrowed_ids, borrowed_refs, &deleted);
   }
   if (dynamic_return_objects != NULL) {
     for (const auto &dynamic_return : *dynamic_return_objects) {
+      RAY_LOG(INFO) << "hucc ExecuteTask PopAndClearLocalBorrowers dynamic_return_objects" << "task_spec.TaskId(): "  << task_spec.TaskId()"\n";
       reference_counter_->PopAndClearLocalBorrowers(
           {dynamic_return.first}, borrowed_refs, &deleted);
     }
