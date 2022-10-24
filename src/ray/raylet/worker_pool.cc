@@ -1141,12 +1141,12 @@ void WorkerPool::TryKillingIdleWorkers() {
 
               }
             });
-            int i = 0;
-            if(GetAllRegisteredDrivers().size() <= 0) {
-              RAY_LOG(INFO) << "hucc no driver : " << i << "\n";
-              const auto job_id = worker->GetAssignedJobId();
-              RAY_LOG(INFO) << "hucc try again: " << job_id.IsNil() << "job id: " << job_id << "\n";
-              RemoveWorker(worker_state.idle, worker);
+            // int i = 0;
+            // if(GetAllRegisteredDrivers().size() <= 0) {
+            //   RAY_LOG(INFO) << "hucc no driver : " << i << "\n";
+            //   const auto job_id = worker->GetAssignedJobId();
+            //   RAY_LOG(INFO) << "hucc try again: " << job_id.IsNil() << "job id: " << job_id << "\n";
+            //   RemoveWorker(worker_state.idle, worker);
             // for (const auto &drive : GetAllRegisteredDrivers()) {
             //   if (drive->IsDead()) {
             //     i = i + 1;
@@ -1155,7 +1155,7 @@ void WorkerPool::TryKillingIdleWorkers() {
             //     RAY_LOG(INFO) << "hucc driver not dead: " << i << "\n";
             //   }
             // }
-            }
+            // }
       } else {
         // Even it's a dead worker, we still need to remove them from the pool.
         RemoveWorker(worker_state.idle, worker);
