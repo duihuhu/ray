@@ -990,6 +990,7 @@ Status CoreWorker::CreateOwnedAndIncrementLocalRef(
     // the current worker. So we need to make sure ref count is > 0
     // by invoking `AddLocalReference` first. Note that in worker.py we set
     // skip_adding_local_ref=True to avoid double referencing the object.
+    RAY_LOG(INFO) << "hucc CreateOwnedAndIncrementLocalRef object_id: " << object_id.ObjectID() << "\n";
     AddLocalReference(*object_id);
     RAY_UNUSED(
         reference_counter_->AddBorrowedObject(*object_id,
@@ -2422,6 +2423,7 @@ bool CoreWorker::PinExistingReturnObject(const ObjectID &return_id,
 
   // Temporarily set the return object's owner's address. This is needed to retrieve the
   // value from plasma.
+  RAY_LOG(INFO) << "hucc AddLocalReference PinExistingReturnObject" << "\n";
   reference_counter_->AddLocalReference(return_id, "<temporary (pin return object)>");
   reference_counter_->AddBorrowedObject(return_id, ObjectID::Nil(), owner_address);
 
