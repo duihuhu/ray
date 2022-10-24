@@ -1001,12 +1001,18 @@ void WorkerPool::PushWorker(const std::shared_ptr<WorkerInterface> &worker) {
 
 void WorkerPool::TryKillingIdleWorkers() {
   int i = 0;
+  if(!GetAllRegisteredDrivers()) {
+    RAY_LOG(INFO) << "hucc no driver : " << i << "\n";
+  }
   for (const auto &drive : GetAllRegisteredDrivers()) {
     if (drive->IsDead()) {
       i = i + 1;
       RAY_LOG(INFO) << "hucc driver dead: " << i << "\n";
+    } else {
+      RAY_LOG(INFO) << "hucc driver not dead: " << i << "\n";
     }
   }
+  
 
   RAY_CHECK(idle_of_all_languages_.size() == idle_of_all_languages_map_.size());
 
