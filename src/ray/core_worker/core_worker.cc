@@ -2336,7 +2336,7 @@ Status CoreWorker::ExecuteTask(
   }
   if (dynamic_return_objects != NULL) {
     for (const auto &dynamic_return : *dynamic_return_objects) {
-      RAY_LOG(INFO) << "hucc ExecuteTask PopAndClearLocalBorrowers dynamic_return_objects" << "task_spec.TaskId(): "  << task_spec.TaskId()"\n";
+      RAY_LOG(INFO) << "hucc ExecuteTask PopAndClearLocalBorrowers dynamic_return_objects" << "task_spec.TaskId(): "  << task_spec.TaskId() <<"\n";
       reference_counter_->PopAndClearLocalBorrowers(
           {dynamic_return.first}, borrowed_refs, &deleted);
     }
