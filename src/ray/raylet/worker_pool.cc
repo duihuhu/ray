@@ -1134,7 +1134,7 @@ void WorkerPool::TryKillingIdleWorkers() {
                 // if the first N workers own objects, it can't kill idle workers that are
                 // >= N+1.
                 int i = 0;
-                if(GetAllRegisteredDrivers().size()<=0) {
+                if(GetAllRegisteredDrivers().size()>0) {
                   RAY_LOG(INFO) << "hucc no driver : " << i << "\n";
                 
                 // for (const auto &drive : GetAllRegisteredDrivers()) {
