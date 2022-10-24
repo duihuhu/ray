@@ -347,7 +347,7 @@ message DeleteSpilledObjectsRequest {
 message DeleteSpilledObjectsReply {}
 
 message ExitRequest {
-  int64 dirver_size = 1;
+  int64 driver_size = 1;
 }
 
 message ExitReply {

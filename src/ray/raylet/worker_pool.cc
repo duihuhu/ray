@@ -1107,7 +1107,7 @@ void WorkerPool::TryKillingIdleWorkers() {
         RAY_CHECK(rpc_client);
         RAY_CHECK(running_size > 0);
         running_size--;
-        int dirver_size = GetAllRegisteredDrivers().size();
+        int driver_size = GetAllRegisteredDrivers().size();
         rpc::ExitRequest request;
         request.set_dirver_size(dirver_size);
         rpc_client->Exit(
