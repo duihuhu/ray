@@ -1000,6 +1000,13 @@ void WorkerPool::PushWorker(const std::shared_ptr<WorkerInterface> &worker) {
 }
 
 void WorkerPool::TryKillingIdleWorkers() {
+
+  for (const auto &dirver : GetAllRegisteredDrivers()) {
+    if (driver->IsDead()) {
+      RAY_LOG(INFO) << "hucc driver dead" << "\n";
+    }
+  }
+
   RAY_CHECK(idle_of_all_languages_.size() == idle_of_all_languages_map_.size());
 
   int64_t now = get_time_();
