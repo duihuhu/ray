@@ -1107,9 +1107,10 @@ void WorkerPool::TryKillingIdleWorkers() {
         RAY_CHECK(rpc_client);
         RAY_CHECK(running_size > 0);
         running_size--;
+        int drive_size = GetAllRegisteredDrivers().size();
         rpc::ExitRequest request;
         rpc_client->Exit(
-            request, [this, worker](const ray::Status &status, const rpc::ExitReply &r) {
+            request, [this, worker](const ray::Status &status, const rpc::ExitReply &r, drive_size) {
               RAY_CHECK(pending_exit_idle_workers_.erase(worker->WorkerId()));
               if (!status.ok()) {
                 RAY_LOG(ERROR) << "Failed to send exit request: " << status.ToString();

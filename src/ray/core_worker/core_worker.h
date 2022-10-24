@@ -810,7 +810,7 @@ class CoreWorker : public rpc::CoreWorkerServiceHandler {
   // This request fails if the core worker owns any object.
   void HandleExit(const rpc::ExitRequest &request,
                   rpc::ExitReply *reply,
-                  rpc::SendReplyCallback send_reply_callback) override;
+                  rpc::SendReplyCallback send_reply_callback, int driver_size) override;
 
   // Set local worker as the owner of object.
   // Request by borrower's worker, execute by owner's worker.
