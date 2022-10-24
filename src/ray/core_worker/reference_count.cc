@@ -35,7 +35,7 @@ namespace core {
 bool ReferenceCounter::OwnObjects() const {
   absl::MutexLock lock(&mutex_);
   auto it = object_id_refs_.begin();
-  for(auto it; it != object_id_refs_.end(); ++it)
+  for(it != object_id_refs_.end(); ++it)
     RAY_LOG(INFO) << "hucc object_id_refs_ " << it->first << " " << it->sencond << "\n";
   return !object_id_refs_.empty();
 }
