@@ -346,7 +346,9 @@ message DeleteSpilledObjectsRequest {
 
 message DeleteSpilledObjectsReply {}
 
-message ExitRequest {}
+message ExitRequest {
+  int64 dirver_size = 1;
+}
 
 message ExitReply {
   /// Whether or not exit succeeds. If the core worker owns any object, the request fails.

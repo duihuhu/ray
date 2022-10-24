@@ -1107,8 +1107,9 @@ void WorkerPool::TryKillingIdleWorkers() {
         RAY_CHECK(rpc_client);
         RAY_CHECK(running_size > 0);
         running_size--;
-        // int dirver_size = GetAllRegisteredDrivers().size();
+        // int64 dirver_size = GetAllRegisteredDrivers().size();
         rpc::ExitRequest request;
+        request.set_dirver_size(dirver_size);
         rpc_client->Exit(
             request, [this, worker](const ray::Status &status, const rpc::ExitReply &r) {
               RAY_CHECK(pending_exit_idle_workers_.erase(worker->WorkerId()));
