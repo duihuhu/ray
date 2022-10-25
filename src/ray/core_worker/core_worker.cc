@@ -2264,7 +2264,7 @@ Status CoreWorker::ExecuteTask(
           std::make_pair<>(dynamic_return_id, std::shared_ptr<RayObject>()));
       RAY_LOG(DEBUG) << "Re-executed task " << task_spec.TaskId()
                      << " should return dynamic object " << dynamic_return_id;
-      RAY_LOG(INFO) << "hucc ExecuteTask:" << "\n";
+      RAY_LOG(DEBUG) << "hucc ExecuteTask:" << "\n";
 
       AddLocalReference(dynamic_return_id, "<temporary (ObjectRefGenerator)>");
       reference_counter_->AddBorrowedObject(
@@ -2331,12 +2331,12 @@ Status CoreWorker::ExecuteTask(
   // borrowing.
   std::vector<ObjectID> deleted;
   if (!borrowed_ids.empty()) {
-    RAY_LOG(INFO) << "hucc ExecuteTask PopAndClearLocalBorrowers " << "task_spec.TaskId(): "  << task_spec.TaskId()<<"\n";
+    RAY_LOG(DEBUG) << "hucc ExecuteTask PopAndClearLocalBorrowers " << "task_spec.TaskId(): "  << task_spec.TaskId()<<"\n";
     reference_counter_->PopAndClearLocalBorrowers(borrowed_ids, borrowed_refs, &deleted);
   }
   if (dynamic_return_objects != NULL) {
     for (const auto &dynamic_return : *dynamic_return_objects) {
-      RAY_LOG(INFO) << "hucc ExecuteTask PopAndClearLocalBorrowers dynamic_return_objects" << "task_spec.TaskId(): "  << task_spec.TaskId() <<"\n";
+      RAY_LOG(DEBUG) << "hucc ExecuteTask PopAndClearLocalBorrowers dynamic_return_objects" << "task_spec.TaskId(): "  << task_spec.TaskId() <<"\n";
       reference_counter_->PopAndClearLocalBorrowers(
           {dynamic_return.first}, borrowed_refs, &deleted);
     }
@@ -2426,7 +2426,7 @@ bool CoreWorker::PinExistingReturnObject(const ObjectID &return_id,
 
   // Temporarily set the return object's owner's address. This is needed to retrieve the
   // value from plasma.
-  RAY_LOG(INFO) << "hucc AddLocalReference PinExistingReturnObject" << "\n";
+  RAY_LOG(DEBUG) << "hucc AddLocalReference PinExistingReturnObject" << "\n";
   reference_counter_->AddLocalReference(return_id, "<temporary (pin return object)>");
   reference_counter_->AddBorrowedObject(return_id, ObjectID::Nil(), owner_address);
 
@@ -2473,7 +2473,7 @@ ObjectID CoreWorker::AllocateDynamicReturnId() {
   const auto return_id =
       ObjectID::FromIndex(task_spec->TaskId(), worker_context_.GetNextPutIndex());
     
-  RAY_LOG(INFO) << "hucc AllocateDynamicReturnId" << "\n";
+  RAY_LOG(DEBUG) << "hucc AllocateDynamicReturnId" << "\n";
 
   AddLocalReference(return_id, "<temporary (ObjectRefGenerator)>");
   reference_counter_->AddBorrowedObject(
@@ -2556,7 +2556,7 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
       // any borrowed ObjectIDs that were serialized in the argument's value.
       RAY_LOG(DEBUG) << "Incrementing ref for argument ID " << arg_id;
       
-      RAY_LOG(INFO) << "hucc other Incrementing ref for borrowed ID task: " << task.TaskId() << "job id: " << task.JobId() << "\n";
+      RAY_LOG(DEBUG) << "hucc other Incrementing ref for borrowed ID task: " << task.TaskId() << "job id: " << task.JobId() << "\n";
       reference_counter_->AddLocalReference(arg_id, task.CallSiteString());
       // Attach the argument's owner's address. This is needed to retrieve the
       // value from plasma.
@@ -2588,7 +2588,7 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
       // time it finishes.
       for (const auto &inlined_ref : task.ArgInlinedRefs(i)) {
         const auto inlined_id = ObjectID::FromBinary(inlined_ref.object_id());
-        RAY_LOG(INFO) << "hucc Incrementing ref for borrowed ID task: " << task.TaskId() << "job id: " << task.JobId() << "\n";
+        RAY_LOG(DEBUG) << "hucc Incrementing ref for borrowed ID task: " << task.TaskId() << "job id: " << task.JobId() << "\n";
         RAY_LOG(DEBUG) << "Incrementing ref for borrowed ID " << inlined_id;
         // We do not need to add the ownership information here because it will
         // get added once the language frontend deserializes the value, before
@@ -2703,7 +2703,7 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   // Acquire a reference to the object. This prevents the object from being
   // evicted out from under us while we check the object status and start the
   // Get.
-  RAY_LOG(INFO) << "hucc HandleGetObjectStatus: "<< "\n";
+  RAY_LOG(DEBUG) << "hucc HandleGetObjectStatus: "<< "\n";
   AddLocalReference(object_id, "<temporary (get object status)>");
 
   rpc::Address owner_address;
@@ -3293,7 +3293,7 @@ void CoreWorker::HandleExit(const rpc::ExitRequest &request,
   // We consider the worker to be idle if it doesn't own any objects and it doesn't have
   // any object pinning RPCs in flight.
   bool is_idle = !own_objects && pins_in_flight == 0;
-  RAY_LOG(INFO) << "hucc worker is_idle: " << is_idle << "own_objects: " << own_objects << "pins_in_flight: " << pins_in_flight << "\n";
+  RAY_LOG(DEBUG) << "hucc worker is_idle: " << is_idle << "own_objects: " << own_objects << "pins_in_flight: " << pins_in_flight << "\n";
   int driver_size = request.driver_size();
   if(driver_size == 0) {
     is_idle = true;
