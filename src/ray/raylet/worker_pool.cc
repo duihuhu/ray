@@ -1051,22 +1051,22 @@ void WorkerPool::TryKillingIdleWorkers() {
     auto workers_in_the_same_process = GetWorkersByProcess(process);
     bool can_be_killed = true;
     for (const auto &worker : workers_in_the_same_process) {
-      RAY_LOG(INFO) << "hucc idle time: " << now - idle_of_all_languages_map_[worker] << "\n";
+      RAY_LOG(DEBUG) << "hucc idle time: " << now - idle_of_all_languages_map_[worker] << "\n";
       if (worker_state.idle.count(worker) == 0 ||
           now - idle_of_all_languages_map_[worker] <
               RayConfig::instance().idle_worker_killing_time_threshold_ms()) {
         // Another worker in this process isn't idle, or hasn't been idle for a while, so
         // this process can't be killed.
-        RAY_LOG(INFO) << "hucc all worker in process not idle: " << worker_state.idle.count(worker) << "\n";
+        RAY_LOG(DEBUG) << "hucc all worker in process not idle: " << worker_state.idle.count(worker) << "\n";
         can_be_killed = false;
         break;
       }
 
       // Skip killing the worker process if there's any inflight `Exit` RPC requests to
       // this worker process.
-      RAY_LOG(INFO) << "hucc pending_exit_idle_workers_ outside: " << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
+      RAY_LOG(DEBUG) << "hucc pending_exit_idle_workers_ outside: " << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
       if (pending_exit_idle_workers_.count(worker->WorkerId())) {
-        RAY_LOG(INFO) << "hucc pending_exit_idle_workers_ inside" << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
+        RAY_LOG(DEBUG) << "hucc pending_exit_idle_workers_ inside" << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
         can_be_killed = false;
         break;
       }
@@ -1080,12 +1080,12 @@ void WorkerPool::TryKillingIdleWorkers() {
         static_cast<size_t>(num_workers_soft_limit_)) {
       // A Java worker process may contain multiple workers. Killing more workers than we
       // expect may slow the job.
-      RAY_LOG(INFO) << "hucc running_size and num_soft_limit_ inside: " << running_size - workers_in_the_same_process.size() << "soft: " << static_cast<size_t>(num_workers_soft_limit_)<<"\n";
-      RAY_LOG(INFO) << "hucc finished_jobs_count: " << finished_jobs_.count(job_id) << "\n";
+      RAY_LOG(DEBUG) << "hucc running_size and num_soft_limit_ inside: " << running_size - workers_in_the_same_process.size() << "soft: " << static_cast<size_t>(num_workers_soft_limit_)<<"\n";
+      RAY_LOG(DEBUG) << "hucc finished_jobs_count: " << finished_jobs_.count(job_id) << "\n";
       if (!finished_jobs_.count(job_id)) {
         // Ignore the soft limit for jobs that have already finished, as we
         // should always clean up these workers.
-        RAY_LOG(INFO) << "hucc finished_jobs_" << "\n";
+        RAY_LOG(DEBUG) << "hucc finished_jobs_" << "\n";
         return;
       }
     }
