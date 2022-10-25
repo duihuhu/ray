@@ -1051,22 +1051,22 @@ void WorkerPool::TryKillingIdleWorkers() {
     auto workers_in_the_same_process = GetWorkersByProcess(process);
     bool can_be_killed = true;
     for (const auto &worker : workers_in_the_same_process) {
-      RAY_LOG(DEBUG) << "hucc idle time: " << now - idle_of_all_languages_map_[worker] << "\n";
+      RAY_LOG(DEBUG) << "hucc rayIDLE idle time: " << now - idle_of_all_languages_map_[worker] << "\n";
       if (worker_state.idle.count(worker) == 0 ||
           now - idle_of_all_languages_map_[worker] <
               RayConfig::instance().idle_worker_killing_time_threshold_ms()) {
         // Another worker in this process isn't idle, or hasn't been idle for a while, so
         // this process can't be killed.
-        RAY_LOG(DEBUG) << "hucc all worker in process not idle: " << worker_state.idle.count(worker) << "\n";
+        RAY_LOG(DEBUG) << "hucc rayIDLE all worker in process not idle: " << worker_state.idle.count(worker) << "\n";
         can_be_killed = false;
         break;
       }
 
       // Skip killing the worker process if there's any inflight `Exit` RPC requests to
       // this worker process.
-      RAY_LOG(DEBUG) << "hucc pending_exit_idle_workers_ outside: " << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
+      RAY_LOG(DEBUG) << "hucc rayIDLE pending_exit_idle_workers_ outside: " << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
       if (pending_exit_idle_workers_.count(worker->WorkerId())) {
-        RAY_LOG(DEBUG) << "hucc pending_exit_idle_workers_ inside" << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
+        RAY_LOG(DEBUG) << "hucc rayIDLE pending_exit_idle_workers_ inside" << pending_exit_idle_workers_.count(worker->WorkerId()) << "\n";
         can_be_killed = false;
         break;
       }
@@ -1080,12 +1080,12 @@ void WorkerPool::TryKillingIdleWorkers() {
         static_cast<size_t>(num_workers_soft_limit_)) {
       // A Java worker process may contain multiple workers. Killing more workers than we
       // expect may slow the job.
-      RAY_LOG(DEBUG) << "hucc running_size and num_soft_limit_ inside: " << running_size - workers_in_the_same_process.size() << "soft: " << static_cast<size_t>(num_workers_soft_limit_)<<"\n";
-      RAY_LOG(DEBUG) << "hucc finished_jobs_count: " << finished_jobs_.count(job_id) << "\n";
+      RAY_LOG(DEBUG) << "hucc rayIDLE running_size and num_soft_limit_ inside: " << running_size - workers_in_the_same_process.size() << "soft: " << static_cast<size_t>(num_workers_soft_limit_)<<"\n";
+      RAY_LOG(DEBUG) << "hucc rayIDLE finished_jobs_count: " << finished_jobs_.count(job_id) << "\n";
       if (!finished_jobs_.count(job_id)) {
         // Ignore the soft limit for jobs that have already finished, as we
         // should always clean up these workers.
-        RAY_LOG(DEBUG) << "hucc finished_jobs_" << "\n";
+        RAY_LOG(DEBUG) << "hucc rayIDLE finished_jobs_" << "\n";
         return;
       }
     }
@@ -1143,21 +1143,6 @@ void WorkerPool::TryKillingIdleWorkers() {
 
               }
             });
-            // int i = 0;
-            // if(GetAllRegisteredDrivers().size() <= 0) {
-            //   RAY_LOG(INFO) << "hucc no driver : " << i << "\n";
-            //   const auto job_id = worker->GetAssignedJobId();
-            //   RAY_LOG(INFO) << "hucc try again: " << job_id.IsNil() << "job id: " << job_id << "\n";
-            //   RemoveWorker(worker_state.idle, worker);
-            // for (const auto &drive : GetAllRegisteredDrivers()) {
-            //   if (drive->IsDead()) {
-            //     i = i + 1;
-            //     RAY_LOG(INFO) << "hucc driver dead: " << i << "\n";
-            //   } else {
-            //     RAY_LOG(INFO) << "hucc driver not dead: " << i << "\n";
-            //   }
-            // }
-            // }
       } else {
         // Even it's a dead worker, we still need to remove them from the pool.
         RemoveWorker(worker_state.idle, worker);

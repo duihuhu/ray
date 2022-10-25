@@ -161,7 +161,7 @@ class CoreWorker : public rpc::CoreWorkerServiceHandler {
   ///
   /// \param[in] object_id The object ID to increase the reference count for.
   void AddLocalReference(const ObjectID &object_id) {
-    RAY_LOG(DEBUG) << "hucc core_worker.h AddLocalReference" << "\n";
+    RAY_LOG(DEBUG) << "hucc rayIDLE core_worker.h AddLocalReference" << "\n";
     AddLocalReference(object_id, CurrentCallSite());
   }
 
@@ -170,7 +170,7 @@ class CoreWorker : public rpc::CoreWorkerServiceHandler {
   ///
   /// \param[in] object_id The object ID to decrease the reference count for.
   void RemoveLocalReference(const ObjectID &object_id) {
-    RAY_LOG(DEBUG) << "hucc core_worker.h RemoveLocalReference: " << object_id <<"\n";
+    RAY_LOG(DEBUG) << "hucc rayIDLE core_worker.h RemoveLocalReference: " << object_id <<"\n";
     std::vector<ObjectID> deleted;
     reference_counter_->RemoveLocalReference(object_id, &deleted);
     // TOOD(ilr): better way of keeping an object from being deleted
@@ -936,7 +936,7 @@ class CoreWorker : public rpc::CoreWorkerServiceHandler {
   /// \param[in] object_id The object ID to increase the reference count for.
   /// \param[in] call_site The call site from the language frontend.
   void AddLocalReference(const ObjectID &object_id, std::string call_site) {
-    RAY_LOG(DEBUG) << "hucc core_worker.h AddLocalReference call_site" << "\n";
+    RAY_LOG(DEBUG) << "hucc rayIDLE core_worker.h AddLocalReference call_site" << "\n";
     reference_counter_->AddLocalReference(object_id, call_site);
   }
 
