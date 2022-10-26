@@ -2303,6 +2303,9 @@ Status CoreWorker::ExecuteTask(
   } else if (task_spec.IsActorTask()) {
     name_of_concurrency_group_to_execute = task_spec.ConcurrencyGroupName();
   }
+  
+  //hucc exec task callback to lanaguage
+  auto ts_exec_call_task = current_sys_time_us();
 
   status = options_.task_execution_callback(
       task_spec.CallerAddress(),
@@ -2320,7 +2323,9 @@ Status CoreWorker::ExecuteTask(
       is_retryable_error,
       defined_concurrency_groups,
       name_of_concurrency_group_to_execute);
-
+  
+  auto te_exec_call_task = current_sys_time_us();
+  RAY_LOG(INFO) << "hucc time for exec task callback to lanaguage time: " << ts_exec_call_task << ", " << te_exec_call_task <<"\n"; 
   // Get the reference counts for any IDs that we borrowed during this task,
   // remove the local reference for these IDs, and return the ref count info to
   // the caller. This will notify the caller of any IDs that we (or a nested

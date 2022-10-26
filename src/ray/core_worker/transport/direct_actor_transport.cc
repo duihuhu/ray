@@ -124,16 +124,17 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
     std::vector<std::pair<ObjectID, std::shared_ptr<RayObject>>> return_objects;
     std::vector<std::pair<ObjectID, std::shared_ptr<RayObject>>> dynamic_return_objects;
     bool is_retryable_error = false;
+
     // hucc execute task_handler
-    auto ts_exec_task = current_sys_time_us();
+    // auto ts_exec_task = current_sys_time_us();
     auto status = task_handler_(task_spec,
                                 resource_ids,
                                 &return_objects,
                                 &dynamic_return_objects,
                                 reply->mutable_borrowed_refs(),
                                 &is_retryable_error);
-    auto te_exec_task = current_sys_time_us();
-    RAY_LOG(INFO) << "hucc time for exec task time: " << te_exec_task << ", " << ts_exec_task <<"\n"; 
+    // auto te_exec_task = current_sys_time_us();
+    // RAY_LOG(INFO) << "hucc time for exec task time: " << te_exec_task << ", " << ts_exec_task <<"\n"; 
 
     reply->set_is_retryable_error(is_retryable_error);
 
