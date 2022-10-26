@@ -133,7 +133,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
                                 &dynamic_return_objects,
                                 reply->mutable_borrowed_refs(),
                                 &is_retryable_error);
-    // auto te_exec_task = current_sys_time_us();
+    auto te_exec_task = current_sys_time_us();
     RAY_LOG(INFO) << "hucc time for exec task time: " << te_exec_task << ", " << ts_exec_task <<"\n"; 
 
     reply->set_is_retryable_error(is_retryable_error);
