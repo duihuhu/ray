@@ -2306,7 +2306,7 @@ Status CoreWorker::ExecuteTask(
   
   //hucc exec task callback to lanaguage
   auto ts_exec_call_task = current_sys_time_us();
-  RAY_LOG(INFO) << "hucc args:" << args << "," << arg_refs <<"\n";
+  RAY_LOG(INFO) << "hucc args:" << task_spec.GetName() <<"\n";
   status = options_.task_execution_callback(
       task_spec.CallerAddress(),
       task_type,
