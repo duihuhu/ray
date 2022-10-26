@@ -91,12 +91,7 @@ std::pair<Status, std::shared_ptr<msgpack::sbuffer>> GetExecuteResult(
           FunctionHelper::GetInstance().GetExecutableMemberFunctions(func_name);
     }
     RAY_LOG(DEBUG) << "Get executable function " << func_name << " ok.";
-    //hucc exec task executor for func
-    auto ts_exec_task_executor = current_sys_time_us();
     auto result = entry_function(func_name, args_buffer, actor_ptr);
-    auto te_exec_task_executor = current_sys_time_us();
-    RAY_LOG(INFO) << "hucc time for exec task executor func: " << te_exec_task_executor << ", " << ts_exec_task_executor <<"\n"; 
-
     RAY_LOG(DEBUG) << "Execute function " << func_name << " ok.";
     return std::make_pair(ray::Status::OK(),
                           std::make_shared<msgpack::sbuffer>(std::move(result)));
