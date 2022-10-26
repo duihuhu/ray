@@ -1119,12 +1119,12 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
 
   if (!memory_object_ids.empty()) {
     // hucc time for get from memory total time
-    auto ts_get_obj_tmem = current_sys_time_us();
+    // auto ts_get_obj_tmem = current_sys_time_us();
     RAY_RETURN_NOT_OK(memory_store_->Get(
         memory_object_ids, timeout_ms, worker_context_, &result_map, &got_exception));
 
-    auto te_get_obj_tmem = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem <<"\n";
+    // auto te_get_obj_tmem = current_sys_time_us();
+    // RAY_LOG(WARNING) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem <<"\n";
   }
 
   // Erase any objects that were promoted to plasma from the results. These get
@@ -1150,14 +1150,14 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_LOG(DEBUG) << "Plasma GET timeout " << local_timeout_ms;
     
     //hucc add time for get object from plasma total time
-    auto ts_get_obj_plasma = current_sys_time_us();
+    // auto ts_get_obj_plasma = current_sys_time_us();
     RAY_RETURN_NOT_OK(plasma_store_provider_->Get(plasma_object_ids,
                                                   local_timeout_ms,
                                                   worker_context_,
                                                   &result_map,
                                                   &got_exception));
-    auto te_get_obj_plasma = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get object from plasma total time: " << te_get_obj_plasma << ", " << ts_get_obj_plasma <<"\n"; 
+    // auto te_get_obj_plasma = current_sys_time_us();
+    // RAY_LOG(WARNING) << "hucc time for get object from plasma total time: " << te_get_obj_plasma << ", " << ts_get_obj_plasma <<"\n"; 
     
   }
 
@@ -2249,8 +2249,11 @@ Status CoreWorker::ExecuteTask(
   // execution and unpinned once the task completes. We will notify the caller
   // about any IDs that we are still borrowing by the time the task completes.
   std::vector<ObjectID> borrowed_ids;
+  //hucc exec task getting args 
+  auto ts_exec_task_args = current_sys_time_us();
   RAY_CHECK_OK(GetAndPinArgsForExecutor(task_spec, &args, &arg_refs, &borrowed_ids));
-
+  auto te_exec_task_args = current_sys_time_us();
+  RAY_LOG(WARNING) << "hucc time for exec task args: " << te_exec_task_args << ", " << ts_exec_task_args <<"\n"; 
   for (size_t i = 0; i < task_spec.NumReturns(); i++) {
     return_objects->push_back(std::make_pair<>(task_spec.ReturnId(i), nullptr));
   }
