@@ -1124,7 +1124,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
         memory_object_ids, timeout_ms, worker_context_, &result_map, &got_exception));
 
     auto te_get_obj_tmem = current_sys_time_us();
-    RAY_LOG(INFO) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem <<"\n";
+    RAY_LOG(WARNING) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem <<"\n";
   }
 
   // Erase any objects that were promoted to plasma from the results. These get
@@ -1157,7 +1157,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                                                   &result_map,
                                                   &got_exception));
     auto te_get_obj_plasma = current_sys_time_us();
-    RAY_LOG(INFO) << "hucc time for get object from plasma total time: " << te_get_obj_plasma << ", " << ts_get_obj_plasma <<"\n"; 
+    RAY_LOG(WARNING) << "hucc time for get object from plasma total time: " << te_get_obj_plasma << ", " << ts_get_obj_plasma <<"\n"; 
     
   }
 
@@ -2324,7 +2324,7 @@ Status CoreWorker::ExecuteTask(
       name_of_concurrency_group_to_execute);
   
   auto te_exec_call_task = current_sys_time_us();
-  RAY_LOG(INFO) << "hucc time for exec task callback to lanaguage time: " << te_exec_call_task << ", " << ts_exec_call_task <<"\n"; 
+  RAY_LOG(WARNING) << "hucc time for exec task callback to lanaguage time: " << te_exec_call_task << ", " << ts_exec_call_task <<"\n"; 
   // Get the reference counts for any IDs that we borrowed during this task,
   // remove the local reference for these IDs, and return the ref count info to
   // the caller. This will notify the caller of any IDs that we (or a nested
