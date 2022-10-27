@@ -557,7 +557,7 @@ void CoreWorkerDirectTaskSubmitter::PushNormalTask(
   task_finisher_->MarkTaskWaitingForExecution(task_id);
   //hucc push normal task start
   auto ts_push_task = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc push normal task id: " << task_id << " push task time and exec: " << ts_push_task << "\n";
+  RAY_LOG(WARNING) << "hucc push normal task id start: " << task_id << " push task time and exec: " << ts_push_task << "\n";
   client.PushNormalTask(
       std::move(request),
       [this,
@@ -571,7 +571,7 @@ void CoreWorkerDirectTaskSubmitter::PushNormalTask(
         {
           //hucc push normal task end
           auto te_push_task = current_sys_time_us();
-          RAY_LOG(WARNING) << "hucc push normal task id: " << task_id << " push task time and exec: " << te_push_task << "\n";
+          RAY_LOG(WARNING) << "hucc push normal task id end: " << task_id << " push task time and end exec: " << te_push_task << "\n";
           RAY_LOG(DEBUG) << "Task " << task_id << " finished from worker "
                          << addr.worker_id << " of raylet " << addr.raylet_id;
           absl::MutexLock lock(&mu_);
