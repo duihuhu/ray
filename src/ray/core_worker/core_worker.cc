@@ -2628,9 +2628,7 @@ void CoreWorker::HandlePushTask(const rpc::PushTaskRequest &request,
                                 rpc::SendReplyCallback send_reply_callback) {
   //hucc rpc for HandlePushTask
   auto te_push_task = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc rpc for PushTask handle: " << request->task_spec().TaskId() << "end time: " << te_push_task <<"\n";
-
-  request.task_spec()
+  RAY_LOG(WARNING) << "hucc rpc for PushTask handle: " << request->mutable_task_spec().TaskId() << "end time: " << te_push_task <<"\n";
   if (HandleWrongRecipient(WorkerID::FromBinary(request.intended_worker_id()),
                            send_reply_callback)) {
     return;
