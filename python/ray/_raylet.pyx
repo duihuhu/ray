@@ -1345,6 +1345,7 @@ cdef class CoreWorker:
         cdef:
             c_vector[shared_ptr[CRayObject]] results
             c_vector[CObjectID] c_object_ids = ObjectRefsToVector(object_refs)
+        print("app get plasma local")
         with nogil:
             check_status(
                 CCoreWorkerProcess.GetCoreWorker().GetIfLocal(

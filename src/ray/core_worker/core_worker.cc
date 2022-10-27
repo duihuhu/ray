@@ -2626,11 +2626,16 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
 void CoreWorker::HandlePushTask(const rpc::PushTaskRequest &request,
                                 rpc::PushTaskReply *reply,
                                 rpc::SendReplyCallback send_reply_callback) {
+  //hucc rpc for HandlePushTask
+  auto te_push_task = current_sys_time_us();
+  RAY_LOG(WARNING) << "hucc rpc for PushTask handle: " << request->task_spec().TaskId() << "end time: " << te_push_task <<"\n";
+
+  request.task_spec()
   if (HandleWrongRecipient(WorkerID::FromBinary(request.intended_worker_id()),
                            send_reply_callback)) {
     return;
   }
-
+  
   // Increment the task_queue_length and per function counter.
   task_queue_length_ += 1;
   std::string func_name =

@@ -324,7 +324,7 @@ class CoreWorkerClient : public std::enable_shared_from_this<CoreWorkerClient>,
                          override)
 
   VOID_RPC_CLIENT_METHOD(
-      CoreWorkerService, Exit, grpc_client_, /*method_timeout_ms*/ -1, override)
+      CoreWorkerService, Exit, grpc_client_, /*method_timeout_ms*/ -1,  override)
 
   VOID_RPC_CLIENT_METHOD(CoreWorkerService,
                          AssignObjectOwner,
@@ -362,6 +362,9 @@ class CoreWorkerClient : public std::enable_shared_from_this<CoreWorkerClient>,
                       const ClientCallback<PushTaskReply> &callback) override {
     request->set_sequence_number(-1);
     request->set_client_processed_up_to(-1);
+    //hucc rpc for PushTask
+    auto ts_push_task = current_sys_time_us();
+    RAY_LOG(WARNING) << "hucc rpc for PushTask: " << request->task_spec().TaskId() << "start time: " << ts_push_task <<"\n";
     INVOKE_RPC_CALL(CoreWorkerService,
                     PushTask,
                     *request,
