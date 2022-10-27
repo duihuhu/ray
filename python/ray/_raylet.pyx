@@ -1329,6 +1329,7 @@ cdef class CoreWorker:
             c_vector[CObjectID] c_object_ids = ObjectRefsToVector(object_refs)
         #hucc time for get in coreworker py total time
         #ts_get_obj_pcw = time.time()
+        print("app get")
         with nogil:
             check_status(CCoreWorkerProcess.GetCoreWorker().Get(
                 c_object_ids, timeout_ms, &results))
@@ -1687,6 +1688,7 @@ cdef class CoreWorker:
                 name, num_returns, c_resources,
                 b"",
                 serialized_runtime_env_info)
+            print("app SubmitTask")
             with nogil:
                 return_refs = CCoreWorkerProcess.GetCoreWorker().SubmitTask(
                     ray_function, args_vector, task_options,
