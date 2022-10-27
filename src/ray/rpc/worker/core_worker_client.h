@@ -362,10 +362,6 @@ class CoreWorkerClient : public std::enable_shared_from_this<CoreWorkerClient>,
                       const ClientCallback<PushTaskReply> &callback) override {
     request->set_sequence_number(-1);
     request->set_client_processed_up_to(-1);
-    //hucc rpc for PushTask
-    int task_id = request.task_id();
-    auto ts_push_task = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc rpc for PushTask: " << task_id << " start time: " << ts_push_task <<"\n";
     INVOKE_RPC_CALL(CoreWorkerService,
                     PushTask,
                     *request,
