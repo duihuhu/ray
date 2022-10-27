@@ -26,7 +26,7 @@ Status CoreWorkerDirectTaskSubmitter::SubmitTask(TaskSpecification task_spec) {
   resolver_.ResolveDependencies(task_spec, [this, task_spec](Status status) {
     // hucc resolve time fro dependencies
     auto te_resolve_task = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc resolve time for task dependence: " << task_spec.TaskID() << "end time: " << te_resolve_task << "\n";
+    RAY_LOG(WARNING) << "hucc resolve time for task dependence: " << task_spec.TaskId() << "end time: " << te_resolve_task << "\n";
     task_finisher_->MarkDependenciesResolved(task_spec.TaskId());
     if (!status.ok()) {
       RAY_LOG(WARNING) << "Resolving task dependencies failed " << status.ToString();

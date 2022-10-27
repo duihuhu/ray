@@ -66,7 +66,7 @@ void LocalDependencyResolver::ResolveDependencies(
     TaskSpecification &task, std::function<void(Status)> on_dependencies_resolved) {
   // hucc resolve time fro dependencies
   auto ts_resolve_task = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc resolve time for task dependence: " << task.TaskID() << "start time: " << ts_resolve_task << "\n";
+  RAY_LOG(WARNING) << "hucc resolve time for task dependence: " << task.TaskId() << "start time: " << ts_resolve_task << "\n";
   std::unordered_set<ObjectID> local_dependency_ids;
   std::unordered_set<ActorID> actor_dependency_ids;
   for (size_t i = 0; i < task.NumArgs(); i++) {
