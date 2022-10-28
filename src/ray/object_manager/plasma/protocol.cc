@@ -572,6 +572,7 @@ Status SendGetRequest(const std::shared_ptr<StoreConn> &store_conn,
   flatbuffers::FlatBufferBuilder fbb;
   auto message = fb::CreatePlasmaGetRequest(
       fbb, ToFlatbuffer(&fbb, object_ids, num_objects), timeout_ms, is_from_worker);
+  RAY_LOG(WARNING) << "hucc aaa" << "\n";
   return PlasmaSend(store_conn, MessageType::PlasmaGetRequest, &fbb, message);
 }
 
