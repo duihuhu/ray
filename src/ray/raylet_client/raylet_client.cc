@@ -225,7 +225,7 @@ Status raylet::RayletClient::FetchOrReconstruct(
   //   RAY_LOG(WARNING) << "hucc statical owner_address count: " << it->first << "count: " << it->second << "\n";
   // }
   for(const auto &addr : owner_addresses) {
-    RAY_LOG(WARNING) << "hucc statical owner_address count: " << addr << "\n";
+    RAY_LOG(WARNING) << "hucc statical owner_address count: " << addr.ip_address() << "\n";
   }
 
   flatbuffers::FlatBufferBuilder fbb;
