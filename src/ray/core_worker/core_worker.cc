@@ -917,6 +917,8 @@ Status CoreWorker::Put(const RayObject &object,
 Status CoreWorker::PutInLocalPlasmaStore(const RayObject &object,
                                          const ObjectID &object_id,
                                          bool pin_object) {
+  //hucc time for put from plasma total time
+  auto ts_put_obj_plasma = current_sys_time_us();
   bool object_exists;
   RAY_RETURN_NOT_OK(plasma_store_provider_->Put(
       object, object_id, /* owner_address = */ rpc_address_, &object_exists));
@@ -941,6 +943,10 @@ Status CoreWorker::PutInLocalPlasmaStore(const RayObject &object,
     }
   }
   RAY_CHECK(memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
+  
+  auto te_put_obj_plasma = current_sys_time_us();
+  RAY_LOG(WARNING) << "hucc time for put from plasma total time: " << te_put_obj_plasma << ", " << ts_put_obj_plasma <<"\n";
+
   return Status::OK();
 }
 
