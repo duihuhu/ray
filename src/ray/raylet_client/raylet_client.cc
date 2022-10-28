@@ -214,15 +214,15 @@ Status raylet::RayletClient::FetchOrReconstruct(
   //hucc add for plasma
   std::unordered_map<std::string, int> stat_addr;
   for (auto &addr : owner_addresses) {
-    auto it = stat_addr.find(addr.ip_address())
+    auto it = stat_addr.find(addr.ip_address());
     if(it == stat_addr.end()) {
       stat_addr.emplace(addr.ip_address(), 1);
     } else {
       it->second = it->second + 1;
     }
   }
-  for(auto it : stat_addr) {
-    RAY_LOG(WARNING) << "hucc statical owner_address count: " << it->first << "count: " << it->second << "\n";
+  for(auto &it : stat_addr) {
+    RAY_LOG(WARNING) << "hucc statical owner_address count: " << it.first << "count: " << it.second << "\n";
   }
   for(const auto &addr : owner_addresses) {
     RAY_LOG(WARNING) << "hucc statical owner_address count: " << addr.ip_address() << "\n";
