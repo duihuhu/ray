@@ -332,7 +332,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
           /*release_resources_during_plasma_fetch=*/false));
     }
     //hucc time for get obj from remote plasma
-    auto ts_get_obj_remote_plasma = current_sys_time_us();
+    // auto ts_get_obj_remote_plasma = current_sys_time_us();
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
                                                  batch_timeout,
@@ -347,8 +347,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       WarnIfFetchHanging(fetch_start_time_ms, remaining);
     }
     //hucc time for get obj from remote plasma
-    auto te_get_obj_remote_plasma = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
+    // auto te_get_obj_remote_plasma = current_sys_time_us();
+    // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
     if (check_signals_) {
       Status status = check_signals_();
       if (!status.ok()) {
