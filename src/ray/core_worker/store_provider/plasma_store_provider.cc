@@ -276,7 +276,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   // First, attempt to fetch all of the required objects once without reconstructing.
   std::vector<ObjectID> id_vector(object_ids.begin(), object_ids.end());
   int64_t total_size = static_cast<int64_t>(object_ids.size());
-  hucc time for get obj from local plasma
+  //hucc time for get obj from local plasma
   auto ts_get_obj_local_plasma = current_sys_time_us();
   
   for (int64_t start = 0; start < total_size; start += batch_size) {
