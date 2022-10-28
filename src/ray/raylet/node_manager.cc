@@ -75,7 +75,6 @@ std::vector<ray::rpc::ObjectReference> FlatbufferToObjectReference(
     ref.mutable_owner_address()->set_port(addr->port());
     ref.mutable_owner_address()->set_worker_id(addr->worker_id()->str());
     refs.emplace_back(std::move(ref));
-    RAY_LOG(WARNING) << "hucc get plasma object " << addr->raylet_id()->str() << " " << addr->ip_address()->str() << " " << addr->port() << " " << addr->worker_id()->str()<<"\n";
   }
   return refs;
 }

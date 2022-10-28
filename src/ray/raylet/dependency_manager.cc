@@ -28,6 +28,8 @@ bool DependencyManager::GetOwnerAddress(const ObjectID &object_id,
   if (obj == required_objects_.end()) {
     return false;
   }
+
+  *owner_address = obj->second.owner_address;
   return !owner_address->worker_id().empty();
 }
 
