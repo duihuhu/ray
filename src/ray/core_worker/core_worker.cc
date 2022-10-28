@@ -1622,6 +1622,9 @@ std::vector<rpc::ObjectReference> CoreWorker::SubmitTask(
   const auto task_id = TaskID::ForNormalTask(worker_context_.GetCurrentJobID(),
                                              worker_context_.GetCurrentInternalTaskId(),
                                              next_task_index);
+  //hucc push normal task start
+  auto ts_push_task = current_sys_time_us();
+  RAY_LOG(WARNING) << "hucc push normal task id start: " << task_id << " push task time and exec: " << ts_push_task << "\n";
   auto constrained_resources =
       AddPlacementGroupConstraint(task_options.resources, scheduling_strategy);
 
