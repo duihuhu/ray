@@ -30,6 +30,7 @@ bool DependencyManager::GetOwnerAddress(const ObjectID &object_id,
   }
 
   *owner_address = obj->second.owner_address;
+  RAY_LOG(WARNING) << "hucc owner_address" << owner_address->ip_address()<<"\n";
   return !owner_address->worker_id().empty();
 }
 
