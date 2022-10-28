@@ -294,7 +294,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  got_exception));
   }
   auto te_get_obj_local_plasma = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << "empty: " << remaining.empty() << "\n";
+  RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
   // If all objects were fetched already, return. Note that we always need to
   // call UnblockIfNeeded() to cancel the get request.
   if (remaining.empty() || *got_exception) {
@@ -331,7 +331,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
           /*release_resources_during_plasma_fetch=*/false));
     }
-
+    //hucc time for get obj from remote plasma
+    auto ts_get_obj_remote_plasma = current_sys_time_us();
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
                                                  batch_timeout,
@@ -345,6 +346,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     if ((previous_size - remaining.size()) < batch_ids.size()) {
       WarnIfFetchHanging(fetch_start_time_ms, remaining);
     }
+    //hucc time for get obj from remote plasma
+    auto te_get_obj_remote_plasma = current_sys_time_us();
+    RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
     if (check_signals_) {
       Status status = check_signals_();
       if (!status.ok()) {
