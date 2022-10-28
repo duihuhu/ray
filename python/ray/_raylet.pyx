@@ -1329,7 +1329,7 @@ cdef class CoreWorker:
             c_vector[CObjectID] c_object_ids = ObjectRefsToVector(object_refs)
         #hucc time for get in coreworker py total time
         #ts_get_obj_pcw = time.time()
-        print("app get")
+        #print("app get")
         with nogil:
             check_status(CCoreWorkerProcess.GetCoreWorker().Get(
                 c_object_ids, timeout_ms, &results))
@@ -1345,7 +1345,7 @@ cdef class CoreWorker:
         cdef:
             c_vector[shared_ptr[CRayObject]] results
             c_vector[CObjectID] c_object_ids = ObjectRefsToVector(object_refs)
-        print("app get plasma local")
+        #print("app get plasma local")
         with nogil:
             check_status(
                 CCoreWorkerProcess.GetCoreWorker().GetIfLocal(
@@ -1689,7 +1689,9 @@ cdef class CoreWorker:
                 name, num_returns, c_resources,
                 b"",
                 serialized_runtime_env_info)
-            print("app SubmitTask")
+            #hucc time for get in coreworker py total time
+            ts_submit_task_py = time.time()
+            #print("app SubmitTask")
             with nogil:
                 return_refs = CCoreWorkerProcess.GetCoreWorker().SubmitTask(
                     ray_function, args_vector, task_options,
@@ -1698,6 +1700,8 @@ cdef class CoreWorker:
                     debugger_breakpoint,
                     serialized_retry_exception_allowlist,
                 )
+            te_submit_task_py = time.time()
+            print("hucc time add for submittask py total time: ", te_submit_task_py, ", ", ts_submit_task_py)
 
             # These arguments were serialized and put into the local object
             # store during task submission. The backend increments their local
