@@ -212,13 +212,14 @@ Status raylet::RayletClient::FetchOrReconstruct(
     const TaskID &current_task_id) {
   RAY_CHECK(object_ids.size() == owner_addresses.size());
   //hucc add for plasma
-  std::unordered_map<const rpc::Address, int> stat_addr;
+  absl::flat_hash_map<rpc::Address, int> stat_addr;
   for (const auto &addr : owner_addresses) {
     auto it = stat_addr.find(addr)
     if(it == stat_addr.end()) {
       stat_addr.emplace(adrr, 1);
     } else {
       it->second = it->second + 1;
+    }
   }
   for(auto it : stat_addr) {
     RAY_LOG(WARNING) << "hucc statical owner_address count: " << it->first << "count: " << it->second << "\n";
