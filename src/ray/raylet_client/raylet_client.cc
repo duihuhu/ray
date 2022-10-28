@@ -222,11 +222,11 @@ Status raylet::RayletClient::FetchOrReconstruct(
     }
   }
   for(auto &it : stat_addr) {
-    RAY_LOG(WARNING) << "hucc statical owner_address count: " << it.first << "count: " << it.second << "\n";
+    RAY_LOG(WARNING) << "hucc statical owner_address count: " << it.first << " count: " << it.second << "\n";
   }
-  for(const auto &addr : owner_addresses) {
-    RAY_LOG(WARNING) << "hucc statical owner_address count: " << addr.ip_address() << "\n";
-  }
+  // for(const auto &addr : owner_addresses) {
+  //   RAY_LOG(WARNING) << "hucc statical owner_address count: " << addr.ip_address() << "\n";
+  // }
 
   flatbuffers::FlatBufferBuilder fbb;
   auto object_ids_message = to_flatbuf(fbb, object_ids);
