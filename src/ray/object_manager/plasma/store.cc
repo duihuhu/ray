@@ -252,7 +252,6 @@ void PlasmaStore::ProcessGetRequest(const std::shared_ptr<Client> &client,
                                     const std::vector<ObjectID> &object_ids,
                                     int64_t timeout_ms,
                                     bool is_from_worker) {
-  RAY_LOG(WARNING) << "hucc bbb" <<"\n";
   get_request_queue_.AddRequest(client, object_ids, timeout_ms, is_from_worker);
 }
 
