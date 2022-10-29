@@ -458,7 +458,7 @@ void OwnershipBasedObjectDirectory::LookupRemoteConnectionInfo(
     RAY_CHECK(result_node_id == connection_info.node_id);
     connection_info.ip = node_info->node_manager_address();
     connection_info.port = static_cast<uint16_t>(node_info->object_manager_port());
-    RAY_LOG(WARNING) << "hucc Get rpc client, address: " << connection_info.ip << ", port: " << connection_info.port << ", node id : " << result_node_id << "\n"
+    RAY_LOG(WARNING) << "hucc Get rpc client, address: " << connection_info.ip << ", port: " << connection_info.port << ", node id : " << result_node_id << "\n";
   }
 }
 
