@@ -342,7 +342,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
                                                remove_after_get,
                                                abort_if_any_object_is_exception);
     for (const auto &object_id : get_request->ObjectIds()) {
-      RAY_LOG(WARNING) << "hucc remaining_ids object_id" << object_id << "\n"; 
       object_get_requests_[object_id].push_back(get_request);
     }
     
