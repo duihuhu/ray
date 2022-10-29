@@ -706,8 +706,7 @@ std::shared_ptr<rpc::ObjectManagerClient> ObjectManager::GetRpcClient(
     auto object_manager_client = std::make_shared<rpc::ObjectManagerClient>(
         connection_info.ip, connection_info.port, client_call_manager_);
 
-    //hucc change DEBUG to WARNING
-    RAY_LOG(WARNING) << "Get rpc client, address: " << connection_info.ip
+    RAY_LOG(DEBUG) << "Get rpc client, address: " << connection_info.ip
                    << ", port: " << connection_info.port
                    << ", local port: " << GetServerPort();
 
