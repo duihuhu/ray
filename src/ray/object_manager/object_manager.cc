@@ -323,7 +323,8 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
                                        double start_time,
                                        double end_time,
                                        ray::Status status) {
-  RAY_LOG(DEBUG) << "HandleSendFinished on " << self_node_id_ << " to " << node_id
+  //hucc HandleSendFinished
+  RAY_LOG(WARNING) << "HandleSendFinished on " << self_node_id_ << " to " << node_id
                  << " of object " << object_id << " chunk " << chunk_index
                  << ", status: " << status.ToString();
   if (!status.ok()) {
