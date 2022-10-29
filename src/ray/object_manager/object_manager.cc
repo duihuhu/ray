@@ -254,7 +254,6 @@ uint64_t ObjectManager::Pull(const std::vector<rpc::ObjectReference> &object_ref
     // be received if the list of locations is empty. The set of node IDs has
     // no ordering guarantee between notifications.
     auto object_id = ObjectRefToId(ref);
-    RAY_LOG(WARNING)<<"hucc ref.owner_address" << ref.owner_address().ip_address() << "\n";
     RAY_CHECK_OK(object_directory_->SubscribeObjectLocations(
         object_directory_pull_callback_id_, object_id, ref.owner_address(), callback));
   }
@@ -707,7 +706,8 @@ std::shared_ptr<rpc::ObjectManagerClient> ObjectManager::GetRpcClient(
     auto object_manager_client = std::make_shared<rpc::ObjectManagerClient>(
         connection_info.ip, connection_info.port, client_call_manager_);
 
-    RAY_LOG(DEBUG) << "Get rpc client, address: " << connection_info.ip
+    //hucc change DEBUG to WARNING
+    RAY_LOG(WARNING) << "Get rpc client, address: " << connection_info.ip
                    << ", port: " << connection_info.port
                    << ", local port: " << GetServerPort();
 
