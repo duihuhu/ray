@@ -324,9 +324,12 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
                                        double end_time,
                                        ray::Status status) {
   //hucc HandleSendFinished node1 to node 2
+  std::string str_start_time = std::to_string(start_time);
+  std::string str_end_time = std::to_string(end_time);
+
   RAY_LOG(WARNING) << "HandleSendFinished on " << self_node_id_ << " to " << node_id
                  << " of object " << object_id << " chunk " << chunk_index
-                 << ", status: " << status.ToString() << "start_time: " << start_time << "end_time: " << end_time << "\n";
+                 << ", status: " << status.ToString() << "start_time: " << str_start_time << "end_time: " << str_end_time << "\n";
   if (!status.ok()) {
     // TODO(rkn): What do we want to do if the send failed?
     RAY_LOG(DEBUG) << "Failed to send a push request for an object " << object_id
