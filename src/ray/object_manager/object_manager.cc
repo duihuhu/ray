@@ -557,8 +557,7 @@ void ObjectManager::SendObjectChunk(const UniqueID &push_id,
         double end_time = absl::GetCurrentTimeNanos() / 1e9;
         //hucc handle push request reply
         auto te_handle_push_request_reply = current_sys_time_us();
-        RAY_LOG(WARNING) << "hucc handle push request reply: " << self_node_id << " node id " << node_id << " object id " << object_id 
-        << "  handle push reply end time " << te_handle_push_request << "\n";
+        RAY_LOG(WARNING) << "hucc handle push request reply object id " << object_id << "  handle push reply end time " << te_handle_push_request_reply << "\n";
         HandleSendFinished(object_id, node_id, chunk_index, start_time, end_time, status);
         on_complete(status);
       };
@@ -578,8 +577,7 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   NodeID node_id = NodeID::FromBinary(request.node_id());
   //hucc handle push request
   auto te_handle_push_request = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc handle push request: " << self_node_id << " node id " << node_id << " object id " << object_id 
-        << "  handle push start time " << te_handle_push_request << "\n";
+  RAY_LOG(WARNING) << "hucc handle push request object id " << object_id  << " handle push start time " << te_handle_push_request << "\n";
 
   // Serialize.
   uint64_t chunk_index = request.chunk_index();
