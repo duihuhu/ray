@@ -535,7 +535,7 @@ bool PullManager::PullFromRandomLocation(const ObjectID &object_id) {
   //hucc send pull request node1 to node2
   auto ts_pull_send_request = current_sys_time_us();
   RAY_LOG(WARNING) << "hucc remote get object send pull request from " << self_node_id_
-                << " to in-memory location at " << node_id << " of object " << object_id << " start time " << ts_pull_send_request << "\n";
+                << " to in-memory location at " << node_id << " of object " << object_id << " " << ts_pull_send_request << "\n";
   send_pull_request_(object_id, node_id);
   return true;
 }
