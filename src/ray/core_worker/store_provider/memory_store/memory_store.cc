@@ -318,8 +318,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       }
     }
     auto te_get_obj_mem = current_sys_time_us();
-    RAY_LOG(INFO)<<"hucc time for get object alread in local mem: "<< te_get_obj_mem - ts_get_obj_mem <<"\n";
-
+    // RAY_LOG(INFO)<<"hucc time for get object alread in local mem: "<< te_get_obj_mem - ts_get_obj_mem <<"\n";
+    RAY_LOG(WARNING) << "hucc time for get object from plasma total time: " << te_get_obj_mem << ", " << ts_get_obj_mem <<"\n"; 
     RAY_CHECK(count <= num_objects);
 
     // Clean up the objects if ref counting is off.
