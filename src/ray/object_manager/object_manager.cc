@@ -288,7 +288,7 @@ void ObjectManager::SendPullRequest(const ObjectID &object_id, const NodeID &cli
                 }
                 //hucc receive pull reply
                 auto te_receive_pull_reply= current_sys_time_us();
-                RAY_LOG(WARNING) << " hucc remote get object receive pull reply " << " object id " << object_id << "receive pull reply time" << te_receive_pull_reply << "\n";
+                RAY_LOG(WARNING) << " hucc remote get object receive pull reply " << " object id " << object_id << "receive pull reply time " << te_receive_pull_reply << "\n";
               });
         },
         "ObjectManager.SendPull");
@@ -557,7 +557,7 @@ void ObjectManager::SendObjectChunk(const UniqueID &push_id,
         double end_time = absl::GetCurrentTimeNanos() / 1e9;
         //hucc handle push request reply
         auto te_handle_push_request_reply = current_sys_time_us();
-        RAY_LOG(WARNING) << "hucc remote get object handle push request reply object id " << object_id << "  handle push reply end time " << te_handle_push_request_reply << "\n";
+        RAY_LOG(WARNING) << "hucc remote get object receive handle push reply object id " << object_id << " end time " << te_handle_push_request_reply << "\n";
         HandleSendFinished(object_id, node_id, chunk_index, start_time, end_time, status);
         on_complete(status);
       };
@@ -577,7 +577,7 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   NodeID node_id = NodeID::FromBinary(request.node_id());
   //hucc handle push request
   auto te_handle_push_request = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc remote get object handle push request object id " << object_id  << " handle push start time " << te_handle_push_request << "\n";
+  RAY_LOG(WARNING) << "hucc remote get object receive handle push request object id " << object_id  << " start time " << te_handle_push_request << "\n";
 
   // Serialize.
   uint64_t chunk_index = request.chunk_index();
@@ -655,7 +655,7 @@ void ObjectManager::HandlePull(const rpc::PullRequest &request,
                  << object_id << "].";
   //hucc receive send pull request node1 to node2
   auto ts_handle_pull_request = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc remote get object receive send pull request from " << node_id << " of object " << object_id << " handle pull start time" << ts_handle_pull_request << "\n";
+  RAY_LOG(WARNING) << "hucc remote get object receive handle pull request from " << node_id << " of object " << object_id << " handle pull start time" << ts_handle_pull_request << "\n";
   main_service_->post([this, object_id, node_id]() { Push(object_id, node_id); },
                       "ObjectManager.HandlePull");
   send_reply_callback(Status::OK(), nullptr, nullptr);
