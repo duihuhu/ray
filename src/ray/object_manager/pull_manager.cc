@@ -530,9 +530,15 @@ bool PullManager::PullFromRandomLocation(const ObjectID &object_id) {
   int node_index = distribution(gen_);
   NodeID node_id = node_vector[node_index];
   RAY_CHECK(node_id != self_node_id_);
-  RAY_LOG(WARNING) << "Sending pull request from " << self_node_id_
+  RAY_LOG(DEBUG) << "Sending pull request from " << self_node_id_
                  << " to in-memory location at " << node_id << " of object " << object_id;
+  //hucc send pull request node1 to node2
+  auto ts_pull_request = current_sys_time_us();
   send_pull_request_(object_id, node_id);
+  auto te_pull_request = current_sys_time_us();
+  RAY_LOG(WARNING) << "hucc Sending pull request from " << self_node_id_
+                << " to in-memory location at " << node_id << " of object " << object_id 
+                << " start time " << ts_pull_request << " end time " <<te_pull_request << "\n";
   return true;
 }
 
