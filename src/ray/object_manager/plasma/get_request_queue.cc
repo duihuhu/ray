@@ -71,7 +71,6 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
       // Add a placeholder plasma object to the get request to indicate that the
       // object is not present. This will be parsed by the client. We set the
       // data size to -1 to indicate that the object is not present.
-      RAY_LOG(WARNING) << "hucc object not in local plasma: " << object_id  << "\n";
       get_request->objects[object_id].data_size = -1;
       // Add the get request to the relevant data structures.
       object_get_requests_[object_id].push_back(get_request);

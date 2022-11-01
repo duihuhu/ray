@@ -323,7 +323,7 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
                                        double start_time,
                                        double end_time,
                                        ray::Status status) {
-  //hucc HandleSendFinished node1 to node 2
+  //hucc send object HandleSendFinished node1 to node 2
   std::string str_start_time = std::to_string(start_time);
   std::string str_end_time = std::to_string(end_time);
 

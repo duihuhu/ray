@@ -530,7 +530,7 @@ bool PullManager::PullFromRandomLocation(const ObjectID &object_id) {
   int node_index = distribution(gen_);
   NodeID node_id = node_vector[node_index];
   RAY_CHECK(node_id != self_node_id_);
-  RAY_LOG(DEBUG) << "Sending pull request from " << self_node_id_
+  RAY_LOG(WARNING) << "Sending pull request from " << self_node_id_
                  << " to in-memory location at " << node_id << " of object " << object_id;
   send_pull_request_(object_id, node_id);
   return true;
