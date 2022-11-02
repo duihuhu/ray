@@ -335,6 +335,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
     size_t required_objects = num_objects - (object_ids.size() - remaining_ids.size());
 
+    RAY_LOG(WARNING) << "hucc request object_ids size/remaining size" << object_ids.size() << " " << remaining_ids.size() <<"\n"; 
+
     // Otherwise, create a GetRequest to track remaining objects.
     get_request = std::make_shared<GetRequest>(std::move(remaining_ids),
                                                required_objects,
@@ -381,7 +383,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // is reached.
 
   // hucc add time for Wait for get_request already
-  auto ts_get_wobj = current_sys_time_us();
+  // auto ts_get_wobj = current_sys_time_us();
 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
@@ -395,8 +397,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       timed_out = remaining_timeout <= 0;
     }
   }
-  auto te_get_wobj = current_sys_time_us();
-  RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << te_get_wobj - ts_get_wobj << " " << te_get_wobj << ", " << ts_get_wobj <<"\n"; 
+  // auto te_get_wobj = current_sys_time_us();
+  // RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << te_get_wobj - ts_get_wobj << " " << te_get_wobj << ", " << ts_get_wobj <<"\n"; 
 
   if (should_notify_raylet) {
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());

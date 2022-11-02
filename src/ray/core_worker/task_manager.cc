@@ -265,6 +265,8 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
   RAY_LOG(DEBUG) << "Task return object " << object_id << " has size "
                  << return_object.size();
 
+  //hucc freq for HandleTaskReturn
+  RAY_LOG(WARNING) << "hucc freq for HandleTaskReturn" << "\n";
   const auto nested_refs =
       VectorFromProtobuf<rpc::ObjectReference>(return_object.nested_inlined_refs());
   if (return_object.in_plasma()) {
