@@ -299,7 +299,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
     absl::MutexLock lock(&mu_);
     //hucc add time for calculate time for get object already in mem
-    auto ts_get_obj_mem = current_sys_time_us();
+    // auto ts_get_obj_mem = current_sys_time_us();
     // Check for existing objects and see if this get request can be fullfilled.
     for (size_t i = 0; i < object_ids.size() && count < num_objects; i++) {
       const auto &object_id = object_ids[i];
@@ -317,8 +317,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
         remaining_ids.insert(object_id);
       }
     }
-    auto te_get_obj_mem = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get object alread in local mem: " << te_get_obj_mem << ", " << ts_get_obj_mem <<"\n"; 
+    // auto te_get_obj_mem = current_sys_time_us();
+    // RAY_LOG(WARNING) << "hucc time for get object alread in local mem: " << te_get_obj_mem << ", " << ts_get_obj_mem <<"\n"; 
     RAY_CHECK(count <= num_objects);
 
     // Clean up the objects if ref counting is off.

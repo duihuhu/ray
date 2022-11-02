@@ -577,7 +577,6 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   NodeID node_id = NodeID::FromBinary(request.node_id());
   //hucc handle push request
   auto te_handle_push_request = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc remote get object receive handle push request object id " << object_id  << " " << te_handle_push_request << "\n";
 
   // Serialize.
   uint64_t chunk_index = request.chunk_index();
@@ -596,6 +595,8 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
                   << num_chunks_received_total_failed_ << "/"
                   << num_chunks_received_total_ << " failed";
   }
+  
+  RAY_LOG(WARNING) << "hucc remote get object receive handle push request object id " << object_id  << " " << te_handle_push_request << "\n";
 
   send_reply_callback(Status::OK(), nullptr, nullptr);
 }
