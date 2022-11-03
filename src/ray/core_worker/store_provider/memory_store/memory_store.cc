@@ -335,7 +335,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
     size_t required_objects = num_objects - (object_ids.size() - remaining_ids.size());
 
-    RAY_LOG(WARNING) << "hucc request object_ids size/remaining size" << object_ids.size() << " " << remaining_ids.size() <<"\n"; 
+    // hucc request object_ids size/remaining size
+    // RAY_LOG(WARNING) << "hucc request object_ids size/remaining size " << object_ids.size() << " " << remaining_ids.size() <<"\n"; 
 
     // Otherwise, create a GetRequest to track remaining objects.
     get_request = std::make_shared<GetRequest>(std::move(remaining_ids),
