@@ -265,8 +265,6 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
   RAY_LOG(DEBUG) << "Task return object " << object_id << " has size "
                  << return_object.size();
 
-  //hucc freq for HandleTaskReturn
-  RAY_LOG(WARNING) << "hucc freq for HandleTaskReturn" << "\n";
   const auto nested_refs =
       VectorFromProtobuf<rpc::ObjectReference>(return_object.nested_inlined_refs());
   if (return_object.in_plasma()) {
@@ -321,7 +319,8 @@ void TaskManager::CompletePendingTask(const TaskID &task_id,
                                       const rpc::PushTaskReply &reply,
                                       const rpc::Address &worker_addr) {
   RAY_LOG(DEBUG) << "Completing task " << task_id;
-
+  //hucc freq for CompletePendingTask
+  RAY_LOG(WARNING) << "hucc freq for CompletePendingTask" << "\n";
   // Objects that were stored in plasma upon the first successful execution of
   // this task. These objects will get stored in plasma again, even if they
   // were returned directly in the worker's reply. This ensures that any
