@@ -572,6 +572,8 @@ void CoreWorkerDirectTaskSubmitter::PushNormalTask(
           //hucc push normal task end
           auto te_push_task = current_sys_time_us();
           RAY_LOG(WARNING) << "hucc push normal task id end: " << task_id << " push task time and exec: " << te_push_task << "\n";
+          RAY_LOG(WARNING) << "hucc task rpc push normal end: " << task_id << " " << te_push_task << "\n";
+
           RAY_LOG(DEBUG) << "Task " << task_id << " finished from worker "
                          << addr.worker_id << " of raylet " << addr.raylet_id;
           absl::MutexLock lock(&mu_);
