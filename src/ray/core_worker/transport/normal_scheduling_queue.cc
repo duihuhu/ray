@@ -91,7 +91,7 @@ void NormalSchedulingQueue::ScheduleRequests() {
     }
     //hucc task rpc send normal scheduling queue
     auto ts_task_rpc = current_sys_time_us;
-    RAY_LOG(WARNING) << "hucc task rpc send normal scheduling queue " << head.TaskID() << " " << ts_task_rpc << "\n";
+    RAY_LOG(WARNING) << "hucc task rpc push normal task callback: " << head.TaskID() << " " << ts_task_rpc << "\n";
     head.Accept();
   }
 }
