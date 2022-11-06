@@ -556,8 +556,8 @@ void CoreWorkerDirectTaskSubmitter::PushNormalTask(
   request->set_intended_worker_id(addr.worker_id.Binary());
   task_finisher_->MarkTaskWaitingForExecution(task_id);
   //hucc push normal task start
-  // auto ts_push_task = current_sys_time_us();
-  // RAY_LOG(WARNING) << "hucc push normal task id start: " << task_id << " push task time and exec: " << ts_push_task << "\n";
+  auto ts_push_task = current_sys_time_us();
+  RAY_LOG(WARNING) << "hucc task rpc push normal task id start: " << task_id << " " << ts_push_task << "\n";
   client.PushNormalTask(
       std::move(request),
       [this,

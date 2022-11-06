@@ -2635,6 +2635,11 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
 void CoreWorker::HandlePushTask(const rpc::PushTaskRequest &request,
                                 rpc::PushTaskReply *reply,
                                 rpc::SendReplyCallback send_reply_callback) {
+  //hucc handle push normal task entry start
+  auto ts_handle_push_task = current_sys_time_us();
+  auto task_id = request.task_spec().TaskId();
+  RAY_LOG(WARNING) << "hucc task rpc handle push normal task id entry end: " << task_id << " " << ts_push_task << "\n";
+
   if (HandleWrongRecipient(WorkerID::FromBinary(request.intended_worker_id()),
                            send_reply_callback)) {
     return;
