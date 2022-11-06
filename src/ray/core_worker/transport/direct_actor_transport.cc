@@ -76,8 +76,8 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
 
   //hucc handle push normal task entry start
   auto ts_handle_push_task = current_sys_time_us();
-  // auto task_id = task_spec().TaskId();
-  RAY_LOG(WARNING) << "hucc task rpc handle push normal task id entry end: " << task_spec.TaskId(); << " " << ts_handle_push_task << "\n";
+  auto task_id = task_spec.TaskId();
+  RAY_LOG(WARNING) << "hucc task rpc handle push normal task id entry end: " << task_id << " " << ts_handle_push_task << "\n";
 
 
   // If GCS server is restarted after sending an actor creation task to this core worker,
