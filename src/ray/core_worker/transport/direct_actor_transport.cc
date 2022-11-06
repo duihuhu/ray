@@ -194,13 +194,14 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
       }
     }
   
-    //hucc task rpc send normal scheduling queue
-    auto ts_task_rpc = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc task callback rpc push normal task : " << task_spec.TaskId() << " " << ts_task_rpc << "\n";
     if (status.ShouldExitWorker()) {
       // Don't allow the worker to be reused, even though the reply status is OK.
       // The worker will be shutting down shortly.
       reply->set_worker_exiting(true);
+
+      //hucc task rpc send normal scheduling queue
+      auto ts_task_rpc = current_sys_time_us();
+      RAY_LOG(WARNING) << "hucc task callback rpc push normal task exit: " << task_spec.TaskId() << " " << ts_task_rpc << "\n";
       if (objects_valid) {
         // This happens when max_calls is hit. We still need to return the objects.
         send_reply_callback(Status::OK(), nullptr, nullptr);
@@ -208,6 +209,9 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
         send_reply_callback(status, nullptr, nullptr);
       }
     } else {
+      //hucc task rpc send normal scheduling queue
+      auto ts_task_rpc = current_sys_time_us();
+      RAY_LOG(WARNING) << "hucc task callback rpc push normal task : " << task_spec.TaskId() << " " << ts_task_rpc << "\n";
       RAY_CHECK(objects_valid);
       send_reply_callback(status, nullptr, nullptr);
     }
