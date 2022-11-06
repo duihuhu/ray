@@ -196,7 +196,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
   
     //hucc task rpc send normal scheduling queue
     auto ts_task_rpc = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc task callback rpc push normal task : " << task_spec.TaskID() << " " << ts_task_rpc << "\n";
+    RAY_LOG(WARNING) << "hucc task callback rpc push normal task : " << task_spec.TaskId() << " " << ts_task_rpc << "\n";
     if (status.ShouldExitWorker()) {
       // Don't allow the worker to be reused, even though the reply status is OK.
       // The worker will be shutting down shortly.
