@@ -670,7 +670,7 @@ class Worker:
         data_metadata_pairs = self.core_worker.get_objects(
             object_refs, self.current_task_id, timeout_ms
         )
-        te_cw_get_objs = time.time()
+        # te_cw_get_objs = time.time()
         # logger.info("hucc core_worker get objects %s, %s", ts_cw_get_objs, te_cw_get_objs)
         
         debugger_breakpoint = b""
