@@ -573,12 +573,12 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
                                rpc::PushReply *reply,
                                rpc::SendReplyCallback send_reply_callback) {
   //hucc breakdown get object handle push
-  auto ts_breakdown_handle_push = current_sys_time_us();  
+  // auto ts_breakdown_handle_push = current_sys_time_us();  
   //end hucc 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
   
   //hucc breakdown get object handle push
-  RAY_LOG(WARNING) << "hucc breakdown get object handle push: " << object_id  << " " << ts_breakdown_handle_push << "\n";
+  // RAY_LOG(WARNING) << "hucc breakdown get object handle push: " << object_id  << " " << ts_breakdown_handle_push << "\n";
   //end hucc 
 
   NodeID node_id = NodeID::FromBinary(request.node_id());
@@ -591,16 +591,16 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   const std::string &data = request.data();
 
   //hucc breakdown get object write to plasma
-  auto ts_breakdown_write_plasma = current_sys_time_us();  
-  RAY_LOG(WARNING) << "hucc breakdown get object write to plasma start: " << object_id  << " " << ts_breakdown_write_plasma << "\n";
+  // auto ts_breakdown_write_plasma = current_sys_time_us();  
+  // RAY_LOG(WARNING) << "hucc breakdown get object write to plasma start: " << object_id  << " " << ts_breakdown_write_plasma << "\n";
   //end hucc 
   bool success = ReceiveObjectChunk(
       node_id, object_id, owner_address, data_size, metadata_size, chunk_index, data);
   
   //hucc breakdown get object write to plasma
-  auto te_breakdown_write_plasma = current_sys_time_us();  
-  RAY_LOG(WARNING) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma << "\n";
-  
+  // auto te_breakdown_write_plasma = current_sys_time_us();  
+  // RAY_LOG(WARNING) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma << "\n";
+  //end hucc
   
   num_chunks_received_total_++;
   if (!success) {
