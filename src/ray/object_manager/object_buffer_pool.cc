@@ -79,7 +79,7 @@ ObjectBufferPool::CreateObjectReader(const ObjectID &object_id,
   auto ts_breakdown_get_object_local_plasma = current_sys_time_us();
   for (size_t i = 0; i < object_ids.size(); i++) {
     const auto &object_id = object_ids[i];
-    RAY_LOG(WARNING) << "hucc breakdown get object local plasma start: " << ts_breakdown_get_object_local_plasma << "object_id: "<< object_id << "\n";
+    RAY_LOG(WARNING) << "hucc breakdown get object local plasma start: " << ts_breakdown_get_object_local_plasma << " object_id: "<< object_id << "\n";
   }
   //hucc end 
 
@@ -90,7 +90,7 @@ ObjectBufferPool::CreateObjectReader(const ObjectID &object_id,
   auto te_breakdown_get_object_local_plasma = current_sys_time_us();
     for (size_t i = 0; i < object_ids.size(); i++) {
     const auto &object_id = object_ids[i];
-    RAY_LOG(WARNING) << "hucc breakdown get object local plasma end: " << te_breakdown_get_object_local_plasma << "object_id: "<< object_id << "\n";
+    RAY_LOG(WARNING) << "hucc breakdown get object local plasma end: " << te_breakdown_get_object_local_plasma << " object_id: "<< object_id << "\n";
   }
   //hucc end 
 

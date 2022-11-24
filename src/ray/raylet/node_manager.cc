@@ -1598,7 +1598,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   //hucc breakdwon get object nodemanager
   for (const auto &ref : refs) {
     const auto obj_id = ObjectRefToId(ref);
-    RAY_LOG(WARNING) << "hucc breakdwon get object nodemanager: " << ts_breakdown_get_object_node_manager << "object_id: " << obj_id << "\n";
+    RAY_LOG(WARNING) << "hucc breakdwon get object nodemanager: " << ts_breakdown_get_object_node_manager << " object_id: " << obj_id << "\n";
   }
   //end hucc 
 
