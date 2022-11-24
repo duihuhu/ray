@@ -573,12 +573,12 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
                                rpc::PushReply *reply,
                                rpc::SendReplyCallback send_reply_callback) {
   //hucc breakdown get object handle push
-  auto te_handle_push_request = current_sys_time_us();  
+  auto ts_breakdown_handle_push = current_sys_time_us();  
   //end hucc 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
   
   //hucc breakdown get object handle push
-  RAY_LOG(WARNING) << "hucc breakdown get object handle push: " << object_id  << " " << te_handle_push_request << "\n";
+  RAY_LOG(WARNING) << "hucc breakdown get object handle push: " << object_id  << " " << ts_breakdown_handle_push << "\n";
   //end hucc 
 
   NodeID node_id = NodeID::FromBinary(request.node_id());
