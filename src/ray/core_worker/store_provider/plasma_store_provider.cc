@@ -174,8 +174,8 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
   
   //hucc breakdown get_object
   auto ts_breakdown_get_object = current_sys_time_us();
-  for (size_t i = 0; i < object_ids.size(); i++) {
-    const auto &object_id = object_ids[i];
+  for (size_t i = 0; i < batch_ids.size(); i++) {
+    const auto &object_id = batch_ids[i];
     RAY_LOG(WARNING) << "hucc breakdown get_object raylet: " << ts_breakdown_get_object << "object_id: "<< object_id << "\n"
   }
   //hucc end 
