@@ -572,11 +572,16 @@ void ObjectManager::SendObjectChunk(const UniqueID &push_id,
 void ObjectManager::HandlePush(const rpc::PushRequest &request,
                                rpc::PushReply *reply,
                                rpc::SendReplyCallback send_reply_callback) {
-
+  //hucc breakdown get object handle push
+  auto te_handle_push_request = current_sys_time_us();  
+  //end hucc 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
+  
+  //hucc breakdown get object handle push
+  RAY_LOG(WARNING) << "hucc breakdown get object handle push: " << object_id  << " " << te_handle_push_request << "\n";
+  //end hucc 
+
   NodeID node_id = NodeID::FromBinary(request.node_id());
-  //hucc handle push request
-  auto te_handle_push_request = current_sys_time_us();
 
   // Serialize.
   uint64_t chunk_index = request.chunk_index();
@@ -585,8 +590,18 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   const rpc::Address &owner_address = request.owner_address();
   const std::string &data = request.data();
 
+  //hucc breakdown get object write to plasma
+  auto ts_breakdown_write_plasma = current_sys_time_us();  
+  RAY_LOG(WARNING) << "hucc breakdown get object write to plasma start: " << object_id  << " " << ts_breakdown_write_plasma << "\n";
+  //end hucc 
   bool success = ReceiveObjectChunk(
       node_id, object_id, owner_address, data_size, metadata_size, chunk_index, data);
+  
+  //hucc breakdown get object write to plasma
+  auto te_breakdown_write_plasma = current_sys_time_us();  
+  RAY_LOG(WARNING) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma << "\n";
+  
+  
   num_chunks_received_total_++;
   if (!success) {
     num_chunks_received_total_failed_++;
@@ -596,6 +611,8 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
                   << num_chunks_received_total_ << " failed";
   }
   
+  //hucc handle push request
+  auto te_handle_push_request = current_sys_time_us();
   RAY_LOG(WARNING) << "hucc remote get object receive handle push request object id " << object_id  << " " << te_handle_push_request << "\n";
 
   send_reply_callback(Status::OK(), nullptr, nullptr);

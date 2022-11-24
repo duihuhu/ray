@@ -75,8 +75,25 @@ ObjectBufferPool::CreateObjectReader(const ObjectID &object_id,
 
   std::vector<ObjectID> object_ids{object_id};
   std::vector<plasma::ObjectBuffer> object_buffers(1);
+  //hucc breakdown get object local plasma start
+  auto ts_breakdown_get_object_local_plasma = current_sys_time_us();
+  for (size_t i = 0; i < object_ids.size(); i++) {
+    const auto &object_id = object_ids[i];
+    RAY_LOG(WARNING) << "hucc breakdown get object local plasma start: " << ts_breakdown_get_object_local_plasma << "object_id: "<< object_id << "\n"
+  }
+  //hucc end 
+
   RAY_CHECK_OK(
       store_client_->Get(object_ids, 0, &object_buffers, /*is_from_worker=*/false));
+  
+  //hucc breakdown get object local plasma end
+  auto te_breakdown_get_object_local_plasma = current_sys_time_us();
+    for (size_t i = 0; i < object_ids.size(); i++) {
+    const auto &object_id = object_ids[i];
+    RAY_LOG(WARNING) << "hucc breakdown get object local plasma end: " << te_breakdown_get_object_local_plasma << "object_id: "<< object_id << "\n"
+  }
+  //hucc end 
+
   if (object_buffers[0].data == nullptr) {
     RAY_LOG(INFO)
         << "Failed to get a chunk of the object: " << object_id

@@ -515,7 +515,6 @@ bool PullManager::PullFromRandomLocation(const ObjectID &object_id) {
       RAY_LOG(DEBUG) << "Sending pull request from " << self_node_id_
                      << " to spilled location at " << spilled_node_id << " of object "
                      << object_id;
-      RAY_LOG(WARNING) << "hucc remote test" << "\n";
       send_pull_request_(object_id, spilled_node_id);
       return true;
     }

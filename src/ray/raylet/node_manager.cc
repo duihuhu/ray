@@ -1584,11 +1584,24 @@ void NodeManager::ProcessDisconnectClientMessage(
 
 void NodeManager::ProcessFetchOrReconstructMessage(
     const std::shared_ptr<ClientConnection> &client, const uint8_t *message_data) {
+
+  //hucc breakdown get object nodemanager
+  auto ts_breakdown_get_object_node_manager = current_sys_time_us()
+
+  
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
+
+  //hucc breakdwon get object nodemanager
+  for (const auto &ref : refs) {
+    const auto obj_id = ObjectRefToId(ref);
+    RAY_LOG(WARNING) << "hucc breakdwon get object nodemanager: " << ts_breakdown_get_object_node_manager << "object_id: " << obj_id;
+  }
+  //end hucc 
+
   if (message->fetch_only()) {
     std::shared_ptr<WorkerInterface> worker = worker_pool_.GetRegisteredWorker(client);
     if (!worker) {

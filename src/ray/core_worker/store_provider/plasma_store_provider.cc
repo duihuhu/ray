@@ -171,6 +171,15 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
     absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
     bool *got_exception) {
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
+  
+  //hucc breakdown get_object
+  auto ts_breakdown_get_object = current_sys_time_us();
+  for (size_t i = 0; i < object_ids.size(); i++) {
+    const auto &object_id = object_ids[i];
+    RAY_LOG(WARNING) << "hucc breakdown get_object raylet: " << ts_breakdown_get_object << "object_id: "<< object_id << "\n"
+  }
+  //hucc end 
+
   RAY_RETURN_NOT_OK(
       raylet_client_->FetchOrReconstruct(batch_ids,
                                          owner_addresses,
