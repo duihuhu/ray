@@ -1586,7 +1586,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     const std::shared_ptr<ClientConnection> &client, const uint8_t *message_data) {
 
   //hucc breakdown get object nodemanager
-  auto ts_breakdown_get_object_node_manager = current_sys_time_us()
+  auto ts_breakdown_get_object_node_manager = current_sys_time_us();
 
   
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
