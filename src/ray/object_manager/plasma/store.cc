@@ -416,6 +416,7 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     std::vector<ObjectID> object_ids_to_get;
     int64_t timeout_ms;
     bool is_from_worker;
+    RAY_LOG(WARNING) << "hucc client get request" << "\n";
     RAY_RETURN_NOT_OK(ReadGetRequest(
         input, input_size, object_ids_to_get, &timeout_ms, &is_from_worker));
     ProcessGetRequest(client, object_ids_to_get, timeout_ms, is_from_worker);
