@@ -664,4 +664,11 @@ Status ReadGetReply(uint8_t *data,
   return Status::OK();
 }
 
+Status SendPlasmaMetaReply(PlasmaError error) {
+  flatbuffers::FlatBufferBuilder fbb;
+  auto message =
+      fb::CreatePlasmaSealReply(fbb, error);
+  return PlasmaSend(client, MessageType::PlasmaSealReply, &fbb, message);
+}
+
 }  // namespace plasma

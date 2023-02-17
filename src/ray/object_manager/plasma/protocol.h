@@ -228,4 +228,5 @@ Status SendEvictReply(const std::shared_ptr<Client> &client, int64_t num_bytes);
 
 Status ReadEvictReply(uint8_t *data, size_t size, int64_t &num_bytes);
 
+Status SendPlasmaMetaReply(PlasmaError error);
 }  // namespace plasma

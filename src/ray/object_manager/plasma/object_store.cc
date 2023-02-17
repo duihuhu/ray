@@ -87,4 +87,14 @@ LocalObject *ObjectStore::GetMutableObject(const ObjectID &object_id) {
   return it->second.get();
 }
 
+void ObjectStore::GetPlasmaMeta() const {
+  RAY_LOG(WARNING) << "hucc get plasma meta start: " << "\n";
+  for (auto entry : object_table_) {
+    ObjectID object_id = entry.first;
+    Allocation allocation = entry.second.GetAllocation();
+    RAY_LOG(WARNING) << "hucc get plasma meta object id " << object_id << "allocation information: " << allcoation.address << "endl";
+  }
+}
+
+
 }  // namespace plasma

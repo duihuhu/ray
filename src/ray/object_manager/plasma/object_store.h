@@ -84,6 +84,9 @@ class ObjectStore : public IObjectStore {
   const LocalObject *SealObject(const ObjectID &object_id) override;
 
   bool DeleteObject(const ObjectID &object_id) override;
+  
+  // hucc GetPlasmaMeta
+  void GetPlasmaMeta() const;
 
  private:
   friend struct ObjectStatsCollectorTest;

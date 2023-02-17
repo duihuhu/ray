@@ -143,6 +143,9 @@ class ObjectLifecycleManager : public IObjectLifecycleManager {
 
   void GetDebugDump(std::stringstream &buffer) const;
 
+  // hucc GetPlasmaMeta
+  void GetPlasmaMeta() const;
+
  private:
   // Test only
   ObjectLifecycleManager(std::unique_ptr<IObjectStore> store,

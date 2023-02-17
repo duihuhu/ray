@@ -352,6 +352,13 @@ void PlasmaStore::DisconnectClient(const std::shared_ptr<Client> &client) {
   create_request_queue_.RemoveDisconnectedClientRequests(client);
 }
 
+
+
+void PlasmaStore::ReadPlasmaMeta() {
+    auto entry = object_lifecycle_mgr_.;
+}
+
+
 Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
                                    fb::MessageType type,
                                    const std::vector<uint8_t> &message) {
@@ -466,6 +473,12 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
   case fb::MessageType::PlasmaGetDebugStringRequest: {
     RAY_RETURN_NOT_OK(SendGetDebugStringReply(
         client, object_lifecycle_mgr_.EvictionPolicyDebugString()));
+  } break;
+  case fb::MessageType::PlasmaGetMetaRequest: {
+    //hucc add PlasmaGetMetaRequest
+    ReadPlasmaMeta();
+    RAY_RETURN_NOT_OK(SendPlasmaMetaReply(PlasmaError::OK));
+
   } break;
   default:
     // This code should be unreachable.

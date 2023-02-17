@@ -193,6 +193,9 @@ class PlasmaStore {
   /// \param client The client that is disconnected.
   void DisconnectClient(const std::shared_ptr<Client> &client)
       EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+      
+  void PlasmaStore::ReadPlasmaMeta();
+      EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
   Status ProcessMessage(const std::shared_ptr<Client> &client,
                         plasma::flatbuf::MessageType type,

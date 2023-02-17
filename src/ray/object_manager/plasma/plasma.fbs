@@ -63,6 +63,10 @@ enum MessageType:long {
   // Get debugging information from the store.
   PlasmaGetDebugStringRequest,
   PlasmaGetDebugStringReply,
+
+  // hucc Get objects meta information from the store
+  PlasmaGetMetaRequest,
+  PlasmaGetMetaReply,
 }
 
 enum PlasmaError:int {
@@ -288,4 +292,14 @@ table PlasmaEvictRequest {
 table PlasmaEvictReply {
   // Number of bytes that have been freed.
   num_bytes: ulong;
+}
+
+table PlasmaGetMetaRequest {
+
+}
+
+
+table PlasmaGetMetaReply {
+  // Error code.
+  error: PlasmaError;
 }
