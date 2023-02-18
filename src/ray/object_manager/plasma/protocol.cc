@@ -664,7 +664,7 @@ Status ReadGetReply(uint8_t *data,
   return Status::OK();
 }
 
-Status SendPlasmaMetaReply(PlasmaError error) {
+Status SendPlasmaMetaReply(const std::shared_ptr<Client> &client, PlasmaError error) {
   flatbuffers::FlatBufferBuilder fbb;
   auto message =
       fb::CreatePlasmaGetMetaReply(fbb, error);
