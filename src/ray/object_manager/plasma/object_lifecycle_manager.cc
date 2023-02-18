@@ -277,7 +277,7 @@ void ObjectLifecycleManager::GetDebugDump(std::stringstream &buffer) const {
   return stats_collector_.GetDebugDump(buffer);
 }
 
-void ObjectLifecycleMnager::GetPlasmaMeta() const {
+void ObjectLifecycleManager::GetPlasmaMeta() const {
   object_store_->GetPlasmaMeta();
 }
 
