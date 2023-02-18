@@ -477,7 +477,7 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
   case fb::MessageType::PlasmaGetMetaRequest: {
     //hucc add PlasmaGetMetaRequest
     ReadPlasmaMeta();
-    RAY_RETURN_NOT_OK(SendPlasmaMetaReply(PlasmaError::OK));
+    RAY_RETURN_NOT_OK(SendPlasmaMetaReply(client, PlasmaError::OK));
 
   } break;
   default:
