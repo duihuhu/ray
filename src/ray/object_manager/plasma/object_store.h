@@ -68,7 +68,7 @@ class IObjectStore {
   ///   - true if deleted.
   virtual bool DeleteObject(const ObjectID &object_id) = 0;
 
-  virtual void GetPlasmaMeta() = 0;
+  virtual void GetPlasmaMeta() const = 0;
 };
 
 // ObjectStore implements IObjectStore. It uses IAllocator
@@ -88,7 +88,7 @@ class ObjectStore : public IObjectStore {
   bool DeleteObject(const ObjectID &object_id) override;
 
   // hucc GetPlasmaMeta
-  void GetPlasmaMeta() const;
+  void GetPlasmaMeta() const override;
 
  private:
   friend struct ObjectStatsCollectorTest;
