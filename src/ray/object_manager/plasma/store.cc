@@ -355,7 +355,7 @@ void PlasmaStore::DisconnectClient(const std::shared_ptr<Client> &client) {
 
 
 void PlasmaStore::ReadPlasmaMeta() {
-    auto entry = object_lifecycle_mgr_.;
+    object_lifecycle_mgr_.ReadPlasmaMeta();
 }
 
 
