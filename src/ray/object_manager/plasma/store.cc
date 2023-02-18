@@ -354,8 +354,8 @@ void PlasmaStore::DisconnectClient(const std::shared_ptr<Client> &client) {
 
 
 
-void PlasmaStore::ReadPlasmaMeta() {
-    object_lifecycle_mgr_.ReadPlasmaMeta();
+void PlasmaStore::GetPlasmaMeta() {
+    object_lifecycle_mgr_.GetPlasmaMeta();
 }
 
 
@@ -476,7 +476,7 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
   } break;
   case fb::MessageType::PlasmaGetMetaRequest: {
     //hucc add PlasmaGetMetaRequest
-    ReadPlasmaMeta();
+    GetPlasmaMeta();
     RAY_RETURN_NOT_OK(SendPlasmaMetaReply(client, PlasmaError::OK));
 
   } break;

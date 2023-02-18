@@ -194,7 +194,7 @@ class PlasmaStore {
   void DisconnectClient(const std::shared_ptr<Client> &client)
       EXCLUSIVE_LOCKS_REQUIRED(mutex_);
       
-  void ReadPlasmaMeta();
+  void GetPlasmaMeta();
       EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
   Status ProcessMessage(const std::shared_ptr<Client> &client,
