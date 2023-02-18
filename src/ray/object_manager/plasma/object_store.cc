@@ -91,7 +91,7 @@ void ObjectStore::GetPlasmaMeta() const {
   RAY_LOG(WARNING) << "hucc get plasma meta start: " << "\n";
   for (auto &entry : object_table_) {
     ObjectID object_id = entry.first;
-    Allocation &allocation = entry.second->GetAllocation();
+    const Allocation &allocation = entry.second->GetAllocation();
     RAY_LOG(WARNING) << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation.address << "endl";
   }
 }
