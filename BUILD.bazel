@@ -397,7 +397,7 @@ cc_library(
     deps = [
         ":plasma_client",
         ":stats_lib",
-        ":utils_libs",
+        # ":utils_libs",
     ],
 )
 
