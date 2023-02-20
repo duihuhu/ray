@@ -43,7 +43,7 @@
 	#include <mlx5verbs.h>
 #endif // __linux__
 
-#include <doca_error.h>
+#include "doca_error.h"
 
 #ifdef __cplusplus
 extern "C" {

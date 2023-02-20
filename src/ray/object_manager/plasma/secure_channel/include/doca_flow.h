@@ -28,10 +28,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include <doca_compat.h>
+#include "doca_compat.h"
 
-#include <doca_flow_net.h>
-#include <doca_flow_crypto.h>
+#include "doca_flow_net.h"
+#include "doca_flow_crypto.h"
 
 #ifdef __cplusplus
 extern "C" {

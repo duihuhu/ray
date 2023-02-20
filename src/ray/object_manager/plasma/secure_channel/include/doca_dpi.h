@@ -31,7 +31,7 @@
 
 #include <rte_mbuf.h>
 
-#include <doca_compat.h>
+#include "doca_compat.h"
 
 #ifdef __cplusplus
 extern "C" {

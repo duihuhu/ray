@@ -24,10 +24,10 @@
 
 #include <inttypes.h>
 
-#include <doca_buf.h>
-#include <doca_dev.h>
-#include <doca_ctx.h>
-#include <doca_compat.h>
+#include "doca_buf.h"
+#include "doca_dev.h"
+#include "doca_ctx.h"
+#include "doca_compat.h"
 
 #ifdef __cplusplus
 extern "C" {

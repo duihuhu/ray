@@ -25,7 +25,7 @@
 #ifndef DOCA_DPDK_H_
 #define DOCA_DPDK_H_
 
-#include <doca_error.h>
+#include "doca_error.h"
 
 #ifdef __cplusplus
 extern "C" {

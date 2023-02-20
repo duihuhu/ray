@@ -41,8 +41,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <doca_telemetry_netflow_types.h>
-#include <doca_telemetry.h>
+#include "doca_telemetry_netflow_types.h"
+#include "doca_telemetry.h"
 
 #ifdef __cplusplus
 extern "C" {

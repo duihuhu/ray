@@ -30,7 +30,7 @@
 #include <netinet/in.h>
 #include <linux/types.h>
 
-#include <doca_compat.h>
+#include "doca_compat.h"
 
 #ifdef __cplusplus
 extern "C" {

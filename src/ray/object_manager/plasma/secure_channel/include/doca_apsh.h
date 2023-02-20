@@ -29,7 +29,7 @@
 #include "doca_compat.h"
 #include "doca_apsh_attr.h"
 #include "doca_dev.h"
-#include <doca_error.h>
+#include "doca_error.h"
 
 #ifdef __cplusplus
 extern "C" {

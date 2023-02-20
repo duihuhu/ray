@@ -24,7 +24,7 @@
 #ifndef DOCA_REGEX_MEMPOOL_H_
 #define DOCA_REGEX_MEMPOOL_H_
 
-#include <doca_compat.h>
+#include "doca_compat.h"
 #include <stddef.h>
 
 #ifdef __cplusplus

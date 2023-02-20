@@ -24,7 +24,7 @@
 #ifndef DOCA_FLOW_GRPC_CLIENT_H_
 #define DOCA_FLOW_GRPC_CLIENT_H_
 
-#include <doca_flow.h>
+#include "doca_flow.h"
 
 #ifdef __cplusplus
 extern "C" {
