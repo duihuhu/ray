@@ -126,6 +126,22 @@ PlasmaStore::~PlasmaStore() {}
 void PlasmaStore::Start() {
   // Start listening for clients.
   DoAccept();
+  StartCommService();
+}
+
+
+void PlasmaStore::RunCommService(int index) {
+    SetThreadName("PlasmaStore comm.server" + std::to_string(index));
+    RAY_LOG(DEBUG) << "comm. server" << "\n";
+    std::cout<< "PlasmaStore comm. server" <<"\n";
+    std::cout<< std::this_thread::get_id() <<"\n";
+}
+
+void PlasmaStore::StartCommService() {
+  comm_threads_.resize(2);
+  for (int i = 0; i < 2; i++) {
+    comm_threads_[i] =  std::thread(&PlasmaStore::RunCommService, this, i);
+  }
 }
 
 void PlasmaStore::Stop() { acceptor_.close(); }

@@ -231,6 +231,10 @@ class PlasmaStore {
 
   std::string GetDebugDump() const EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
+  void RunCommService(int index);
+
+  void StartCommService();
+
  private:
   friend class GetRequestQueue;
 
@@ -295,6 +299,10 @@ class PlasmaStore {
   bool dumped_on_oom_ GUARDED_BY(mutex_) = false;
 
   GetRequestQueue get_request_queue_ GUARDED_BY(mutex_);
+
+  // The thread pool used for running `comm_service`.
+  std::vector<std::thread> comm_threads_;
+
 };
 
 }  // namespace plasma

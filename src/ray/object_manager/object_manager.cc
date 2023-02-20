@@ -154,7 +154,6 @@ ObjectManager::ObjectManager(
 
   // Start object manager rpc server and send & receive request threads
   StartRpcService();
-  StartCommService();
 }
 
 ObjectManager::~ObjectManager() { StopRpcService(); }
@@ -168,20 +167,6 @@ bool ObjectManager::IsPlasmaObjectSpillable(const ObjectID &object_id) {
 void ObjectManager::RunRpcService(int index) {
   SetThreadName("rpc.obj.mgr." + std::to_string(index));
   rpc_service_.run();
-}
-
-void ObjectManager::RunCommService(int index) {
-    SetThreadName("comm.server" + std::to_string(index));
-    RAY_LOG(DEBUG) << "comm. server" << "\n";
-    std::cout<< "comm. server" <<"\n";
-    std::cout<< std::this_thread::get_id() <<"\n";
-}
-
-void ObjectManager::StartCommService() {
-  comm_threads_.resize(2);
-  for (int i = 0; i < 2; i++) {
-    comm_threads_[i] =  std::thread(&ObjectManager::RunCommService, this, i);
-  }
 }
 
 void ObjectManager::StartRpcService() {

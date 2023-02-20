@@ -414,9 +414,6 @@ class ObjectManager : public ObjectManagerInterface,
   /// Data copy operations during request are done in this thread pool.
   std::vector<std::thread> rpc_threads_;
 
-  // The thread pool used for running `comm_service`.
-  std::vector<std::thread> comm_threads_;
-
   /// Mapping from locally available objects to information about those objects
   /// including when the object was last pushed to other object managers.
   absl::flat_hash_map<ObjectID, LocalObjectInfo> local_objects_;
