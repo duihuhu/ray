@@ -144,7 +144,13 @@ void PlasmaStore::StartCommService() {
   }
 }
 
-void PlasmaStore::Stop() { acceptor_.close(); }
+void PlasmaStore::StopCommService(){
+  for (int i = 0; i < 2; i++) {
+    comm_threads_[i].join();
+  }
+}
+
+void PlasmaStore::Stop() { acceptor_.close(); StopCommService();}
 
 // If this client is not already using the object, add the client to the
 // object's list of clients, otherwise do nothing.

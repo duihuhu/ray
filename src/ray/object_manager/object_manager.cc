@@ -183,9 +183,9 @@ void ObjectManager::StopRpcService() {
   for (int i = 0; i < config_.rpc_service_threads_number; i++) {
     rpc_threads_[i].join();
   }
-  for (int i = 0; i < 2; i++) {
-    comm_threads_[i].join();
-  }
+  // for (int i = 0; i < 2; i++) {
+  //   comm_threads_[i].join();
+  // }
   object_manager_server_.Shutdown();
 }
 

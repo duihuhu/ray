@@ -235,6 +235,7 @@ class PlasmaStore {
 
   void StartCommService();
 
+  void StopCommService();
  private:
   friend class GetRequestQueue;
 
