@@ -173,7 +173,8 @@ void ObjectManager::RunRpcService(int index) {
 void ObjectManager::RunCommService(int index) {
     SetThreadName("comm.server" + std::to_string(index));
     RAY_LOG(DEBUG) << "comm. server" << "\n";
-    std::cout<<"comm. server" <<"\n";
+    std::cout<< "comm. server" <<"\n";
+    std::cout<< std::this_thread::get_id() <<"\n";
 }
 
 void ObjectManager::StartCommService() {
