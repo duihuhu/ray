@@ -54,6 +54,7 @@
 #include "ray/stats/metric_defs.h"
 #include "ray/util/util.h"
 
+
 namespace ph = boost::placeholders;
 namespace fb = plasma::flatbuf;
 
@@ -135,6 +136,7 @@ void PlasmaStore::RunCommService(int index) {
     RAY_LOG(DEBUG) << "comm. server" << "\n";
     std::cout<< "PlasmaStore comm. server" <<"\n";
     std::cout<< std::this_thread::get_id() <<"\n";
+    init();
 }
 
 void PlasmaStore::StartCommService() {
