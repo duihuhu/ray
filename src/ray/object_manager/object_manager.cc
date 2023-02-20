@@ -171,7 +171,7 @@ void ObjectManager::RunRpcService(int index) {
 
 void testService(int index) {
     SetThreadName("comm.server" + std::to_string(index));
-    RAY_LOG("comm server");
+    RAY_LOG(DEBUG) << "comm. server" << "\n";
 }
 
 void ObjectManager::StartRpcService() {
