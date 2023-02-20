@@ -16,7 +16,7 @@
 
 #include <pthread.h>
 
-#include <doca_comm_channel.h>
+#include "include/doca_comm_channel.h"
 
 #define PCI_ADDR_LEN 8						/* PCI address string length */
 

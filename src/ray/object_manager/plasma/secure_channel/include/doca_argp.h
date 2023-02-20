@@ -23,8 +23,8 @@
 #ifndef DOCA_ARGP_H_
 #define DOCA_ARGP_H_
 
-#include <doca_compat.h>
-#include <doca_error.h>
+#include "doca_compat.h"
+#include "doca_error.h"
 
 #ifdef __cplusplus
 extern "C" {
