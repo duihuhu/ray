@@ -24,7 +24,7 @@
 #ifndef DOCA_ERROR_H_
 #define DOCA_ERROR_H_
 
-#include <doca_compat.h>
+#include "doca_compat.h"
 
 #ifdef __cplusplus
 extern "C" {

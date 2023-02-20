@@ -23,7 +23,7 @@
 #define DOCA_CONFIG_H_
 
 /* Auto-generated configuration file */
-#include <doca_build_config.h>
+#include "doca_build_config.h"
 
 /** @brief declares the support/need for compatibility helper utils */
 #define DOCA_COMPAT_HELPERS

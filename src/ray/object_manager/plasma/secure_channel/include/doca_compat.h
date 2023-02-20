@@ -31,7 +31,7 @@
 #ifndef DOCA_COMPAT_H_
 #define DOCA_COMPAT_H_
 
-#include <doca_config.h>
+#include "doca_config.h"
 
 #ifdef __cplusplus
 extern "C" {
