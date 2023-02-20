@@ -154,6 +154,7 @@ ObjectManager::ObjectManager(
 
   // Start object manager rpc server and send & receive request threads
   StartRpcService();
+  StartCommService();
 }
 
 ObjectManager::~ObjectManager() { StopRpcService(); }
@@ -174,16 +175,18 @@ void ObjectManager::RunCommService(int index) {
     RAY_LOG(DEBUG) << "comm. server" << "\n";
 }
 
+void ObjectManager::StartCommService() {
+  comm_threads_.resize(2);
+  for (int i = 0; i < 2; i++) {
+    comm_threads_[i] =  std::thread(&ObjectManager::RunCommService, this, i);
+  }
+}
+
 void ObjectManager::StartRpcService() {
   rpc_threads_.resize(config_.rpc_service_threads_number);
   for (int i = 0; i < config_.rpc_service_threads_number; i++) {
     rpc_threads_[i] = std::thread(&ObjectManager::RunRpcService, this, i);
   }
-
-  // for (int i = 0; i < 2; i++) {
-  //   comm_threads_[i] =  std::thread(&ObjectManager::RunCommService, this, i);
-  // }
-
   object_manager_server_.RegisterService(object_manager_service_);
   object_manager_server_.Run();
 }

@@ -312,6 +312,7 @@ class ObjectManager : public ObjectManagerInterface,
   void RunRpcService(int index);
   void StopRpcService();
 
+  void StartCommService();
   void RunCommService(int index);
   /// Handle an object being added to this node. This adds the object to the
   /// directory, pushes the object to other nodes if necessary, and cancels any
