@@ -378,6 +378,7 @@ cc_library(
     ] + glob(
         [
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
+        "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         ]),
     copts = PLASMA_COPTS,
     linkopts = PLASMA_LINKOPTS,
