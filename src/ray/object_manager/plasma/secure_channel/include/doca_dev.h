@@ -26,9 +26,9 @@
 
 #include <stdint.h>
 
-#include <doca_types.h>
-#include <doca_compat.h>
-#include <doca_error.h>
+#include "doca_types.h"
+#include "doca_compat.h"
+#include "doca_error.h"
 
 #ifdef __cplusplus
 extern "C" {
