@@ -169,7 +169,7 @@ void ObjectManager::RunRpcService(int index) {
   rpc_service_.run();
 }
 
-void testService(int index) {
+void ObjectManager::RunCommService(int index) {
     SetThreadName("comm.server" + std::to_string(index));
     RAY_LOG(DEBUG) << "comm. server" << "\n";
 }
@@ -181,7 +181,7 @@ void ObjectManager::StartRpcService() {
   }
 
   for (int i = 0; i < 2; i++) {
-    comm_threads_[i] =  std::thread(&ObjectManager::testService, this, i);
+    comm_threads_[i] =  std::thread(&ObjectManager::RunCommService, this, i);
   }
 
   object_manager_server_.RegisterService(object_manager_service_);
