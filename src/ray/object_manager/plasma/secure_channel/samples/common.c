@@ -15,13 +15,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <doca_buf.h>
-#include <doca_buf_inventory.h>
-#include <doca_ctx.h>
-#include <doca_dev.h>
-#include <doca_error.h>
-#include <doca_log.h>
-#include <doca_mmap.h>
+#include "include/doca_buf.h"
+#include "include/doca_buf_inventory.h"
+#include "include/doca_ctx.h"
+#include "include/doca_dev.h"
+#include "include/doca_error.h"
+#include "include/doca_log.h"
+#include "include/doca_mmap.h"
 
 #include "common.h"
 

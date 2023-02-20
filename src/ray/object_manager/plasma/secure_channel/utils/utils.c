@@ -18,8 +18,8 @@
 #include <unistd.h>
 #include <stdnoreturn.h>
 
-#include <doca_version.h>
-#include <doca_log.h>
+#include "include/doca_version.h"
+#include "include/doca_log.h"
 
 #include "utils.h"
 
