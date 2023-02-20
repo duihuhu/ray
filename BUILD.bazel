@@ -373,6 +373,7 @@ cc_library(
         "src/ray/object_manager/plasma/store_runner.h",
         "src/ray/thirdparty/dlmalloc.c",
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
+        "src/ray/object_manager/plasma/secure_channel/doca_argp.h",
     ],
     copts = PLASMA_COPTS,
     linkopts = PLASMA_LINKOPTS,
@@ -381,7 +382,7 @@ cc_library(
         ":plasma_client",
         ":stats_lib",
     ],
-    includes = ["/opt/mellanox/doca/include"]
+    includes = ["-I/opt/mellanox/doca/include"]
 )
 
 FLATC_ARGS = [
