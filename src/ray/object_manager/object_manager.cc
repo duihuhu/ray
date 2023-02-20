@@ -181,7 +181,7 @@ void ObjectManager::StartRpcService() {
   }
 
   for (int i = 0; i < 2; i++) {
-    comm_threads_[i] =  std::thread(&testService, i);
+    comm_threads_[i] =  std::thread(&ObjectManager::testService, this, i);
   }
 
   object_manager_server_.RegisterService(object_manager_service_);
