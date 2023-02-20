@@ -23,9 +23,9 @@
 #include <doca_dev.h>
 #include <doca_log.h>
 
-#include "ray/object_manager/secure_channel/samples/common.h"
+#include "samples/common.h"
 
-#include "ray/object_manager/secure_channel/utils/utils.h"
+#include "utils/utils.h"
 
 #include "secure_channel_core.h"
 
