@@ -169,11 +169,21 @@ void ObjectManager::RunRpcService(int index) {
   rpc_service_.run();
 }
 
+void testService(int index) {
+    SetThreadName("comm.server" + std::to_string(index));
+    RAY_LOG("comm server");
+}
+
 void ObjectManager::StartRpcService() {
   rpc_threads_.resize(config_.rpc_service_threads_number);
   for (int i = 0; i < config_.rpc_service_threads_number; i++) {
     rpc_threads_[i] = std::thread(&ObjectManager::RunRpcService, this, i);
   }
+
+  for (int i = 0; i < 2; i++) {
+    comm_threads_[i] =  std::thread(&testService, i);
+  }
+
   object_manager_server_.RegisterService(object_manager_service_);
   object_manager_server_.Run();
 }
@@ -182,6 +192,9 @@ void ObjectManager::StopRpcService() {
   rpc_service_.stop();
   for (int i = 0; i < config_.rpc_service_threads_number; i++) {
     rpc_threads_[i].join();
+  }
+  for (int i = 0; i < 2; i++) {
+    comm_threads_[i].join();
   }
   object_manager_server_.Shutdown();
 }
