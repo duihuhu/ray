@@ -374,13 +374,14 @@ cc_library(
         "src/ray/thirdparty/dlmalloc.c",
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
     ],
-    copts = [PLASMA_COPTS, "-I/opt/mellanox/doca/include"],
+    copts = PLASMA_COPTS
     linkopts = PLASMA_LINKOPTS,
     strip_include_prefix = "src",
     deps = [
         ":plasma_client",
         ":stats_lib",
     ],
+    includes = ["/opt/mellanox/doca/include"]
 )
 
 FLATC_ARGS = [
