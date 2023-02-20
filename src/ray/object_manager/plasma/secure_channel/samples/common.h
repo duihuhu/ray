@@ -14,8 +14,8 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-#include "include/doca_error.h"
-#include "include/doca_dev.h"
+#include <doca_error.h>
+#include <doca_dev.h>
 
 /* Function to check if a given device is capable of executing some job */
 typedef doca_error_t (*jobs_check)(struct doca_devinfo *);

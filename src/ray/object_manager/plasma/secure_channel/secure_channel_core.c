@@ -19,9 +19,9 @@
 #include <sys/epoll.h>
 #include <sys/signalfd.h>
 
-#include "include/doca_argp.h"
-#include "include/doca_dev.h"
-#include "include/doca_log.h"
+#include <doca_argp.h>
+#include <doca_dev.h>
+#include <doca_log.h>
 
 #include "samples/common.h"
 
