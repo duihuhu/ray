@@ -342,18 +342,18 @@ cc_library(
         "@msgpack",
     ],
 )
-cc_library(
-    name = "utils_libs",
-    srcs = [
-        "src/ray/object_manager/plasma/secure_channel/utils/utils.c",
+# cc_library(
+#     name = "utils_libs",
+#     srcs = [
+#         "src/ray/object_manager/plasma/secure_channel/utils/utils.c",
 
-    ],
-    hdrs = glob(
-    [
-        "src/ray/object_manager/plasma/secure_channel/include/*.h",
-        "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-    ]),
-)
+#     ],
+#     hdrs = glob(
+#     [
+#         "src/ray/object_manager/plasma/secure_channel/include/*.h",
+#         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
+#     ]),
+# )
 cc_library(
     name = "plasma_store_server_lib",
     srcs = [

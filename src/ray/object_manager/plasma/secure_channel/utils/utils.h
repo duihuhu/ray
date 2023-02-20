@@ -19,8 +19,8 @@
 #include <stdint.h>
 #include <unistd.h>
 
-#include "include/doca_error.h"
-#include "include/doca_types.h"
+#include "../include/doca_error.h"
+#include "../include/doca_types.h"
 
 #ifndef MIN
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))	                /* Return the minimum value between X and Y */
