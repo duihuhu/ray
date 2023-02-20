@@ -92,7 +92,7 @@ extern "C" {
 #include <string.h>
 #include <stdint.h>
 
-#include <doca_version.h>
+#include "doca_version.h"
 
 #define DOCA_STRUCT_START			uint32_t __doca_api_version
 #define DOCA_STRUCT_GET_VERSION(_X_)		(_X_)->__doca_api_version
