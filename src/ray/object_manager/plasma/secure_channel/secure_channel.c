@@ -13,7 +13,7 @@
 
 #include <string.h>
 
-#include <doca_argp.h>
+#include "doca_argp.h"
 #include <doca_log.h>
 
 #include "utils/utils.h"
