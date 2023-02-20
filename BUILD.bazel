@@ -356,7 +356,7 @@ cc_library(
         "src/ray/object_manager/plasma/stats_collector.cc",
         "src/ray/object_manager/plasma/store.cc",
         "src/ray/object_manager/plasma/store_runner.cc",
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.cc",
+        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
         
     ],
     hdrs = [
@@ -373,6 +373,7 @@ cc_library(
         "src/ray/object_manager/plasma/store_runner.h",
         "src/ray/thirdparty/dlmalloc.c",
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
+        "/opt/mellanox/doca/include/*"
     ],
     copts = PLASMA_COPTS,
     linkopts = PLASMA_LINKOPTS,
