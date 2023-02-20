@@ -375,14 +375,13 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
         "src/ray/object_manager/plasma/secure_channel/doca_argp.h",
     ],
-    copts = PLASMA_COPTS,
+    copts = [PLASMA_COPTS, "-I/opt/mellanox/doca/include"],
     linkopts = PLASMA_LINKOPTS,
     strip_include_prefix = "src",
     deps = [
         ":plasma_client",
         ":stats_lib",
     ],
-    includes = ["-I/opt/mellanox/doca/include"]
 )
 
 FLATC_ARGS = [
