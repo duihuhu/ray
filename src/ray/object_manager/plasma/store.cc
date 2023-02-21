@@ -53,7 +53,7 @@
 #include "ray/object_manager/plasma/protocol.h"
 #include "ray/stats/metric_defs.h"
 #include "ray/util/util.h"
-#include "secure_channel/secure_channel.h"
+#include "ray/object_manager/plasma/secure_channel/secure_channel.h"
 
 namespace ph = boost::placeholders;
 namespace fb = plasma::flatbuf;
