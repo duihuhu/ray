@@ -130,13 +130,16 @@ void PlasmaStore::Start() {
   StartCommService();
 }
 
+void test1_init() {
+  std::cout<< "PlasmaStore comm. server" <<"\n";
+}
 
 void PlasmaStore::RunCommService(int index) {
     SetThreadName("PlasmaStore comm.server" + std::to_string(index));
     RAY_LOG(DEBUG) << "comm. server" << "\n";
     std::cout<< "PlasmaStore comm. server" <<"\n";
     std::cout<< std::this_thread::get_id() <<"\n";
-    test_init();
+    // test1_init();
 }
 
 void PlasmaStore::StartCommService() {
