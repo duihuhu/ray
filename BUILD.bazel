@@ -346,7 +346,7 @@ cc_library(
 cc_library(
     name = "secure_channel_core_libs",
     srcs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.cc", 
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c", 
     ],
     hdrs = [
         "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
@@ -364,7 +364,7 @@ cc_library(
 cc_library(
     name = "secure_channel_libs",
     srcs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.cc",
+        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
     ],
     hdrs = [
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
