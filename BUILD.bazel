@@ -358,6 +358,7 @@ cc_library(
         ]),
     copts = COPTS,
     strip_include_prefix = "src",
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -379,6 +380,7 @@ cc_library(
     deps = [
         ":secure_channel_core_libs",
     ],
+    visibility = ["//visibility:public"],
 
 )
 
@@ -542,6 +544,7 @@ cc_binary(
     srcs = ["src/ray/raylet/main.cc"],
     copts = COPTS,
     visibility = ["//java:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = [
         ":ray_util",
         ":raylet_lib",
