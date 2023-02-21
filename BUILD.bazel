@@ -383,6 +383,13 @@ cc_library(
 # )
 
 cc_library(
+    name = "sec_lib",
+    srcs = ["libdoca_argp.a", ],
+    visibility = ["//visibility:public"],
+)
+
+
+cc_library(
     name = "plasma_store_server_lib",
     srcs = [
         "src/ray/object_manager/plasma/create_request_queue.cc",
@@ -430,6 +437,7 @@ cc_library(
     deps = [
         ":plasma_client",
         ":stats_lib",
+        ":sec_lib"
         # ":secure_channel_libs",
         # ":secure_channel_core_libs",
     ],
