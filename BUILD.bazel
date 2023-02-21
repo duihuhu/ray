@@ -385,12 +385,13 @@ cc_library(
         "src/ray/thirdparty/dlmalloc.c",
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
         # "src/ray/object_manager/plasma/secure_channel/include/doca_argp.h",
-        "src/ray/object_manager/plasma/secure_channel/secure_channle_core.h",
-
+        
     ] + glob(
         [
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
+        "src/ray/object_manager/plasma/secure_channel/secure_channle_core.h",
+
         ]),
     copts = PLASMA_COPTS,
     linkopts = PLASMA_LINKOPTS,
