@@ -382,7 +382,6 @@ cc_library(
         ":secure_channel_core_libs",
     ],
 )
-)
 
 cc_library(
     name = "plasma_store_server_lib",
