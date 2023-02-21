@@ -346,7 +346,7 @@ def bazel_invoke(invoker, cmdline, *args, **kwargs):
     result = None
     
     for i, cmd in enumerate(candidates):
-        print(cmd + cmdline, *args, **kwargs)
+        print(cmd , cmdline, *args, **kwargs)
         try:
             result = invoker([cmd] + cmdline, *args, **kwargs)
             break
