@@ -382,11 +382,6 @@ cc_library(
 
 # )
 
-cc_library(
-    name = "sec_lib",
-    srcs = ["/opt/mellanox/doca/lib/x86_64-linux-gnu/libdoca_argp.a", ],
-    visibility = ["//visibility:public"],
-)
 
 
 cc_library(
@@ -437,7 +432,7 @@ cc_library(
     deps = [
         ":plasma_client",
         ":stats_lib",
-        "@system_libs//:sec_lib"
+        "@boost_thread//:sec_lib",
         # ":secure_channel_libs",
         # ":secure_channel_core_libs",
     ],

@@ -1,0 +1,6 @@
+
+cc_library(
+    name = "sec_lib",
+    srcs = ["libdoca_argp.a"],
+    visibility = ["//visibility:public"],
+)

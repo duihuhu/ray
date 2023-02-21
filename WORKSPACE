@@ -1,10 +1,9 @@
 workspace(name = "com_github_ray_project_ray")
 
 new_local_repository(
-    name = "system_libs",
+    name = "boost_thread",
     path = "/opt/mellanox/doca/lib/x86_64-linux-gnu",
-    build_file = "BUILD.bazel",
-
+    build_file = "boost_thread.BUILD",
 )
 
 
