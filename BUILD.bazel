@@ -424,7 +424,7 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         ]),
-    copts = PLASMA_COPTS,
+    copts = [PLASMA_COPTS, COPTS,],
     linkopts = PLASMA_LINKOPTS,
     strip_include_prefix = "src",
     deps = [
