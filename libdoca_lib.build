@@ -1,11 +1,4 @@
 cc_library(
-    name = "strlcpy_lib",
-    srcs = ["libbsd.a",
-],
-    visibility = ["//visibility:public"],
-)
-
-cc_library(
     name = "libdoca_lib",
     srcs = ["libdoca_argp.a",
     "libdoca_apsh.a",
@@ -24,6 +17,6 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":strlcpy_lib"
+        "@strlcpy_lib:strlcpy_lib",
     ],
 )

@@ -1,0 +1,5 @@
+cc_library(
+    name = "strlcpy_lib",
+    srcs = ["libbsd.a",],
+    visibility = ["//visibility:public"],
+)
