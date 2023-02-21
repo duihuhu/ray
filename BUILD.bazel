@@ -356,8 +356,7 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         ]),
-    copts = PLASMA_COPTS,
-    linkopts = PLASMA_LINKOPTS,
+    copts = COPTS,
     strip_include_prefix = "src",
 )
 
@@ -375,8 +374,7 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         ]),
-    copts = PLASMA_COPTS,
-    linkopts = PLASMA_LINKOPTS,
+    copts = COPTS,
     strip_include_prefix = "src",
     deps = [
         ":secure_channel_core_libs",
@@ -413,9 +411,9 @@ cc_library(
         "src/ray/object_manager/plasma/stats_collector.h",
         "src/ray/object_manager/plasma/store.h",
         "src/ray/object_manager/plasma/store_runner.h",
-        "src/ray/thirdparty/dlmalloc.c",        
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
-        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c", ],
+        "src/ray/thirdparty/dlmalloc.c",],
+        #         "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
+        # "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c", 
 
     # ] + glob(
     #     [
