@@ -41,7 +41,7 @@
 #include "ray/object_manager/plasma/plasma.h"
 #include "ray/object_manager/plasma/plasma_allocator.h"
 #include "ray/object_manager/plasma/protocol.h"
-#include "secure_channel/secure_channel.h"
+// #include "secure_channel/secure_channel.h"
 
 namespace plasma {
 
