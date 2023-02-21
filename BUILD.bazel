@@ -432,7 +432,7 @@ cc_library(
         ":plasma_client",
         ":stats_lib",
         ":secure_channel_libs",
-        ":secure_channel_core_libs",
+        # ":secure_channel_core_libs",
     ],
 )
 
