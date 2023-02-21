@@ -396,8 +396,8 @@ cc_library(
         "src/ray/object_manager/plasma/stats_collector.cc",
         "src/ray/object_manager/plasma/store.cc",
         "src/ray/object_manager/plasma/store_runner.cc",
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
-        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c",    
+        # "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
+        # "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c",    
     ],
     hdrs = [
         "src/ray/object_manager/common.h",
@@ -413,7 +413,6 @@ cc_library(
         "src/ray/object_manager/plasma/store_runner.h",
         "src/ray/thirdparty/dlmalloc.c",
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
-        # "src/ray/object_manager/plasma/secure_channel/include/doca_argp.h",
         "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
         
     ] + glob(
