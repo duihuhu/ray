@@ -1,5 +1,12 @@
 workspace(name = "com_github_ray_project_ray")
 
+new_local_repository(
+    name = "system_libs",
+    # pkg-config --variable=libdir x11
+    path = "/opt/mellanox/doca/lib/x86_64-linux-gnu",
+)
+
+
 load("//bazel:ray_deps_setup.bzl", "ray_deps_setup")
 
 ray_deps_setup()
