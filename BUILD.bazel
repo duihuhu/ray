@@ -356,7 +356,8 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         ]),
-    copts = COPTS,
+    copts = PLASMA_COPTS,
+    linkopts = PLASMA_LINKOPTS,
     strip_include_prefix = "src",
 )
 
@@ -374,7 +375,8 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         ]),
-    copts = COPTS,
+    copts = PLASMA_COPTS,
+    linkopts = PLASMA_LINKOPTS,
     strip_include_prefix = "src",
         deps = [
         ":secure_channel_core_libs",
