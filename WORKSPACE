@@ -1,9 +1,16 @@
 workspace(name = "com_github_ray_project_ray")
 
 new_local_repository(
-    name = "boost_thread",
+    name = "strlcpy_lib",
+    path = "/usr/lib/x86_64-linux-gnu",
+    build_file = "libdoca_lib.build",
+)
+
+
+new_local_repository(
+    name = "libdoca_lib",
     path = "/opt/mellanox/doca/lib/x86_64-linux-gnu",
-    build_file = "boost_thread.build",
+    build_file = "libdoca_lib.build",
 )
 
 
