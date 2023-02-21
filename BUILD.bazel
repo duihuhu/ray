@@ -384,7 +384,7 @@ cc_library(
 
 cc_library(
     name = "sec_lib",
-    srcs = ["libdoca_argp.a", ],
+    srcs = ["/opt/mellanox/doca/lib/x86_64-linux-gnu/libdoca_argp.a", ],
     visibility = ["//visibility:public"],
 )
 
