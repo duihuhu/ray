@@ -19,6 +19,7 @@
 #include "utils/utils.h"
 
 #include "secure_channel_core.h"
+#include "secure_channel.h"
 
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
 
