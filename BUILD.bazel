@@ -544,7 +544,6 @@ cc_binary(
     copts = COPTS,
     visibility = ["//java:__subpackages__"],
     deps = [
-        ":secure_channel_libs",
         ":ray_util",
         ":raylet_lib",
         "@com_github_gflags_gflags//:gflags",
