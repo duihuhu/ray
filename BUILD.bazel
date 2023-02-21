@@ -343,44 +343,44 @@ cc_library(
     ],
 )
 
-cc_library(
-    name = "secure_channel_core_libs",
-    srcs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c", 
-    ],
-    hdrs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
-    ] + glob(
-        [
-        "src/ray/object_manager/plasma/secure_channel/include/*.h",
-        "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
-        ]),
-    copts = COPTS,
-    strip_include_prefix = "src",
-)
+# cc_library(
+#     name = "secure_channel_core_libs",
+#     srcs = [
+#         "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c", 
+#     ],
+#     hdrs = [
+#         "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
+#     ] + glob(
+#         [
+#         "src/ray/object_manager/plasma/secure_channel/include/*.h",
+#         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
+#         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
+#         ]),
+#     copts = COPTS,
+#     strip_include_prefix = "src",
+# )
 
-cc_library(
-    name = "secure_channel_libs",
-    srcs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
-    ],
-    hdrs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
+# cc_library(
+#     name = "secure_channel_libs",
+#     srcs = [
+#         "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
+#     ],
+#     hdrs = [
+#         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
 
-    ] + glob(
-        [
-        "src/ray/object_manager/plasma/secure_channel/include/*.h",
-        "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
-        ]),
-    copts = COPTS,
-    strip_include_prefix = "src",
-    deps = [
-        ":secure_channel_core_libs",
-    ],
+#     ] + glob(
+#         [
+#         "src/ray/object_manager/plasma/secure_channel/include/*.h",
+#         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
+#         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
+#         ]),
+#     copts = COPTS,
+#     strip_include_prefix = "src",
+#     deps = [
+#         ":secure_channel_core_libs",
+#     ],
 
-)
+# )
 
 cc_library(
     name = "plasma_store_server_lib",
@@ -430,8 +430,8 @@ cc_library(
     deps = [
         ":plasma_client",
         ":stats_lib",
-        ":secure_channel_libs",
-        ":secure_channel_core_libs",
+        # ":secure_channel_libs",
+        # ":secure_channel_core_libs",
     ],
 )
 
