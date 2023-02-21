@@ -677,7 +677,9 @@ start_threads(struct cc_ctx *ctx)
 doca_error_t
 sc_start(struct sc_config *cfg, struct cc_ctx *ctx)
 {
-	struct t_results t_results = {0};
+	struct t_results t_results;
+	// = {0};
+	memset(t_results, 0, sizeof(t_results));
 	struct doca_dev *dev = NULL;
 	struct doca_dev_rep *dev_rep = NULL;
 	doca_error_t result;
