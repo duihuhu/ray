@@ -143,13 +143,10 @@ sendto_channel(void *context)
 {
 	struct cc_ctx *ctx = (struct cc_ctx *)context;
 	struct epoll_event events[MAX_EVENTS];
-	struct epoll_event send_event;
-	// = {
-	// 	.events = EPOLLIN,
-	// 	.data.fd = ctx->cc_send_fd
-	// };
-	send_event.events = EPOLLIN;
-	send_event.data.fd = ctx->cc_send_fd;
+	struct epoll_event send_event = {
+		.events = EPOLLIN,
+		.data.fd = ctx->cc_send_fd
+	};
 	char send_buffer[ctx->cfg->send_msg_size];
 	int signal, nfds, pthread_res, msg_nb = ctx->cfg->send_msg_nb;
 	int idx, ev_idx, mili_timeout = 10, sent_count = 0;
@@ -256,13 +253,10 @@ recvfrom_channel(void *context)
 	struct cc_ctx *ctx = (struct cc_ctx *)context;
 	struct doca_comm_channel_addr_t *curr_peer;
 	struct epoll_event events[MAX_EVENTS];
-	struct epoll_event recv_event;
-	// = {
-	// 	.events = EPOLLIN,
-	// 	.data.fd = ctx->cc_recv_fd
-	// };
-	recv_event.events = EPOLLIN;
-	recv_event.data.fd = ctx->cc_recv_fd;
+	struct epoll_event recv_event = {
+		.events = EPOLLIN,
+		.data.fd = ctx->cc_recv_fd
+	};
 	char recv_buffer[CC_MAX_MSG_SIZE];
 	int timeout = -1, recv_count = 0;
 	int nfds, ev_idx, pthread_res;
@@ -677,9 +671,7 @@ start_threads(struct cc_ctx *ctx)
 doca_error_t
 sc_start(struct sc_config *cfg, struct cc_ctx *ctx)
 {
-	struct t_results t_results;
-	// = {0};
-	memset(&t_results, 0, sizeof(t_results));
+	struct t_results t_results = {0};
 	struct doca_dev *dev = NULL;
 	struct doca_dev_rep *dev_rep = NULL;
 	doca_error_t result;
