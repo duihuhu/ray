@@ -1,7 +1,3 @@
- #include <stdio.h>
-namespace schannel {
-
-  void test_init();
-
-};
+#include <stdio.h>
+void test_init();
 
