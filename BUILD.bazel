@@ -381,8 +381,7 @@ cc_library(
     deps = [
         ":secure_channel_core_libs",
     ],
-    linkstatic = True,
-   
+    # linkstatic = True,
 )
 
 cc_library(
