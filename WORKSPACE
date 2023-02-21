@@ -3,7 +3,7 @@ workspace(name = "com_github_ray_project_ray")
 new_local_repository(
     name = "system_libs",
     # pkg-config --variable=libdir x11
-    path = "/opt/mellanox/doca/lib/x86_64-linux-gnu",
+    path = "/opt/mellanox/doca/lib/x86_64-linux-gnu/*",
 )
 
 
