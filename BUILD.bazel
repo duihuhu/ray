@@ -2290,6 +2290,8 @@ cc_library(
         "@com_google_absl//absl/time",
         "@com_google_googletest//:gtest_main",
         "@nlohmann_json",
+        ":secure_channel_core_libs",
+        ":secure_channel_libs",
     ],
 )
 
@@ -2654,7 +2656,6 @@ pyx_library(
         "//:src/ray/ray_version_script.lds",
         "//:stats_lib",
         "//src/ray/protobuf:serialization_cc_proto",
-        "//:secure_channel_libs",
     ],
 )
 
