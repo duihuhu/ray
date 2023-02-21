@@ -1,6 +1,20 @@
 
 cc_library(
     name = "sec_lib",
-    srcs = ["libdoca_argp.a"],
+    srcs = ["libdoca_argp.a",
+    "libdoca_apsh.a",
+    "libdoca_comm_channel.a",
+    "libdoca_common.a",
+    "libdoca_compress.a",
+    "libdoca_dma.a",
+    "libdoca_dpi.a",
+    "libdoca_dpi_grpc.a",
+    "libdoca_flow.a",
+    "libdoca_flow_grpc.a",
+    "libdoca_ipsec.a",
+    "libdoca_regex.a",
+    "libdoca_sha.a",
+    "libdoca_telemetry.a",
+],
     visibility = ["//visibility:public"],
 )
