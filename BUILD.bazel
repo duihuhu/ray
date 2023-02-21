@@ -412,18 +412,18 @@ cc_library(
         "src/ray/object_manager/plasma/store.h",
         "src/ray/object_manager/plasma/store_runner.h",
         "src/ray/thirdparty/dlmalloc.c",
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",],
+        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
         #         "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
         # "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c", 
 
-    # ] + glob(
-    #     [
-    #     "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
-    #     "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
-    #     "src/ray/object_manager/plasma/secure_channel/include/*.h",
-    #     "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-    #     "src/ray/object_manager/plasma/secure_channel/samples/*.h",
-    #     ]),
+    ] + glob(
+        [
+        "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
+        "src/ray/object_manager/plasma/secure_channel/include/*.h",
+        "src/ray/object_manager/plasma/secure_channel/utils/*.h",
+        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
+        ]),
     copts = PLASMA_COPTS,
     linkopts = PLASMA_LINKOPTS,
     strip_include_prefix = "src",
