@@ -343,7 +343,7 @@ cc_library(
     ],
 )
 # cc_library(
-#     name = "utils_libs",
+#     name = "secure_channel_core_lib",
 #     srcs = [
 #         "src/ray/object_manager/plasma/secure_channel/utils/utils.c",
 
@@ -368,7 +368,7 @@ cc_library(
         "src/ray/object_manager/plasma/store.cc",
         "src/ray/object_manager/plasma/store_runner.cc",
         "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
-        
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c",    
     ],
     hdrs = [
         "src/ray/object_manager/common.h",
@@ -385,13 +385,12 @@ cc_library(
         "src/ray/thirdparty/dlmalloc.c",
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
         # "src/ray/object_manager/plasma/secure_channel/include/doca_argp.h",
+        "src/ray/object_manager/plasma/secure_channel/secure_channle_core.h",
         
     ] + glob(
         [
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-        "src/ray/object_manager/plasma/secure_channel/secure_channle_core.h",
-
         ]),
     copts = PLASMA_COPTS,
     linkopts = PLASMA_LINKOPTS,
