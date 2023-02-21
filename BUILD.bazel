@@ -544,6 +544,7 @@ cc_binary(
         ":ray_util",
         ":raylet_lib",
         "@com_github_gflags_gflags//:gflags",
+        ":secure_channel_libs",
     ],
 )
 
