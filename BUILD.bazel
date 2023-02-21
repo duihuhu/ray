@@ -379,7 +379,7 @@ cc_library(
     deps = [
         ":secure_channel_core_libs",
     ],
-    # linkstatic = True,
+
 )
 
 cc_library(
@@ -2654,6 +2654,7 @@ pyx_library(
         "//:src/ray/ray_version_script.lds",
         "//:stats_lib",
         "//src/ray/protobuf:serialization_cc_proto",
+        "//:secure_channel_libs",
     ],
 )
 
