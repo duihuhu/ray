@@ -541,9 +541,9 @@ cc_binary(
     name = "raylet",
     srcs = ["src/ray/raylet/main.cc"],
     copts = COPTS,
-    # visibility = ["//java:__subpackages__"],
-    visibility = ["//visibility:public"],
+    visibility = ["//java:__subpackages__"],
     deps = [
+        ":secure_channel_libs",
         ":ray_util",
         ":raylet_lib",
         "@com_github_gflags_gflags//:gflags",
