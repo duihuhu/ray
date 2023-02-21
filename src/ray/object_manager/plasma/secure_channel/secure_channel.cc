@@ -32,7 +32,7 @@ DOCA_LOG_REGISTER(SECURE_CHANNEL);
  */
 
 void test_init() {
-	struct sc_config app_cfg；
+	struct sc_config app_cfg;
 	// = {0};
 	memset(&app_cfg, 0, sizeof(sc_config));
 	struct cc_ctx ctx = {0};
