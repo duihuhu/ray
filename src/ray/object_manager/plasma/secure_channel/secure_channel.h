@@ -1,1 +1,1 @@
-void init();
+void test_init();

@@ -31,7 +31,7 @@ DOCA_LOG_REGISTER(SECURE_CHANNEL);
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
 
-void init() {
+void test_init() {
 	struct sc_config app_cfg = {0};
 	struct cc_ctx ctx = {0};
 	doca_error_t result;
