@@ -354,7 +354,7 @@ cc_library(
         [
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-        "src/ray/object_manager/plasma/secure_channel/common/*.h",
+        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         ]),
     copts = COPTS,
     strip_include_prefix = "src",
@@ -374,7 +374,7 @@ cc_library(
         [
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-        "src/ray/object_manager/plasma/secure_channel/common/*.h",
+        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         ]),
     copts = COPTS,
     strip_include_prefix = "src",
@@ -420,7 +420,7 @@ cc_library(
         [
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-        "src/ray/object_manager/plasma/secure_channel/common/*.h",
+        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         ]),
     copts = PLASMA_COPTS,
     linkopts = PLASMA_LINKOPTS,
