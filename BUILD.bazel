@@ -541,7 +541,8 @@ cc_binary(
     name = "raylet",
     srcs = ["src/ray/raylet/main.cc"],
     copts = COPTS,
-    visibility = ["//java:__subpackages__"],
+    # visibility = ["//java:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = [
         ":ray_util",
         ":raylet_lib",
