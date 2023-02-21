@@ -41,7 +41,7 @@ void test_init() {
 #ifdef DOCA_ARCH_DPU
 	app_cfg.mode = SC_MODE_DPU;
 #endif
-
+	DOCA_LOG_INFO("AAAAAAA");
 	/* Parse cmdline/json arguments */
 	result = doca_argp_init("secure_channel", &app_cfg);
 	return;
