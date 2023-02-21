@@ -3,7 +3,7 @@ workspace(name = "com_github_ray_project_ray")
 new_local_repository(
     name = "strlcpy_lib",
     path = "/usr/lib/x86_64-linux-gnu",
-    build_file = "libdoca_lib.build",
+    build_file = "strlcpy_lib.build",
 )
 
 
