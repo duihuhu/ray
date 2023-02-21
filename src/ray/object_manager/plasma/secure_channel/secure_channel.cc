@@ -32,7 +32,9 @@ DOCA_LOG_REGISTER(SECURE_CHANNEL);
  */
 
 void test_init() {
-	struct sc_config app_cfg = {0};
+	struct sc_config app_cfg；
+	// = {0};
+	memset(&app_cfg, 0, sizeof(sc_config));
 	struct cc_ctx ctx = {0};
 	doca_error_t result;
 	int exit_status = EXIT_SUCCESS;
