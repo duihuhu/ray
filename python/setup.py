@@ -344,8 +344,9 @@ def bazel_invoke(invoker, cmdline, *args, **kwargs):
     else:
         candidates.append(os.path.join(home, ".bazel", "bin", "bazel"))
     result = None
-    print(candidates)
+    
     for i, cmd in enumerate(candidates):
+        print(cmd + cmdline, *args, **kwargs)
         try:
             result = invoker([cmd] + cmdline, *args, **kwargs)
             break
