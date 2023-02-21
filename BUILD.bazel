@@ -359,6 +359,7 @@ cc_library(
     copts = PLASMA_COPTS,
     linkopts = PLASMA_LINKOPTS,
     strip_include_prefix = "src",
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -378,9 +379,10 @@ cc_library(
     copts = PLASMA_COPTS,
     linkopts = PLASMA_LINKOPTS,
     strip_include_prefix = "src",
-        deps = [
+    deps = [
         ":secure_channel_core_libs",
     ],
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
