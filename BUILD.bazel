@@ -415,8 +415,8 @@ cc_library(
         "src/ray/object_manager/plasma/store.h",
         "src/ray/object_manager/plasma/store_runner.h",
         "src/ray/thirdparty/dlmalloc.c",],
-        # "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
-        # "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c", 
+        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c", 
     # ] + glob(
     #     [
     #     "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
