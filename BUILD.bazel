@@ -346,15 +346,15 @@ cc_library(
 cc_library(
     name = "secure_channel_core_libs",
     srcs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c", 
+        "src/ray/object_manager/plasma/secure_channel_core.c", 
     ],
     hdrs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
+        "src/ray/object_manager/plasma/secure_channel_core.h",
     ] + glob(
         [
-        "src/ray/object_manager/plasma/secure_channel/include/*.h",
-        "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
+        "src/ray/object_manager/plasma/include/*.h",
+        "src/ray/object_manager/plasma/utils/*.h",
+        "src/ray/object_manager/plasma/samples/*.h",
         ]),
     copts = COPTS,
     strip_include_prefix = "src",
@@ -363,16 +363,16 @@ cc_library(
 cc_library(
     name = "secure_channel_libs",
     srcs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
+        "src/ray/object_manager/plasma/secure_channel.c",
     ],
     hdrs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
+        "src/ray/object_manager/plasma/secure_channel.h",
 
     ] + glob(
         [
-        "src/ray/object_manager/plasma/secure_channel/include/*.h",
-        "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
+        "src/ray/object_manager/plasma/include/*.h",
+        "src/ray/object_manager/plasma/utils/*.h",
+        "src/ray/object_manager/plasma/samples/*.h",
         ]),
     copts = COPTS,
     strip_include_prefix = "src",
@@ -2290,8 +2290,6 @@ cc_library(
         "@com_google_absl//absl/time",
         "@com_google_googletest//:gtest_main",
         "@nlohmann_json",
-        ":secure_channel_core_libs",
-        ":secure_channel_libs",
     ],
 )
 
