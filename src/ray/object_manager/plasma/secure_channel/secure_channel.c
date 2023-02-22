@@ -21,9 +21,12 @@
 #include "secure_channel_core.h"
 // #include "secure_channel.h"
 #include "ray/common/id.h"
+#include "ray/object_manager/plasma/common.h"
 
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
 
+using namespace ray::ObjectID;
+using namespace plasma::LocalObject;
 /*
  * Secure Channel application main function
  *
