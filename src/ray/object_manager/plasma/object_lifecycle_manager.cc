@@ -277,7 +277,7 @@ void ObjectLifecycleManager::GetDebugDump(std::stringstream &buffer) const {
   return stats_collector_.GetDebugDump(buffer);
 }
 
-absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectLifecycleManager::GetPlasmaMeta() const {
+absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectLifecycleManager::GetPlasmaMeta() {
   return object_store_->GetPlasmaMeta();
 }
 

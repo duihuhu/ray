@@ -87,7 +87,7 @@ LocalObject *ObjectStore::GetMutableObject(const ObjectID &object_id) {
   return it->second.get();
 }
 
-absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectStore::GetPlasmaMeta() const {
+absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectStore::GetPlasmaMeta() {
   // RAY_LOG(WARNING) << "hucc get plasma meta start: " << "\n";
   // for (auto &entry : object_table_) {
   //   ObjectID object_id = entry.first;

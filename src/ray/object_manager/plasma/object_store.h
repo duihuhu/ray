@@ -68,7 +68,7 @@ class IObjectStore {
   ///   - true if deleted.
   virtual bool DeleteObject(const ObjectID &object_id) = 0;
 
-  virtual absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() const = 0;
+  virtual absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() = 0;
 };
 
 // ObjectStore implements IObjectStore. It uses IAllocator
@@ -88,7 +88,7 @@ class ObjectStore : public IObjectStore {
   bool DeleteObject(const ObjectID &object_id) override;
 
   // hucc GetPlasmaMeta
-  absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() const override;
+  absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() override;
 
  private:
   friend struct ObjectStatsCollectorTest;
