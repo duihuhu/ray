@@ -139,7 +139,7 @@ void PlasmaStore::RunCommService(int index) {
     RAY_LOG(DEBUG) << "comm. server" << "\n";
     std::cout<< "PlasmaStore comm. server" <<"\n";
     std::cout<< std::this_thread::get_id() <<"\n";
-    auto plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
+    absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
     test_init(plasma_meta);
 }
 
