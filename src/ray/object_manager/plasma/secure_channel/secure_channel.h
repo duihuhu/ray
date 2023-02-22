@@ -1,3 +1,3 @@
 #include <stdio.h>
-void test_init();
+// void test_init();
 

@@ -504,7 +504,7 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
   } break;
   case fb::MessageType::PlasmaGetMetaRequest: {
     //hucc add PlasmaGetMetaRequest
-    auto plasma_meta = GetPlasmaMeta();
+    absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = GetPlasmaMeta();
     RAY_RETURN_NOT_OK(SendPlasmaMetaReply(client, PlasmaError::OK));
 
   } break;
