@@ -19,7 +19,7 @@
 #include "utils/utils.h"
 
 #include "secure_channel_core.h"
-#include "secure_channel.h"
+// #include "secure_channel.h"
 #include "ray/common/id.h"
 
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
