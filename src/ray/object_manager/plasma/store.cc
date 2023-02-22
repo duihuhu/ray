@@ -139,7 +139,8 @@ void PlasmaStore::RunCommService(int index) {
     RAY_LOG(DEBUG) << "comm. server" << "\n";
     std::cout<< "PlasmaStore comm. server" <<"\n";
     std::cout<< std::this_thread::get_id() <<"\n";
-    test_init();
+    auto plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
+    test_init(plasma_meta);
 }
 
 void PlasmaStore::StartCommService() {
@@ -381,8 +382,8 @@ void PlasmaStore::DisconnectClient(const std::shared_ptr<Client> &client) {
 
 
 
-void PlasmaStore::GetPlasmaMeta() {
-    object_lifecycle_mgr_.GetPlasmaMeta();
+absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *PlasmaStore::GetPlasmaMeta() {
+    return object_lifecycle_mgr_.GetPlasmaMeta();
 }
 
 
@@ -503,7 +504,7 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
   } break;
   case fb::MessageType::PlasmaGetMetaRequest: {
     //hucc add PlasmaGetMetaRequest
-    GetPlasmaMeta();
+    auto plasma_meta = GetPlasmaMeta();
     RAY_RETURN_NOT_OK(SendPlasmaMetaReply(client, PlasmaError::OK));
 
   } break;

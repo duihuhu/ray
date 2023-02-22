@@ -20,6 +20,7 @@
 
 #include "secure_channel_core.h"
 #include "secure_channel.h"
+#include "ray/common/id.h"
 
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
 
@@ -31,7 +32,7 @@ DOCA_LOG_REGISTER(SECURE_CHANNEL);
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
 
-void test_init() {
+void test_init(absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> * plasma_meta) {
 	struct sc_config app_cfg;
 	memset(&app_cfg, 0, sizeof(app_cfg));
 	struct cc_ctx ctx = {0};
