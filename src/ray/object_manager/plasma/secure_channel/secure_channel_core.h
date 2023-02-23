@@ -10,7 +10,7 @@
  * provided with the software product.
  *
  */
-
+#pragma once
 #ifndef SECURE_CHANNEL_CORE_H_
 #define SECURE_CHANNEL_CORE_H_
 

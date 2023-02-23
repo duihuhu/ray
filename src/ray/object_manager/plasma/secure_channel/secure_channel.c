@@ -10,6 +10,7 @@
  * provided with the software product.
  *
  */
+#pragma once
 
 #include <string.h>
 
@@ -39,7 +40,7 @@ DOCA_LOG_REGISTER(SECURE_CHANNEL);
 using namespace ray;
 using namespace plasma;
 
-int InitConnChannel(char **name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr) {
+int InitConnChannel(const char **name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr) {
 	struct cc_config cfg = {0};
 	const char *server_name = "meta_server";
   name = &server_name;

@@ -10,7 +10,7 @@
  * provided with the software product.
  *
  */
-
+#pragma once
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
