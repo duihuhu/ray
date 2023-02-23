@@ -11,22 +11,7 @@
  *
  */
 
-#include <string.h>
-#include <unistd.h>
-#include <signal.h>
-#include <stdbool.h>
-
-#include "include/doca_comm_channel.h"
-#include "include/doca_log.h"
-
-#include "ray/object_manager/plasma/secure_channel/samples/common.h"
-
-#define MAX_MSG_SIZE 4080		/* Comm Channel maximum message size */
-#define CC_MAX_QUEUE_SIZE 10		/* Maximum amount of message in queue */
-
-DOCA_LOG_REGISTER(CC_CLIENT);
-
-static bool end_sample;		/* Shared variable to allow for a proper shutdown */
+#include "secure_channel_meta_core.h"
 
 /*
  * Signal handler

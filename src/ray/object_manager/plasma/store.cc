@@ -127,11 +127,11 @@ PlasmaStore::~PlasmaStore() {}
 void PlasmaStore::Start() {
   // Start listening for clients.
   DoAccept();
-  StartInitConnChannel();
+  StartMetaCommClient();
   StartCommService();
 }
 
-void PlasmaStore::StartInitConnChannel() {
+void PlasmaStore::StartMetaCommClient() {
   InitConnChannel(&meta_server_name_, &ep, &peer_addr);
   std::cout<< "meta server name:" << meta_server_name_ <<"\n";
 }

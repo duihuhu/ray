@@ -239,7 +239,7 @@ class PlasmaStore {
 
   void StopCommService();
 
-  void StartInitConnChannel();
+  void StartMetaCommClient();
  private:
   friend class GetRequestQueue;
 
