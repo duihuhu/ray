@@ -418,7 +418,7 @@ cc_library(
         #"src/ray/object_manager/plasma/secure_channel/secure_channel.c",
         "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.c", 
         "src/ray/object_manager/plasma/secure_channel/utils/utils.c", 
-        "src/ray/object_manager/plasma/secure_channel/sample/common.c", 
+        "src/ray/object_manager/plasma/secure_channel/samples/common.c", 
 
     ] + glob(
         [
