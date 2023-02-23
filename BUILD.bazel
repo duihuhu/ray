@@ -437,7 +437,7 @@ cc_library(
         ":stats_lib",
         "@libdoca_lib//:libdoca_lib",
         "@strlcpy_lib//:strlcpy_lib",
-        ":secure_channel_libs",
+        # ":secure_channel_libs",
         # ":secure_channel_core_libs",
     ],
 )
