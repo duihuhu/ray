@@ -10,7 +10,8 @@
  * provided with the software product.
  *
  */
-
+#pragma once
+#include "common.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,7 +24,7 @@
 #include "../include/doca_log.h"
 #include "../include/doca_mmap.h"
 
-#include "common.h"
+
 
 DOCA_LOG_REGISTER(COMMON);
 

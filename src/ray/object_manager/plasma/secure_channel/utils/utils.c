@@ -10,7 +10,7 @@
  * provided with the software product.
  *
  */
-
+#include "utils.h"
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
@@ -21,7 +21,7 @@
 #include "../include/doca_version.h"
 #include "../include/doca_log.h"
 
-#include "utils.h"
+
 
 DOCA_LOG_REGISTER(UTILS);
 

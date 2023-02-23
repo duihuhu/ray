@@ -13,7 +13,7 @@
 
 #ifndef COMMON_H_
 #define COMMON_H_
-
+#pragma once
 #include "../include/doca_error.h"
 #include "../include/doca_dev.h"
 
