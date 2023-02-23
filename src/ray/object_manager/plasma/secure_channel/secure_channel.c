@@ -39,7 +39,7 @@ DOCA_LOG_REGISTER(SECURE_CHANNEL);
 using namespace ray;
 using namespace plasma;
 
-void InitConnChannel(char **name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr) {
+int InitConnChannel(char **name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr) {
 	struct cc_config cfg = {0};
 	const char *server_name = "meta_server";
   name = server_name;
@@ -69,7 +69,7 @@ void InitConnChannel(char **name, struct doca_comm_channel_ep_t **ep, struct doc
 		doca_argp_destroy();
 		return EXIT_FAILURE;
 	}
-  return;
+  return EXIT_SUCCESS;
 }
 
 
