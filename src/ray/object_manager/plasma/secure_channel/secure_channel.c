@@ -22,7 +22,7 @@
 // #include "secure_channel.h"
 #include "ray/common/id.h"
 #include "ray/object_manager/plasma/common.h"
-#include "secure_channel_meta_core.c"
+#include "secure_channel_meta_core.h"
 
 
 #define MAX_TXT_SIZE 4096					/* Maximum size of input text */
