@@ -372,6 +372,8 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
+         "src/ray/object_manager/plasma/*.h",
+         "src/ray/common/id.h"
         ]),
     copts = COPTS,
     # strip_include_prefix = "src",
