@@ -10,7 +10,8 @@
  * provided with the software product.
  *
  */
-#pragma once
+#ifndef SECURE_CHANNEL_META_CORE_H
+#define SECURE_CHANNEL_META_CORE_H
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
@@ -45,3 +46,4 @@ signal_handler(int signum);
  */
 doca_error_t
 create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci_addr, const char *text, struct doca_comm_channel_ep_t **init_ep, struct doca_comm_channel_addr_t **init_addr);
+#endif

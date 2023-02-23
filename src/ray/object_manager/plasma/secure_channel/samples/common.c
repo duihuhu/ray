@@ -10,7 +10,8 @@
  * provided with the software product.
  *
  */
-#pragma once
+
+
 #include "common.h"
 #include <stdint.h>
 #include <stdlib.h>

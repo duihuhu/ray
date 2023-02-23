@@ -13,7 +13,7 @@
 
 #ifndef COMMON_UTILS_H_
 #define COMMON_UTILS_H_
-#pragma once
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
