@@ -18,7 +18,7 @@
 
 #include "utils/utils.h"
 
-// #include "secure_channel_core.h"
+#include "secure_channel_core.h"
 // #include "secure_channel.h"
 #include "ray/common/id.h"
 #include "ray/object_manager/plasma/common.h"
@@ -39,7 +39,7 @@ DOCA_LOG_REGISTER(SECURE_CHANNEL);
 using namespace ray;
 using namespace plasma;
 
-void InitConnChannel(string &name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr) {
+void InitConnChannel(char **name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr) {
 	struct cc_config cfg = {0};
 	const char *server_name = "meta_server";
   name = server_name;

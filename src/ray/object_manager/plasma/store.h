@@ -308,7 +308,7 @@ class PlasmaStore {
   // The thread pool used for running `comm_service`.
   std::vector<std::thread> comm_threads_;
 
-  std::string meta_server_name_;
+  char *meta_server_name_;
 	struct doca_comm_channel_ep_t *ep;
 	struct doca_comm_channel_addr_t *peer_addr;
 };
