@@ -19,7 +19,7 @@
 
 #include "utils/utils.h"
 
-#include "secure_channel_core.h"
+// #include "secure_channel_core.h"
 // #include "secure_channel.h"
 #include "ray/common/id.h"
 #include "ray/object_manager/plasma/common.h"
@@ -83,19 +83,19 @@ int InitConnChannel(const char **name, struct doca_comm_channel_ep_t **ep, struc
  */
 
 void PushMetaToDpu(absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta) {
-	struct sc_config app_cfg;
-	memset(&app_cfg, 0, sizeof(app_cfg));
-	struct cc_ctx ctx = {0};
-	doca_error_t result;
-	int exit_status = EXIT_SUCCESS;
+// 	struct sc_config app_cfg;
+// 	memset(&app_cfg, 0, sizeof(app_cfg));
+// 	struct cc_ctx ctx = {0};
+// 	doca_error_t result;
+// 	int exit_status = EXIT_SUCCESS;
 
-#ifdef DOCA_ARCH_DPU
-	app_cfg.mode = SC_MODE_DPU;
-#endif
-	DOCA_LOG_INFO("AAAAAAA");
-	/* Parse cmdline/json arguments */
-	result = doca_argp_init("secure_channel", &app_cfg);
-	return;
+// #ifdef DOCA_ARCH_DPU
+// 	app_cfg.mode = SC_MODE_DPU;
+// #endif
+// 	DOCA_LOG_INFO("AAAAAAA");
+// 	/* Parse cmdline/json arguments */
+// 	result = doca_argp_init("secure_channel", &app_cfg);
+// 	return;
 }
 // int
 // main(int argc, char **argv)
