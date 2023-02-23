@@ -10,7 +10,6 @@
  * provided with the software product.
  *
  */
-#pragma once
 #include <bsd/string.h>
 #include <errno.h>
 #include <signal.h>

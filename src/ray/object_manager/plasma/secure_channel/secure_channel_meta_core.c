@@ -10,7 +10,6 @@
  * provided with the software product.
  *
  */
-#pragma once
 #include "secure_channel_meta_core.h"
 
 /*
