@@ -18,15 +18,61 @@
 
 #include "utils/utils.h"
 
-#include "secure_channel_core.h"
+// #include "secure_channel_core.h"
 // #include "secure_channel.h"
 #include "ray/common/id.h"
 #include "ray/object_manager/plasma/common.h"
+#include "secure_channel_meta_core.c"
+
+
+#define MAX_TXT_SIZE 4096					/* Maximum size of input text */
+#define PCI_ADDR_LEN 8						/* PCI address string length */
+
+struct cc_config {
+	char cc_dev_pci_addr[PCI_ADDR_LEN];			/* Comm Channel DOCA device PCI address */
+	char cc_dev_rep_pci_addr[PCI_ADDR_LEN];			/* Comm Channel DOCA device representor PCI address */
+	char text[MAX_TXT_SIZE];				/* Text to send to Comm Channel server */
+};
 
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
 
 using namespace ray;
 using namespace plasma;
+
+void InitConnChannel(string &name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr) {
+	struct cc_config cfg = {0};
+	const char *server_name = "meta_server";
+  name = server_name;
+	doca_error_t result;
+	struct doca_pci_bdf dev_pcie = {0};
+
+	strcpy(cfg.cc_dev_pci_addr, "3b:00.0");
+
+
+	// result = doca_argp_init("meta_client", &cfg);
+	// if (result != DOCA_SUCCESS) {
+	// 	DOCA_LOG_ERR("Failed to init ARGP resources: %s", doca_get_error_string(result));
+	// 	return EXIT_FAILURE;
+	// }
+
+	/* Convert the PCI address into the matching struct */
+	result = parse_pci_addr(cfg.cc_dev_pci_addr, &dev_pcie);
+	if (result != DOCA_SUCCESS) {
+		DOCA_LOG_ERR("Failed to parse the device PCI address: %s", doca_get_error_string(result));
+		doca_argp_destroy();
+		return EXIT_FAILURE;
+	}
+
+  	/* Start the client */
+	result = create_comm_channel_client(server_name, &dev_pcie, cfg.text, ep, peer_addr);
+	if (result != DOCA_SUCCESS) {
+		doca_argp_destroy();
+		return EXIT_FAILURE;
+	}
+  return;
+}
+
+
 /*
  * Secure Channel application main function
  *
@@ -35,7 +81,7 @@ using namespace plasma;
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
 
-void test_init(absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta) {
+void PushMetaToDpu(absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta) {
 	struct sc_config app_cfg;
 	memset(&app_cfg, 0, sizeof(app_cfg));
 	struct cc_ctx ctx = {0};

@@ -42,6 +42,7 @@
 #include "ray/object_manager/plasma/plasma_allocator.h"
 #include "ray/object_manager/plasma/protocol.h"
 // #include "secure_channel/secure_channel.h"
+#include "secure_channel/include/doca_comm_channel.h"
 
 namespace plasma {
 
@@ -237,6 +238,8 @@ class PlasmaStore {
   void StartCommService();
 
   void StopCommService();
+
+  void StartInitConnChannel();
  private:
   friend class GetRequestQueue;
 
@@ -305,6 +308,9 @@ class PlasmaStore {
   // The thread pool used for running `comm_service`.
   std::vector<std::thread> comm_threads_;
 
+  std::string meta_server_name_;
+	struct doca_comm_channel_ep_t *ep;
+	struct doca_comm_channel_addr_t *peer_addr;
 };
 
 }  // namespace plasma

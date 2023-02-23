@@ -127,20 +127,22 @@ PlasmaStore::~PlasmaStore() {}
 void PlasmaStore::Start() {
   // Start listening for clients.
   DoAccept();
+  StartInitConnChannel();
   StartCommService();
 }
 
-// void test1_init() {
-//   std::cout<< "PlasmaStore comm. server" <<"\n";
-// }
+void PlasmaStore::StartInitConnChannel() {
+  InitConnChannel(&meta_server_name_, &ep, &peer_addr);
+  std::cout<< "meta server name:" << meta_server_name_ <<"\n";
+}
 
 void PlasmaStore::RunCommService(int index) {
     SetThreadName("PlasmaStore comm.server" + std::to_string(index));
-    RAY_LOG(DEBUG) << "comm. server" << "\n";
-    std::cout<< "PlasmaStore comm. server" <<"\n";
-    std::cout<< std::this_thread::get_id() <<"\n";
+    // RAY_LOG(DEBUG) << "comm. server" << "\n";
+    // std::cout<< "PlasmaStore comm. server" <<"\n";
+    // std::cout<< std::this_thread::get_id() <<"\n";
     absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
-    test_init(plasma_meta);
+    PushMetaToDpu(plasma_meta);
 }
 
 void PlasmaStore::StartCommService() {
