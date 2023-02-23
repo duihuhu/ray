@@ -34,7 +34,7 @@
 #define MAX_EVENTS 2			    /* Two file descriptors (comm channel, termination) */
 #define SLEEP_IN_NANOS (10 * 1000)	    /* Sample the connection every 10 microseconds  */
 
-DOCA_LOG_REGISTER(SECURE_CHANNEL::Core);
+// DOCA_LOG_REGISTER(SECURE_CHANNEL::Core);
 
 /*
  * ARGP Callback - Handle messages number parameter

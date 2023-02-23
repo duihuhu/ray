@@ -25,7 +25,7 @@
 #define MAX_MSG_SIZE 4080		/* Comm Channel maximum message size */
 #define CC_MAX_QUEUE_SIZE 10		/* Maximum amount of message in queue */
 
-DOCA_LOG_REGISTER(CC_CLIENT);
+// DOCA_LOG_REGISTER(CC_CLIENT);
 
 static bool end_sample;		/* Shared variable to allow for a proper shutdown */
 
