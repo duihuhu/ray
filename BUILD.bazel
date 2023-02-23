@@ -360,27 +360,27 @@ cc_library(
 #     strip_include_prefix = "src",
 # )
 
-cc_library(
-    name = "secure_channel_libs",
-    srcs = [
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
-    ],
-    hdrs = [
-        "src/ray/object_manager/plasma/secure_channel/utils/utils.c", 
-    ] + glob(
-        [
-        "src/ray/object_manager/plasma/secure_channel/include/*.h",
-        "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
-         "src/ray/object_manager/plasma/*.h",
-         "src/ray/common/id.h"
-        ]),
-    copts = COPTS,
-    # strip_include_prefix = "src",
-    # deps = [
-    #     ":secure_channel_core_libs",
-    # ],
-)
+# cc_library(
+#     name = "secure_channel_libs",
+#     srcs = [
+#         "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
+#     ],
+#     hdrs = [
+#         "src/ray/object_manager/plasma/secure_channel/utils/utils.c", 
+#     ] + glob(
+#         [
+#         "src/ray/object_manager/plasma/secure_channel/include/*.h",
+#         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
+#         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
+#          "src/ray/object_manager/plasma/*.h",
+#          "src/ray/common/id.h"
+#         ]),
+#     copts = COPTS,
+#     # strip_include_prefix = "src",
+#     # deps = [
+#     #     ":secure_channel_core_libs",
+#     # ],
+# )
 
 
 
