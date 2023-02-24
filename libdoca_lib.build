@@ -23,7 +23,7 @@ cc_library(
     "libdoca_sha.a",
     "libdoca_telemetry.a",
     ],
-    copts = ["-L /usr/lib/"],
+    copts = ["-L /usr/lib/x86_64-linux-gnu"],
     visibility = ["//visibility:public"],
     deps = [
         # "src/ray/thirdparty/"

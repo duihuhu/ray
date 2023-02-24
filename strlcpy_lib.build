@@ -1,7 +1,21 @@
 cc_library(
+    name = "libnl_lib",
+    srcs = ["libnl-3.a",
+    "libnl-route-3.a",
+    ],
+    copts = ["-L /usr/lib/x86_64-linux-gnu"],
+    visibility = ["//visibility:public"],
+)
+
+
+cc_library(
     name = "strlcpy_lib",
     srcs = ["libbsd.a",
     "libibverbs.a",
     "libmlx5.a",],
+    copts = ["-L /usr/lib/x86_64-linux-gnu"],
     visibility = ["//visibility:public"],
+    deps = [
+      ":libnl_lib"
+    ],
 )
