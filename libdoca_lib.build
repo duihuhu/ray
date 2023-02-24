@@ -30,4 +30,3 @@ cc_library(
         "@libverb_lib//:libverb"
     ],
 )
-

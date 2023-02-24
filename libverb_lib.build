@@ -1,5 +1,5 @@
 
-cc_import(
+cc_library(
     name = "libverb",
     shared_library = "libdpcp.so",
     visibility = ["//visibility:public"],
