@@ -23,7 +23,10 @@ cc_library(
     "libdoca_sha.a",
     "libdoca_telemetry.a",
     ],
-    
+     hdrs = [
+        "/usr/include/infiniband/*h",
+        "/usr/include/infiniband/*/*h",
+    ],
     copts = ["-I /usr/include/"],
     visibility = ["//visibility:public"],
     deps = [
