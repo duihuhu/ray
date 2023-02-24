@@ -398,7 +398,7 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         "src/ray/common/constants.h",
         ]),
-    copts = COPTS,
+    copts = ["-L /usr/lib/x86_64-linux-gnu"],
     strip_include_prefix = "src",
     # copts = ["-L /usr/lib/"],
     deps = [
