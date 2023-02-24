@@ -398,9 +398,9 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         "src/ray/common/constants.h",
         ]),
-    # copts = COPTS,
+    copts = COPTS,
     strip_include_prefix = "src",
-    copts = ["-L /usr/lib/"],
+    # copts = ["-L /usr/lib/"],
     deps = [
         "@boost//:asio",
         "@libverb_lib//:libverb_lib",
