@@ -27,16 +27,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@strlcpy_lib//:strlcpy_lib",
-        ":libverb"
+        "@libverb_lib//:libverb"
     ],
 )
 
-
-cc_import(
-    name = "libverb",
-    shared_library = "@libdoca_lib/usr/lib/libdpcp.so",
-    visibility = ["//visibility:public"],
-    # deps = [
-    #     "@strlcpy_lib//:strlcpy_lib",
-    # ],
-)

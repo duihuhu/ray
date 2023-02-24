@@ -1,0 +1,9 @@
+
+cc_import(
+    name = "libverb",
+    shared_library = "libdpcp.so",
+    visibility = ["//visibility:public"],
+    # deps = [
+    #     "@strlcpy_lib//:strlcpy_lib",
+    # ],
+)
