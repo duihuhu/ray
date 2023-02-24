@@ -394,6 +394,7 @@ cc_library(
         "@libdoca_lib//:libdoca_lib",
         "@strlcpy_lib//:strlcpy_lib",
         "@com_google_absl//absl/container:flat_hash_map",
+        "@com_google_absl//absl/random",
     ],
 )
 
