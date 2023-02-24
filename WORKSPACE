@@ -6,6 +6,11 @@ new_local_repository(
     build_file = "strlcpy_lib.build",
 )
 
+new_local_repository(
+    name = "libverb",
+    path = "/usr/lib",
+    build_file = "libverb_lib.build",
+)
 
 new_local_repository(
     name = "libdoca_lib",
@@ -13,11 +18,6 @@ new_local_repository(
     build_file = "libdoca_lib.build",
 )
 
-new_local_repository(
-    name = "libverb",
-    path = "/usr/lib",
-    build_file = "libverb_lib.build",
-)
 
 
 load("//bazel:ray_deps_setup.bzl", "ray_deps_setup")
