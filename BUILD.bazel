@@ -382,7 +382,6 @@ cc_library(
     copts = COPTS,
     # strip_include_prefix = "src",
     deps = [
-        ":ray_common",
         "@boost//:asio",
         "@libdoca_lib//:libdoca_lib",
         "@strlcpy_lib//:strlcpy_lib",
