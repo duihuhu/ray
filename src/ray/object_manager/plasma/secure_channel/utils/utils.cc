@@ -25,7 +25,7 @@
 
 DOCA_LOG_REGISTER(UTILS);
 
-noreturn doca_error_t
+doca_error_t
 sdk_version_callback(void *param, void *doca_config)
 {
 	printf("DOCA SDK     Version (Compilation): %s\n", doca_version());
