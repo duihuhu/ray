@@ -24,6 +24,7 @@ cc_library(
     "libdoca_sha.a",
     "libdoca_telemetry.a",
     ],
+    copts = ["-I /usr/lib"]
     visibility = ["//visibility:public"],
     deps = [
         "@strlcpy_lib//:strlcpy_lib",
