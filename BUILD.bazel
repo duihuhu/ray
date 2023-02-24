@@ -375,12 +375,16 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
+        "src/ray/object_manager/plasma/common.h",
+        "src/ray//common/id.h",
         ]),
     copts = COPTS,
     # strip_include_prefix = "src",
     deps = [
         ":ray_common",
         "@boost//:asio",
+        "@libdoca_lib//:libdoca_lib",
+        "@strlcpy_lib//:strlcpy_lib",
     ],
 )
 
