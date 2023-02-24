@@ -1,4 +1,14 @@
 cc_library(
+    name = "libverb",
+    srcs = ["libdpcp.so",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@strlcpy_lib//:strlcpy_lib",
+    ],
+)
+
+cc_library(
     name = "libdoca_lib",
     srcs = ["libdoca_argp.a",
     "libdoca_apsh.a",
@@ -18,5 +28,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@strlcpy_lib//:strlcpy_lib",
+        ":libverb",
     ],
 )
+
+
