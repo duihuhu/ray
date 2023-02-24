@@ -378,6 +378,7 @@ cc_library(
         "src/ray/object_manager/plasma/*.h",
         "src/ray/common/id.h",
         "src/ray/object_manager/*.h",
+        "src/ray/common/*.h",
         ]),
     copts = COPTS,
     # strip_include_prefix = "src",
