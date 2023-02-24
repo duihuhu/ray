@@ -380,6 +380,7 @@ cc_library(
         "src/ray/object_manager/plasma/compat.h",
         "src/ray/object_manager/plasma/plasma.h",
         "src/ray/object_manager/plasma/plasma_generated.h",
+        "src/ray/common/id_def.h",
     ] + glob(
         [
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
