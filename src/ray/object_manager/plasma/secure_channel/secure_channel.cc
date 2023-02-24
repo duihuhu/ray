@@ -34,7 +34,7 @@ struct cc_config {
 	char text[MAX_TXT_SIZE];				/* Text to send to Comm Channel server */
 };
 
-DOCA_LOG_REGISTER(SECURE_CHANNEL);
+// DOCA_LOG_REGISTER(SECURE_CHANNEL);
 
 using namespace ray;
 using namespace plasma;
