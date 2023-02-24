@@ -415,10 +415,10 @@ cc_library(
         "src/ray/object_manager/plasma/store.h",
         "src/ray/object_manager/plasma/store_runner.h",
         "src/ray/thirdparty/dlmalloc.c",
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
-        "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.c", 
-        "src/ray/object_manager/plasma/secure_channel/utils/utils.c", 
-        "src/ray/object_manager/plasma/secure_channel/samples/common.c", 
+        "src/ray/object_manager/plasma/secure_channel/secure_channel.cc",
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.cc", 
+        "src/ray/object_manager/plasma/secure_channel/utils/utils.cc", 
+        "src/ray/object_manager/plasma/secure_channel/samples/common.cc", 
 
     ] + glob(
         [
