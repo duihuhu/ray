@@ -7,6 +7,13 @@ new_local_repository(
 )
 
 new_local_repository(
+    name = "libibverbs",
+    path = "/usr/lib/x86_64-linux-gnu",
+    build_file = "strlcpy_lib.build",
+)
+
+
+new_local_repository(
     name = "strlcpy_lib",
     path = "/usr/lib/x86_64-linux-gnu",
     build_file = "strlcpy_lib.build",

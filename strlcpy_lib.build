@@ -2,10 +2,23 @@ cc_library(
     name = "libnl_lib",
     srcs = ["libnl-3.a",
     "libnl-route-3.a",
+    ],
+    copts = ["-L /usr/lib/x86_64-linux-gnu"],
+    visibility = ["//visibility:public"],
+)
+
+
+
+cc_library(
+    name = "libibverbs",
+    srcs = [
     "libibverbs.a",
     ],
     copts = ["-L /usr/lib/x86_64-linux-gnu"],
     visibility = ["//visibility:public"],
+    deps = [
+      ":libnl_lib",
+    ],
 )
 
 
@@ -16,6 +29,7 @@ cc_library(
     copts = ["-L /usr/lib/x86_64-linux-gnu"],
     visibility = ["//visibility:public"],
     deps = [
-      ":libnl_lib"
+      ":libnl_lib",
+      ":libibverbs",
     ],
 )
