@@ -385,7 +385,6 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
-        # "src/ray/object_manager/plasma/*.h",
         "src/ray/common/constants.h",
         ]),
     # copts = COPTS,
@@ -394,6 +393,7 @@ cc_library(
         "@boost//:asio",
         "@libdoca_lib//:libdoca_lib",
         "@strlcpy_lib//:strlcpy_lib",
+        "@com_google_absl//absl/container:flat_hash_map",
     ],
 )
 
