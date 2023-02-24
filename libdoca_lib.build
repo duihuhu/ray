@@ -1,11 +1,11 @@
-cc_library(
-    name = "libverb",
-    shared_library = "libdpcp.so",
-    visibility = ["//visibility:public"],
-    # deps = [
-    #     "@strlcpy_lib//:strlcpy_lib",
-    # ],
-)
+# cc_library(
+#     name = "libverb",
+#     shared_library = "libdpcp.so",
+#     visibility = ["//visibility:public"],
+#     # deps = [
+#     #     "@strlcpy_lib//:strlcpy_lib",
+#     # ],
+# )
 
 cc_library(
     name = "libdoca_lib",
@@ -24,7 +24,7 @@ cc_library(
     "libdoca_sha.a",
     "libdoca_telemetry.a",
     ],
-    copts = ["-I /usr/lib"]
+    copts = ["-I /usr/lib"],
     visibility = ["//visibility:public"],
     deps = [
         "@strlcpy_lib//:strlcpy_lib",
