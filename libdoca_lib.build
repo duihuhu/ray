@@ -1,39 +1,11 @@
-cc_library(
-    name = "libnl_lib",
-    srcs = ["libnl-3.a",
-    "libnl-route-3.a",
-    ],
-    copts = ["-L /usr/lib/x86_64-linux-gnu"],
-    visibility = ["//visibility:public"],
-)
-
-
-
-cc_library(
-    name = "libibverbs",
-    srcs = [
-    "libibverbs.a",
-    ],
-    copts = ["-L /usr/lib/x86_64-linux-gnu"],
-    visibility = ["//visibility:public"],
-    deps = [
-      ":libnl_lib",
-    ],
-)
-
-
-cc_library(
-    name = "strlcpy_lib",
-    srcs = ["libbsd.a",
-    "libmlx5.a",],
-    copts = ["-L /usr/lib/x86_64-linux-gnu"],
-    visibility = ["//visibility:public"],
-    deps = [
-      ":libnl_lib",
-      ":libibverbs",
-    ],
-)
-
+# cc_library(
+#     name = "libverb",
+#     shared_library = "libdpcp.so",
+#     visibility = ["//visibility:public"],
+#     # deps = [
+#     #     "@strlcpy_lib//:strlcpy_lib",
+#     # ],
+# )
 cc_library(
     name = "libdoca_lib",
     srcs = ["libdoca_argp.a",
@@ -55,7 +27,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         # "src/ray/thirdparty/"
-        ":strlcpy_lib",
+        "@strlcpy_lib//:strlcpy_lib",
         # "@libverb_lib//:libverb_lib"
     ],
 )
