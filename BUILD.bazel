@@ -408,6 +408,7 @@ cc_library(
         "@com_google_absl//absl/container:flat_hash_map",
         "@com_google_absl//absl/random",
         # "secure_channel_core_libs",
+        "@libverb_lib//:libverb_lib",
     ],
 )
 
@@ -469,6 +470,7 @@ cc_library(
         "@strlcpy_lib//:strlcpy_lib",
         ":secure_channel_libs",
         # ":secure_channel_core_libs",
+        "@libverb_lib//:libverb_lib",
     ],
 )
 
