@@ -52,8 +52,7 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	signal(SIGTERM, signal_handler);
 
 	/* Create Comm Channel endpoint */
-	// result = doca_comm_channel_ep_create(&ep);
-  result = doca_comm_channel_ep_create(ep);
+	result = doca_comm_channel_ep_create(&ep);
 
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to create Comm Channel client endpoint: %s", doca_get_error_string(result));
