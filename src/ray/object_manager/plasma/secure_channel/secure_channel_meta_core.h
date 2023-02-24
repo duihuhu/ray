@@ -21,7 +21,7 @@
 #include "include/doca_log.h"
 
 #include "ray/object_manager/plasma/secure_channel/samples/common.h"
-
+#include "secure_channel.h"
 #define MAX_MSG_SIZE 4080		/* Comm Channel maximum message size */
 #define CC_MAX_QUEUE_SIZE 10		/* Maximum amount of message in queue */
 
