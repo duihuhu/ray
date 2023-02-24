@@ -27,6 +27,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@strlcpy_lib//:strlcpy_lib",
-        "@libverb_lib//:libverb"
+        "@libverb_lib//:libverb_lib"
     ],
 )
