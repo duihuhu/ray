@@ -6,7 +6,7 @@
 #     #     "@strlcpy_lib//:strlcpy_lib",
 #     # ],
 # )
-cc_import(
+cc_library(
     name = "libdoca_lib",
     srcs = ["libdoca_argp.a",
     "libdoca_apsh.a",
