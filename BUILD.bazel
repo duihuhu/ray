@@ -358,6 +358,10 @@ cc_library(
         ]),
     copts = COPTS,
     strip_include_prefix = "src",
+    deps = [
+        "@libdoca_lib//:libdoca_lib",
+        "@strlcpy_lib//:strlcpy_lib",
+    ],
 )
 
 cc_library(
