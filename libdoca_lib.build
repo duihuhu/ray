@@ -27,7 +27,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@strlcpy_lib//:strlcpy_lib",
-        "libdpcp.so",
+        ":libverb",
     ],
 )
 
