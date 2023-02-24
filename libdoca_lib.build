@@ -1,11 +1,11 @@
-cc_import(
-    name = "libverb",
-    shared_library = "libdpcp.so.1.1.37",
-    visibility = ["//visibility:public"],
-    # deps = [
-    #     "@strlcpy_lib//:strlcpy_lib",
-    # ],
-)
+# cc_import(
+#     name = "libverb",
+#     shared_library = "libdpcp.so",
+#     visibility = ["//visibility:public"],
+#     # deps = [
+#     #     "@strlcpy_lib//:strlcpy_lib",
+#     # ],
+# )
 
 cc_library(
     name = "libdoca_lib",
@@ -27,7 +27,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@strlcpy_lib//:strlcpy_lib",
-        ":libverb",
+        "libdpcp.so",
     ],
 )
 
