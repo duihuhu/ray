@@ -400,7 +400,7 @@ cc_library(
         ]),
     # copts = COPTS,
     strip_include_prefix = "src",
-    copts = ["-I /usr/include/"],
+    copts = ["-I /usr/include/infiniband"],
     deps = [
         "@boost//:asio",
         "@libdoca_lib//:libdoca_lib",
