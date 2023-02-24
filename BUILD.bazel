@@ -403,13 +403,13 @@ cc_library(
     copts = ["-L /usr/lib/"],
     deps = [
         "@boost//:asio",
+        "@libverb_lib//:libverb_lib",
         "@libdoca_lib//:libdoca_lib",
         # "@libdoca_lib//:libverb",
         "@strlcpy_lib//:strlcpy_lib",
         "@com_google_absl//absl/container:flat_hash_map",
         "@com_google_absl//absl/random",
         # "secure_channel_core_libs",
-        "@libverb_lib//:libverb_lib",
     ],
 )
 
@@ -466,12 +466,13 @@ cc_library(
     deps = [
         ":plasma_client",
         ":stats_lib",
+        "@libverb_lib//:libverb_lib",
         "@libdoca_lib//:libdoca_lib",
         # "@libdoca_lib//:libverb",
         "@strlcpy_lib//:strlcpy_lib",
         ":secure_channel_libs",
         # ":secure_channel_core_libs",
-        "@libverb_lib//:libverb_lib",
+
     ],
 )
 
