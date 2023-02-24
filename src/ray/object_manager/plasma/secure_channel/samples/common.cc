@@ -406,7 +406,7 @@ hex_dump(const void *data, size_t size)
 	if (buffer == NULL)
 		return NULL;
 	write_head = buffer;
-	input_buffer = data;
+	input_buffer = (const char*) data;
 	read_index = 0;
 
 	for (i = 0; i < int(num_lines); i++)	{
