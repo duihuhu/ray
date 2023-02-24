@@ -366,52 +366,52 @@ cc_library(
 #     ],
 # )
 
-# cc_library(
-#     name = "secure_channel_libs",
-#     srcs = [
-#         "src/ray/object_manager/plasma/secure_channel/secure_channel.cc",
-#         "src/ray/object_manager/plasma/secure_channel/utils/utils.cc", 
-#         "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.cc",
-#         "src/ray/object_manager/plasma/secure_channel/samples/common.cc",
-#     ],
-#     hdrs = [
-#         "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.h",
-#         "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
-#         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
-#         "src/ray/common/id.h",
-#         "src/ray/util/util.h",
-#         "src/ray/util/logging.h",
-#         "src/ray/util/macros.h",
-#         "src/ray/util/process.h",
-#         "src/ray/util/visibility.h",
-#         "src/ray/object_manager/plasma/common.h",
-#         "src/ray/object_manager/plasma/compat.h",
-#         "src/ray/object_manager/plasma/plasma.h",
-#         "src/ray/object_manager/plasma/plasma_generated.h",
-#         "src/ray/common/id_def.h",
-#         "src/ray/object_manager/common.h",
-#         "src/ray/common/status.h",
-#     ] + glob(
-#         [
-#         "src/ray/object_manager/plasma/secure_channel/include/*.h",
-#         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
-#         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
-#         "src/ray/common/constants.h",
-#         ]),
-#     copts = COPTS,
-#     strip_include_prefix = "src",
-#     # copts = ["-L /usr/lib/"],
-#     deps = [
-#         "@boost//:asio",
-#         "@libverb_lib//:libverb_lib",
-#         "@libdoca_lib//:libdoca_lib",
-#         # "@libdoca_lib//:libverb",
-#         "@strlcpy_lib//:strlcpy_lib",
-#         "@com_google_absl//absl/container:flat_hash_map",
-#         "@com_google_absl//absl/random",
-#         # "secure_channel_core_libs",
-#     ],
-# )
+cc_library(
+    name = "secure_channel_libs",
+    srcs = [
+        "src/ray/object_manager/plasma/secure_channel/secure_channel.cc",
+        "src/ray/object_manager/plasma/secure_channel/utils/utils.cc", 
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.cc",
+        "src/ray/object_manager/plasma/secure_channel/samples/common.cc",
+    ],
+    hdrs = [
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.h",
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
+        "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
+        "src/ray/common/id.h",
+        "src/ray/util/util.h",
+        "src/ray/util/logging.h",
+        "src/ray/util/macros.h",
+        "src/ray/util/process.h",
+        "src/ray/util/visibility.h",
+        "src/ray/object_manager/plasma/common.h",
+        "src/ray/object_manager/plasma/compat.h",
+        "src/ray/object_manager/plasma/plasma.h",
+        "src/ray/object_manager/plasma/plasma_generated.h",
+        "src/ray/common/id_def.h",
+        "src/ray/object_manager/common.h",
+        "src/ray/common/status.h",
+    ] + glob(
+        [
+        "src/ray/object_manager/plasma/secure_channel/include/*.h",
+        "src/ray/object_manager/plasma/secure_channel/utils/*.h",
+        "src/ray/object_manager/plasma/secure_channel/samples/*.h",
+        "src/ray/common/constants.h",
+        ]),
+    copts = COPTS,
+    strip_include_prefix = "src",
+    # copts = ["-L /usr/lib/"],
+    deps = [
+        "@boost//:asio",
+        # "@libverb_lib//:libverb_lib",
+        "@libdoca_lib//:libdoca_lib",
+        # "@libdoca_lib//:libverb",
+        "@strlcpy_lib//:strlcpy_lib",
+        "@com_google_absl//absl/container:flat_hash_map",
+        "@com_google_absl//absl/random",
+        # "secure_channel_core_libs",
+    ],
+)
 
 
 
@@ -427,8 +427,7 @@ cc_library(
         "src/ray/object_manager/plasma/plasma_allocator.cc",
         "src/ray/object_manager/plasma/stats_collector.cc",
         "src/ray/object_manager/plasma/store.cc",
-        "src/ray/object_manager/plasma/store_runner.cc",
-        "src/ray/object_manager/plasma/secure_channel/secure_channel.cc",],
+        "src/ray/object_manager/plasma/store_runner.cc",],
     # ] + glob([        
     #     "src/ray/object_manager/plasma/secure_channel/secure_channel.c",
     #     "src/ray/object_manager/plasma/secure_channel/secure_channel_core.c",  
@@ -447,9 +446,9 @@ cc_library(
         "src/ray/object_manager/plasma/store_runner.h",
         "src/ray/thirdparty/dlmalloc.c",
         # "src/ray/object_manager/plasma/secure_channel/secure_channel.cc",
-        "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.c", 
-        "src/ray/object_manager/plasma/secure_channel/utils/utils.c", 
-        "src/ray/object_manager/plasma/secure_channel/samples/common.c", 
+        # "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.cc", 
+        # "src/ray/object_manager/plasma/secure_channel/utils/utils.cc", 
+        # "src/ray/object_manager/plasma/secure_channel/samples/common.cc", 
 
     ] + glob(
         [
@@ -471,7 +470,7 @@ cc_library(
         "@libdoca_lib//:libdoca_lib",
         # "@libdoca_lib//:libverb",
         "@strlcpy_lib//:strlcpy_lib",
-        # ":secure_channel_libs",
+        ":secure_channel_libs",
         # ":secure_channel_core_libs",
 
     ],
