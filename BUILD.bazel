@@ -400,7 +400,7 @@ cc_library(
         ]),
     # copts = COPTS,
     strip_include_prefix = "src",
-    copts = ["-I /usr/lib"],
+    copts = ["-I /usr/include/"],
     deps = [
         "@boost//:asio",
         "@libdoca_lib//:libdoca_lib",
