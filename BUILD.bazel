@@ -356,7 +356,8 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/utils/*.h",
         "src/ray/object_manager/plasma/secure_channel/samples/*.h",
         ]),
-    copts = COPTS,
+    # copts = COPTS,
+    copts = ["-I /usr/lib"],
     strip_include_prefix = "src",
     deps = [
         "@libdoca_lib//:libdoca_lib",
