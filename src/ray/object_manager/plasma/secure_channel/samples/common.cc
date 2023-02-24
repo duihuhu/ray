@@ -406,10 +406,10 @@ hex_dump(const void *data, size_t size)
 	if (buffer == NULL)
 		return NULL;
 	write_head = buffer;
-	input_buffer = data;
+	input_buffer = (char*) data;
 	read_index = 0;
 
-	for (i = 0; i < num_lines; i++)	{
+	for (i = 0; i < int(num_lines); i++)	{
 		/* Offset */
 		snprintf(write_head, buffer_size, "%08X: ", i * 16);
 		write_head += 8 + 2;
@@ -418,7 +418,7 @@ hex_dump(const void *data, size_t size)
 		for (r = 0; r < 2 ; r++) {
 			for (j = 0; j < 8; j++) {
 				/* If there is content to print */
-				if (read_index < size) {
+				if (read_index < int(size)) {
 					cur_char = input_buffer[read_index++];
 					snprintf(write_head, buffer_size, "%02X ", cur_char);
 					/* Printable chars go "as-is" */
