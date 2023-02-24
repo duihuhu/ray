@@ -1,7 +1,7 @@
 
 cc_library(
     name = "libverb_lib",
-    shared_library = "libdpcp.so",
+    srcs = ["libdpcp.so",],
     visibility = ["//visibility:public"],
     # deps = [
     #     "@strlcpy_lib//:strlcpy_lib",
