@@ -371,7 +371,7 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
         "src/ray/object_manager/plasma/common.h",
-        "src/ray//common/id.h",
+        "src/ray/common/id.h",
     ] + glob(
         [
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
