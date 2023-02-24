@@ -22,7 +22,7 @@
 // #include "secure_channel.h"
 #include "ray/common/id.h"
 #include "ray/object_manager/plasma/common.h"
-#include "secure_channel_meta_core.c"
+#include "secure_channel_meta_core.h"
 
 
 #define MAX_TXT_SIZE 4096					/* Maximum size of input text */
@@ -34,7 +34,7 @@ struct cc_config {
 	char text[MAX_TXT_SIZE];				/* Text to send to Comm Channel server */
 };
 
-// DOCA_LOG_REGISTER(SECURE_CHANNEL);
+DOCA_LOG_REGISTER(SECURE_CHANNEL);
 
 using namespace ray;
 using namespace plasma;

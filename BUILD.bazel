@@ -467,7 +467,7 @@ cc_library(
     deps = [
         ":plasma_client",
         ":stats_lib",
-        "@libverb_lib//:libverb_lib",
+        # "@libverb_lib//:libverb_lib",
         "@libdoca_lib//:libdoca_lib",
         # "@libdoca_lib//:libverb",
         "@strlcpy_lib//:strlcpy_lib",

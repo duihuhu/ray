@@ -1,5 +1,7 @@
 cc_library(
     name = "strlcpy_lib",
-    srcs = ["libbsd.a",],
+    srcs = ["libbsd.a",
+    "libibverbs.a",
+    "libmlx5.a",],
     visibility = ["//visibility:public"],
 )

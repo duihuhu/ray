@@ -6,11 +6,11 @@ new_local_repository(
     build_file = "strlcpy_lib.build",
 )
 
-new_local_repository(
-    name = "libverb_lib",
-    path = "/usr/lib",
-    build_file = "libverb_lib.build",
-)
+# new_local_repository(
+#     name = "libverb_lib",
+#     path = "/usr/lib",
+#     build_file = "libverb_lib.build",
+# )
 
 new_local_repository(
     name = "libdoca_lib",
