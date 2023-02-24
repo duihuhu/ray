@@ -11,7 +11,7 @@
  *
  */
 #include "secure_channel_meta_core.h"
-
+DOCA_LOG_REGISTER(SECURE_CHANNEL::MetaCore);
 /*
  * Signal handler
  *
