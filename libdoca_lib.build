@@ -8,6 +8,7 @@
 # )
 cc_import(
     name = "libverb",
+    path = "/usr/lib/"
     shared_library = "libdpcp.so",
     visibility = ["//visibility:public"],
     # deps = [
