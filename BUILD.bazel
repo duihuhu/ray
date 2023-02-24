@@ -377,8 +377,8 @@ cc_library(
         "src/ray/util/logging.h",
         "src/ray/util/macros.h",
         "src/ray/util/process.h",
-        "src/ray/util/visibility.h"
-        "src/ray/object_manager/plasma/common.h"
+        "src/ray/util/visibility.h",
+        "src/ray/object_manager/plasma/common.h",
         "src/ray/object_manager/plasma/compat.h",
         "src/ray/object_manager/plasma/plasma.h",
         "src/ray/object_manager/plasma/plasma_generated.h",
