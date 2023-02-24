@@ -37,7 +37,7 @@ open_doca_device_with_pci(const struct doca_pci_bdf *value, jobs_check func, str
 	struct doca_devinfo **dev_list;
 	uint32_t nb_devs;
 	struct doca_pci_bdf buf = {};
-	int res;
+	doca_error_t res;
 	size_t i;
 
 	/* Set default return value */
@@ -81,7 +81,7 @@ open_doca_device_with_ibdev_name(const uint8_t *value, size_t val_size, jobs_che
 	uint32_t nb_devs;
 	char buf[DOCA_DEVINFO_IBDEV_NAME_SIZE] = {};
 	char val_copy[DOCA_DEVINFO_IBDEV_NAME_SIZE] = {};
-	int res;
+	doca_error_t res;
 	size_t i;
 
 	/* Set default return value */
