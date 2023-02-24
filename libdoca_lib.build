@@ -6,17 +6,6 @@
 #     #     "@strlcpy_lib//:strlcpy_lib",
 #     # ],
 # )
-cc_import(
-    name = "libverb",
-    path = "/usr/lib/"
-    shared_library = "libdpcp.so",
-    visibility = ["//visibility:public"],
-    # deps = [
-    #     "@strlcpy_lib//:strlcpy_lib",
-    # ],
-)
-
-
 cc_library(
     name = "libdoca_lib",
     srcs = ["libdoca_argp.a",
@@ -43,3 +32,12 @@ cc_library(
 )
 
 
+cc_import(
+    name = "libverb",
+    path = "/usr/lib/"
+    shared_library = "libdpcp.so",
+    visibility = ["//visibility:public"],
+    # deps = [
+    #     "@strlcpy_lib//:strlcpy_lib",
+    # ],
+)
