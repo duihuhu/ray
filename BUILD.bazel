@@ -367,6 +367,8 @@ cc_library(
     ],
     hdrs = [
         "src/ray/object_manager/plasma/secure_channel/utils/utils.c", 
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.h",
+        "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
     ] + glob(
         [
         "src/ray/object_manager/plasma/secure_channel/include/*.h",
