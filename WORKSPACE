@@ -7,7 +7,7 @@ new_local_repository(
 )
 
 new_local_repository(
-    name = "libverb",
+    name = "libverb_lib",
     path = "/usr/lib",
     build_file = "libverb_lib.build",
 )
