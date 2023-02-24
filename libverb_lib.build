@@ -1,6 +1,6 @@
 
 cc_library(
-    name = "libverb",
+    name = "libverb_lib",
     shared_library = "libdpcp.so",
     visibility = ["//visibility:public"],
     # deps = [
