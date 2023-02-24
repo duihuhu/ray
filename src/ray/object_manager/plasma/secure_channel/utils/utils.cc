@@ -99,7 +99,7 @@ read_file(char const *path, char **out_bytes, size_t *out_bytes_len)
 		return DOCA_ERROR_INVALID_VALUE;
 	}
 
-	bytes = malloc(nb_file_bytes);
+	bytes = (char*) malloc(nb_file_bytes);
 	if (bytes == NULL) {
 		fclose(file);
 		return DOCA_ERROR_NO_MEMORY;
