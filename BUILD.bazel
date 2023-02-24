@@ -389,7 +389,7 @@ cc_library(
         "src/ray/common/constants.h",
         ]),
     # copts = COPTS,
-    # strip_include_prefix = "src",
+    strip_include_prefix = "src",
     deps = [
         "@boost//:asio",
         "@libdoca_lib//:libdoca_lib",
