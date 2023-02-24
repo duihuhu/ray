@@ -24,12 +24,12 @@
 #include <unordered_map>
 
 #include "gtest/gtest.h"
-#include "ray/common/id.h"
-#include "ray/object_manager/common.h"
-#include "ray/object_manager/plasma/compat.h"
-#include "ray/object_manager/plasma/plasma.h"
-#include "ray/object_manager/plasma/plasma_generated.h"
-#include "ray/util/macros.h"
+#include "src/ray/common/id.h"
+#include "src/ray/object_manager/common.h"
+#include "src/ray/object_manager/plasma/compat.h"
+#include "src/ray/object_manager/plasma/plasma.h"
+#include "src/ray/object_manager/plasma/plasma_generated.h"
+#include "src/ray/util/macros.h"
 
 namespace plasma {
 
