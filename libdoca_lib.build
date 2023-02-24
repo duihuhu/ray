@@ -26,6 +26,7 @@ cc_library(
     copts = ["-L /usr/lib/"],
     visibility = ["//visibility:public"],
     deps = [
+        # "src/ray/thirdparty/"
         "@strlcpy_lib//:strlcpy_lib",
         "@libverb_lib//:libverb_lib"
     ],
