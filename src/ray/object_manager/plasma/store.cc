@@ -154,14 +154,14 @@ void PlasmaStore::RunCommService(int index) {
       int result;
       absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
       ObjectID object_id = ObjectID::FromRandom();
-      RAY_CHECK(plasma_meta.count(object_id) == 0)
+      RAY_CHECK(plasma_meta->count(object_id) == 0)
       int64_t object_size = 100;
       bool fallback_allocate = false;
       auto allocation = fallback_allocate ? allocator_.FallbackAllocate(object_size)
                                           : allocator_.Allocate(object_size);
       auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
       auto entry =
-          plasma_meta.emplace(object_info.object_id, std::move(ptr)).first->second.get();
+          plasma_meta->emplace(object_info.object_id, std::move(ptr)).first->second.get();
 
       result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
       if (result == EXIT_FAILURE) {
