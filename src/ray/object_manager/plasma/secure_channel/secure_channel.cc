@@ -86,13 +86,14 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   doca_error_t result;
   const char *text = "hello";
   int client_msg_len = strlen(text) + 1;
-
+  std::cout
 	result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
   while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
 	       DOCA_ERROR_AGAIN) {
 		usleep(1);
 	}
 	if (result != DOCA_SUCCESS) {
+    std::cout<< "Message was not sent: ", doca_get_error_string(result)<<std::endl;
 		DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
     return EXIT_FAILURE;
 	}

@@ -165,7 +165,7 @@ void PlasmaStore::StartCommService() {
   // }
   periodical_runner_.RunFnPeriodically(
     [this]() { RunCommService(); },
-    1000, "get meta");
+    2000, "get meta");
 }
 
 void PlasmaStore::StopCommService(){
