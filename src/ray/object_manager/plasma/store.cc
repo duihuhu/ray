@@ -162,7 +162,7 @@ void PlasmaStore::RunCommService(int index) {
 }
 
 void PlasmaStore::StartCommService() {
-  comm_threads_ =  std::thread(&PlasmaStore::RunCommService, this, i);
+  comm_threads_ =  std::thread(&PlasmaStore::RunCommService, this, 1);
   // periodical_runner_.RunFnPeriodically(
   //   [this]() { RunCommService(); },
   //   2000, "get meta");
