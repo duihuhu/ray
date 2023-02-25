@@ -35,7 +35,7 @@ signal_handler(int signum)
  * @return: DOCA_SUCCESS on success and DOCA_ERROR otherwise
  */
 doca_error_t
-create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci_addr, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr)
+create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci_addr, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr)
 {
 	doca_error_t result;
 	// char rcv_buf[MAX_MSG_SIZE];
@@ -53,7 +53,7 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	signal(SIGTERM, signal_handler);
 
 	/* Create Comm Channel endpoint */
-	result = doca_comm_channel_ep_create(&ep);
+	result = doca_comm_channel_ep_create(ep);
 
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to create Comm Channel client endpoint: %s", doca_get_error_string(result));
@@ -69,38 +69,38 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	}
 
 	/* Set all endpoint properties */
-	result = doca_comm_channel_ep_set_device(ep, cc_dev);
+	result = doca_comm_channel_ep_set_device(*ep, cc_dev);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to set device property");
 		goto destroy_cc;
 	}
 
-	result = doca_comm_channel_ep_set_max_msg_size(ep, MAX_MSG_SIZE);
+	result = doca_comm_channel_ep_set_max_msg_size(*ep, MAX_MSG_SIZE);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to set max_msg_size property");
 		goto destroy_cc;
 	}
 
-	result = doca_comm_channel_ep_set_send_queue_size(ep, CC_MAX_QUEUE_SIZE);
+	result = doca_comm_channel_ep_set_send_queue_size(*ep, CC_MAX_QUEUE_SIZE);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to set snd_queue_size property");
 		goto destroy_cc;
 	}
 
-	result = doca_comm_channel_ep_set_recv_queue_size(ep, CC_MAX_QUEUE_SIZE);
+	result = doca_comm_channel_ep_set_recv_queue_size(*ep, CC_MAX_QUEUE_SIZE);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to set rcv_queue_size property");
 		goto destroy_cc;
 	}
 	/* Connect to server node */
-	result = doca_comm_channel_ep_connect(ep, server_name, &peer_addr);
+	result = doca_comm_channel_ep_connect(*ep, server_name, peer_addr);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Couldn't establish a connection with the server: %s", doca_get_error_string(result));
 		goto destroy_cc;
 	}
 
 	/* Make sure peer address is valid */
-	while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
+	while ((result = doca_comm_channel_peer_addr_update_info(*peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
 		if (end_sample) {
 			result = DOCA_ERROR_UNEXPECTED;
 			break;
@@ -114,7 +114,7 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	DOCA_LOG_INFO("Connection to server was established successfully");
 
 
-	result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+	result = doca_comm_channel_ep_sendto(*ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, *peer_addr);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Message was not send: %s", doca_get_error_string(result));
 		goto destroy_cc;
@@ -125,10 +125,10 @@ destroy_cc:
 
 	/* Disconnect from current connection */
 	if (peer_addr != NULL)
-		result = doca_comm_channel_ep_disconnect(ep, peer_addr);
+		result = doca_comm_channel_ep_disconnect(*ep, *peer_addr);
 
 	/* Destroy Comm Channel endpoint */
-	doca_comm_channel_ep_destroy(ep);
+	doca_comm_channel_ep_destroy(*ep);
 
 	/* Destroy Comm Channel DOCA device */
 	doca_dev_close(cc_dev);
