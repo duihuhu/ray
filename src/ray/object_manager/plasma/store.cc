@@ -169,9 +169,7 @@ void PlasmaStore::StartCommService() {
 }
 
 void PlasmaStore::StopCommService(){
-  for (int i = 0; i < 2; i++) {
-    comm_threads_[i].join();
-  }
+  comm_threads_.join();
 }
 
 void PlasmaStore::Stop() { acceptor_.close(); StopCommService();}
