@@ -107,18 +107,18 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 		}
 		usleep(1);
 	}
-	if (result != DOCA_SUCCESS) {
-		DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
-		return result;
-	}
-	DOCA_LOG_INFO("Connection to server was established successfully");
+	// if (result != DOCA_SUCCESS) {
+	// 	DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
+	// 	return result;
+	// }
+	// DOCA_LOG_INFO("Connection to server was established successfully");
 
 
-	result = doca_comm_channel_ep_sendto(*ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, *peer_addr);
-	if (result != DOCA_SUCCESS) {
-		DOCA_LOG_ERR("Message was not send: %s", doca_get_error_string(result));
-		goto destroy_cc;
-	}
+	// result = doca_comm_channel_ep_sendto(*ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, *peer_addr);
+	// if (result != DOCA_SUCCESS) {
+	// 	DOCA_LOG_ERR("Message was not send: %s", doca_get_error_string(result));
+	// 	goto destroy_cc;
+	// }
   return result;
   
 destroy_cc:
