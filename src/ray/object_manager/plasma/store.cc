@@ -142,7 +142,6 @@ void PlasmaStore::StartMetaCommClient() {
       std::cout<< "Fail in InitConnChannel With Server Name: " << meta_server_name_ <<"\n";
       return;
   }
-  std::cout<< "meta server name:" << meta_server_name_ <<"\n";
 }
 
 void PlasmaStore::RunCommService() {
@@ -150,8 +149,13 @@ void PlasmaStore::RunCommService() {
     // RAY_LOG(DEBUG) << "comm. server" << "\n";
     // std::cout<< "PlasmaStore comm. server" <<"\n";
     // std::cout<< std::this_thread::get_id() <<"\n";
+    int result;
     absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
-    PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+    result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+    if (result == EXIT_FAILURE) {
+        std::cout<< "Fail in sending meta data " <<"\n";
+        return;
+    }
 }
 
 void PlasmaStore::StartCommService() {

@@ -81,8 +81,22 @@ int InitConnChannel(const char *server_name, struct doca_comm_channel_ep_t *ep, 
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
 
-void PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta) {
-  std::cout<< "PushMetaToDpu" << std::endl;
+int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta) {
+  	/* Send hello message */
+  doca_error_t result;
+  const char *text = "hello";
+  int client_msg_len = strlen(text) + 1;
+
+	result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+  while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+	       DOCA_ERROR_AGAIN) {
+		usleep(1);
+	}
+	if (result != DOCA_SUCCESS) {
+		DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
+    return EXIT_FAILURE;
+	}
+  return EXIT_SUCCESS;
 }
 
 
