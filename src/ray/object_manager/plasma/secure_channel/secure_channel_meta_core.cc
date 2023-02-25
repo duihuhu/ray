@@ -112,6 +112,12 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	}
 	DOCA_LOG_INFO("Connection to server was established successfully");
 
+  const char *text = "hello";
+  int client_msg_len = strlen(text) + 1;
+  std::cout << "PushMetaToDpu in secure channel" << std::endl;
+	result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+
+
   return result;
 destroy_cc:
 
