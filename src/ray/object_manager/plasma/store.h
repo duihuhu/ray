@@ -314,7 +314,7 @@ class PlasmaStore {
 	struct doca_comm_channel_ep_t *ep;
 	struct doca_comm_channel_addr_t *peer_addr;
     /// The runner to run send meta periodically.
-  PeriodicalRunner periodical_runner_;
+  ray::PeriodicalRunner periodical_runner_;
 
 };
 
