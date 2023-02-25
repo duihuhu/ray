@@ -104,6 +104,7 @@ PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
             return GetDebugDump();
           }),
       total_consumed_bytes_(0),
+      periodical_runner_(main_service),
       get_request_queue_(
           io_context_,
           object_lifecycle_mgr_,
@@ -145,19 +146,22 @@ void PlasmaStore::StartMetaCommClient() {
 }
 
 void PlasmaStore::RunCommService(int index) {
-    SetThreadName("PlasmaStore comm.server" + std::to_string(index));
+    // SetThreadName("PlasmaStore comm.server" + std::to_string(index));
     // RAY_LOG(DEBUG) << "comm. server" << "\n";
     // std::cout<< "PlasmaStore comm. server" <<"\n";
     // std::cout<< std::this_thread::get_id() <<"\n";
     absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
-    PushMetaToDpu(plasma_meta);
+    PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
 }
 
 void PlasmaStore::StartCommService() {
-  comm_threads_.resize(2);
-  for (int i = 0; i < 2; i++) {
-    comm_threads_[i] =  std::thread(&PlasmaStore::RunCommService, this, i);
-  }
+  // comm_threads_.resize(2);
+  // for (int i = 0; i < 2; i++) {
+  //   comm_threads_[i] =  std::thread(&PlasmaStore::RunCommService, this, i);
+  // }
+  periodical_runner_.RunFnPeriodically(
+    [this]() { RunCommService(); },
+    "1000", "get meta");
 }
 
 void PlasmaStore::StopCommService(){

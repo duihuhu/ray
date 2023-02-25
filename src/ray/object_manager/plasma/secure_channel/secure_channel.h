@@ -24,4 +24,4 @@ int InitConnChannel(const char *name, struct doca_comm_channel_ep_t *ep, struct 
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
 
-void PushMetaToDpu(absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta);
+void PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta);

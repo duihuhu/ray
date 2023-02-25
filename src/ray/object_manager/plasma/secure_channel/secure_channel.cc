@@ -81,21 +81,12 @@ int InitConnChannel(const char *server_name, struct doca_comm_channel_ep_t *ep, 
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
 
-void PushMetaToDpu(absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta) {
-// 	struct sc_config app_cfg;
-// 	memset(&app_cfg, 0, sizeof(app_cfg));
-// 	struct cc_ctx ctx = {0};
-// 	doca_error_t result;
-// 	int exit_status = EXIT_SUCCESS;
-
-// #ifdef DOCA_ARCH_DPU
-// 	app_cfg.mode = SC_MODE_DPU;
-// #endif
-// 	DOCA_LOG_INFO("AAAAAAA");
-// 	/* Parse cmdline/json arguments */
-// 	result = doca_argp_init("secure_channel", &app_cfg);
-// 	return;
+void PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta) {
+  std::cout<< "PushMetaToDpu" << std::endl;
 }
+
+
+
 // int
 // main(int argc, char **argv)
 // {

@@ -312,6 +312,9 @@ class PlasmaStore {
   const char *meta_server_name_;
 	struct doca_comm_channel_ep_t *ep;
 	struct doca_comm_channel_addr_t *peer_addr;
+    /// The runner to run send meta periodically.
+  PeriodicalRunner periodical_runner_;
+
 };
 
 }  // namespace plasma
