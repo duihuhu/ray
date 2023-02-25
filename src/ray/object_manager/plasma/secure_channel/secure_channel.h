@@ -11,7 +11,7 @@
  *
  */
 
-
+#pragma once
 
 int InitConnChannel(const char *name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr);
 
