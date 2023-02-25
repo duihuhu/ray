@@ -119,7 +119,7 @@ PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
   if (event_stats_print_interval_ms > 0 && RayConfig::instance().event_stats()) {
     PrintAndRecordDebugDump();
   }
-  meta_server_name_ = (char*) malloc(META_NAME_LENGTH);
+  meta_server_name_ = "meta_server";
   ep = (struct doca_comm_channel_ep_t*)malloc(sizeof(struct doca_comm_channel_ep_t));
   peer_addr = (struct doca_comm_channel_addr_t *) malloc(sizeof(struct doca_comm_channel_addr_t);
 }
