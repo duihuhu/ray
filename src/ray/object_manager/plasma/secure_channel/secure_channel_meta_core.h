@@ -46,5 +46,5 @@ signal_handler(int signum);
  * @return: DOCA_SUCCESS on success and DOCA_ERROR otherwise
  */
 doca_error_t
-create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci_addr, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *addr);
+create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci_addr, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **addr);
 #endif
