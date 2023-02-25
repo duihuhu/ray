@@ -235,7 +235,7 @@ class PlasmaStore {
 
   std::string GetDebugDump() const EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
-  void RunCommService();
+  void RunCommService(int index);
 
   void StartCommService();
 
@@ -308,7 +308,7 @@ class PlasmaStore {
   GetRequestQueue get_request_queue_ GUARDED_BY(mutex_);
 
   // The thread pool used for running `comm_service`.
-  std::vector<std::thread> comm_threads_;
+  std::thread comm_threads_;
 
   const char *meta_server_name_;
 	struct doca_comm_channel_ep_t *ep;

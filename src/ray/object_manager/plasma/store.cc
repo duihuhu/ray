@@ -144,28 +144,28 @@ void PlasmaStore::StartMetaCommClient() {
   }
 }
 
-void PlasmaStore::RunCommService() {
-    // SetThreadName("PlasmaStore comm.server" + std::to_string(index));
+void PlasmaStore::RunCommService(int index) {
+    SetThreadName("send meta thread" + std::to_string(index));
     // RAY_LOG(DEBUG) << "comm. server" << "\n";
     // std::cout<< "PlasmaStore comm. server" <<"\n";
     // std::cout<< std::this_thread::get_id() <<"\n";
-    int result;
-    absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
-    result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
-    if (result == EXIT_FAILURE) {
-        std::cout<< "Fail in sending meta data " <<"\n";
-        return;
+    while(1){
+      int result;
+      absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
+      result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+      if (result == EXIT_FAILURE) {
+          std::cout<< "Fail in sending meta data " <<"\n";
+          return;
+      }
+      sleep(2);
     }
 }
 
 void PlasmaStore::StartCommService() {
-  // comm_threads_.resize(2);
-  // for (int i = 0; i < 2; i++) {
-  //   comm_threads_[i] =  std::thread(&PlasmaStore::RunCommService, this, i);
-  // }
-  periodical_runner_.RunFnPeriodically(
-    [this]() { RunCommService(); },
-    2000, "get meta");
+  comm_threads_ =  std::thread(&PlasmaStore::RunCommService, this, i);
+  // periodical_runner_.RunFnPeriodically(
+  //   [this]() { RunCommService(); },
+  //   2000, "get meta");
 }
 
 void PlasmaStore::StopCommService(){
