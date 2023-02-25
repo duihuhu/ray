@@ -150,6 +150,7 @@ void PlasmaStore::RunCommService(int index) {
     // std::cout<< "PlasmaStore comm. server" <<"\n";
     // std::cout<< std::this_thread::get_id() <<"\n";
     while(1){
+      std::cout<< "send meta thread" <<"\n";
       int result;
       absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
       result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
