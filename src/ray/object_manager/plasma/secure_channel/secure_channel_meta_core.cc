@@ -91,7 +91,7 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 		DOCA_LOG_ERR("Failed to set rcv_queue_size property");
 		goto destroy_cc;
 	}
-
+  return result;
 	// /* Connect to server node */
 	// result = doca_comm_channel_ep_connect(*ep, server_name, peer_addr);
 	// if (result != DOCA_SUCCESS) {

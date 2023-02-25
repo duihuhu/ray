@@ -43,6 +43,7 @@
 #include "ray/object_manager/plasma/protocol.h"
 // #include "secure_channel/secure_channel.h"
 #include "secure_channel/include/doca_comm_channel.h"
+#define META_NAME_LENGTH 20;
 
 namespace plasma {
 
@@ -308,7 +309,7 @@ class PlasmaStore {
   // The thread pool used for running `comm_service`.
   std::vector<std::thread> comm_threads_;
 
-  const char *meta_server_name_;
+  char *meta_server_name_;
 	struct doca_comm_channel_ep_t *ep;
 	struct doca_comm_channel_addr_t *peer_addr;
 };
