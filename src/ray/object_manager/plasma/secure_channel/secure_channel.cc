@@ -87,6 +87,19 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   const char *text = "hello";
   int client_msg_len = strlen(text) + 1;
   std::cout << "PushMetaToDpu in secure channel" << std::endl;
+  /* Make sure peer address is valid */
+    while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
+      // if (end_sample) {
+      //   result = DOCA_ERROR_UNEXPECTED;
+      //   break;
+      // }
+      usleep(1);
+    }
+    if (result != DOCA_SUCCESS) {
+      DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
+      return result;
+    }
+
 	result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
   while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
 	       DOCA_ERROR_AGAIN) {
