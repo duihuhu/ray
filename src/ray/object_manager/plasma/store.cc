@@ -161,7 +161,7 @@ void PlasmaStore::RunCommService(int index) {
                                           : allocator_.Allocate(object_size);
       auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
       auto entry =
-          plasma_meta->emplace(object_info.object_id, std::move(ptr)).first->second.get();
+          plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
 
       result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
       if (result == EXIT_FAILURE) {
