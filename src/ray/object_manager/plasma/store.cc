@@ -121,7 +121,7 @@ PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
   }
   meta_server_name_ = "meta_server";
   ep = (struct doca_comm_channel_ep_t*)malloc(sizeof(struct doca_comm_channel_ep_t));
-  peer_addr = (struct doca_comm_channel_addr_t *) malloc(sizeof(struct doca_comm_channel_addr_t);
+  peer_addr = (struct doca_comm_channel_addr_t *) malloc(sizeof(struct doca_comm_channel_addr_t));
 }
 
 // TODO(pcm): Get rid of this destructor by using RAII to clean up data.
@@ -136,7 +136,7 @@ void PlasmaStore::Start() {
 
 void PlasmaStore::StartMetaCommClient() {
   int result;
-  std::cout<< "ep before init:" << ep <<"\n";
+  std::cout<< "ep before init:" << *peer_addr <<"\n";
 
   result = InitConnChannel(meta_server_name_, ep, peer_addr);
   if (result == EXIT_FAILURE) {
@@ -145,7 +145,7 @@ void PlasmaStore::StartMetaCommClient() {
   }
   std::cout<< "meta server name:" << meta_server_name_ <<"\n";
 
-  std::cout<< "ep before init:" << ep <<"\n";
+  std::cout<< "ep before init:" << *peer_addr <<"\n";
 }
 
 void PlasmaStore::RunCommService(int index) {
