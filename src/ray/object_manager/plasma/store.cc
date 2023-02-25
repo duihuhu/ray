@@ -120,8 +120,8 @@ PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
     PrintAndRecordDebugDump();
   }
   meta_server_name_ = "meta_server";
-  ep = (struct doca_comm_channel_ep_t*)malloc(sizeof(struct doca_comm_channel_ep_t));
-  peer_addr = (struct doca_comm_channel_addr_t *) malloc(sizeof(struct doca_comm_channel_addr_t));
+  ep = NULL;
+  peer_addr = NULL;
 }
 
 // TODO(pcm): Get rid of this destructor by using RAII to clean up data.
