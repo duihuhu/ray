@@ -64,7 +64,7 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	result = open_doca_device_with_pci(dev_pci_addr, NULL, &cc_dev);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to open Comm Channel DOCA device based on PCI address");
-		doca_comm_channel_ep_destroy(ep);
+		doca_comm_channel_ep_destroy(*ep);
 		return result;
 	}
 
