@@ -136,16 +136,12 @@ void PlasmaStore::Start() {
 
 void PlasmaStore::StartMetaCommClient() {
   int result;
-  std::cout<< "ep before init:" << *peer_addr <<"\n";
-
   result = InitConnChannel(meta_server_name_, ep, peer_addr);
   if (result == EXIT_FAILURE) {
       std::cout<< "Fail in InitConnChannel With Server Name: " << meta_server_name_ <<"\n";
       return;
   }
   std::cout<< "meta server name:" << meta_server_name_ <<"\n";
-
-  std::cout<< "ep before init:" << *peer_addr <<"\n";
 }
 
 void PlasmaStore::RunCommService(int index) {
