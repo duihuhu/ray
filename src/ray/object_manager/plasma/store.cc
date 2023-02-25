@@ -145,7 +145,7 @@ void PlasmaStore::StartMetaCommClient() {
   std::cout<< "meta server name:" << meta_server_name_ <<"\n";
 }
 
-void PlasmaStore::RunCommService(int index) {
+void PlasmaStore::RunCommService() {
     // SetThreadName("PlasmaStore comm.server" + std::to_string(index));
     // RAY_LOG(DEBUG) << "comm. server" << "\n";
     // std::cout<< "PlasmaStore comm. server" <<"\n";

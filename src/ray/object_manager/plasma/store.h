@@ -235,7 +235,7 @@ class PlasmaStore {
 
   std::string GetDebugDump() const EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
-  void RunCommService(int index);
+  void RunCommService();
 
   void StartCommService();
 
