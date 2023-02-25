@@ -162,6 +162,9 @@ void PlasmaStore::RunCommService(int index) {
       if (!allocation.has_value()) {
         std::cout<< "allocation no value" <<"\n";
       }
+      std::cout << "allocation address: " << allocation.address  << "allocation size: " << allocation.size  \
+        << "allocation device_num: " << allocation.device_num  << "allocation mmap_size: " << allocation.mmap_size;
+
       auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
       auto entry =
           plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
