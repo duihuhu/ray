@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <stdbool.h>
-
+#include <iostream>
 #include "include/doca_comm_channel.h"
 #include "include/doca_log.h"
 
