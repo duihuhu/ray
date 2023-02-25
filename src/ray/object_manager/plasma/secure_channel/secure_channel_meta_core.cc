@@ -46,7 +46,8 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	// struct doca_comm_channel_ep_t *ep;
 	// struct doca_comm_channel_addr_t *peer_addr;
 	struct doca_dev *cc_dev = NULL;
-
+  const char *text = "hello";
+  int client_msg_len = strlen(text) + 1;
 	/* Signal the while loop to stop */
 	signal(SIGINT, signal_handler);
 	signal(SIGTERM, signal_handler);
@@ -112,8 +113,7 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	}
 	DOCA_LOG_INFO("Connection to server was established successfully");
 
-  const char *text = "hello";
-  int client_msg_len = strlen(text) + 1;
+
 	result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Message was not send: %s", doca_get_error_string(result));
