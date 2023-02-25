@@ -158,7 +158,7 @@ void PlasmaStore::RunCommService(int index) {
           std::cout<< "Fail in sending meta data " <<"\n";
           return;
       }
-      std::cout<< "send meta thread1" <<"\n";
+      // std::cout<< "send meta thread1" <<"\n";
       sleep(2);
     }
 }
