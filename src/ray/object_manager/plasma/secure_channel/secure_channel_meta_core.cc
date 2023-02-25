@@ -92,14 +92,14 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 		goto destroy_cc;
 	}
 	/* Connect to server node */
-	result = doca_comm_channel_ep_connect(*ep, server_name, peer_addr);
+	result = doca_comm_channel_ep_connect(ep, server_name, &peer_addr);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Couldn't establish a connection with the server: %s", doca_get_error_string(result));
 		goto destroy_cc;
 	}
 
 	/* Make sure peer address is valid */
-	while ((result = doca_comm_channel_peer_addr_update_info(*peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
+	while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
 		if (end_sample) {
 			result = DOCA_ERROR_UNEXPECTED;
 			break;
@@ -111,7 +111,7 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 		return result;
 	}
 	DOCA_LOG_INFO("Connection to server was established successfully");
-  
+
   return result;
 destroy_cc:
 
