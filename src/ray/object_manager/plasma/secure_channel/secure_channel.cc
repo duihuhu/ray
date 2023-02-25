@@ -64,7 +64,7 @@ int InitConnChannel(const char *server_name, struct doca_comm_channel_ep_t *ep, 
 	}
 
   	/* Start the client */
-	result = create_comm_channel_client(server_name, &dev_pcie, cfg.text, ep, peer_addr);
+	result = create_comm_channel_client(server_name, &dev_pcie, ep, peer_addr);
 	if (result != DOCA_SUCCESS) {
 		doca_argp_destroy();
 		return EXIT_FAILURE;
