@@ -161,8 +161,6 @@ void PlasmaStore::RunCommService(int index) {
                                           : allocator_.Allocate(object_size);
       if (!allocation.has_value()) {
         std::cout<< "allocation no value" <<"\n";
-      } else {
-        std::cout<< "allocation value: " << allocation.value() << "\n";
       }
       auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
       auto entry =
