@@ -43,6 +43,7 @@
 #include "ray/object_manager/plasma/protocol.h"
 // #include "secure_channel/secure_channel.h"
 #include "secure_channel/include/doca_comm_channel.h"
+#include "ray/common/asio/periodical_runner.h"
 // #define META_NAME_LENGTH 20;
 
 namespace plasma {
