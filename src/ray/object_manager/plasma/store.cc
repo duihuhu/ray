@@ -185,8 +185,9 @@ void PlasmaStore::RunCommService(int index) {
       // }
       // std::cout<< "send meta thread1" <<"\n";
       sleep(2);
+      ++count;
     }
-    ++count;
+
 }
 
 void PlasmaStore::StartCommService() {
