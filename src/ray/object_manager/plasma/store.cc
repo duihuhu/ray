@@ -146,6 +146,7 @@ void PlasmaStore::StartMetaCommClient() {
 
 void PlasmaStore::RunCommService(int index) {
     SetThreadName("send meta thread" + std::to_string(index));
+    int count = 0;
     while(1){
       // std::cout<< "send meta thread" <<"\n";
       int result;
@@ -174,7 +175,7 @@ void PlasmaStore::RunCommService(int index) {
       for (auto &entry : *plasma_meta) {
         ObjectID object_id = entry.first;
         const Allocation &allocation = entry.second->GetAllocation();
-        std::cout << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation.address << std::endl;
+        std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " time count: " << count <<std::endl;
       }
 
       // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
@@ -185,6 +186,7 @@ void PlasmaStore::RunCommService(int index) {
       // std::cout<< "send meta thread1" <<"\n";
       sleep(2);
     }
+    ++count;
 }
 
 void PlasmaStore::StartCommService() {
