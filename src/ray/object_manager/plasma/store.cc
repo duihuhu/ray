@@ -165,11 +165,13 @@ void PlasmaStore::RunCommService(int index) {
       // auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
       // auto entry =
       //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
-
+      if ( plasma_meta == NULL) {
+        std::cout << "plasma_meta is NULL" <<  std::endl;
+      }
       for (auto &entry : *plasma_meta) {
         ObjectID object_id = entry.first;
         const Allocation &allocation = entry.second->GetAllocation();
-        RAY_LOG(WARNING) << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation.address << "endl";
+        std::cout << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation.address << std::endl;
       }
 
       result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
