@@ -151,7 +151,7 @@ void PlasmaStore::RunCommService(int index) {
       // std::cout<< "send meta thread" <<"\n";
       int result;
       absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
-      std::cout<< "plasma_meta address " << plasma_meta <<std::endl;
+      // std::cout<< "plasma_meta address " << plasma_meta <<std::endl;
       // ObjectID object_id = ObjectID::FromRandom();
       // RAY_CHECK(plasma_meta->count(object_id) == 0);
       // int64_t object_size = 100;
@@ -175,15 +175,15 @@ void PlasmaStore::RunCommService(int index) {
       for (auto &entry : *plasma_meta) {
         ObjectID object_id = entry.first;
         const Allocation &allocation = entry.second->GetAllocation();
-        std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " time count: " << count <<std::endl;
+        std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " size " << allocation.size <<" time count: " << count <<std::endl;
       }
 
-      // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
-      // if (result == EXIT_FAILURE) {
-      //     std::cout<< "Fail in sending meta data " <<"\n";
-      //     return;
-      // }
-      // std::cout<< "send meta thread1" <<"\n";
+      result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+      if (result == EXIT_FAILURE) {
+          std::cout<< "Fail in sending meta data " <<"\n";
+          return;
+      }
+      std::cout<< "send meta thread1" <<"\n";
       sleep(2);
       ++count;
     }
