@@ -106,8 +106,8 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     return result;
   }
 
-	result = doca_comm_channel_ep_sendto(ep, &object_id,  msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
-  while ((result = doca_comm_channel_ep_sendto(ep, &object_id, msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+	result = doca_comm_channel_ep_sendto(ep, &text,  client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+  while ((result = doca_comm_channel_ep_sendto(ep, &text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
 	       DOCA_ERROR_AGAIN) {
 		usleep(1);
 	}
