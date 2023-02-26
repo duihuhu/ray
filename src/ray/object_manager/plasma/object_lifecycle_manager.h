@@ -144,7 +144,7 @@ class ObjectLifecycleManager : public IObjectLifecycleManager {
   void GetDebugDump(std::stringstream &buffer) const;
 
   // hucc GetPlasmaMeta
-  void GetPlasmaMeta( absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  &plasma_meta);
+  void GetPlasmaMeta(absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  &plasma_meta);
 
  private:
   // Test only
