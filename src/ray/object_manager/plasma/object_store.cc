@@ -96,7 +96,7 @@ void ObjectStore::GetPlasmaMeta(absl::flat_hash_map<ObjectID, std::unique_ptr<Lo
   //   const Allocation &allocation = entry.second->GetAllocation();
   //   RAY_LOG(WARNING) << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation.address << "endl";
   // }
-  plasma_meta = &object_table_;
+  plasma_meta = object_table_;
   return;
 }
 
