@@ -68,7 +68,7 @@ class IObjectStore {
   ///   - true if deleted.
   virtual bool DeleteObject(const ObjectID &object_id) = 0;
 
-  virtual GetPlasmaMeta(absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  &plasma_meta) = 0;
+  virtual void GetPlasmaMeta(absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  &plasma_meta) = 0;
 };
 
 // ObjectStore implements IObjectStore. It uses IAllocator
