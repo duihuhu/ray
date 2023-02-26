@@ -88,23 +88,26 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   doca_error_t result;
   const char *text = "hello";
   int client_msg_len = strlen(text) + 1;
-  std::cout << "PushMetaToDpu in secure channel" << std::endl;
+  size_t msg_len = sizeof(object_id);
+  // std::cout << "PushMetaToDpu in secure channel" << std::endl;
   /* Make sure peer address is valid */
   while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
     // if (end_sample) {
     //   result = DOCA_ERROR_UNEXPECTED;
     //   break;
     // }
-    
+
     usleep(1);
   }
+  std::cout << "send object id " << object_id << " msg_len " << msg_len << std::endl;
+
   if (result != DOCA_SUCCESS) {
     DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
     return result;
   }
 
-	result = doca_comm_channel_ep_sendto(ep, &object_id, sizeof(object_id), DOCA_CC_MSG_FLAG_NONE, peer_addr);
-  while ((result = doca_comm_channel_ep_sendto(ep, &object_id, sizeof(object_id), DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+	result = doca_comm_channel_ep_sendto(ep, &object_id,  msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+  while ((result = doca_comm_channel_ep_sendto(ep, &object_id, msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
 	       DOCA_ERROR_AGAIN) {
 		usleep(1);
 	}
