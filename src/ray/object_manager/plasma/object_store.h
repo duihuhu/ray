@@ -88,7 +88,7 @@ class ObjectStore : public IObjectStore {
   bool DeleteObject(const ObjectID &object_id) override;
 
   // hucc GetPlasmaMeta
-  absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() override;
+  void GetPlasmaMeta(absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *plasma_meta) override;
 
  private:
   friend struct ObjectStatsCollectorTest;

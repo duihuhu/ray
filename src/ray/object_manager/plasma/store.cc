@@ -149,7 +149,8 @@ void PlasmaStore::RunCommService(int index) {
     while(1){
       // std::cout<< "send meta thread" <<"\n";
       int result;
-      absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
+      absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> plasma_meta;
+      object_lifecycle_mgr_.GetPlasmaMeta(&plasma_meta);
       // ObjectID object_id = ObjectID::FromRandom();
       // RAY_CHECK(plasma_meta->count(object_id) == 0);
       // int64_t object_size = 100;
@@ -165,7 +166,7 @@ void PlasmaStore::RunCommService(int index) {
       // auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
       // auto entry =
       //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
-      if ( (*plasma_meta)->empty() ) {
+      if ( plasma_meta->empty() ) {
         std::cout << "plasma_meta is NULL" <<  std::endl;
       } else {
         std::cout << "plasma_meta is not NULL" <<  std::endl;
@@ -420,13 +421,6 @@ void PlasmaStore::DisconnectClient(const std::shared_ptr<Client> &client) {
 
   create_request_queue_.RemoveDisconnectedClientRequests(client);
 }
-
-
-
-absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *PlasmaStore::GetPlasmaMeta() {
-    return object_lifecycle_mgr_.GetPlasmaMeta();
-}
-
 
 Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
                                    fb::MessageType type,
