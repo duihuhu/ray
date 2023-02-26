@@ -1,0 +1,444 @@
+Non-user install because site-packages writeable
+Created temporary directory: /tmp/pip-ephem-wheel-cache-tbovd3kx
+Created temporary directory: /tmp/pip-req-tracker-bju9othn
+Initialized build tracking at /tmp/pip-req-tracker-bju9othn
+Created build tracker: /tmp/pip-req-tracker-bju9othn
+Entered build tracker: /tmp/pip-req-tracker-bju9othn
+Created temporary directory: /tmp/pip-install-575qkwnj
+Obtaining file:///home/hucc/ray/python
+  Added file:///home/hucc/ray/python to build tracker '/tmp/pip-req-tracker-bju9othn'
+    Running setup.py (path:/home/hucc/ray/python/setup.py) egg_info for package from file:///home/hucc/ray/python
+    Running command python setup.py egg_info
+    running egg_info
+    writing ray.egg-info/PKG-INFO
+    writing dependency_links to ray.egg-info/dependency_links.txt
+    writing entry points to ray.egg-info/entry_points.txt
+    writing requirements to ray.egg-info/requires.txt
+    writing top-level names to ray.egg-info/top_level.txt
+    reading manifest file 'ray.egg-info/SOURCES.txt'
+    reading manifest template 'MANIFEST.in'
+    writing manifest file 'ray.egg-info/SOURCES.txt'
+  Source in /home/hucc/ray/python has version 3.0.0.dev0, which satisfies requirement ray==3.0.0.dev0 from file:///home/hucc/ray/python
+  Removed ray==3.0.0.dev0 from file:///home/hucc/ray/python from build tracker '/tmp/pip-req-tracker-bju9othn'
+Requirement already satisfied: aiosignal in /usr/local/lib/python3.8/dist-packages (from ray==3.0.0.dev0) (1.3.1)
+Requirement already satisfied: attrs in /usr/lib/python3/dist-packages (from ray==3.0.0.dev0) (19.3.0)
+Requirement already satisfied: click<=8.0.4,>=7.0 in /usr/lib/python3/dist-packages (from ray==3.0.0.dev0) (7.0)
+Requirement already satisfied: filelock in /usr/local/lib/python3.8/dist-packages (from ray==3.0.0.dev0) (3.9.0)
+Requirement already satisfied: frozenlist in /usr/local/lib/python3.8/dist-packages (from ray==3.0.0.dev0) (1.3.3)
+Requirement already satisfied: jsonschema in /usr/lib/python3/dist-packages (from ray==3.0.0.dev0) (3.2.0)
+Requirement already satisfied: msgpack<2.0.0,>=1.0.0 in /usr/local/lib/python3.8/dist-packages (from ray==3.0.0.dev0) (1.0.4)
+Requirement already satisfied: protobuf<4.0.0,>=3.15.3 in /usr/local/lib/python3.8/dist-packages (from ray==3.0.0.dev0) (3.20.3)
+Requirement already satisfied: pyyaml in /usr/lib/python3/dist-packages (from ray==3.0.0.dev0) (5.3.1)
+Requirement already satisfied: requests in /usr/lib/python3/dist-packages (from ray==3.0.0.dev0) (2.22.0)
+Requirement already satisfied: virtualenv>=20.0.24 in /usr/local/lib/python3.8/dist-packages (from ray==3.0.0.dev0) (20.19.0)
+Requirement already satisfied: grpcio<=1.43.0,>=1.32.0 in /usr/local/lib/python3.8/dist-packages (from ray==3.0.0.dev0) (1.43.0)
+Requirement already satisfied: numpy>=1.16 in /usr/local/lib/python3.8/dist-packages (from ray==3.0.0.dev0) (1.24.2)
+Requirement already satisfied: distlib<1,>=0.3.6 in /usr/local/lib/python3.8/dist-packages (from virtualenv>=20.0.24->ray==3.0.0.dev0) (0.3.6)
+Requirement already satisfied: platformdirs<4,>=2.4 in /usr/local/lib/python3.8/dist-packages (from virtualenv>=20.0.24->ray==3.0.0.dev0) (3.0.0)
+Requirement already satisfied: six>=1.5.2 in /usr/lib/python3/dist-packages (from grpcio<=1.43.0,>=1.32.0->ray==3.0.0.dev0) (1.14.0)
+Installing collected packages: ray
+  Attempting uninstall: ray
+    Found existing installation: ray 3.0.0.dev0
+    Not sure how to uninstall: ray 3.0.0.dev0 - Check: /home/hucc/ray/python
+    Can't uninstall 'ray'. No files were found to uninstall.
+  Running setup.py develop for ray
+    Running command /usr/bin/python3 -c 'import sys, setuptools, tokenize; sys.argv[0] = '"'"'/home/hucc/ray/python/setup.py'"'"'; __file__='"'"'/home/hucc/ray/python/setup.py'"'"';f=getattr(tokenize, '"'"'open'"'"', open)(__file__);code=f.read().replace('"'"'\r\n'"'"', '"'"'\n'"'"');f.close();exec(compile(code, __file__, '"'"'exec'"'"'))' develop --no-deps
+    running develop
+    running egg_info
+    writing ray.egg-info/PKG-INFO
+    writing dependency_links to ray.egg-info/dependency_links.txt
+    writing entry points to ray.egg-info/entry_points.txt
+    writing requirements to ray.egg-info/requires.txt
+    writing top-level names to ray.egg-info/top_level.txt
+    reading manifest file 'ray.egg-info/SOURCES.txt'
+    reading manifest template 'MANIFEST.in'
+    writing manifest file 'ray.egg-info/SOURCES.txt'
+    running build_ext
+    WARNING: Target directory /home/hucc/ray/python/ray/thirdparty_files/psutil already exists. Specify --upgrade to force replacement.
+    WARNING: Target directory /home/hucc/ray/python/ray/thirdparty_files/setproctitle.cpython-38-x86_64-linux-gnu.so already exists. Specify --upgrade to force replacement.
+    WARNING: Target directory /home/hucc/ray/python/ray/thirdparty_files/colorama already exists. Specify --upgrade to force replacement.
+    WARNING: Target directory /home/hucc/ray/python/ray/thirdparty_files/setproctitle-1.2.2.dist-info already exists. Specify --upgrade to force replacement.
+    WARNING: Target directory /home/hucc/ray/python/ray/thirdparty_files/psutil-5.9.4.dist-info already exists. Specify --upgrade to force replacement.
+    WARNING: Target directory /home/hucc/ray/python/ray/thirdparty_files/colorama-0.4.6.dist-info already exists. Specify --upgrade to force replacement.
+    Loading:
+    Loading: 0 packages loaded
+    DEBUG: /home/hucc/ray/bazel/ray_deps_setup.bzl:67:14: No implicit mirrors used because urls were explicitly provided
+    Analyzing: 2 targets (0 packages loaded, 0 targets configured)
+    INFO: Analyzed 2 targets (0 packages loaded, 0 targets configured).
+    INFO: Found 2 targets...
+    [0 / 3] [Prepa] BazelWorkspaceStatusAction stable-status.txt
+    [681 / 688] Compiling src/ray/object_manager/plasma/secure_channel/secure_channel.cc; 1s linux-sandbox ... (2 actions running)
+    INFO: From Compiling src/ray/object_manager/plasma/secure_channel/secure_channel.cc:
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc: In function 'void DOCA_LOG_CTOR___FILE__()':
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:588:48: warning: 'doca_error_t doca_log_source_register(const char*, int*)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      588 |   doca_log_source_register(#SOURCE, &log_source);                                                        \
+          |                                                ^
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:36:1: note: in expansion of macro 'DOCA_LOG_REGISTER'
+       36 | DOCA_LOG_REGISTER(SECURE_CHANNEL);
+          | ^~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:169:14: note: declared here
+      169 | doca_error_t doca_log_source_register(const char *source_name, int *source);
+          |              ^~~~~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:588:48: warning: 'doca_error_t doca_log_source_register(const char*, int*)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      588 |   doca_log_source_register(#SOURCE, &log_source);                                                        \
+          |                                                ^
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:36:1: note: in expansion of macro 'DOCA_LOG_REGISTER'
+       36 | DOCA_LOG_REGISTER(SECURE_CHANNEL);
+          | ^~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:169:14: note: declared here
+      169 | doca_error_t doca_log_source_register(const char *source_name, int *source);
+          |              ^~~~~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc: In function 'void DOCA_LOG_DTOR___FILE__()':
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:593:37: warning: 'doca_error_t doca_log_source_destroy(int)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      593 |   doca_log_source_destroy(log_source);                                                                   \
+          |                                     ^
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:36:1: note: in expansion of macro 'DOCA_LOG_REGISTER'
+       36 | DOCA_LOG_REGISTER(SECURE_CHANNEL);
+          | ^~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:184:14: note: declared here
+      184 | doca_error_t doca_log_source_destroy(int source);
+          |              ^~~~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:593:37: warning: 'doca_error_t doca_log_source_destroy(int)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      593 |   doca_log_source_destroy(log_source);                                                                   \
+          |                                     ^
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:36:1: note: in expansion of macro 'DOCA_LOG_REGISTER'
+       36 | DOCA_LOG_REGISTER(SECURE_CHANNEL);
+          | ^~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:184:14: note: declared here
+      184 | doca_error_t doca_log_source_destroy(int source);
+          |              ^~~~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc: In function 'int InitConnChannel(const char*, doca_comm_channel_ep_t**, doca_comm_channel_addr_t**)':
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:61:90: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       61 |   DOCA_LOG_ERR("Failed to parse the device PCI address: %s", doca_get_error_string(result));
+          |                                                                                          ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:103: note: in definition of macro 'DOCA_LOG'
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                       ^~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:61:3: note: in expansion of macro 'DOCA_LOG_ERR'
+       61 |   DOCA_LOG_ERR("Failed to parse the device PCI address: %s", doca_get_error_string(result));
+          |   ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:61:90: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       61 |   DOCA_LOG_ERR("Failed to parse the device PCI address: %s", doca_get_error_string(result));
+          |                                                                                          ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:103: note: in definition of macro 'DOCA_LOG'
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                       ^~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:61:3: note: in expansion of macro 'DOCA_LOG_ERR'
+       61 |   DOCA_LOG_ERR("Failed to parse the device PCI address: %s", doca_get_error_string(result));
+          |   ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:114: warning: 'doca_error_t doca_log(uint32_t, int, int, const char*, ...)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                                  ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:422:35: note: in expansion of macro 'DOCA_LOG'
+      422 | #define DOCA_LOG_ERR(format, ...) DOCA_LOG(ERROR, format, ##__VA_ARGS__)
+          |                                   ^~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:61:3: note: in expansion of macro 'DOCA_LOG_ERR'
+       61 |   DOCA_LOG_ERR("Failed to parse the device PCI address: %s", doca_get_error_string(result));
+          |   ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:285:14: note: declared here
+      285 | doca_error_t doca_log(uint32_t level, int source, int line, const char *format, ...) __attribute__ ((format (printf, 4, 5)));
+          |              ^~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:114: warning: 'doca_error_t doca_log(uint32_t, int, int, const char*, ...)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                                  ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:422:35: note: in expansion of macro 'DOCA_LOG'
+      422 | #define DOCA_LOG_ERR(format, ...) DOCA_LOG(ERROR, format, ##__VA_ARGS__)
+          |                                   ^~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:61:3: note: in expansion of macro 'DOCA_LOG_ERR'
+       61 |   DOCA_LOG_ERR("Failed to parse the device PCI address: %s", doca_get_error_string(result));
+          |   ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:285:14: note: declared here
+      285 | doca_error_t doca_log(uint32_t level, int source, int line, const char *format, ...) __attribute__ ((format (printf, 4, 5)));
+          |              ^~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:62:21: warning: 'doca_error_t doca_argp_destroy()' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       62 |   doca_argp_destroy();
+          |                     ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:159:14: note: declared here
+      159 | doca_error_t doca_argp_destroy(void);
+          |              ^~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:62:21: warning: 'doca_error_t doca_argp_destroy()' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       62 |   doca_argp_destroy();
+          |                     ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:159:14: note: declared here
+      159 | doca_error_t doca_argp_destroy(void);
+          |              ^~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:69:21: warning: 'doca_error_t doca_argp_destroy()' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       69 |   doca_argp_destroy();
+          |                     ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:159:14: note: declared here
+      159 | doca_error_t doca_argp_destroy(void);
+          |              ^~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:69:21: warning: 'doca_error_t doca_argp_destroy()' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       69 |   doca_argp_destroy();
+          |                     ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:159:14: note: declared here
+      159 | doca_error_t doca_argp_destroy(void);
+          |              ^~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc: In function 'int PushMetaToDpu(const char*, doca_comm_channel_ep_t*, doca_comm_channel_addr_t*, absl::lts_20211102::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject> >*)':
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:91:69: warning: 'doca_error_t doca_comm_channel_peer_addr_update_info(doca_comm_channel_addr_t*)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       91 |   while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
+          |                                                                     ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel_core.h:19,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:21:
+    src/ray/object_manager/plasma/secure_channel/include/doca_comm_channel.h:561:14: note: declared here
+      561 | doca_error_t doca_comm_channel_peer_addr_update_info(struct doca_comm_channel_addr_t *peer_addr);
+          |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:91:69: warning: 'doca_error_t doca_comm_channel_peer_addr_update_info(doca_comm_channel_addr_t*)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       91 |   while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
+          |                                                                     ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel_core.h:19,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:21:
+    src/ray/object_manager/plasma/secure_channel/include/doca_comm_channel.h:561:14: note: declared here
+      561 | doca_error_t doca_comm_channel_peer_addr_update_info(struct doca_comm_channel_addr_t *peer_addr);
+          |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:99:100: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       99 |     DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
+          |                                                                                                    ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:103: note: in definition of macro 'DOCA_LOG'
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                       ^~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:99:5: note: in expansion of macro 'DOCA_LOG_ERR'
+       99 |     DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
+          |     ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:99:100: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+       99 |     DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
+          |                                                                                                    ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:103: note: in definition of macro 'DOCA_LOG'
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                       ^~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:99:5: note: in expansion of macro 'DOCA_LOG_ERR'
+       99 |     DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
+          |     ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:114: warning: 'doca_error_t doca_log(uint32_t, int, int, const char*, ...)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                                  ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:422:35: note: in expansion of macro 'DOCA_LOG'
+      422 | #define DOCA_LOG_ERR(format, ...) DOCA_LOG(ERROR, format, ##__VA_ARGS__)
+          |                                   ^~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:99:5: note: in expansion of macro 'DOCA_LOG_ERR'
+       99 |     DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
+          |     ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:285:14: note: declared here
+      285 | doca_error_t doca_log(uint32_t level, int source, int line, const char *format, ...) __attribute__ ((format (printf, 4, 5)));
+          |              ^~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:114: warning: 'doca_error_t doca_log(uint32_t, int, int, const char*, ...)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                                  ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:422:35: note: in expansion of macro 'DOCA_LOG'
+      422 | #define DOCA_LOG_ERR(format, ...) DOCA_LOG(ERROR, format, ##__VA_ARGS__)
+          |                                   ^~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:99:5: note: in expansion of macro 'DOCA_LOG_ERR'
+       99 |     DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
+          |     ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:285:14: note: declared here
+      285 | doca_error_t doca_log(uint32_t level, int source, int line, const char *format, ...) __attribute__ ((format (printf, 4, 5)));
+          |              ^~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:103:97: warning: 'doca_error_t doca_comm_channel_ep_sendto(doca_comm_channel_ep_t*, const void*, size_t, int, doca_comm_channel_addr_t*)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      103 |  result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+          |                                                                                                 ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel_core.h:19,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:21:
+    src/ray/object_manager/plasma/secure_channel/include/doca_comm_channel.h:443:14: note: declared here
+      443 | doca_error_t doca_comm_channel_ep_sendto(struct doca_comm_channel_ep_t *local_ep, const void *msg,
+          |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:103:97: warning: 'doca_error_t doca_comm_channel_ep_sendto(doca_comm_channel_ep_t*, const void*, size_t, int, doca_comm_channel_addr_t*)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      103 |  result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+          |                                                                                                 ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel_core.h:19,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:21:
+    src/ray/object_manager/plasma/secure_channel/include/doca_comm_channel.h:443:14: note: declared here
+      443 | doca_error_t doca_comm_channel_ep_sendto(struct doca_comm_channel_ep_t *local_ep, const void *msg,
+          |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:104:106: warning: 'doca_error_t doca_comm_channel_ep_sendto(doca_comm_channel_ep_t*, const void*, size_t, int, doca_comm_channel_addr_t*)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      104 |   while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+          |                                                                                                          ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel_core.h:19,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:21:
+    src/ray/object_manager/plasma/secure_channel/include/doca_comm_channel.h:443:14: note: declared here
+      443 | doca_error_t doca_comm_channel_ep_sendto(struct doca_comm_channel_ep_t *local_ep, const void *msg,
+          |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:104:106: warning: 'doca_error_t doca_comm_channel_ep_sendto(doca_comm_channel_ep_t*, const void*, size_t, int, doca_comm_channel_addr_t*)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      104 |   while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+          |                                                                                                          ^
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel_core.h:19,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:21:
+    src/ray/object_manager/plasma/secure_channel/include/doca_comm_channel.h:443:14: note: declared here
+      443 | doca_error_t doca_comm_channel_ep_sendto(struct doca_comm_channel_ep_t *local_ep, const void *msg,
+          |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:109:73: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      109 |     std::cout<< "Message was not sent: " << doca_get_error_string(result)<<std::endl;
+          |                                                                         ^
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:109:73: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      109 |     std::cout<< "Message was not sent: " << doca_get_error_string(result)<<std::endl;
+          |                                                                         ^
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:110:72: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      110 |   DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
+          |                                                                        ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:103: note: in definition of macro 'DOCA_LOG'
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                       ^~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:110:3: note: in expansion of macro 'DOCA_LOG_ERR'
+      110 |   DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
+          |   ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:110:72: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      110 |   DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
+          |                                                                        ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:103: note: in definition of macro 'DOCA_LOG'
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                       ^~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:110:3: note: in expansion of macro 'DOCA_LOG_ERR'
+      110 |   DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
+          |   ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:114: warning: 'doca_error_t doca_log(uint32_t, int, int, const char*, ...)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                                  ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:422:35: note: in expansion of macro 'DOCA_LOG'
+      422 | #define DOCA_LOG_ERR(format, ...) DOCA_LOG(ERROR, format, ##__VA_ARGS__)
+          |                                   ^~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:110:3: note: in expansion of macro 'DOCA_LOG_ERR'
+      110 |   DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
+          |   ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:285:14: note: declared here
+      285 | doca_error_t doca_log(uint32_t level, int source, int line, const char *format, ...) __attribute__ ((format (printf, 4, 5)));
+          |              ^~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:400:114: warning: 'doca_error_t doca_log(uint32_t, int, int, const char*, ...)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      400 | #define DOCA_LOG(level, format, ...) doca_log(DOCA_LOG_LEVEL_##level, log_source, __LINE__, format, ##__VA_ARGS__)
+          |                                                                                                                  ^
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:422:35: note: in expansion of macro 'DOCA_LOG'
+      422 | #define DOCA_LOG_ERR(format, ...) DOCA_LOG(ERROR, format, ##__VA_ARGS__)
+          |                                   ^~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:110:3: note: in expansion of macro 'DOCA_LOG_ERR'
+      110 |   DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
+          |   ^~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:17:
+    src/ray/object_manager/plasma/secure_channel/include/doca_log.h:285:14: note: declared here
+      285 | doca_error_t doca_log(uint32_t level, int source, int line, const char *format, ...) __attribute__ ((format (printf, 4, 5)));
+          |              ^~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:113:69: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      113 |     std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
+          |                                                                     ^
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel.cc:113:69: warning: 'const char* doca_get_error_string(doca_error_t)' is deprecated: Symbol is defined as experimental [-Wdeprecated-declarations]
+      113 |     std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
+          |                                                                     ^
+    In file included from src/ray/object_manager/plasma/secure_channel/include/doca_argp.h:27,
+                     from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:16:
+    src/ray/object_manager/plasma/secure_channel/include/doca_error.h:95:13: note: declared here
+       95 | const char *doca_get_error_string(doca_error_t error);
+          |             ^~~~~~~~~~~~~~~~~~~~~
+    In file included from src/ray/object_manager/plasma/secure_channel/secure_channel.cc:25:
+    src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.h: At global scope:
+    src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.h:39:1: warning: 'void signal_handler(int)' declared 'static' but never defined [-Wunused-function]
+       39 | signal_handler(int signum);
+          | ^~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.h:31:13: warning: 'end_sample' defined but not used [-Wunused-variable]
+       31 | static bool end_sample;  /* Shared variable to allow for a proper shutdown */
+          |             ^~~~~~~~~~
+    [682 / 688] Compiling src/ray/object_manager/plasma/store.cc; 4s linux-sandbox
+    INFO: From Compiling src/ray/object_manager/plasma/store.cc:
+    src/ray/object_manager/plasma/store.cc:164:7: warning: multi-line comment [-Wcomment]
+      164 |       // std::cout << "allocation address: " << allocation->address  << "allocation size: " << allocation->size  \
+          |       ^
+    In file included from src/ray/object_manager/plasma/store.cc:29:
+    bazel-out/k8-opt/bin/_virtual_includes/plasma_store_server_lib/ray/object_manager/plasma/store.h: In constructor 'plasma::PlasmaStore::PlasmaStore(instrumented_io_context&, plasma::IAllocator&, ray::FileSystemMonitor&, const string&, uint32_t, float, ray::SpillObjectsCallback, std::function<void()>, ray::AddObjectCallback, ray::DeleteObjectCallback)':
+    bazel-out/k8-opt/bin/_virtual_includes/plasma_store_server_lib/ray/object_manager/plasma/store.h:318:25: warning: 'plasma::PlasmaStore::periodical_runner_' will be initialized after [-Wreorder]
+      318 |   ray::PeriodicalRunner periodical_runner_;
+          |                         ^~~~~~~~~~~~~~~~~~
+    bazel-out/k8-opt/bin/_virtual_includes/plasma_store_server_lib/ray/object_manager/plasma/store.h:309:19: warning:   'plasma::GetRequestQueue plasma::PlasmaStore::get_request_queue_' [-Wreorder]
+      309 |   GetRequestQueue get_request_queue_ GUARDED_BY(mutex_);
+          |                   ^~~~~~~~~~~~~~~~~~
+    src/ray/object_manager/plasma/store.cc:73:1: warning:   when initialized here [-Wreorder]
+       73 | PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
+          | ^~~~~~~~~~~
+    [683 / 688] [Prepa] Linking python/ray/_raylet.so
+    [687 / 688] [Sched] Executing genrule //:ray_pkg
+    INFO: Elapsed time: 9.609s, Critical Path: 8.85s
+    INFO: 9 processes: 3 internal, 4 linux-sandbox, 2 local.
+    INFO: Build completed successfully, 9 total actions
+    INFO: Build completed successfully, 9 total actions
+    # of files copied to build/lib: 169
+    Creating /usr/local/lib/python3.8/dist-packages/ray.egg-link (link to .)
+    ray 3.0.0.dev0 is already the active version in easy-install.pth
+    Installing ray script to /usr/local/bin
+    Installing ray-operator script to /usr/local/bin
+    Installing rllib script to /usr/local/bin
+    Installing serve script to /usr/local/bin
+    Installing tune script to /usr/local/bin
+
+    Installed /home/hucc/ray/python
+Successfully installed ray
+Cleaning up...
+Removed build tracker: '/tmp/pip-req-tracker-bju9othn'
