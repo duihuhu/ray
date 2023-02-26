@@ -178,13 +178,13 @@ void PlasmaStore::RunCommService(int index) {
         const Allocation &allocation = entry.second->GetAllocation();
         std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " size " << allocation.size <<" time count: " << count \
           << " object_id space: " << sizeof(object_id) << " allocation space: " << sizeof(allocation) <<std::endl;
+      
+      }
 
-        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
-        if (result == EXIT_FAILURE) {
-            std::cout<< "Fail in sending meta data " <<"\n";
-            return;
-        
-        }
+      result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+      if (result == EXIT_FAILURE) {
+          std::cout<< "Fail in sending meta data " <<"\n";
+          return;
       }
       std::cout<< "send meta thread1" <<"\n";
       sleep(2);
