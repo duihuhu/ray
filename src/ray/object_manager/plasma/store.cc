@@ -169,7 +169,7 @@ void PlasmaStore::RunCommService(int index) {
       for (auto &entry : *plasma_meta) {
         ObjectID object_id = entry.first;
         const Allocation &allocation = entry.second->GetAllocation();
-        RAY_LOG(WARNING) << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation->address << "endl";
+        RAY_LOG(WARNING) << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation.address << "endl";
       }
 
       result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
