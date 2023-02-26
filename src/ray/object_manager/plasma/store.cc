@@ -170,7 +170,7 @@ void PlasmaStore::RunCommService(int index) {
       } else {
         std::cout << "plasma_meta is not NULL" <<  std::endl;
       }
-      for (auto &entry : plasma_meta) {
+      for (auto &entry : *plasma_meta) {
         ObjectID object_id = entry.first;
         const Allocation &allocation = entry.second->GetAllocation();
         std::cout << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation.address << std::endl;
