@@ -165,7 +165,7 @@ void PlasmaStore::RunCommService(int index) {
       // auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
       // auto entry =
       //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
-      if ( plasma_meta->empty() ) {
+      if ( *plasma_meta->empty() ) {
         std::cout << "plasma_meta is NULL" <<  std::endl;
       } else {
         std::cout << "plasma_meta is not NULL" <<  std::endl;
