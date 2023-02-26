@@ -21,7 +21,7 @@
 #include "ray/object_manager/plasma/allocator.h"
 #include "ray/object_manager/plasma/common.h"
 #include "ray/object_manager/plasma/plasma.h"
-
+#include <iostream>
 namespace plasma {
 
 // IObjectStore stores objects with unique object id.
