@@ -199,8 +199,8 @@ class PlasmaStore {
   void DisconnectClient(const std::shared_ptr<Client> &client)
       EXCLUSIVE_LOCKS_REQUIRED(mutex_);
       
-  absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta();
-      EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+  // absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta();
+  //     EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
   Status ProcessMessage(const std::shared_ptr<Client> &client,
                         plasma::flatbuf::MessageType type,
