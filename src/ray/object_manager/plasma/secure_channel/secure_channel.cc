@@ -119,8 +119,8 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     const Allocation &allocation = entry.second->GetAllocation();
     int64_t amsg_len = sizeof(allocation);
     std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address<< std::endl;
-    result = doca_comm_channel_ep_sendto(ep, allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
-    while ((result = doca_comm_channel_ep_sendto(ep, allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+    result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+    while ((result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
       usleep(1);
     }
