@@ -43,8 +43,8 @@ struct cc_config {
 struct MetaInfo {
   const ray::ObjectID object_id;
   const plasma::Allocation allocation;
-  char *export_desc;
   size_t export_desc_len;
+  char *export_desc;
   // MetaInfo(){}
   MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0, char *export_desc=nullptr) :object_id(object_id), allocation(allocation), \
                                                         export_desc_len(export_desc_len), export_desc(export_desc){}
@@ -137,7 +137,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
 
     meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
 
-    std::cout << "hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
+    std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
       <<   " allocation information size: " << meta_info.allocation.size << " metainfo.export_desc: " << meta_info.export_desc \
       << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
 
