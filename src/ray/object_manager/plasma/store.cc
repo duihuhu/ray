@@ -188,8 +188,8 @@ void PlasmaStore::RunCommService(int index) {
         // if (result == EXIT_FAILURE) {
         //     std::cout<< "Fail in sending meta data " <<"\n";
         //     return;
-        }
-        std::cout << "plasma_meta is not NULL" <<  std::endl;
+        // }
+        // std::cout << "plasma_meta is not NULL" <<  std::endl;
 
         // std::cout << "plasma_meta is not NULL" <<  std::endl;
         // std::cout << " flat_hash_map space: " << sizeof(*plasma_meta) <<  std::endl;
