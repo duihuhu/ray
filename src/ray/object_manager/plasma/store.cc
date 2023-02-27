@@ -123,8 +123,6 @@ PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
   meta_server_name_ = "meta_server";
   ep = NULL;
   peer_addr = NULL;
-  StartMetaCommClient();
-  StartCommService();
 }
 
 // TODO(pcm): Get rid of this destructor by using RAII to clean up data.
@@ -133,8 +131,8 @@ PlasmaStore::~PlasmaStore() {}
 void PlasmaStore::Start() {
   // Start listening for clients.
   DoAccept();
-  // StartMetaCommClient();
-  // StartCommService();
+  StartMetaCommClient();
+  StartCommService();
 }
 
 void PlasmaStore::StartMetaCommClient() {
@@ -147,6 +145,7 @@ void PlasmaStore::StartMetaCommClient() {
 }
 
 void PlasmaStore::RunCommService(int index) {
+    std::cout<< "send meta thread running" <<"\n";
     SetThreadName("send meta thread" + std::to_string(index));
     int count = 0;
     while(1){
@@ -177,11 +176,11 @@ void PlasmaStore::RunCommService(int index) {
         //     return;
         // }
       } else {
-        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
-        if (result == EXIT_FAILURE) {
-            std::cout<< "Fail in sending meta data " <<"\n";
-            return;
-        }
+        // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+        // if (result == EXIT_FAILURE) {
+        //     std::cout<< "Fail in sending meta data " <<"\n";
+        //     return;
+        // }
         // std::cout << "plasma_meta is not NULL" <<  std::endl;
         // std::cout << " flat_hash_map space: " << sizeof(*plasma_meta) <<  std::endl;
         // for (auto &entry : *plasma_meta) {
@@ -192,14 +191,11 @@ void PlasmaStore::RunCommService(int index) {
         // }
       }
 
-      // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
-      // if (result == EXIT_FAILURE) {
-      //     std::cout<< "Fail in sending meta data " <<"\n";
-      //     return;
-      // }
-
-
-      std::cout<< "send meta thread1" <<"\n";
+      result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+      if (result == EXIT_FAILURE) {
+          std::cout<< "Fail in sending meta data " <<"\n";
+          return;
+      }
       sleep(1);
       ++count;
     }
