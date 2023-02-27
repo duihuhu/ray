@@ -131,7 +131,7 @@ PlasmaStore::~PlasmaStore() {}
 void PlasmaStore::Start() {
   // Start listening for clients.
   DoAccept();
-  // StartMetaCommClient();
+  StartMetaCommClient();
   StartCommService();
 }
 
@@ -145,7 +145,7 @@ void PlasmaStore::StartMetaCommClient() {
 }
 
 void PlasmaStore::RunCommService(int index) {
-    StartMetaCommClient();
+    // StartMetaCommClient();
     std::cout<< "send meta thread running" <<"\n";
     SetThreadName("send meta thread" + std::to_string(index));
     int count = 0;
