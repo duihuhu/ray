@@ -33,10 +33,10 @@ struct cc_config {
 	char text[MAX_TXT_SIZE];				/* Text to send to Comm Channel server */
 };
 
-struct MetoInfo {
-  ObjectID objectid;
-  Allocation allocation;
-};
+// struct MetoInfo {
+//   ObjectID objectid;
+//   Allocation allocation;
+// };
 
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
 
@@ -111,9 +111,9 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
     return result;
   }
-  MetoInfo metoinfo;
+  // MetoInfo metoinfo;
   for (auto &entry : *plasma_meta) {
-    metoinfo.objectid =  entry.first;
+    // metoinfo.objectid =  entry.first;
     ObjectID object_id = entry.first;
     int64_t msg_len = sizeof(object_id);
     const Allocation &allocation = entry.second->GetAllocation();
