@@ -150,7 +150,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
       usleep(1);
     }
     if (result != DOCA_SUCCESS) {
-      std::cout<< "Message was not sent: " << doca_get_error_string(result)<<std::endl;
+      // std::cout<< "Message was not sent: " << doca_get_error_string(result)<<std::endl;
       DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
       return EXIT_FAILURE;
     } else if (result == DOCA_SUCCESS) {

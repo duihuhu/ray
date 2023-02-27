@@ -1233,7 +1233,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 		return result;
 	}
 
-    std::cout << "dma_copy_core export_desc address after: " << *export_desc << std::endl; 
+  // std::cout << "dma_copy_core export_desc address after: " << *export_desc << std::endl; 
 
 	// /* Export memory map and send it to DPU */
 	// result = host_export_memory_map_to_dpu(core_state, ep, peer_addr, &export_desc);
@@ -1264,7 +1264,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 	// }
 
 	// DOCA_LOG_INFO("Final status message was successfully received");
-	std::cout<< "dma_copy_core Final status message was successfully received: " << *export_desc <<std::endl;
+	// std::cout<< "dma_copy_core Final status message was successfully received: " << *export_desc <<std::endl;
 
 	// if (!dma_cfg->is_file_found_locally) {
 	// 	/*  File was copied successfully into the buffer, save it into file */
