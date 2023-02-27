@@ -107,6 +107,8 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	// 	}
 	// 	usleep(1);
 	// }
+
+  
 	// if (result != DOCA_SUCCESS) {
 	// 	DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
 	// 	return result;
