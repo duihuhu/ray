@@ -9,4 +9,4 @@
 
 #include "dma_copy_core.h"
 
-int RunDmaExport(const plasma::Allocation &allocation);
+int RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len);

@@ -43,8 +43,11 @@ struct cc_config {
 struct MetaInfo {
   const ray::ObjectID object_id;
   const plasma::Allocation allocation;
+  char *export_desc;
+  sizeof_t export_desc_len;
   // MetaInfo(){}
-  MetaInfo(const ray::ObjectID &id, const plasma::Allocation &alloc) :object_id(id), allocation(alloc){}
+  MetaInfo(const ray::ObjectID &id, const plasma::Allocation &alloc) :object_id(id), allocation(alloc), \
+                                                        export_desc(), export_desc_len(){}
   
 };
 
@@ -123,8 +126,8 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   for (auto &entry : *plasma_meta) {
     // metainfo.object_id =  entry.first;
     // metainfo.allocation =  entry.second->GetAllocation();
-    MetaInfo metainfo(entry.first, entry.second->GetAllocation());
-    size_t amsg_len = sizeof(metainfo);
+    MetaInfo meta_info(entry.first, entry.second->GetAllocation());
+    size_t amsg_len = sizeof(meta_info);
     std::cout << "hucc amsg_len " << amsg_len << std::endl;
     // ObjectID object_id = entry.first;
     // int64_t msg_len = sizeof(object_id);
@@ -132,16 +135,17 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     // const Allocation &allocation = entry.second->GetAllocation();
     // int64_t amsg_len = sizeof(allocation);
 
-    std::cout << "hucc get plasma meta object id " << metainfo.object_id << " allocation information: " << metainfo.allocation.address \
-      <<   " allocation information size: " << metainfo.allocation.size << std::endl;
 
+    metainfo.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
 
-    RunDmaExport(metainfo.allocation);
+    std::cout << "hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
+      <<   " allocation information size: " << meta_info.allocation.size << "metainfo.export_desc: " << metainfo.export_desc \
+      << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
 
 
     // std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
     // result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
-    while ((result = doca_comm_channel_ep_sendto(ep, &metainfo, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+    while ((result = doca_comm_channel_ep_sendto(ep, &meta_info, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
       usleep(1);
     }

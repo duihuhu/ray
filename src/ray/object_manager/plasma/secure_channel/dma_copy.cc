@@ -22,7 +22,7 @@ DOCA_LOG_REGISTER(DMA_COPY);
  * @argv [in]: array of command line arguments
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
-int RunDmaExport(const plasma::Allocation &allocation)
+char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len)
 {
 	doca_error_t result;
 	struct dma_copy_cfg dma_cfg;
@@ -69,7 +69,7 @@ int RunDmaExport(const plasma::Allocation &allocation)
 	if (result != DOCA_SUCCESS)
 		exit_status = EXIT_FAILURE;
   
-  return EXIT_SUCCESS;
+  return export_desc;
 destroy_resources:
 
 	/* Destroy Comm Channel */
