@@ -1227,7 +1227,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 
 	size_t export_desc_len;
 	/* Export memory map to allow access to this memory region from DPU */
-	result = doca_mmap_export(core_state->mmap, core_state->dev, (void **)allocation.address, &(size_t)allocation.size);
+	result = doca_mmap_export(core_state->mmap, core_state->dev, (void **)allocation.address, &((size_t)allocation.size));
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to export DOCA mmap: %s", doca_get_error_string(result));
 		return result;
