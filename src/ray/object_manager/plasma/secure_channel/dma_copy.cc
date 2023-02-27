@@ -33,7 +33,7 @@ char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len
 	struct doca_dev_rep *cc_dev_rep = NULL;
 	int exit_status = EXIT_SUCCESS;
   char *export_desc = NULL; 
-	size_t export_desc_len;
+	// size_t export_desc_len;
 	/* Open DOCA dma device */
 	result = open_dma_device(&core_state.dev);
 	if (result != DOCA_SUCCESS) {
@@ -81,5 +81,5 @@ destroy_resources:
 	/* ARGP destroy_resources */
 	doca_argp_destroy();
 
-	return exit_status;
+	// return exit_status;
 }
