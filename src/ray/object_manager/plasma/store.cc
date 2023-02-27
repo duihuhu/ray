@@ -147,7 +147,8 @@ void PlasmaStore::StartMetaCommClient() {
 
 void PlasmaStore::RunCommService(int index) {
     std::cout<< "send meta thread running" <<"\n";
-    // SetThreadName("send meta thread" + std::to_string(index));
+    SetThreadName("send meta thread" + std::to_string(index));
+    std::cout <<"thread id: " <<  std::this_thread::get_id();
     int count = 0;
     StartMetaCommClient();
     // int result;
