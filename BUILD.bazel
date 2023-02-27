@@ -373,11 +373,15 @@ cc_library(
         "src/ray/object_manager/plasma/secure_channel/utils/utils.cc", 
         "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.cc",
         "src/ray/object_manager/plasma/secure_channel/samples/common.cc",
+        "src/ray/object_manager/plasma/secure_channel/dma_copy_core.cc",
+        "src/ray/object_manager/plasma/secure_channel/dma_copy.cc"
     ],
     hdrs = [
         "src/ray/object_manager/plasma/secure_channel/secure_channel_meta_core.h",
         "src/ray/object_manager/plasma/secure_channel/secure_channel_core.h",
         "src/ray/object_manager/plasma/secure_channel/secure_channel.h",
+        "src/ray/object_manager/plasma/secure_channel/dma_copy_core.h",
+        "src/ray/object_manager/plasma/secure_channel/dma_copy.h",
         "src/ray/common/id.h",
         "src/ray/util/util.h",
         "src/ray/util/logging.h",
