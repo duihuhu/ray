@@ -32,7 +32,8 @@ int RunDmaExport(const plasma::Allocation &allocation)
 	struct doca_dev *cc_dev = NULL;
 	struct doca_dev_rep *cc_dev_rep = NULL;
 	int exit_status = EXIT_SUCCESS;
-
+  char *export_desc = NULL; 
+  
 	/* Open DOCA dma device */
 	result = open_dma_device(&core_state.dev);
 	if (result != DOCA_SUCCESS) {
@@ -57,7 +58,7 @@ int RunDmaExport(const plasma::Allocation &allocation)
 		goto destroy_resources;
 	}
 
-  char *export_desc = NULL; 
+
   result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation, &export_desc);
 
 	if (result != DOCA_SUCCESS)
