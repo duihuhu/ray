@@ -138,16 +138,4 @@ void destroy_core_objs(struct core_state *state, struct dma_copy_cfg *cfg);
 doca_error_t host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 				 struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t **peer_addr, const plasma::Allocation &allocation);
 
-/*
- * Start DMA operation on the DPU
- *
- * @dma_cfg [in]: App configuration structure
- * @core_state [in]: DOCA core structure
- * @ep [in]: Comm Channel endpoint
- * @peer_addr [in]: Comm Channel peer address
- * @return: DOCA_SUCCESS on success and DOCA_ERROR otherwise
- */
-doca_error_t dpu_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
-				struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t **peer_addr);
-
 #endif /* DMA_COPY_CORE_H_ */
