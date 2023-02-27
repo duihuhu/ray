@@ -41,7 +41,7 @@ struct cc_config {
 
 struct MetaInfo {
   const ray::ObjectID object_id;
-  const plasma::Allocation &allocation;
+  const plasma::Allocation allocation;
   // MetaInfo(){}
   MetaInfo(const ray::ObjectID &id, const plasma::Allocation &alloc) :object_id(id), allocation(alloc){}
   
