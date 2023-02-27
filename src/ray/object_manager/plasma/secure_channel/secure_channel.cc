@@ -88,7 +88,18 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   doca_error_t result;
   char text[100];
   if (plasma_meta->empty())
+  {
     strcpy(text,"hello222");
+    while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
+    // if (end_sample) {
+    //   result = DOCA_ERROR_UNEXPECTED;
+    //   break;
+    // }
+    usleep(1);
+    }
+    return EXIT_SUCCESS;
+  }
+
   else
     strcpy(text,"hello111");
 
