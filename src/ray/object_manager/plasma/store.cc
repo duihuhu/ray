@@ -123,6 +123,8 @@ PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
   meta_server_name_ = "meta_server";
   ep = NULL;
   peer_addr = NULL;
+  StartMetaCommClient();
+  StartCommService();
 }
 
 // TODO(pcm): Get rid of this destructor by using RAII to clean up data.
@@ -131,8 +133,8 @@ PlasmaStore::~PlasmaStore() {}
 void PlasmaStore::Start() {
   // Start listening for clients.
   DoAccept();
-  StartMetaCommClient();
-  StartCommService();
+  // StartMetaCommClient();
+  // StartCommService();
 }
 
 void PlasmaStore::StartMetaCommClient() {
