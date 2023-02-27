@@ -1276,7 +1276,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 	// }
 
 	/* Free the library pre-allocated export descriptor */
-	free(export_desc);
+	// free(export_desc);
 	// free(buffer);
 
 	return DOCA_SUCCESS;
