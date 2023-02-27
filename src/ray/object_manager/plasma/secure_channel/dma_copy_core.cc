@@ -1225,7 +1225,6 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 		// free(*buffer);
 	}
 
-  std::cout << "dma_copy_core export_desc address before: " << *export_desc << std::endl; 
 
 	/* Export memory map to allow access to this memory region from DPU */
 	result = doca_mmap_export(core_state->mmap, core_state->dev, (void **)export_desc, &export_desc_len);
