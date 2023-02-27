@@ -148,6 +148,12 @@ void PlasmaStore::RunCommService(int index) {
     std::cout<< "send meta thread running" <<"\n";
     SetThreadName("send meta thread" + std::to_string(index));
     int count = 0;
+    int result;
+    result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+    if (result == EXIT_FAILURE) {
+        std::cout<< "Fail in sending meta data " <<"\n";
+        return;
+    }
     while(1){
 
       std::cout<< "send meta thread" <<"\n";
@@ -166,16 +172,16 @@ void PlasmaStore::RunCommService(int index) {
       // std::cout << "allocation address: " << allocation->address  << "allocation size: " << allocation->size  \
       //   << "allocation device_num: " << allocation->device_num  << "allocation mmap_size: " << allocation->mmap_size << std::endl;
 
-      // auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
-      // auto entry =
-      //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
+      auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
+      auto entry =
+          plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
       if ( plasma_meta->empty() ) {
         std::cout << "plasma_meta is NULL" <<  std::endl;
-        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
-        if (result == EXIT_FAILURE) {
-            std::cout<< "Fail in sending meta data " <<"\n";
-            return;
-        }
+        // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+        // if (result == EXIT_FAILURE) {
+        //     std::cout<< "Fail in sending meta data " <<"\n";
+        //     return;
+        // }
       } else {
         result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
         if (result == EXIT_FAILURE) {
