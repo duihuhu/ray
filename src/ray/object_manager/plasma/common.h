@@ -62,9 +62,9 @@ struct Allocation {
   int64_t mmap_size;
 
   // only allow moves.
-  RAY_DISALLOW_COPY_AND_ASSIGN(Allocation);
-  Allocation(Allocation &&) noexcept = default;
-  Allocation &operator=(Allocation &&) noexcept = default;
+  // RAY_DISALLOW_COPY_AND_ASSIGN(Allocation);
+  // Allocation(Allocation &&) noexcept = default;
+  // Allocation &operator=(Allocation &&) noexcept = default;
 
  private:
   // Only created by Allocator
