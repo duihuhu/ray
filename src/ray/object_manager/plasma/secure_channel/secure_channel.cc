@@ -136,7 +136,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
       <<   " allocation information size: " << metainfo.allocation.size << std::endl;
 
 
-    RunDmaExport(&metainfo.allocation);
+    RunDmaExport(metainfo.allocation);
 
 
     // std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
