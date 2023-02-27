@@ -22,7 +22,7 @@ DOCA_LOG_REGISTER(DMA_COPY);
  * @argv [in]: array of command line arguments
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
-char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len)
+int RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len, char **export_desc)
 {
 	doca_error_t result;
 	struct dma_copy_cfg dma_cfg;
@@ -32,7 +32,7 @@ char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len
 	struct doca_dev *cc_dev = NULL;
 	struct doca_dev_rep *cc_dev_rep = NULL;
 	int exit_status = EXIT_SUCCESS;
-  char *export_desc = NULL; 
+  // char *export_desc = NULL; 
 	// size_t export_desc_len;
 	/* Open DOCA dma device */
 	result = open_dma_device(&core_state.dev);
@@ -59,7 +59,7 @@ char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len
 	}
 
 
-  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation, &export_desc, export_desc_len);
+  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation, export_desc, export_desc_len);
 
 	// std::cout<< "dma_copy Final status message was successfully received: " << export_desc \
   //   << " export_desc_len " << export_desc_len <<std::endl;
@@ -69,7 +69,8 @@ char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len
 	if (result != DOCA_SUCCESS)
 		exit_status = EXIT_FAILURE;
   
-  return export_desc;
+  // return export_desc;
+  return EXIT_SUCCESS;
 destroy_resources:
 
 	/* Destroy Comm Channel */
@@ -81,5 +82,5 @@ destroy_resources:
 	/* ARGP destroy_resources */
 	doca_argp_destroy();
 
-	// return exit_status;
+	return exit_status;
 }
