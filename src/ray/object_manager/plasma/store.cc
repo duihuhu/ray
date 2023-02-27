@@ -210,7 +210,7 @@ void PlasmaStore::RunCommService(int index) {
       //     std::cout<< "Fail in sending meta data " <<"\n";
       //     return;
       // } 
-      sleep(10);
+      sleep(2);
       ++count;
     }
 
