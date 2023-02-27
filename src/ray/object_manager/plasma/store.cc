@@ -162,21 +162,21 @@ void PlasmaStore::RunCommService(int index) {
       int result;
       absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
       // std::cout<< "plasma_meta address " << plasma_meta <<std::endl;
-      // ObjectID object_id = ObjectID::FromRandom();
-      // RAY_CHECK(plasma_meta->count(object_id) == 0);
-      // int64_t object_size = 100;
-      // bool fallback_allocate = false;
-      // auto allocation = fallback_allocate ? allocator_.FallbackAllocate(object_size)
-      //                                     : allocator_.Allocate(object_size);
+      ObjectID object_id = ObjectID::FromRandom();
+      RAY_CHECK(plasma_meta->count(object_id) == 0);
+      int64_t object_size = 100;
+      bool fallback_allocate = false;
+      auto allocation = fallback_allocate ? allocator_.FallbackAllocate(object_size)
+                                          : allocator_.Allocate(object_size);
       // if (!allocation.has_value()) {
       //   std::cout<< "allocation no value" <<"\n";
       // }
       // std::cout << "allocation address: " << allocation->address  << "allocation size: " << allocation->size  \
       //   << "allocation device_num: " << allocation->device_num  << "allocation mmap_size: " << allocation->mmap_size << std::endl;
 
-      // auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
-      // auto entry =
-      //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
+      auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
+      auto entry =
+          plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
       if ( plasma_meta->empty() ) {
         std::cout << "plasma_meta is NULL" <<  std::endl;
         // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
