@@ -149,7 +149,7 @@ void PlasmaStore::RunCommService(int index) {
     SetThreadName("send meta thread" + std::to_string(index));
     int count = 0;
     while(1){
-      sleep(10);
+
       std::cout<< "send meta thread" <<"\n";
       int result;
       absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
@@ -171,18 +171,18 @@ void PlasmaStore::RunCommService(int index) {
       //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
       if ( plasma_meta->empty() ) {
         std::cout << "plasma_meta is NULL" <<  std::endl;
-        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
-        if (result == EXIT_FAILURE) {
-            std::cout<< "Fail in sending meta data " <<"\n";
-            return;
-        }
-      } else {
         // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
         // if (result == EXIT_FAILURE) {
         //     std::cout<< "Fail in sending meta data " <<"\n";
         //     return;
         // }
-        // std::cout << "plasma_meta is not NULL" <<  std::endl;
+      } else {
+        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+        if (result == EXIT_FAILURE) {
+            std::cout<< "Fail in sending meta data " <<"\n";
+            return;
+        }
+        std::cout << "plasma_meta is not NULL" <<  std::endl;
 
         // std::cout << "plasma_meta is not NULL" <<  std::endl;
         // std::cout << " flat_hash_map space: " << sizeof(*plasma_meta) <<  std::endl;
@@ -199,7 +199,7 @@ void PlasmaStore::RunCommService(int index) {
       //     std::cout<< "Fail in sending meta data " <<"\n";
       //     return;
       // } 
-
+      sleep(2);
       ++count;
     }
 
