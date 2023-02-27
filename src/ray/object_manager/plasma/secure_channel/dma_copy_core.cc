@@ -1227,6 +1227,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 		// free(*buffer);
 	}
 
+  std::cout << "allocation.address before: " << allocation.address << std::endl; 
 
 	/* Export memory map to allow access to this memory region from DPU */
 	result = doca_mmap_export(core_state->mmap, core_state->dev, (void **)allocation.address, &export_desc_len);
@@ -1235,6 +1236,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 		return result;
 	}
 
+  std::cout << "allocation.address after: " << allocation.address << std::endl; 
 
 	// /* Export memory map and send it to DPU */
 	// result = host_export_memory_map_to_dpu(core_state, ep, peer_addr, &export_desc);
