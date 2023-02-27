@@ -172,9 +172,9 @@ void PlasmaStore::RunCommService(int index) {
       // std::cout << "allocation address: " << allocation->address  << "allocation size: " << allocation->size  \
       //   << "allocation device_num: " << allocation->device_num  << "allocation mmap_size: " << allocation->mmap_size << std::endl;
 
-      auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
-      auto entry =
-          plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
+      // auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
+      // auto entry =
+      //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
       if ( plasma_meta->empty() ) {
         std::cout << "plasma_meta is NULL" <<  std::endl;
         // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
