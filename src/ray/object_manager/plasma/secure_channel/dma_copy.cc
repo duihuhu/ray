@@ -22,7 +22,7 @@ DOCA_LOG_REGISTER(DMA_COPY);
  * @argv [in]: array of command line arguments
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
-int RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len)
+char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len)
 {
 	doca_error_t result;
 	struct dma_copy_cfg dma_cfg;
