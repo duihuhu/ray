@@ -136,6 +136,6 @@ void destroy_core_objs(struct core_state *state, struct dma_copy_cfg *cfg);
  * @return: DOCA_SUCCESS on success and DOCA_ERROR otherwise
  */
 doca_error_t host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
-				 struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t **peer_addr, const plasma::Allocation &allocation);
+				 struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t **peer_addr, const plasma::Allocation &allocation, char **export_desc);
 
 #endif /* DMA_COPY_CORE_H_ */

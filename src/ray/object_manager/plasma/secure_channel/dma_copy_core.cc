@@ -1202,11 +1202,11 @@ destroy_core_objs(struct core_state *state, struct dma_copy_cfg *cfg)
 
 doca_error_t
 host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state, struct doca_comm_channel_ep_t *ep,
-		    struct doca_comm_channel_addr_t **peer_addr, const plasma::Allocation &allocation)
+		    struct doca_comm_channel_addr_t **peer_addr, const plasma::Allocation &allocation, char **export_desc)
 {
 	doca_error_t result;
 	// char *buffer = NULL, 
-  char *export_desc = NULL;
+  // char *export_desc = NULL;
 
 	/* Negotiate DMA copy direction with DPU */
 	// result = host_negotiate_dma_direction_and_size(dma_cfg, ep, peer_addr);
@@ -1229,7 +1229,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
   std::cout << "export_desc address before: " << export_desc << std::endl; 
 
 	/* Export memory map to allow access to this memory region from DPU */
-	result = doca_mmap_export(core_state->mmap, core_state->dev, (void **)&export_desc, &export_desc_len);
+	result = doca_mmap_export(core_state->mmap, core_state->dev, (void **)export_desc, &export_desc_len);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to export DOCA mmap: %s", doca_get_error_string(result));
 		return result;
