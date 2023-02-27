@@ -58,7 +58,7 @@ int RunDmaExport(const plasma::Allocation &allocation)
 	}
 
   char *export_desc = NULL; 
-  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation, char **export_desc);
+  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation, &export_desc);
 
 	if (result != DOCA_SUCCESS)
 		exit_status = EXIT_FAILURE;
