@@ -440,7 +440,7 @@ host_export_memory_map_to_dpu(struct core_state *core_state, struct doca_comm_ch
  * @return: DOCA_SUCCESS on success and DOCA_ERROR otherwise
  */
 static doca_error_t
-memory_alloc_and_populate(struct core_state *core_state, size_t buffer_len, const plasma::Allocation &allocation)
+memory_alloc_and_populate(struct core_state *core_state, size_t buffer_len, char **buffer)
 {
 	// doca_error_t result;
 
@@ -1282,119 +1282,119 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 	return DOCA_SUCCESS;
 }
 
-doca_error_t
-dpu_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state, struct doca_comm_channel_ep_t *ep,
-		   struct doca_comm_channel_addr_t **peer_addr)
-{
-	char *buffer;
-	char *host_dma_addr = NULL;
-	char export_desc_buf[CC_MAX_MSG_SIZE];
-	struct doca_buf *remote_doca_buf;
-	struct doca_buf *local_doca_buf;
-	struct doca_mmap *remote_mmap;
-	size_t host_dma_offset, export_desc_len;
-	doca_error_t result;
+// doca_error_t
+// dpu_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state, struct doca_comm_channel_ep_t *ep,
+// 		   struct doca_comm_channel_addr_t **peer_addr)
+// {
+// 	char *buffer;
+// 	char *host_dma_addr = NULL;
+// 	char export_desc_buf[CC_MAX_MSG_SIZE];
+// 	struct doca_buf *remote_doca_buf;
+// 	struct doca_buf *local_doca_buf;
+// 	struct doca_mmap *remote_mmap;
+// 	size_t host_dma_offset, export_desc_len;
+// 	doca_error_t result;
 
-	/* Negotiate DMA copy direction with Host */
-	result = dpu_negotiate_dma_direction_and_size(dma_cfg, ep, peer_addr);
-	if (result != DOCA_SUCCESS) {
-		dpu_cleanup_core_objs(core_state);
-		return result;
-	}
+// 	/* Negotiate DMA copy direction with Host */
+// 	result = dpu_negotiate_dma_direction_and_size(dma_cfg, ep, peer_addr);
+// 	if (result != DOCA_SUCCESS) {
+// 		dpu_cleanup_core_objs(core_state);
+// 		return result;
+// 	}
 
-	/* Read the file if is located locally, allocate a buffer and populate it into the memory map */
-	result = memory_alloc_and_populate(core_state, dma_cfg->file_size, &buffer);
-	if (result != DOCA_SUCCESS) {
-		dpu_cleanup_core_objs(core_state);
-		return result;
-	}
+// 	/* Read the file if is located locally, allocate a buffer and populate it into the memory map */
+	// result = memory_alloc_and_populate(core_state, dma_cfg->file_size, &buffer);
+// 	if (result != DOCA_SUCCESS) {
+// 		dpu_cleanup_core_objs(core_state);
+// 		return result;
+// 	}
 
-	/* Receive export descriptor from Host */
-	result = dpu_receive_export_desc(ep, peer_addr, export_desc_buf, &export_desc_len);
-	if (result != DOCA_SUCCESS) {
-		dpu_cleanup_core_objs(core_state);
-		free(buffer);
-		return result;
-	}
+// 	/* Receive export descriptor from Host */
+// 	result = dpu_receive_export_desc(ep, peer_addr, export_desc_buf, &export_desc_len);
+// 	if (result != DOCA_SUCCESS) {
+// 		dpu_cleanup_core_objs(core_state);
+// 		free(buffer);
+// 		return result;
+// 	}
 
-	/* Create a local DOCA mmap from export descriptor */
-	result = doca_mmap_create_from_export(NULL, (const void *)export_desc_buf, export_desc_len,
-					      core_state->dev, &remote_mmap);
-	if (result != DOCA_SUCCESS) {
-		DOCA_LOG_ERR("Failed to create memory map from export descriptor");
-		dpu_cleanup_core_objs(core_state);
-		free(buffer);
-		return result;
-	}
+// 	/* Create a local DOCA mmap from export descriptor */
+// 	result = doca_mmap_create_from_export(NULL, (const void *)export_desc_buf, export_desc_len,
+// 					      core_state->dev, &remote_mmap);
+// 	if (result != DOCA_SUCCESS) {
+// 		DOCA_LOG_ERR("Failed to create memory map from export descriptor");
+// 		dpu_cleanup_core_objs(core_state);
+// 		free(buffer);
+// 		return result;
+// 	}
 
-	/* Receive remote address and offset from Host */
-	result = dpu_receive_addr_and_offset(ep, peer_addr, &host_dma_addr, &host_dma_offset);
-	if (result != DOCA_SUCCESS) {
-		DOCA_LOG_ERR("Failed to create memory map from export");
-		doca_mmap_destroy(remote_mmap);
-		dpu_cleanup_core_objs(core_state);
-		free(buffer);
-		return result;
-	}
+// 	/* Receive remote address and offset from Host */
+// 	result = dpu_receive_addr_and_offset(ep, peer_addr, &host_dma_addr, &host_dma_offset);
+// 	if (result != DOCA_SUCCESS) {
+// 		DOCA_LOG_ERR("Failed to create memory map from export");
+// 		doca_mmap_destroy(remote_mmap);
+// 		dpu_cleanup_core_objs(core_state);
+// 		free(buffer);
+// 		return result;
+// 	}
 
-	/* Construct DOCA buffer for remote (Host) address range */
-	result = doca_buf_inventory_buf_by_addr(core_state->buf_inv, remote_mmap, host_dma_addr, host_dma_offset,
-						&remote_doca_buf);
-	if (result != DOCA_SUCCESS) {
-		DOCA_LOG_ERR("Unable to acquire DOCA remote buffer: %s", doca_get_error_string(result));
-		send_status_msg(ep, peer_addr, STATUS_FAILURE);
-		doca_mmap_destroy(remote_mmap);
-		dpu_cleanup_core_objs(core_state);
-		free(buffer);
-		return result;
-	}
+// 	/* Construct DOCA buffer for remote (Host) address range */
+// 	result = doca_buf_inventory_buf_by_addr(core_state->buf_inv, remote_mmap, host_dma_addr, host_dma_offset,
+// 						&remote_doca_buf);
+// 	if (result != DOCA_SUCCESS) {
+// 		DOCA_LOG_ERR("Unable to acquire DOCA remote buffer: %s", doca_get_error_string(result));
+// 		send_status_msg(ep, peer_addr, STATUS_FAILURE);
+// 		doca_mmap_destroy(remote_mmap);
+// 		dpu_cleanup_core_objs(core_state);
+// 		free(buffer);
+// 		return result;
+// 	}
 
-	/* Construct DOCA buffer for local (DPU) address range */
-	result = doca_buf_inventory_buf_by_addr(core_state->buf_inv, core_state->mmap, buffer, host_dma_offset,
-						&local_doca_buf);
-	if (result != DOCA_SUCCESS) {
-		DOCA_LOG_ERR("Unable to acquire DOCA local buffer: %s", doca_get_error_string(result));
-		send_status_msg(ep, peer_addr, STATUS_FAILURE);
-		doca_buf_refcount_rm(remote_doca_buf, NULL);
-		doca_mmap_destroy(remote_mmap);
-		dpu_cleanup_core_objs(core_state);
-		free(buffer);
-		return result;
-	}
+// 	/* Construct DOCA buffer for local (DPU) address range */
+// 	result = doca_buf_inventory_buf_by_addr(core_state->buf_inv, core_state->mmap, buffer, host_dma_offset,
+// 						&local_doca_buf);
+// 	if (result != DOCA_SUCCESS) {
+// 		DOCA_LOG_ERR("Unable to acquire DOCA local buffer: %s", doca_get_error_string(result));
+// 		send_status_msg(ep, peer_addr, STATUS_FAILURE);
+// 		doca_buf_refcount_rm(remote_doca_buf, NULL);
+// 		doca_mmap_destroy(remote_mmap);
+// 		dpu_cleanup_core_objs(core_state);
+// 		free(buffer);
+// 		return result;
+// 	}
 
-	/* Fill buffer in file content if relevant */
-	if (dma_cfg->is_file_found_locally) {
-		result = fill_buffer_with_file_content(dma_cfg, buffer);
-		if (result != DOCA_SUCCESS) {
-			send_status_msg(ep, peer_addr, STATUS_FAILURE);
-			doca_buf_refcount_rm(local_doca_buf, NULL);
-			doca_buf_refcount_rm(remote_doca_buf, NULL);
-			doca_mmap_destroy(remote_mmap);
-			dpu_cleanup_core_objs(core_state);
-			free(buffer);
-			return result;
-		}
-	}
+// 	/* Fill buffer in file content if relevant */
+// 	if (dma_cfg->is_file_found_locally) {
+// 		result = fill_buffer_with_file_content(dma_cfg, buffer);
+// 		if (result != DOCA_SUCCESS) {
+// 			send_status_msg(ep, peer_addr, STATUS_FAILURE);
+// 			doca_buf_refcount_rm(local_doca_buf, NULL);
+// 			doca_buf_refcount_rm(remote_doca_buf, NULL);
+// 			doca_mmap_destroy(remote_mmap);
+// 			dpu_cleanup_core_objs(core_state);
+// 			free(buffer);
+// 			return result;
+// 		}
+// 	}
 
-	/* Submit DMA job into the queue and wait until job completion */
-	result = dpu_submit_dma_job(dma_cfg, core_state, host_dma_offset, buffer, local_doca_buf, remote_doca_buf);
-	if (result != DOCA_SUCCESS) {
-		send_status_msg(ep, peer_addr, STATUS_FAILURE);
-		doca_buf_refcount_rm(local_doca_buf, NULL);
-		doca_buf_refcount_rm(remote_doca_buf, NULL);
-		doca_mmap_destroy(remote_mmap);
-		dpu_cleanup_core_objs(core_state);
-		free(buffer);
-		return result;
-	}
+// 	/* Submit DMA job into the queue and wait until job completion */
+// 	result = dpu_submit_dma_job(dma_cfg, core_state, host_dma_offset, buffer, local_doca_buf, remote_doca_buf);
+// 	if (result != DOCA_SUCCESS) {
+// 		send_status_msg(ep, peer_addr, STATUS_FAILURE);
+// 		doca_buf_refcount_rm(local_doca_buf, NULL);
+// 		doca_buf_refcount_rm(remote_doca_buf, NULL);
+// 		doca_mmap_destroy(remote_mmap);
+// 		dpu_cleanup_core_objs(core_state);
+// 		free(buffer);
+// 		return result;
+// 	}
 
-	send_status_msg(ep, peer_addr, STATUS_SUCCESS);
+// 	send_status_msg(ep, peer_addr, STATUS_SUCCESS);
 
-	doca_buf_refcount_rm(remote_doca_buf, NULL);
-	doca_buf_refcount_rm(local_doca_buf, NULL);
-	doca_mmap_destroy(remote_mmap);
-	dpu_cleanup_core_objs(core_state);
-	free(buffer);
+// 	doca_buf_refcount_rm(remote_doca_buf, NULL);
+// 	doca_buf_refcount_rm(local_doca_buf, NULL);
+// 	doca_mmap_destroy(remote_mmap);
+// 	dpu_cleanup_core_objs(core_state);
+// 	free(buffer);
 
-	return result;
-}
+// 	return result;
+// }
