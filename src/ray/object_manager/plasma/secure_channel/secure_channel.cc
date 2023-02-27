@@ -102,7 +102,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   int client_msg_len = strlen(text) + 1;
   std::cout << "PushMetaToDpu in secure channel" << std::endl;
   // MetaInfo metainfo;
-  int64_t mmsg_len = sizeof(MetaInfo);
+  size_t mmsg_len = sizeof(MetaInfo);
   /* Make sure peer address is valid */
   // while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
   //   // if (end_sample) {
