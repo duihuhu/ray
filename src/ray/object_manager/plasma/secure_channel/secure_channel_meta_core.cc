@@ -100,13 +100,13 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 	}
 
 	/* Make sure peer address is valid */
-	while ((result = doca_comm_channel_peer_addr_update_info(*peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
-		if (end_sample) {
-			result = DOCA_ERROR_UNEXPECTED;
-			break;
-		}
-		usleep(1);
-	}
+	// while ((result = doca_comm_channel_peer_addr_update_info(*peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
+	// 	if (end_sample) {
+	// 		result = DOCA_ERROR_UNEXPECTED;
+	// 		break;
+	// 	}
+	// 	usleep(1);
+	// }
 	// if (result != DOCA_SUCCESS) {
 	// 	DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
 	// 	return result;
