@@ -47,7 +47,7 @@ struct MetaInfo {
   size_t export_desc_len;
   // MetaInfo(){}
   MetaInfo(const ray::ObjectID &id, const plasma::Allocation &alloc) :object_id(id), allocation(alloc), \
-                                                        export_desc(export_desc), export_desc_len(export_desc_len){}
+                                                        export_desc(), export_desc_len(){}
   
 };
 
@@ -126,7 +126,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   for (auto &entry : *plasma_meta) {
     // metainfo.object_id =  entry.first;
     // metainfo.allocation =  entry.second->GetAllocation();
-    MetaInfo meta_info(entry.first, entry.second->GetAllocation(), NULL, 0);
+    MetaInfo meta_info(entry.first, entry.second->GetAllocation());
     size_t amsg_len = sizeof(meta_info);
     std::cout << "hucc amsg_len " << amsg_len << std::endl;
     // ObjectID object_id = entry.first;
