@@ -105,7 +105,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   int client_msg_len = strlen(text) + 1;
   std::cout << "PushMetaToDpu in secure channel" << std::endl;
   // MetaInfo metainfo;
-  size_t mmsg_len = sizeof(MetaInfo);
+  // size_t mmsg_len = sizeof(MetaInfo);
   /* Make sure peer address is valid */
   // while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
   //   // if (end_sample) {
@@ -121,17 +121,20 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   for (auto &entry : *plasma_meta) {
     // metainfo.object_id =  entry.first;
     // metainfo.allocation =  entry.second->GetAllocation();
-    // MetaInfo metainfo(entry.first, entry.second->GetAllocation());
+    MetaInfo metainfo(entry.first, entry.second->GetAllocation());
+    size_t amsg_len = sizeof(metainfo);
     // ObjectID object_id = entry.first;
     // int64_t msg_len = sizeof(object_id);
-    const Allocation &allocation = entry.second->GetAllocation();
-    int64_t amsg_len = sizeof(allocation);
 
-    // std::cout << "hucc get plasma meta object id " << metainfo.object_id << " allocation information: " << metainfo.allocation.address \
-    //   <<   " allocation information size: " << metainfo.allocation.size << std::endl;
-    std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
-    result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
-    while ((result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+    // const Allocation &allocation = entry.second->GetAllocation();
+    // int64_t amsg_len = sizeof(allocation);
+
+    std::cout << "hucc get plasma meta object id " << metainfo.object_id << " allocation information: " << metainfo.allocation.address \
+      <<   " allocation information size: " << metainfo.allocation.size << std::endl;
+
+    // std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
+    // result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+    while ((result = doca_comm_channel_ep_sendto(ep, &metainfo, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
       usleep(1);
     }
