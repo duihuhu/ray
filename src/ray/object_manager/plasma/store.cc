@@ -131,7 +131,7 @@ PlasmaStore::~PlasmaStore() {}
 void PlasmaStore::Start() {
   // Start listening for clients.
   DoAccept();
-  StartMetaCommClient();
+  // StartMetaCommClient();
   StartCommService();
 }
 
@@ -146,6 +146,7 @@ void PlasmaStore::StartMetaCommClient() {
 
 void PlasmaStore::RunCommService(int index) {
     SetThreadName("send meta thread" + std::to_string(index));
+    StartMetaCommClient();
     int count = 0;
     while(1){
       // std::cout<< "send meta thread" <<"\n";
@@ -167,24 +168,23 @@ void PlasmaStore::RunCommService(int index) {
       // auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
       // auto entry =
       //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
-      // if ( plasma_meta->empty() ) {
-      //   std::cout << "plasma_meta is NULL" <<  std::endl;
-      // } else {
-      //   std::cout << "plasma_meta is not NULL" <<  std::endl;
-      // }
-      // std::cout << " flat_hash_map space: " << sizeof(*plasma_meta) <<  std::endl;
-      for (auto &entry : *plasma_meta) {
-        ObjectID object_id = entry.first;
-        const Allocation &allocation = entry.second->GetAllocation();
-        // std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " size " << allocation.size <<" time count: " << count \
-        //   << " object_id space: " << sizeof(object_id) << " allocation space: " << sizeof(allocation) <<std::endl;
-        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, object_id);
-        if (result == EXIT_FAILURE) {
-            std::cout<< "Fail in sending meta data " <<"\n";
-            return;
+      if ( plasma_meta->empty() ) {
+        std::cout << "plasma_meta is NULL" <<  std::endl;
+      } else {
+        std::cout << "plasma_meta is not NULL" <<  std::endl;
+        for (auto &entry : *plasma_meta) {
+          ObjectID object_id = entry.first;
+          const Allocation &allocation = entry.second->GetAllocation();
+          // std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " size " << allocation.size <<" time count: " << count \
+          //   << " object_id space: " << sizeof(object_id) << " allocation space: " << sizeof(allocation) <<std::endl;
+          result = PushMetaToDpu(meta_server_name_, ep, peer_addr, object_id);
+          if (result == EXIT_FAILURE) {
+              std::cout<< "Fail in sending meta data " <<"\n";
+              return;
+          }
         }
       }
-      std::cout<< "send meta thread1" <<"\n";
+      // std::cout << " flat_hash_map space: " << sizeof(*plasma_meta) <<  std::endl;
       sleep(2);
       ++count;
     }
