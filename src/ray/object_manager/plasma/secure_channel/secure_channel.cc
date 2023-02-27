@@ -87,7 +87,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   	/* Send hello message */
   doca_error_t result;
   char *text = "hello111";
-  if (plasma_meta.empty())
+  if (plasma_meta->empty())
     *text= "hello222";
   int client_msg_len = strlen(text) + 1;
   std::cout << "PushMetaToDpu in secure channel" << std::endl;
