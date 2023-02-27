@@ -25,8 +25,8 @@ DOCA_LOG_REGISTER(DMA_COPY);
 int RunDmaExport(const plasma::Allocation &allocation)
 {
 	doca_error_t result;
-	struct dma_copy_cfg dma_cfg = {0};
-	struct core_state core_state = {0};
+	struct dma_copy_cfg dma_cfg;
+	struct core_state core_state;;
 	struct doca_comm_channel_ep_t *ep;
 	struct doca_comm_channel_addr_t *peer_addr = NULL;
 	struct doca_dev *cc_dev = NULL;
@@ -57,7 +57,7 @@ int RunDmaExport(const plasma::Allocation &allocation)
 		goto destroy_resources;
 	}
 
-  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, &allocation);
+  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation);
 
 	if (result != DOCA_SUCCESS)
 		exit_status = EXIT_FAILURE;
