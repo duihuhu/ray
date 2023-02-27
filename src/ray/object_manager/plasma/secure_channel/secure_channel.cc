@@ -107,18 +107,38 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     return result;
   }
 
-	result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
-  while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
-	       DOCA_ERROR_AGAIN) {
-		usleep(1);
-	}
-	if (result != DOCA_SUCCESS) {
-    std::cout<< "Message was not sent: " << doca_get_error_string(result)<<std::endl;
-		DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
-    return EXIT_FAILURE;
-	} else if (result == DOCA_SUCCESS) {
-    std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
+  for (auto &entry : *plasma_meta) {
+    ObjectID object_id = entry.first;
+    int64_t msg_len = sizof(object_id);
+    const Allocation &allocation = entry.second->GetAllocation();
+    // std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " size " << allocation.size <<" time count: " << count \
+    //   << " object_id space: " << sizeof(object_id) << " allocation space: " << sizeof(allocation) <<std::endl;
+    result = doca_comm_channel_ep_sendto(ep, &object_id, msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+    while ((result = doca_comm_channel_ep_sendto(ep, &object_id, msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+          DOCA_ERROR_AGAIN) {
+      usleep(1);
+    }
+    if (result != DOCA_SUCCESS) {
+      std::cout<< "Message was not sent: " << doca_get_error_string(result)<<std::endl;
+      DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
+      return EXIT_FAILURE;
+    } else if (result == DOCA_SUCCESS) {
+      std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
+    }
   }
+
+	// result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+  // while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+	//        DOCA_ERROR_AGAIN) {
+	// 	usleep(1);
+	// }
+	// if (result != DOCA_SUCCESS) {
+  //   std::cout<< "Message was not sent: " << doca_get_error_string(result)<<std::endl;
+	// 	DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
+  //   return EXIT_FAILURE;
+	// } else if (result == DOCA_SUCCESS) {
+  //   std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
+  // }
   return EXIT_SUCCESS;
 }
 
