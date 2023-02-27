@@ -169,6 +169,11 @@ void PlasmaStore::RunCommService(int index) {
       //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
       if ( plasma_meta->empty() ) {
         std::cout << "plasma_meta is NULL" <<  std::endl;
+        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+        if (result == EXIT_FAILURE) {
+            std::cout<< "Fail in sending meta data " <<"\n";
+            return;
+        }
       } else {
         std::cout << "plasma_meta is not NULL" <<  std::endl;
         std::cout << " flat_hash_map space: " << sizeof(*plasma_meta) <<  std::endl;
@@ -178,11 +183,7 @@ void PlasmaStore::RunCommService(int index) {
           std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " size " << allocation.size <<" time count: " << count \
             << " object_id space: " << sizeof(object_id) << " allocation space: " << sizeof(allocation) <<std::endl;
         }
-        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
-        if (result == EXIT_FAILURE) {
-            std::cout<< "Fail in sending meta data " <<"\n";
-            return;
-        }
+
 
       }
 
