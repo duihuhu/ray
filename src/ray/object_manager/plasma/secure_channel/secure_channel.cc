@@ -27,6 +27,12 @@
 #define MAX_TXT_SIZE 4096					/* Maximum size of input text */
 #define PCI_ADDR_LEN 8						/* PCI address string length */
 
+
+DOCA_LOG_REGISTER(SECURE_CHANNEL);
+
+using namespace ray;
+using namespace plasma;
+
 struct cc_config {
 	char cc_dev_pci_addr[PCI_ADDR_LEN];			/* Comm Channel DOCA device PCI address */
 	char cc_dev_rep_pci_addr[PCI_ADDR_LEN];			/* Comm Channel DOCA device representor PCI address */
@@ -40,10 +46,7 @@ struct MetaInfo {
   MetaInfo(ray::ObjectID &id, const  plasma::Allocation &alloc) :object_id(id), allocation(alloc){}
 };
 
-DOCA_LOG_REGISTER(SECURE_CHANNEL);
 
-using namespace ray;
-using namespace plasma;
 
 int InitConnChannel(const char *server_name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr) {
 	struct cc_config cfg = {0};
