@@ -109,7 +109,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
 
   for (auto &entry : *plasma_meta) {
     ObjectID object_id = entry.first;
-    int64_t msg_len = sizof(object_id);
+    int64_t msg_len = sizeof(object_id);
     const Allocation &allocation = entry.second->GetAllocation();
     // std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " size " << allocation.size <<" time count: " << count \
     //   << " object_id space: " << sizeof(object_id) << " allocation space: " << sizeof(allocation) <<std::endl;
