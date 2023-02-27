@@ -139,7 +139,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
 
     std::cout << "hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
-      <<   " allocation information size: " << meta_info.allocation.size << "metainfo.export_desc: " << metainfo.export_desc \
+      <<   " allocation information size: " << meta_info.allocation.size << "metainfo.export_desc: " << meta_info.export_desc \
       << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
 
 
