@@ -48,7 +48,6 @@ struct MetaInfo {
   // MetaInfo(){}
   MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0, char *export_desc=nullptr) :object_id(object_id), allocation(allocation), \
                                                         export_desc_len(export_desc_len), export_desc(export_desc){}
-  
 };
 
 
