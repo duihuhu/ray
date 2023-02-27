@@ -33,6 +33,11 @@ struct cc_config {
 	char text[MAX_TXT_SIZE];				/* Text to send to Comm Channel server */
 };
 
+struct MetoInfo {
+  ObjectID objectid;
+  Allocation allocation;
+};
+
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
 
 using namespace ray;
@@ -106,15 +111,17 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
     return result;
   }
-
+  MetoInfo metoinfo;
   for (auto &entry : *plasma_meta) {
+    metoinfo.objectid =  entry.first;
     ObjectID object_id = entry.first;
     int64_t msg_len = sizeof(object_id);
     const Allocation &allocation = entry.second->GetAllocation();
-    // std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " size " << allocation.size <<" time count: " << count \
-    //   << " object_id space: " << sizeof(object_id) << " allocation space: " << sizeof(allocation) <<std::endl;
-    result = doca_comm_channel_ep_sendto(ep, &object_id, msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
-    while ((result = doca_comm_channel_ep_sendto(ep, &object_id, msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
+    int64_t amsg_len = sizeof(allocation);
+    std::cout << "hucc get plasma meta object id " << object_id << " allocation information: " << allocation.address << " size " << allocation.size <<" time count: " << count \
+      << " object_id space: " << sizeof(object_id) << " allocation space: " << sizeof(allocation) <<std::endl;
+    result = doca_comm_channel_ep_sendto(ep, allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
+    while ((result = doca_comm_channel_ep_sendto(ep, allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
       usleep(1);
     }
