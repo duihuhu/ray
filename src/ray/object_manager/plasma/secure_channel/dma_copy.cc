@@ -69,8 +69,8 @@ char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len
 	if (result != DOCA_SUCCESS)
 		exit_status = EXIT_FAILURE;
   
-  // return export_desc;
-  return EXIT_SUCCESS;
+  return export_desc;
+  // return EXIT_SUCCESS;
 destroy_resources:
 
 	/* Destroy Comm Channel */
@@ -82,5 +82,5 @@ destroy_resources:
 	/* ARGP destroy_resources */
 	doca_argp_destroy();
 
-	return exit_status;
+	// return exit_status;
 }
