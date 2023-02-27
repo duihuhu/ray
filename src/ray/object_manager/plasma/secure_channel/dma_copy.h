@@ -8,5 +8,5 @@
 #include "ray/object_manager/plasma/common.h"
 
 #include "dma_copy_core.h"
-#include 
+
 int RunDmaExport(const plasma::Allocation &allocation);
