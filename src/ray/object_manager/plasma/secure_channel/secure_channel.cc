@@ -34,10 +34,10 @@ struct cc_config {
 };
 
 struct MetaInfo {
-  const ObjectID object_id;
-  const Allocation &allocation;
+  const ray::ObjectID object_id;
+  const plasma::Allocation &allocation;
   MetaInfo(){}
-  MetaInfo(ObjectID &id, const Allocation &alloc) :object_id(id), allocation(alloc){}
+  MetaInfo(ray::ObjectID &id, const  plasma::Allocation &alloc) :object_id(id), allocation(alloc){}
 };
 
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
