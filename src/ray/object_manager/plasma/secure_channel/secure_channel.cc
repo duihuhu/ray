@@ -34,8 +34,9 @@ struct cc_config {
 };
 
 struct MetaInfo {
-  ObjectID objectid;
+  ObjectID object_id;
   const Allocation &allocation;
+  MetaInfo(ObjectID id, const Allocation &alloc) :object_id(id), allocation(alloc){}
 };
 
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
