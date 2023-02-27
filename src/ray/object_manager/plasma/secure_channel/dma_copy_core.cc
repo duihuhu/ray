@@ -1262,7 +1262,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 	// 	return result;
 	// }
 
-	DOCA_LOG_INFO("Final status message was successfully received");
+	// DOCA_LOG_INFO("Final status message was successfully received");
 	std::cout<< "Final status message was successfully received: " << export_desc <<std::endl;
 
 	// if (!dma_cfg->is_file_found_locally) {
