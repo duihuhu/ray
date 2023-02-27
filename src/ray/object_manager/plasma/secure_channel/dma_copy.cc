@@ -33,7 +33,7 @@ int RunDmaExport(const plasma::Allocation &allocation)
 	struct doca_dev_rep *cc_dev_rep = NULL;
 	int exit_status = EXIT_SUCCESS;
   char *export_desc = NULL; 
-
+	size_t export_desc_len;
 	/* Open DOCA dma device */
 	result = open_dma_device(&core_state.dev);
 	if (result != DOCA_SUCCESS) {
@@ -59,9 +59,13 @@ int RunDmaExport(const plasma::Allocation &allocation)
 	}
 
 
-  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation, &export_desc);
+  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation, &export_desc, export_desc_len);
 
-  free(export_desc);
+	std::cout<< "Final status message was successfully received: " << export_desc \
+    << " export_desc_len " << export_desc_len <<std::endl;
+
+
+  // free(export_desc);
 	if (result != DOCA_SUCCESS)
 		exit_status = EXIT_FAILURE;
   

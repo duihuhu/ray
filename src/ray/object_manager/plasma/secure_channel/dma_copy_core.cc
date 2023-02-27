@@ -1202,7 +1202,7 @@ destroy_core_objs(struct core_state *state, struct dma_copy_cfg *cfg)
 
 doca_error_t
 host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state, struct doca_comm_channel_ep_t *ep,
-		    struct doca_comm_channel_addr_t **peer_addr, const plasma::Allocation &allocation, char **export_desc)
+		    struct doca_comm_channel_addr_t **peer_addr, const plasma::Allocation &allocation, char **export_desc, size_t &export_desc_len)
 {
 	doca_error_t result;
 	// char *buffer = NULL, 
@@ -1217,7 +1217,6 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 	// result = memory_alloc_and_populate(core_state, dma_cfg->file_size, &allocation);
 	// if (result != DOCA_SUCCESS)
 	// 	return result;
-	size_t export_desc_len;
 
   result = doca_mmap_populate(core_state->mmap, allocation.address, allocation.size, sysconf(_SC_PAGESIZE), NULL, NULL);
 
