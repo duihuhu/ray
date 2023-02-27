@@ -36,6 +36,7 @@ struct cc_config {
 struct MetaInfo {
   ObjectID object_id;
   const Allocation &allocation;
+  MetaInfo(): ObjectID(), Allocation(){}
   MetaInfo(ObjectID id, const Allocation &alloc) :object_id(id), allocation(alloc){}
 };
 
@@ -101,7 +102,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   int client_msg_len = strlen(text) + 1;
   std::cout << "PushMetaToDpu in secure channel" << std::endl;
   MetaInfo metainfo;
-  int64_t mmsg_len = sizeof(metainfo);
+  int64_t mmsg_len = sizeof(MetaInfo);
   /* Make sure peer address is valid */
   // while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
   //   // if (end_sample) {
@@ -115,15 +116,15 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     return result;
   }
   for (auto &entry : *plasma_meta) {
-    metainfo.objectid =  entry.first;
+    metainfo.object_id =  entry.first;
     metainfo.allocation =  entry.second->GetAllocation();
-
+    // MetaInfo metainfo(entry.first, entry.second->GetAllocation());
     // ObjectID object_id = entry.first;
     // int64_t msg_len = sizeof(object_id);
     // const Allocation &allocation = entry.second->GetAllocation();
     // int64_t amsg_len = sizeof(allocation);
 
-    std::cout << "hucc get plasma meta object id " << metainfo.objectid << " allocation information: " << metainfo.allocation.address<< std::endl;
+    std::cout << "hucc get plasma meta object id " << metainfo.object_id << " allocation information: " << metainfo.allocation.address<< std::endl;
     result = doca_comm_channel_ep_sendto(ep, &metainfo, mmsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
     while ((result = doca_comm_channel_ep_sendto(ep, &metainfo, mmsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
