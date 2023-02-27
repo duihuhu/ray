@@ -36,7 +36,7 @@ struct cc_config {
 struct MetaInfo {
   ObjectID object_id;
   const Allocation &allocation;
-  MetaInfo(): ObjectID(), Allocation(){}
+  MetaInfo(){}
   MetaInfo(ObjectID id, const Allocation &alloc) :object_id(id), allocation(alloc){}
 };
 
@@ -101,7 +101,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
 
   int client_msg_len = strlen(text) + 1;
   std::cout << "PushMetaToDpu in secure channel" << std::endl;
-  MetaInfo metainfo;
+  // MetaInfo metainfo;
   int64_t mmsg_len = sizeof(MetaInfo);
   /* Make sure peer address is valid */
   // while ((result = doca_comm_channel_peer_addr_update_info(peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
@@ -116,9 +116,9 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     return result;
   }
   for (auto &entry : *plasma_meta) {
-    metainfo.object_id =  entry.first;
-    metainfo.allocation =  entry.second->GetAllocation();
-    // MetaInfo metainfo(entry.first, entry.second->GetAllocation());
+    // metainfo.object_id =  entry.first;
+    // metainfo.allocation =  entry.second->GetAllocation();
+    MetaInfo metainfo(entry.first, entry.second->GetAllocation());
     // ObjectID object_id = entry.first;
     // int64_t msg_len = sizeof(object_id);
     // const Allocation &allocation = entry.second->GetAllocation();
