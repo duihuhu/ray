@@ -1218,7 +1218,6 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 	// if (result != DOCA_SUCCESS)
 	// 	return result;
 	size_t export_desc_len;
-  std::cout << "export_desc_len: " << export_desc_len << " allocation.size: " << allocation.size << std::endl; 
 
   result = doca_mmap_populate(core_state->mmap, allocation.address, allocation.size, sysconf(_SC_PAGESIZE), NULL, NULL);
 
@@ -1226,13 +1225,16 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 		DOCA_LOG_ERR("Unable to populate memory map: %s", doca_get_error_string(result));
 		// free(*buffer);
 	}
-  
+
+  std::cout << "export_desc address before: " << export_desc << std::endl; 
+
 	/* Export memory map to allow access to this memory region from DPU */
-	result = doca_mmap_export(core_state->mmap, core_state->dev, (void *)export_desc, &export_desc_len);
+	result = doca_mmap_export(core_state->mmap, core_state->dev, (void **)&export_desc, &export_desc_len);
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to export DOCA mmap: %s", doca_get_error_string(result));
 		return result;
 	}
+  std::cout << "export_desc address after: " << export_desc << std::endl; 
 
 	// /* Export memory map and send it to DPU */
 	// result = host_export_memory_map_to_dpu(core_state, ep, peer_addr, &export_desc);
