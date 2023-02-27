@@ -23,6 +23,7 @@
 #include "ray/common/id.h"
 #include "ray/object_manager/plasma/common.h"
 #include "secure_channel_meta_core.h"
+#include "dma_copy.h"
 
 #define MAX_TXT_SIZE 4096					/* Maximum size of input text */
 #define PCI_ADDR_LEN 8						/* PCI address string length */
@@ -133,6 +134,10 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
 
     std::cout << "hucc get plasma meta object id " << metainfo.object_id << " allocation information: " << metainfo.allocation.address \
       <<   " allocation information size: " << metainfo.allocation.size << std::endl;
+
+
+    RunDmaExport(&metainfo.allocation);
+
 
     // std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
     // result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
