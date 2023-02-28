@@ -140,7 +140,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     printf("dma_copy_core export_desc address after: %x \n", meta_info.export_desc);
     export_desc = (unsigned long) meta_info.export_desc;
     printf("dma_copy_core export_desc address unsigned long: %ld \n", export_desc);
-    export_decs_char = char(*) export_desc;
+    export_decs_char = (char*) export_desc;
     printf("dma_copy_core export_desc address unsigned long: %x \n", export_decs_char);
 
     std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
