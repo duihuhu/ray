@@ -134,7 +134,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     // const Allocation &allocation = entry.second->GetAllocation();
     // int64_t amsg_len = sizeof(allocation);
 
-    (void *)meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
+    meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
     // RunDmaExport(meta_info.allocation, meta_info.export_desc_len, &meta_info.export_desc);
     printf("dma_copy_core export_desc address after: %x \n", meta_info.export_desc);
 
