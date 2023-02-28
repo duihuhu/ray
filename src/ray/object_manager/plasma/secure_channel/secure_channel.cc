@@ -44,10 +44,11 @@ struct MetaInfo {
   const ray::ObjectID object_id;
   const plasma::Allocation allocation;
   size_t export_desc_len;
-  char *export_desc;
+  // char *export_desc;
+  char export_desc[CC_MAX_MSG_SIZE];
   // MetaInfo(){}
-  MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0, char *export_desc=NULL) :object_id(object_id), allocation(allocation), \
-                                                        export_desc_len(export_desc_len),export_desc(export_desc){}
+  MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0) :object_id(object_id), allocation(allocation), \
+                                                        export_desc_len(export_desc_len){}
 };
 
 
@@ -133,15 +134,20 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
 
     // const Allocation &allocation = entry.second->GetAllocation();
     // int64_t amsg_len = sizeof(allocation);
-    // char *export_desc;
-    meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
+    char *export_desc;
+    export_desc  = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
+    // meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
 
     // std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
     //   <<   " allocation information size: " << meta_info.allocation.size << " metainfo.export_desc: " << meta_info.export_desc \
     //   << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
 
     for(int i=0; i<meta_info.export_desc_len; ++i) {
-      printf("%c", meta_info.export_desc[i]);
+      printf("%c\n", meta_info.export_desc[i]);
+      print("---------");
+      meta_info.export_desc[i] = (*export_desc)[i];
+      printf("%c\n", meta_info.export_desc[i]);
+      print("---------");
     }
     printf("\n");
     printf("export_desc_len: %d\n", meta_info.export_desc_len);
