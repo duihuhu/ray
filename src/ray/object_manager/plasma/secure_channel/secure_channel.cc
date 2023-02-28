@@ -129,7 +129,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     // metainfo.allocation =  entry.second->GetAllocation();
     MetaInfo meta_info(entry.first, entry.second->GetAllocation());
     size_t amsg_len = sizeof(meta_info);
-    std::cout << "hucc amsg_len " << amsg_len << std::endl;
+    // std::cout << "hucc amsg_len " << amsg_len << std::endl;
     // ObjectID object_id = entry.first;
     // int64_t msg_len = sizeof(object_id);
 
@@ -144,21 +144,10 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     //   << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
 
     for(int i=0; i<meta_info.export_desc_len; ++i) {
-      printf("%c\n", meta_info.export_desc[i]);
-      printf("---------\n");
       meta_info.export_desc[i] = export_desc[i];
-      printf("%c\n", meta_info.export_desc[i]);
-      printf("*********\n");
     }
     meta_info.export_desc[meta_info.export_desc_len] = '\0';
     
-    printf("\n");
-    printf("export_desc_len: %d\n", meta_info.export_desc_len);
-    printf("meta_info len: %d\n",sizeof(meta_info));
-
-    printf("\n");
-    // std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
-    // result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
     while ((result = doca_comm_channel_ep_sendto(ep, &meta_info, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
       usleep(1);
