@@ -145,7 +145,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     for(int i=0; i<meta_info.export_desc_len; ++i) {
       printf("%c\n", meta_info.export_desc[i]);
       printf("---------\n");
-      meta_info.export_desc[i] = *export_desc[i];
+      meta_info.export_desc[i] = export_desc[i];
       printf("%c\n", meta_info.export_desc[i]);
       printf("---------\n");
     }
