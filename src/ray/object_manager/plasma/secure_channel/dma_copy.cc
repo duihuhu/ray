@@ -63,7 +63,7 @@ char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len
 
 	// std::cout<< "dma_copy Final status message was successfully received: " << export_desc \
   //   << " export_desc_len " << export_desc_len <<std::endl;
-  printf("dma_copy_core export_desc address after: %x \n",  export_desc);
+  printf("dma_copy_core export_desc address after: %x \n",  *export_desc);
 
 
   // free(export_desc);
