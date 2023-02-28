@@ -45,7 +45,7 @@ struct MetaInfo {
   const plasma::Allocation allocation;
   size_t export_desc_len;
   // char *export_desc;
-  char export_desc[CC_MAX_MSG_SIZE];
+  char export_desc[300];
   // MetaInfo(){}
   MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0) :object_id(object_id), allocation(allocation), \
                                                         export_desc_len(export_desc_len){}
