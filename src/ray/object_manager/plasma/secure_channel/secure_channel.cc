@@ -27,6 +27,7 @@
 
 #define MAX_TXT_SIZE 4096					/* Maximum size of input text */
 #define PCI_ADDR_LEN 8						/* PCI address string length */
+#define CC_EXPORT_DESC_SIZE 500
 
 
 DOCA_LOG_REGISTER(SECURE_CHANNEL);
@@ -45,7 +46,7 @@ struct MetaInfo {
   const plasma::Allocation allocation;
   size_t export_desc_len;
   // char *export_desc;
-  char export_desc[300];
+  char export_desc[CC_EXPORT_DESC_SIZE];
   // MetaInfo(){}
   MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0) :object_id(object_id), allocation(allocation), \
                                                         export_desc_len(export_desc_len){}
