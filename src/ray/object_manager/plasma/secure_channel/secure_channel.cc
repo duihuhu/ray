@@ -151,7 +151,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
       <<   " allocation information size: " << meta_info.allocation.size << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
 
-    printf(" metainfo.export_desc: %x", (char*) meta_info.export_desc);
+    printf(" metainfo.export_desc: %x\n", (char*) meta_info.export_desc);
     // std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
     // result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
     while ((result = doca_comm_channel_ep_sendto(ep, &meta_info, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
