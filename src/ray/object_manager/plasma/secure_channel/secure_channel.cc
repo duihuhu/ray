@@ -144,7 +144,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
       printf("%c", meta_info.export_desc[i]);
     }
     printf("\n");
-    print("export_desc_len: %d", meta_info.export_desc_len);
+    print("export_desc_len: %d\n", meta_info.export_desc_len);
     printf("\n");
     // std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
     // result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
