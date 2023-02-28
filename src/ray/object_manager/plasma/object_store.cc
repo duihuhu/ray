@@ -25,8 +25,8 @@ ObjectStore::ObjectStore(IAllocator &allocator)
 const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
                                              plasma::flatbuf::ObjectSource source,
                                              bool fallback_allocate) {
-  // std::cout<< "attempting to create object " << object_info.object_id << " size "
-  //                << object_info.data_size <<std::endl;
+  std::cout<< "attempting to create object " << object_info.object_id << " size "
+                 << object_info.data_size <<  " meta size " << object_info.data_size <<std::endl;
   RAY_LOG(DEBUG) << "attempting to create object " << object_info.object_id << " size "
                  << object_info.data_size <<  " meta size " << object_info.data_size;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
