@@ -144,7 +144,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     //   meta_info.export_desc[i] = export_desc[i];
     //   // printf("%c", meta_info.export_desc[i]);
     // }
-    strlcpy(meta_info.export_desc, export_desc);
+    strncpy(meta_info.export_desc, export_desc, meta_info.export_desc_len);
     printf("\n");
     printf("export_desc_len: %d\n", meta_info.export_desc_len);
     printf("\n");
