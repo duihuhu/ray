@@ -1235,7 +1235,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 	}
 
   // std::cout << "dma_copy_core export_desc address after: " << *export_desc << std::endl; 
-  printf("dma_copy_core export_desc address after: %x \n",  *export_desc);
+  // printf("dma_copy_core export_desc address after: %x \n",  *export_desc);
 	// /* Export memory map and send it to DPU */
 	// result = host_export_memory_map_to_dpu(core_state, ep, peer_addr, &export_desc);
 	// if (result != DOCA_SUCCESS)

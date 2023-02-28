@@ -44,10 +44,9 @@ struct MetaInfo {
   const ray::ObjectID object_id;
   const plasma::Allocation allocation;
   size_t export_desc_len;
-  // char *export_desc;
-  unsigned long export_desc;
+  char *export_desc;
   // MetaInfo(){}
-  MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0, unsigned long export_desc=0) :object_id(object_id), allocation(allocation), \
+  MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0, char *export_desc=nullptr) :object_id(object_id), allocation(allocation), \
                                                         export_desc_len(export_desc_len), export_desc(export_desc){}
 };
 
@@ -134,24 +133,17 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
 
     // const Allocation &allocation = entry.second->GetAllocation();
     // int64_t amsg_len = sizeof(allocation);
-    // unsigned long export_desc;
-    char *export_decs = NULL;
-    // meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
-    // // RunDmaExport(meta_info.allocation, meta_info.export_desc_len, &meta_info.export_desc);
-    // printf("dma_copy_core export_desc address after: %x \n", meta_info.export_desc);
-    // export_desc = (unsigned long) meta_info.export_desc;
-    // printf("dma_copy_core export_desc address unsigned long: %ld \n", export_desc);
-    // export_decs_char = (char*) export_desc;
-    // printf("dma_copy_core export_desc address unsigned long: %x \n", export_decs_char);
 
+    meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
 
-    export_decs = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
-    meta_info.export_desc = (unsigned long) export_decs;
+    // std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
+    //   <<   " allocation information size: " << meta_info.allocation.size << " metainfo.export_desc: " << meta_info.export_desc \
+    //   << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
 
-    std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
-      <<   " allocation information size: " << meta_info.allocation.size << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
-
-    printf(" metainfo.export_desc: %x\n", (char*) meta_info.export_desc);
+    for(int i=0;i<meta_info.export_desc_len;i++) {
+      printf("%c", meta_info.export_desc[i]);
+    }
+    printf("\n");
     // std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
     // result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
     while ((result = doca_comm_channel_ep_sendto(ep, &meta_info, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
