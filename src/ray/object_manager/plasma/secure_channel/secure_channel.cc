@@ -140,19 +140,27 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     //   <<   " allocation information size: " << meta_info.allocation.size << " metainfo.export_desc: " << meta_info.export_desc \
     //   << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
 
+    printf("export_desc start : \n");
+
     for(int i=0; i<meta_info.export_desc_len; ++i) {
       // meta_info.export_desc[i] = export_desc[i];
-      printf("%c", meta_info.export_desc[i]);
+      printf("%c", export_desc[i]);
     }
+    printf("export_desc end : \n");
+
     strncpy(meta_info.export_desc, export_desc, meta_info.export_desc_len);
     meta_info.export_desc[meta_info.export_desc_len] = '\0';
     printf("\n");
     printf("export_desc_len: %d\n", meta_info.export_desc_len);
     printf("\n");
 
+    printf("meta_info.export_desc start : \n");
     for(int i=0; i<meta_info.export_desc_len; ++i) {
       printf("%c", meta_info.export_desc[i]);
     }
+
+    printf("meta_info.export_desc end : \n");
+
     // std::cout << " allocation information: " << allocation.address << " allocation information size: " << allocation.size << std::endl;
     // result = doca_comm_channel_ep_sendto(ep, &allocation, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
     while ((result = doca_comm_channel_ep_sendto(ep, &meta_info, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
