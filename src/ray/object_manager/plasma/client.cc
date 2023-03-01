@@ -529,16 +529,18 @@ Status PlasmaClient::Impl::GetBuffers(
         uint8_t *data = LookupMmappedFile(object->store_fd);
         physical_buf = std::make_shared<SharedMemoryBuffer>(
             data + object->data_offset, object->data_size + object->metadata_size);
+        
+        std::ofstream outfile;
+        int object_id = object_ids[i];
+        outfile.open(std::string(object_id) + ".txt");
+        for(int i=0; i<(object->data_size + object->metadata_size); ++i){
+          outfile<<(data + object->data_offset)[i];
+        }
+      // outfile<<buffer<<std::endl;
+      outfile.close();
       } else {
         RAY_LOG(FATAL) << "Arrow GPU library is not enabled.";
       }
-      std::ofstream outfile;
-      outfile.open(std::string(*object_ids[i] + ".txt");
-      for(int i=0; i<(object->data_size + object->metadata_size); ++i){
-        outfile<<(data + object->data_offset)[i];
-      }
-      // outfile<<buffer<<std::endl;
-      outfile.close();
       // Finish filling out the return values.
       physical_buf = wrap_buffer(object_ids[i], physical_buf);
       object_buffers[i].data =
