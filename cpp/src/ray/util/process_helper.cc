@@ -84,7 +84,7 @@ void ProcessHelper::RayStart(CoreWorkerOptions::TaskExecutionCallback callback) 
 
   std::string bootstrap_address = bootstrap_ip + ":" + std::to_string(bootstrap_port);
   std::string node_ip = ConfigInternal::Instance().node_ip_address;
-  std::cout<< "ConfigInternal node ip " << node_ip << std::endl; 
+  RAY_LOG(INFO) << "ConfigInternal node ip " << node_ip << "\n";
   if (node_ip.empty()) {
     if (!bootstrap_ip.empty()) {
       node_ip = GetNodeIpAddress(bootstrap_address);
