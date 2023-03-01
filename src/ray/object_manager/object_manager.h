@@ -25,6 +25,7 @@
 #include <mutex>
 #include <random>
 #include <thread>
+#include <typeinfo>
 
 #include "absl/container/flat_hash_map.h"
 #include "absl/container/flat_hash_set.h"

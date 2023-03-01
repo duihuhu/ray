@@ -672,7 +672,7 @@ void ObjectManager::HandlePull(const rpc::PullRequest &request,
                                rpc::SendReplyCallback send_reply_callback) {
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
   NodeID node_id = NodeID::FromBinary(request.node_id());
-  std::cout <<"request.object_id :" << std::typeof(request.object_id()) << std::endl;
+  std::cout <<"request.object_id :" << std::typeid(request.object_id()).name() << std::endl;
   RAY_LOG(DEBUG) << "Received pull request from node " << node_id << " for object ["
                  << object_id << "].";
   //hucc receive send pull request node1 to node2
