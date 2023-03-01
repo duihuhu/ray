@@ -423,7 +423,7 @@ void ObjectManager::PushLocalObject(const ObjectID &object_id, const NodeID &nod
     local_objects_[object_id].object_info.data_size = 0;
     local_objects_[object_id].object_info.metadata_size = 1;
   }
-
+  RAY_LOG(INFO) << "hucc_read_object config_.object_chunk_size" <<  config_.object_chunk_size;
   PushObjectInternal(object_id,
                      node_id,
                      std::make_shared<ChunkObjectReader>(std::move(object_reader),

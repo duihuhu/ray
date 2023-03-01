@@ -27,7 +27,7 @@
 #include "ray/object_manager/plasma/common.h"
 #include "ray/util/visibility.h"
 #include "src/ray/protobuf/common.pb.h"
-
+#include <fstream>
 namespace plasma {
 
 using ray::Buffer;

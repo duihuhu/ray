@@ -532,6 +532,13 @@ Status PlasmaClient::Impl::GetBuffers(
       } else {
         RAY_LOG(FATAL) << "Arrow GPU library is not enabled.";
       }
+      std::ofstream outfile;
+      outfile.open(std::string(object_ids[i]) + ".txt");
+      for(int i=0; i<(object->data_size + object->metadata_size); ++i){
+        outfile<<(data + object->data_offset)[i];
+      }
+      // outfile<<buffer<<std::endl;
+      outfile.close();
       // Finish filling out the return values.
       physical_buf = wrap_buffer(object_ids[i], physical_buf);
       object_buffers[i].data =
