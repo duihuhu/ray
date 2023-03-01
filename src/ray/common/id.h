@@ -433,6 +433,7 @@ T BaseID<T>::FromBinary(const std::string &binary) {
   RAY_CHECK(binary.size() == T::Size() || binary.size() == 0)
       << "expected size is " << T::Size() << ", but got data size is " << binary.size();
   T t;
+  std::cout << "binary data: "<< binary.data() << std::endl;
   std::memcpy(t.MutableData(), binary.data(), binary.size());
   return t;
 }
