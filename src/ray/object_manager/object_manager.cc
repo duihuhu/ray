@@ -270,6 +270,7 @@ void ObjectManager::CancelPull(uint64_t request_id) {
 }
 
 void ObjectManager::SendPullRequest(const ObjectID &object_id, const NodeID &client_id) {
+  RAY_LOG(INFO) << "SendPullRequest " << object_id << " request to client " << client_id << "\n";
   auto rpc_client = GetRpcClient(client_id);
   if (rpc_client) {
     // Try pulling from the client.
@@ -750,7 +751,7 @@ std::shared_ptr<rpc::ObjectManagerClient> ObjectManager::GetRpcClient(
     it = remote_object_manager_clients_.emplace(node_id, std::move(object_manager_client))
              .first;
   }
-  RAY_LOG(DEBUG) << "Get rpc client, address return : " << "\n";
+  RAY_LOG(INFO) << "Get rpc client, address return : " << "\n";
   return it->second;
 }
 
