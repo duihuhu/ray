@@ -81,7 +81,7 @@ PlasmaAllocator::PlasmaAllocator(const std::string &plasma_directory,
   Free(std::move(allocation.value()));
 }
 
-absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
+absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes, size_t meta_bytes) {
   RAY_LOG(DEBUG) << "allocating " << bytes;
   void *mem = dlmemalign(kAlignment, bytes);
   RAY_LOG(DEBUG) << "allocated " << bytes << " at " << mem;
@@ -89,10 +89,10 @@ absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
     return absl::nullopt;
   }
   allocated_ += bytes;
-  return BuildAllocation(mem, bytes);
+  return BuildAllocation(mem, bytes, meta_bytes);
 }
 
-absl::optional<Allocation> PlasmaAllocator::FallbackAllocate(size_t bytes) {
+absl::optional<Allocation> PlasmaAllocator::FallbackAllocate(size_t bytes, size_t meta_bytes) {
   // Forces allocation as a separate file.
   RAY_CHECK(dlmallopt(M_MMAP_THRESHOLD, 0));
   RAY_LOG(DEBUG) << "fallback allocating " << bytes;
@@ -110,7 +110,7 @@ absl::optional<Allocation> PlasmaAllocator::FallbackAllocate(size_t bytes) {
   if (internal::IsOutsideInitialAllocation(mem)) {
     fallback_allocated_ += bytes;
   }
-  return BuildAllocation(mem, bytes);
+  return BuildAllocation(mem, bytes, meta_bytes);
 }
 
 void PlasmaAllocator::Free(Allocation allocation) {
@@ -129,7 +129,7 @@ int64_t PlasmaAllocator::Allocated() const { return allocated_; }
 
 int64_t PlasmaAllocator::FallbackAllocated() const { return fallback_allocated_; }
 
-absl::optional<Allocation> PlasmaAllocator::BuildAllocation(void *addr, size_t size) {
+absl::optional<Allocation> PlasmaAllocator::BuildAllocation(void *addr, size_t size, size_t meta_size) {
   if (addr == nullptr) {
     return absl::nullopt;
   }
@@ -143,7 +143,7 @@ absl::optional<Allocation> PlasmaAllocator::BuildAllocation(void *addr, size_t s
                       std::move(fd),
                       offset,
                       0 /* device_number*/,
-                      mmap_size);
+                      mmap_size, meta_size);
   }
   return absl::nullopt;
 }
