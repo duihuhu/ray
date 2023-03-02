@@ -69,18 +69,18 @@ struct Allocation {
 
  private:
   // Only created by Allocator
-  // Allocation(void *address,
-  //            int64_t size,
-  //            MEMFD_TYPE fd,
-  //            ptrdiff_t offset,
-  //            int device_num,
-  //            int64_t mmap_size)
-  //     : address(address),
-  //       size(size),
-  //       fd(std::move(fd)),
-  //       offset(offset),
-  //       device_num(device_num),
-  //       mmap_size(mmap_size) {}
+  Allocation(void *address,
+             int64_t size,
+             MEMFD_TYPE fd,
+             ptrdiff_t offset,
+             int device_num,
+             int64_t mmap_size)
+      : address(address),
+        size(size),
+        fd(std::move(fd)),
+        offset(offset),
+        device_num(device_num),
+        mmap_size(mmap_size) {}
 
   Allocation(void *address,
              int64_t size,
