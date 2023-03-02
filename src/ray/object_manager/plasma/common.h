@@ -60,8 +60,6 @@ struct Allocation {
   int device_num;
   /// the total size of this mapped memory.
   int64_t mmap_size;
-
-  int64_t meta_size;
   // only allow moves.
   // RAY_DISALLOW_COPY_AND_ASSIGN(Allocation);
   // Allocation(Allocation &&) noexcept = default;
@@ -82,24 +80,9 @@ struct Allocation {
         device_num(device_num),
         mmap_size(mmap_size) {}
 
-  Allocation(void *address,
-             int64_t size,
-             MEMFD_TYPE fd,
-             ptrdiff_t offset,
-             int device_num,
-             int64_t mmap_size,
-             int64_t meta_size)
-      : address(address),
-        size(size),
-        fd(std::move(fd)),
-        offset(offset),
-        device_num(device_num),
-        mmap_size(mmap_size), 
-        meta_size(meta_size) {}
-
   // Test only
   Allocation()
-      : address(nullptr), size(0), fd(), offset(0), device_num(0), mmap_size(0), meta_size(0) {}
+      : address(nullptr), size(0), fd(), offset(0), device_num(0), mmap_size(0) {}
 
   friend class PlasmaAllocator;
   friend class DummyAllocator;
