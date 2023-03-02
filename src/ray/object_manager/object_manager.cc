@@ -738,7 +738,6 @@ std::shared_ptr<rpc::ObjectManagerClient> ObjectManager::GetRpcClient(
     RemoteConnectionInfo connection_info(node_id);
     object_directory_->LookupRemoteConnectionInfo(connection_info);
     if (!connection_info.Connected()) {
-      RAY_LOG(DEBUG) << "no connected: " << "\n";
       return nullptr;
     }
     auto object_manager_client = std::make_shared<rpc::ObjectManagerClient>(
@@ -751,6 +750,7 @@ std::shared_ptr<rpc::ObjectManagerClient> ObjectManager::GetRpcClient(
     it = remote_object_manager_clients_.emplace(node_id, std::move(object_manager_client))
              .first;
   }
+  RAY_LOG(DEBUG) << "Get rpc client, address return : " << "\n";
   return it->second;
 }
 
