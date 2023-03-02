@@ -87,7 +87,8 @@ struct Allocation {
              MEMFD_TYPE fd,
              ptrdiff_t offset,
              int device_num,
-             int64_t mmap_size)
+             int64_t mmap_size,
+             int64_t meta_size)
       : address(address),
         size(size),
         fd(std::move(fd)),
