@@ -98,7 +98,7 @@ struct Allocation {
 
   // Test only
   Allocation()
-      : address(nullptr), size(0), fd(), offset(0), device_num(0), mmap_size(0) {}
+      : address(nullptr), size(0), fd(), offset(0), device_num(0), mmap_size(0), meta_size(0) {}
 
   friend class PlasmaAllocator;
   friend class DummyAllocator;
