@@ -53,7 +53,7 @@ class PlasmaAllocator : public IAllocator {
   ///
   /// \param bytes Number of bytes.
   /// \return allocated memory. returns empty if not enough space.
-  absl::optional<Allocation> Allocate(size_t bytes, size_t meta_bytes) override;
+  absl::optional<Allocation> Allocate(size_t bytes, size_t meta_bytes=0) override;
 
   /// Fallback allocate memory from disk mmaped file. This is useful
   /// when we running out of memory but still want to allocate memory

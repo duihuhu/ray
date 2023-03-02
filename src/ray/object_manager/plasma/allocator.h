@@ -32,7 +32,7 @@ class IAllocator {
   ///
   /// \param bytes Number of bytes.
   /// \return allocated memory. returns empty if not enough space.
-  virtual absl::optional<Allocation> Allocate(size_t bytes, size_t meta_bytes) = 0;
+  virtual absl::optional<Allocation> Allocate(size_t bytes, size_t meta_bytes=0) = 0;
 
   // Same as Allocate, but allocates pages from the filesystem. The footprint limit
   // is not enforced for these allocations, but allocations here are still tracked
