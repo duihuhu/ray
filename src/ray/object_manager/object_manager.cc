@@ -116,7 +116,7 @@ ObjectManager::ObjectManager(
   push_manager_.reset(new PushManager(/* max_chunks_in_flight= */ std::max(
       static_cast<int64_t>(1L),
       static_cast<int64_t>(config_.max_bytes_in_flight / config_.object_chunk_size))));
-  RAY_LOG(INFO) << "config_.max_bytes_in_flight / config_.object_chunk_size" << config_.max_bytes_in_flight << " " << config_.object_chunk_size<<std::endl; 
+  RAY_LOG(INFO) << "config_.max_bytes_in_flight / config_.object_chunk_size" << config_.max_bytes_in_flight << " " << config_.object_chunk_size<< "\n"; 
   pull_retry_timer_.async_wait([this](const boost::system::error_code &e) { Tick(e); });
 
   const auto &object_is_local = [this](const ObjectID &object_id) {
