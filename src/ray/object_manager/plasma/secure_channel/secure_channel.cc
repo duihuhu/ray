@@ -129,6 +129,10 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     // metainfo.object_id =  entry.first;
     // metainfo.allocation =  entry.second->GetAllocation();
     MetaInfo meta_info(entry.first, entry.second->GetAllocation(), entry.second->GetObjectInfo());
+    
+    std::cout<< "GetObjectInfo().object_id " << entry.second->GetObjectInfo().object_id ;
+    std::cout<< "entry.second->GetObjectInfo().owner_ip_address " << entry.second->GetObjectInfo().owner_ip_address ;
+    
     size_t amsg_len = sizeof(meta_info);
     // std::cout << "hucc amsg_len " << amsg_len << std::endl;
     // ObjectID object_id = entry.first;
