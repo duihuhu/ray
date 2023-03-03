@@ -534,7 +534,7 @@ Status PlasmaClient::Impl::GetBuffers(
         RAY_LOG(INFO) << "object_id write" << object_ids[i] << "\n";
         outfile.open("buffer.txt");
         for(int i=0; i<(object->data_size + object->metadata_size); ++i){
-          outfile<<(physical_buf + object->data_offset)[i];
+          outfile<<(physical_buf.get()->data_ + object->data_offset)[i];
         }
         outfile.close();
       } else {
@@ -547,7 +547,7 @@ Status PlasmaClient::Impl::GetBuffers(
       RAY_LOG(INFO) << "object_id write" << object_ids[i] << "\n";
       outfile1.open("buffer1.txt");
       for(int i=0; i<(object->data_size + object->metadata_size); ++i){
-        outfile1<<(physical_buf + object->data_offset)[i];
+        outfile1<<(physical_buf.get()->data_ + object->data_offset)[i];
       }
       outfile1.close();
       object_buffers[i].data =
