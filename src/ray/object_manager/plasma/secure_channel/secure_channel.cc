@@ -58,7 +58,6 @@ struct MetaInfo {
   MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation) {
     this->object_id = object_id;
     this->allocation = allocation;
-    }
   }
 
   MetaInfo(const ray::ObjectID object_id, const plasma::Allocation allocation, size_t export_desc_len) {
