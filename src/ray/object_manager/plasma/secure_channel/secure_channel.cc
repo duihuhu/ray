@@ -170,9 +170,10 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     } else if (result == DOCA_SUCCESS) {
       std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
     }
+    object_id_set.insert(entry.first.Binary());
+    std::cout << "after entry.second->GetObjectInfo() node id " << entry.first << std::endl;
+
   }
-  object_id_set.insert(entry.first.Binary());
-  std::cout << "after entry.second->GetObjectInfo() node id " << entry.first << std::endl;
 
 	// result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
   // while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
