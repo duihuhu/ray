@@ -52,7 +52,7 @@ struct MetaInfo {
   char export_desc[CC_EXPORT_DESC_SIZE];
   char owner_ip_address[CC_OWNER_IP_ADDRESS_SIZE];
   // size_t ip_address_len;
-  MetaInfo(){}
+  // MetaInfo(){}
   // MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, size_t export_desc_len=0) :object_id(object_id), allocation(allocation), \
                                                         object_info(object_info), export_desc_len(export_desc_len), ip_address_len(ip_address_len){}
 
