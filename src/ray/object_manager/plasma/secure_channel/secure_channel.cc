@@ -130,7 +130,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     return result;
   }
   for (auto &entry : *plasma_meta) {
-    auto sended = object_id_set.find(entry.first)
+    auto sended = object_id_set.find(entry.first);
     if (sended == object_id_set.end())
       continue;
     object_id_set.insert(entry.first);
