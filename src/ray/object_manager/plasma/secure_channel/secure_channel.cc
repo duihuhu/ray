@@ -19,7 +19,7 @@
 #include "utils/utils.h"
 
 #include "secure_channel_core.h"
-// #include "secure_channel.h"
+#include "secure_channel.h"
 #include "ray/common/id.h"
 #include "ray/object_manager/plasma/common.h"
 #include "secure_channel_meta_core.h"
@@ -101,7 +101,7 @@ int InitConnChannel(const char *server_name, struct doca_comm_channel_ep_t **ep,
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
 
-int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta) {
+int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta, set<ObjectID> &object_id_set) {
 // int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr) {
 
   	/* Send hello message */
@@ -129,6 +129,10 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     return result;
   }
   for (auto &entry : *plasma_meta) {
+    auto sended = object_id_set.find(entry.first)
+    if (sended == object_id_set.end())
+      continue;
+    object_id_set.insert(entry.first);
     // metainfo.object_id =  entry.first;
     // metainfo.allocation =  entry.second->GetAllocation();
     MetaInfo meta_info(entry.first, entry.second->GetAllocation(), entry.second->GetObjectInfo());

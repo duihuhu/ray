@@ -158,6 +158,7 @@ void PlasmaStore::RunCommService(int index) {
     //     std::cout<< "Fail in sending meta data " <<"\n";
     //     return;
     // }
+    set<ObjectID> object_id_set;
     while(1){
       // std::cout<< "send meta thread" <<"\n";
       int result;
@@ -188,7 +189,7 @@ void PlasmaStore::RunCommService(int index) {
         //     return;
         // }
       } else {
-        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+        result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta, object_id_set);
         if (result == EXIT_FAILURE) {
             std::cout<< "Fail in sending meta data " <<"\n";
             return;
