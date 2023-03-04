@@ -102,7 +102,7 @@ int InitConnChannel(const char *server_name, struct doca_comm_channel_ep_t **ep,
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
 
-int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta, std::set<ObjectID> &object_id_set) {
+int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta, std::set<std::string> &object_id_set) {
 // int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr) {
 
   	/* Send hello message */
@@ -130,7 +130,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     return result;
   }
   for (auto &entry : *plasma_meta) {
-    auto sended = object_id_set.find(entry.first);
+    auto sended = object_id_set.find(entry.first.Binary());
     if (sended == object_id_set.end())
       continue;
     object_id_set.insert(entry.first);
