@@ -130,6 +130,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     return result;
   }
   for (auto &entry : *plasma_meta) {
+    std::cout << "before entry.second->GetObjectInfo() node id " << entry.first << std::endl;
     auto sended = object_id_set.find(entry.first.Binary());
     if (sended == object_id_set.end())
       continue;

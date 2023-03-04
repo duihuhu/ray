@@ -45,6 +45,7 @@
 #include "secure_channel/include/doca_comm_channel.h"
 #include "ray/common/asio/periodical_runner.h"
 #include <set>
+#include <string>
 
 // #define META_NAME_LENGTH 20;
 
