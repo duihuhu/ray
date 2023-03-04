@@ -179,6 +179,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
 
     // const Allocation &allocation = entry.second->GetAllocation();
     // int64_t amsg_len = sizeof(allocation);
+    std::cout<<"timetimetime" <<std::endl;
     char *export_desc;
     export_desc  = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
     // meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
