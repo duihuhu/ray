@@ -48,13 +48,13 @@ struct MetaInfo {
   const plasma::Allocation allocation;
   // const ray::ObjectInfo object_info;
   size_t export_desc_len;
-  size_t ip_address_len;
+  // size_t ip_address_len;
   // char *export_desc;
   char export_desc[CC_EXPORT_DESC_SIZE];
-  char owner_ip_address[CC_OWNER_IP_ADDRESS_SIZE];
+  // char owner_ip_address[CC_OWNER_IP_ADDRESS_SIZE];
   // MetaInfo(){}
   MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0, size_t ip_address_len=0) :object_id(object_id), allocation(allocation), \
-                                                        export_desc_len(export_desc_len), ip_address_len(ip_address_len){}
+                                                        export_desc_len(export_desc_len){}
 };
 
 
@@ -138,8 +138,8 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
       continue;
     MetaInfo meta_info(entry.first, entry.second->GetAllocation());
     
-    strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
-    meta_info.ip_address_len = entry.second->GetObjectInfo().owner_ip_address.length();
+    // strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
+    // meta_info.ip_address_len = entry.second->GetObjectInfo().owner_ip_address.length();
     size_t amsg_len = sizeof(meta_info);
 
 
