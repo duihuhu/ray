@@ -534,6 +534,15 @@ Status PlasmaClient::Impl::GetBuffers(
       }
       // Finish filling out the return values.
       physical_buf = wrap_buffer(object_ids[i], physical_buf);
+
+      std::ofstream outfile1;
+      RAY_LOG(INFO) << "object_id write" << object_ids[i] << "\n";
+      outfile1.open("buffer1.txt");
+      for(int i=0; i<(object->data_size + object->metadata_size); ++i){
+        outfile1<<(physical_buf.get()->Data() + object->data_offset)[i];
+      }
+      outfile1.close();
+
       object_buffers[i].data =
           SharedMemoryBuffer::Slice(physical_buf, 0, object->data_size);
       object_buffers[i].metadata = SharedMemoryBuffer::Slice(
