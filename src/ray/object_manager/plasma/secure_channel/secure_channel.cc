@@ -46,15 +46,18 @@ struct cc_config {
 struct MetaInfo {
   const ray::ObjectID object_id;
   const plasma::Allocation allocation;
-  const ray::ObjectInfo object_info;
+  // const ray::ObjectInfo object_info;
   size_t export_desc_len;
   // char *export_desc;
   char export_desc[CC_EXPORT_DESC_SIZE];
   char owner_ip_address[CC_OWNER_IP_ADDRESS_SIZE];
-  size_t ip_address_len;
+  // size_t ip_address_len;
   // MetaInfo(){}
-  MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, size_t export_desc_len=0) :object_id(object_id), allocation(allocation), \
+  // MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, size_t export_desc_len=0) :object_id(object_id), allocation(allocation), \
                                                         object_info(object_info), export_desc_len(export_desc_len), ip_address_len(ip_address_len){}
+  MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, size_t export_desc_len=0) :object_id(object_id), allocation(allocation), \
+                                                        export_desc_len(export_desc_len){}
+
 };
 
 
@@ -136,14 +139,17 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     //   continue;
     // metainfo.object_id =  entry.first;
     // metainfo.allocation =  entry.second->GetAllocation();
-    MetaInfo meta_info(entry.first, entry.second->GetAllocation(), entry.second->GetObjectInfo());
-    strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
-    meta_info.ip_address_len = entry.second->GetObjectInfo().owner_ip_address.length();
+    MetaInfo meta_info(entry.first, entry.second->GetAllocation());
+
+    // MetaInfo meta_info(entry.first, entry.second->GetAllocation(), entry.second->GetObjectInfo());
+    // strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
+    // meta_info.ip_address_len = entry.second->GetObjectInfo().owner_ip_address.length();
+    
     size_t amsg_len = sizeof(meta_info);
     // std::cout << "hucc amsg_len " << amsg_len << std::endl;
     // ObjectID object_id = entry.first;
     // int64_t msg_len = sizeof(object_id);
-    std::cout << "entry.second->GetObjectInfo() node id " << entry.second->GetObjectInfo().owner_raylet_id << std::endl;
+    // std::cout << "entry.second->GetObjectInfo() node id " << entry.second->GetObjectInfo().owner_raylet_id << std::endl;
     // const Allocation &allocation = entry.second->GetAllocation();
     // int64_t amsg_len = sizeof(allocation);
     char *export_desc;
