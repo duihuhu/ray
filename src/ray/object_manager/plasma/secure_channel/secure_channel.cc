@@ -24,6 +24,7 @@
 #include "ray/object_manager/plasma/common.h"
 #include "secure_channel_meta_core.h"
 #include "dma_copy.h"
+#include <set>
 
 #define MAX_TXT_SIZE 4096					/* Maximum size of input text */
 #define PCI_ADDR_LEN 8						/* PCI address string length */
