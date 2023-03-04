@@ -44,17 +44,49 @@ struct cc_config {
 };
 
 struct MetaInfo {
-  const ray::ObjectID object_id;
-  const plasma::Allocation allocation;
-  // const ray::ObjectInfo object_info;
+  ray::ObjectID object_id;
+  plasma::Allocation allocation;
+  // ray::ObjectInfo object_info;
   size_t export_desc_len;
   // size_t ip_address_len;
-  // char *export_desc;
-  char export_desc[CC_EXPORT_DESC_SIZE];
+  char export_desc[CC_EXPORT_DESC_SIZE] = {0};
   // char owner_ip_address[CC_OWNER_IP_ADDRESS_SIZE];
+
+  MetaInfo(): object_id(), allocation(), export_desc_len(0){}
+  // MetaInfo(ray::ObjectID &id, plasma::Allocation &alloc) :object_id(id), allocation(alloc){}
   // MetaInfo(){}
-  MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, size_t export_desc_len=0, size_t ip_address_len=0) :object_id(object_id), allocation(allocation), \
-                                                        export_desc_len(export_desc_len){}
+  MetaInfo(const ray::ObjectID object_id, const plasma::Allocation allocation) {
+    this->object_id = object_id;
+    this->allocation = allocation;
+  }
+
+  MetaInfo(const ray::ObjectID object_id, const plasma::Allocation allocation, size_t export_desc_len) {
+    this->object_id = object_id;
+    this->allocation = allocation;
+    this->export_desc_len = export_desc_len;
+    for(int i =0; i < export_desc_len; ++i) {
+      this->export_desc[i] = 0;
+    }
+  }
+
+  MetaInfo(const MetaInfo &metainfo) {
+    this->object_id = metainfo.object_id;
+    this->allocation = metainfo.allocation;
+    this->export_desc_len = metainfo.export_desc_len;
+    for(int i =0; i < metainfo.export_desc_len; ++i) {
+      this->export_desc[i] = metainfo.export_desc[i];
+    }
+  }
+
+  MetaInfo& operator=(const MetaInfo& metainfo) {
+    this->object_id = metainfo.object_id;
+    this->allocation = metainfo.allocation;
+    this->export_desc_len = metainfo.export_desc_len;
+    for(int i =0; i < metainfo.export_desc_len; ++i) {
+      this->export_desc[i] = metainfo.export_desc[i];
+    }
+    return *this;
+  }
 };
 
 
