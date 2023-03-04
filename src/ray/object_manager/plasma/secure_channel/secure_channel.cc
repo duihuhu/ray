@@ -44,8 +44,8 @@ struct cc_config {
 };
 
 struct MetaInfo {
-  const ray::ObjectID object_id;
-  const plasma::Allocation allocation;
+  ray::ObjectID object_id;
+  plasma::Allocation allocation;
   // ray::ObjectInfo object_info;
   size_t export_desc_len;
   // size_t ip_address_len;
