@@ -24,6 +24,7 @@
 #include "ray/object_manager/plasma/common.h"
 #include "secure_channel_meta_core.h"
 #include "dma_copy.h"
+#include <set>
 
 #define MAX_TXT_SIZE 4096					/* Maximum size of input text */
 #define PCI_ADDR_LEN 8						/* PCI address string length */
@@ -97,7 +98,8 @@ int InitConnChannel(const char *server_name, struct doca_comm_channel_ep_t **ep,
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
 
-int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta) {
+int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, \
+  absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta, std::set<std::string> &object_id_set) {
 // int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr) {
 
   	/* Send hello message */
@@ -127,6 +129,9 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   for (auto &entry : *plasma_meta) {
     // metainfo.object_id =  entry.first;
     // metainfo.allocation =  entry.second->GetAllocation();
+    auto sended = object_id_set.find(entry.first.Binary());
+    if (sended != object_id_set.end())
+      continue;
     MetaInfo meta_info(entry.first, entry.second->GetAllocation());
     size_t amsg_len = sizeof(meta_info);
     // std::cout << "hucc amsg_len " << amsg_len << std::endl;
@@ -159,6 +164,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     } else if (result == DOCA_SUCCESS) {
       std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
     }
+    object_id_set.insert(entry.first.Binary());
   }
 
 	// result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
