@@ -55,6 +55,8 @@ struct MetaInfo {
   // MetaInfo(){}
   // MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, size_t export_desc_len=0) :object_id(object_id), allocation(allocation), \
                                                         object_info(object_info), export_desc_len(export_desc_len), ip_address_len(ip_address_len){}
+  MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info) :object_id(object_id), allocation(allocation), export_desc_len(0){}
+
   MetaInfo(const ray::ObjectID &object_id, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, size_t export_desc_len=0) :object_id(object_id), allocation(allocation), \
                                                         export_desc_len(export_desc_len){}
 
