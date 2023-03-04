@@ -66,7 +66,6 @@ struct Allocation {
   // Allocation(Allocation &&) noexcept = default;
   // Allocation &operator=(Allocation &&) noexcept = default;
 
- private:
   // Only created by Allocator
   Allocation(void *address,
              int64_t size,
