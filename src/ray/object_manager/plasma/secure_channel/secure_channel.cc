@@ -132,8 +132,10 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
   for (auto &entry : *plasma_meta) {
     std::cout << "before entry.second->GetObjectInfo() node id " << entry.first << std::endl;
     auto sended = object_id_set.find(entry.first.Binary());
-    if (sended == object_id_set.end())
-      continue;
+    if (sended != object_id_set.end()){
+            continue;
+    }
+
     // metainfo.object_id =  entry.first;
     // metainfo.allocation =  entry.second->GetAllocation();
     MetaInfo meta_info(entry.first, entry.second->GetAllocation(), entry.second->GetObjectInfo());
@@ -170,9 +172,6 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     } else if (result == DOCA_SUCCESS) {
       std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
     }
-    object_id_set.insert(entry.first.Binary());
-    std::cout << "after entry.second->GetObjectInfo() node id " << entry.first << std::endl;
-
   }
 
 	// result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
