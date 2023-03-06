@@ -173,7 +173,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
 
     struct BaseMetaInfo meta_info;
     meta_info.address = (unsigned long)allocation.address;
-    meta_info.size = allocation.size
+    meta_info.size = allocation.size;
     meta_info.offset = allocation.offset;
     // strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
     // meta_info.ip_address_len = entry.second->GetObjectInfo().owner_ip_address.length();
