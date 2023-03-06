@@ -13,6 +13,9 @@
 
 #pragma once
 #include <iostream>
+#include <set>
+#include "ray/common/id.h"
+#include "ray/object_manager/plasma/common.h"
 #define CC_EXPORT_DESC_SIZE 500
 struct BaseMetaInfo {
   unsigned long address;
