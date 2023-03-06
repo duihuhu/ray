@@ -12,32 +12,18 @@
  */
 
 #pragma once
-#include <string.h>
-
-#include "include/doca_argp.h"
-#include "include/doca_log.h"
-
-#include "utils/utils.h"
-
-#include "secure_channel_core.h"
-#include "secure_channel.h"
-#include "ray/common/id.h"
-#include "ray/object_manager/plasma/common.h"
-#include "secure_channel_meta_core.h"
-#include "dma_copy.h"
-#include <set>
 struct BaseMetaInfo;
-int InitConnChannel(const char *name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr);
+// int InitConnChannel(const char *name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr);
 
 
-/*
- * Secure Channel application main function
- *
- * @argc [in]: command line arguments size
- * @argv [in]: array of command line arguments
- * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
- */
+// /*
+//  * Secure Channel application main function
+//  *
+//  * @argc [in]: command line arguments size
+//  * @argv [in]: array of command line arguments
+//  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
+//  */
 
-int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, \
-  absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta, std::set<std::string> &object_id_set);
-// int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr);
+// int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr, \
+//   absl::flat_hash_map<ray::ObjectID, std::unique_ptr<plasma::LocalObject>> *plasma_meta, std::set<std::string> &object_id_set);
+// // int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t *peer_addr);
