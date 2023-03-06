@@ -89,6 +89,14 @@ struct MetaInfo {
   }
 };
 
+struct BaseMetaInfo {
+  unsigned long address;
+  int64_t size;
+  ptrdiff_t offset;
+  size_t export_desc_len;
+  char export_desc[CC_EXPORT_DESC_SIZE] = {0};
+};
+
 int InitConnChannel(const char *server_name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr) {
 	struct cc_config cfg = {0};
 	// const char *server_name = "meta_server";
@@ -161,16 +169,17 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     return result;
   }
   for (auto &entry : *plasma_meta) {
-    // metainfo.object_id =  entry.first;
-    // metainfo.allocation =  entry.second->GetAllocation();
+
     auto sended = object_id_set.find(entry.first.Binary());
     if (sended != object_id_set.end())
       continue;
-    MetaInfo meta_info(entry.first, entry.second->GetAllocation());
+    // MetaInfo meta_info(entry.first, entry.second->GetAllocation());
     
+    const Allocation &allocation = entry.second->GetAllocation();
+    BaseMetaInfo meta_info((unsigned long)allocation.address, allocation.size, allocation.offset);
     // strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
     // meta_info.ip_address_len = entry.second->GetObjectInfo().owner_ip_address.length();
-    size_t amsg_len = sizeof(meta_info);
+    size_t amsg_len = sizeof(BaseMetaInfo);
 
 
     // std::cout << "hucc amsg_len " << amsg_len << std::endl;
@@ -181,7 +190,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     // int64_t amsg_len = sizeof(allocation);
     std::cout<<"timetimetime" <<std::endl;
     char *export_desc;
-    export_desc  = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
+    export_desc  = RunDmaExport(metainfo);
     // meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
 
     // std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \

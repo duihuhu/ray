@@ -135,7 +135,8 @@ void destroy_core_objs(struct core_state *state, struct dma_copy_cfg *cfg);
  * @peer_addr [in]: Comm Channel peer address
  * @return: DOCA_SUCCESS on success and DOCA_ERROR otherwise
  */
-doca_error_t host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
-				 struct doca_comm_channel_ep_t *ep, struct doca_comm_channel_addr_t **peer_addr, const plasma::Allocation &allocation, char **export_desc, size_t &export_desc_len);
+doca_error_t host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state, struct doca_comm_channel_ep_t *ep,
+		    struct doca_comm_channel_addr_t **peer_addr, BaseMetaInfo &metainfo , char **export_desc);
+
 
 #endif /* DMA_COPY_CORE_H_ */

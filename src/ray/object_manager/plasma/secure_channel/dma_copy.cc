@@ -22,7 +22,8 @@ DOCA_LOG_REGISTER(DMA_COPY);
  * @argv [in]: array of command line arguments
  * @return: EXIT_SUCCESS on success and EXIT_FAILURE otherwise
  */
-char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len)
+char* RunDmaExport(BaseMetaInfo &metainfo)
+
 {
 	doca_error_t result;
 	struct dma_copy_cfg dma_cfg;
@@ -59,7 +60,7 @@ char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len
 	}
 
 
-  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation, &export_desc, export_desc_len);
+  result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, metainfo, &export_desc);
 
 	// std::cout<< "dma_copy Final status message was successfully received: " << export_desc \
   //   << " export_desc_len " << export_desc_len <<std::endl;
