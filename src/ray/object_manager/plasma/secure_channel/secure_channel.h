@@ -29,7 +29,6 @@ struct BaseMetaInfo {
     this->size = size;
     this->export_desc_len =export_desc_len;
   }
-
 };
 int InitConnChannel(const char *name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr);
 
