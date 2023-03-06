@@ -95,7 +95,8 @@ struct BaseMetaInfo {
   ptrdiff_t offset;
   size_t export_desc_len;
   char export_desc[CC_EXPORT_DESC_SIZE] = {0};
-  MetaInfo(unsigned long address, int64_t size, size_t export_desc_len) {
+  BaseMetaInfo(){}
+  BaseMetaInfo(unsigned long address, int64_t size, size_t export_desc_len) {
     this->address = address;
     this->size = size;
     this->export_desc_len =export_desc_len;
