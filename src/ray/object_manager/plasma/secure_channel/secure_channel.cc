@@ -188,15 +188,21 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     export_desc  = RunDmaExport(*meta_info);
     // meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
 
-    // std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
-    //   <<   " allocation information size: " << meta_info.allocation.size << " metainfo.export_desc: " << meta_info.export_desc \
-    //   << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
-
     for(int i=0; i<meta_info->export_desc_len; ++i) {
       meta_info->export_desc[i] = export_desc[i];
     }
     meta_info->export_desc[meta_info->export_desc_len] = '\0';
     
+    printf("\n\n");
+    printf("address %llu\n", meta_info->address);
+    printf("size %d\n", meta_info->size);
+    printf("offset %d\n", meta_info->offset);
+    printf("export_desc_len %d\n", meta_info->export_desc_len);
+
+    for( int i=0; i<meta_info->export_desc_len; ++i) {
+      printf("%c", meta_info->export_desc[i]);
+    }
+    printf("\n\n");
     while ((result = doca_comm_channel_ep_sendto(ep, meta_info, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
       usleep(1);
