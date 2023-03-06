@@ -533,22 +533,22 @@ Status PlasmaClient::Impl::GetBuffers(
         RAY_LOG(FATAL) << "Arrow GPU library is not enabled.";
       }
 
-      std::ofstream outfile2;
-      RAY_LOG(INFO) << "object_id write" << object_ids[i] << "\n";
-      outfile2.open("buffer2.txt");
-      for(int i=0; i<(object->data_size + object->metadata_size); ++i){
-        outfile2<<(physical_buf.get()->Data())[i];
-      }
-      outfile2.close();
+      // std::ofstream outfile2;
+      // RAY_LOG(INFO) << "object_id write" << object_ids[i] << "\n";
+      // outfile2.open("buffer2.txt");
+      // for(int i=0; i<(object->data_size + object->metadata_size); ++i){
+      //   outfile2<<(physical_buf.get()->Data())[i];
+      // }
+      // outfile2.close();
       // Finish filling out the return values.
       physical_buf = wrap_buffer(object_ids[i], physical_buf);
 
-      std::ofstream outfile1;
-      RAY_LOG(INFO) << "object_id write" << object_ids[i] << "\n";
-      outfile1.open("buffer1.txt");
-      for(int i=0; i<(object->data_size + object->metadata_size); ++i){
-        outfile1<<(physical_buf.get()->Data())[i];
-      }
+      // std::ofstream outfile1;
+      // RAY_LOG(INFO) << "object_id write" << object_ids[i] << "\n";
+      // outfile1.open("buffer1.txt");
+      // for(int i=0; i<(object->data_size + object->metadata_size); ++i){
+      //   outfile1<<(physical_buf.get()->Data())[i];
+      // }
       outfile1.close();
       object_buffers[i].data =
           SharedMemoryBuffer::Slice(physical_buf, 0, object->data_size);
