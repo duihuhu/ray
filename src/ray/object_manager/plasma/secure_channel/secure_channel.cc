@@ -195,7 +195,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     for(int i=0; i<meta_info->export_desc_len; ++i) {
       meta_info->export_desc[i] = export_desc[i];
     }
-    meta_info->export_desc[meta_info.export_desc_len] = '\0';
+    meta_info->export_desc[meta_info->export_desc_len] = '\0';
     
     while ((result = doca_comm_channel_ep_sendto(ep, meta_info, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
