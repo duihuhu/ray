@@ -169,7 +169,9 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     // MetaInfo meta_info(entry.first, entry.second->GetAllocation());
     
     const Allocation &allocation = entry.second->GetAllocation();
-    BaseMetaInfo meta_info((unsigned long)allocation.address, allocation.size, allocation.offset);
+    // BaseMetaInfo meta_info((unsigned long)allocation.address, allocation.size, allocation.offset);
+
+    BaseMetaInfo *meta_info = new BaseMetaInfo((unsigned long)allocation.address, allocation.size, allocation.offset);
     // strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
     // meta_info.ip_address_len = entry.second->GetObjectInfo().owner_ip_address.length();
     size_t amsg_len = sizeof(BaseMetaInfo);
@@ -183,7 +185,7 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     // int64_t amsg_len = sizeof(allocation);
     std::cout<<"timetimetime" <<std::endl;
     char *export_desc;
-    export_desc  = RunDmaExport(meta_info);
+    export_desc  = RunDmaExport(*meta_info);
     // meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
 
     // std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
