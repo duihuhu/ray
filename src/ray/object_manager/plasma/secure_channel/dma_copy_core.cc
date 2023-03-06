@@ -1219,7 +1219,7 @@ host_start_dma_copy(struct dma_copy_cfg *dma_cfg, struct core_state *core_state,
 	// if (result != DOCA_SUCCESS)
 	// 	return result;
 
-  result = doca_mmap_populate(core_state->mmap, (char*)metainfo.address+metainfo.offset, metainfo.size, sysconf(_SC_PAGESIZE), NULL, NULL);
+  result = doca_mmap_populate(core_state->mmap, ((char*)(metainfo.address))+metainfo.offset, metainfo.size, sysconf(_SC_PAGESIZE), NULL, NULL);
 
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Unable to populate memory map: %s", doca_get_error_string(result));
