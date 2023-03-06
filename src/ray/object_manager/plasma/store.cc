@@ -146,9 +146,7 @@ void PlasmaStore::StartMetaCommClient() {
 }
 
 void PlasmaStore::RunCommService(int index) {
-    std::cout<< "send meta thread running" <<"\n";
     SetThreadName("send meta thread" + std::to_string(index));
-    std::cout <<"thread id: " <<  std::this_thread::get_id();
     int count = 0;
     StartMetaCommClient();
     // int result;
@@ -467,7 +465,6 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     const auto &object_id = GetCreateRequestObjectId(message);
     const auto &request = flatbuffers::GetRoot<fb::PlasmaCreateRequest>(input);
     const size_t object_size = request->data_size() + request->metadata_size();
-    std::cout<< "PlasmaCreateRequest" << std::endl;
     // absl failed analyze mutex safety for lambda
     auto handle_create =
         [this, client, message](
@@ -544,7 +541,6 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     }
   } break;
   case fb::MessageType::PlasmaSealRequest: {
-    std::cout<< "PlasmaSealRequest" << std::endl;
     RAY_RETURN_NOT_OK(ReadSealRequest(input, input_size, &object_id));
     SealObjects({object_id});
     RAY_RETURN_NOT_OK(SendSealReply(client, object_id, PlasmaError::OK));
