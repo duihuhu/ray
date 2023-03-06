@@ -8,5 +8,5 @@
 #include "ray/object_manager/plasma/common.h"
 
 #include "dma_copy_core.h"
-
+#include "secure_channel.h"
 char* RunDmaExport(BaseMetaInfo &metainfo);

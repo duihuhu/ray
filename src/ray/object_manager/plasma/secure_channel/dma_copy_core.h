@@ -22,6 +22,7 @@
 #include "include/doca_error.h"
 #include "include/doca_log.h"
 #include "ray/object_manager/plasma/common.h"
+#include "secure_channel.h"
 
 #define MAX_ARG_SIZE 128					/* PCI address and file path maximum length */
 #define MAX_DMA_BUF_SIZE (1024 * 1024)				/* DMA buffer maximum size */

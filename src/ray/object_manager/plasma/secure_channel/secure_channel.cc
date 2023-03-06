@@ -19,7 +19,7 @@
 #include "utils/utils.h"
 
 #include "secure_channel_core.h"
-// #include "secure_channel.h"
+#include "secure_channel.h"
 #include "ray/common/id.h"
 #include "ray/object_manager/plasma/common.h"
 #include "secure_channel_meta_core.h"
