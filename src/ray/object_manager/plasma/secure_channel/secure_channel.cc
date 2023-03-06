@@ -28,7 +28,7 @@
 
 #define MAX_TXT_SIZE 4096					/* Maximum size of input text */
 #define PCI_ADDR_LEN 8						/* PCI address string length */
-#define CC_EXPORT_DESC_SIZE 500
+
 #define CC_OWNER_IP_ADDRESS_SIZE 20
 
 
