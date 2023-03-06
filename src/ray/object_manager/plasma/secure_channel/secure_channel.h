@@ -12,6 +12,20 @@
  */
 
 #pragma once
+#include <string.h>
+
+#include "include/doca_argp.h"
+#include "include/doca_log.h"
+
+#include "utils/utils.h"
+
+#include "secure_channel_core.h"
+#include "secure_channel.h"
+#include "ray/common/id.h"
+#include "ray/object_manager/plasma/common.h"
+#include "secure_channel_meta_core.h"
+#include "dma_copy.h"
+#include <set>
 struct BaseMetaInfo;
 int InitConnChannel(const char *name, struct doca_comm_channel_ep_t **ep, struct doca_comm_channel_addr_t **peer_addr);
 
