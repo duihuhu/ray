@@ -19,7 +19,7 @@
 #define CC_EXPORT_DESC_SIZE 500
 struct BaseMetaInfo {
   unsigned long address;
-  int64_t size;
+  uint64_t size;
   ptrdiff_t offset;
   size_t export_desc_len;
   char export_desc[CC_EXPORT_DESC_SIZE] = {0};
