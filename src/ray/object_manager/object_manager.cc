@@ -170,7 +170,6 @@ void ObjectManager::RunRpcService(int index) {
 }
 
 void ObjectManager::StartRpcService() {
-  RAY_LOG(INFO) << "config_.rpc_service_threads_number" << config_.rpc_service_threads_number<<"\n";
   rpc_threads_.resize(config_.rpc_service_threads_number);
   for (int i = 0; i < config_.rpc_service_threads_number; i++) {
     rpc_threads_[i] = std::thread(&ObjectManager::RunRpcService, this, i);
