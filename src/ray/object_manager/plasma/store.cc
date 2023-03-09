@@ -131,7 +131,7 @@ PlasmaStore::~PlasmaStore() {}
 void PlasmaStore::Start() {
   // StartMetaCommClient();
   //comment StartCommService
-  StartCommService();
+  // StartCommService();
 
   // Start listening for clients.
   DoAccept();
