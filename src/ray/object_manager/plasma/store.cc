@@ -188,8 +188,7 @@ void PlasmaStore::RunCommService(int index) {
           if ( result == DOCA_ERROR_CONNECTION_RESET ) {
               result = doca_comm_channel_ep_disconnect(ep, peer_addr);
               if (result != DOCA_SUCCESS)
-                DOCA_LOG_ERR("Failed to disconnect from Comm Channel peer address: %s",
-                      doca_get_error_string(result));
+                std::cout<< "Failed to disconnect from Comm Channel peer address: "<<std::endl;
               }
              StartMetaCommClient();
           }
