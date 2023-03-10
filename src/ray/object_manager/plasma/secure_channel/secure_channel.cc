@@ -138,7 +138,6 @@ int PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep_t *ep, s
     if (sended != object_id_set.end())
       continue;
     MetaInfo meta_info(entry.first, entry.second->GetAllocation(), entry.second->GetObjectInfo());
-    
     strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
     meta_info.ip_address_len = entry.second->GetObjectInfo().owner_ip_address.length();
     size_t amsg_len = sizeof(meta_info);
