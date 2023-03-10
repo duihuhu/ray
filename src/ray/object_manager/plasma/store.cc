@@ -190,9 +190,16 @@ void PlasmaStore::RunCommService(int index) {
         // }
       } else {
         result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta, object_id_set);
-        if (result == EXIT_FAILURE) {
-            std::cout<< "Fail in sending meta data " <<"\n";
-            return;
+        if ( result != DOCA_SUCCESS ) {
+          if ( result == DOCA_ERROR_CONNECTION_RESET ) {
+              result = doca_comm_channel_ep_disconnect(ep, peer);
+              if (result != DOCA_SUCCESS)
+                DOCA_LOG_ERR("Failed to disconnect from Comm Channel peer address: %s",
+                      doca_get_error_string(result));
+              }
+             StartMetaCommClient();
+          }
+          std::cout<< "Fail in sending meta data " <<"\n";
         }
         std::cout << "plasma_meta is not NULL" <<  std::endl;
 
