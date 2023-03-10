@@ -161,7 +161,7 @@ void PlasmaStore::RunCommService(int index) {
     std::set<std::string> object_id_set;
     while(1){
       // std::cout<< "send meta thread" <<"\n";
-      int result;
+      doca_error_t result;
       absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
       // // std::cout<< "plasma_meta address " << plasma_meta <<std::endl;
       // ObjectID object_id = ObjectID::FromRandom();
