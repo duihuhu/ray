@@ -99,12 +99,7 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 		goto destroy_cc;
 	}
 
-	/* Disconnect from current connection */
-	if (peer_addr != NULL)
-		result = doca_comm_channel_ep_disconnect(*ep, *peer_addr);
 
-	/* Destroy Comm Channel endpoint */
-	doca_comm_channel_ep_destroy(*ep);
 	/* Make sure peer address is valid */
 	while ((result = doca_comm_channel_peer_addr_update_info(*peer_addr)) == DOCA_ERROR_CONNECTION_INPROGRESS) {
 		if (end_sample) {
@@ -117,6 +112,7 @@ create_comm_channel_client(const char *server_name, struct doca_pci_bdf *dev_pci
 
 	if (result != DOCA_SUCCESS) {
 		DOCA_LOG_ERR("Failed to validate the connection with the DPU: %s", doca_get_error_string(result));
+    goto destroy_cc;
 		return result;
 	}
 	DOCA_LOG_INFO("Connection to server was established successfully");
