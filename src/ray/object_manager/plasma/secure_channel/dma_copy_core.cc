@@ -1081,7 +1081,7 @@ doca_error_t
 create_core_objs(struct core_state *state, enum dma_copy_mode mode)
 {
 	doca_error_t result;
-	uint32_t max_chunks = 1;
+	uint32_t max_chunks = 4;
 	size_t num_elements = 2;
 
 	result = doca_mmap_create(NULL, &state->mmap);
