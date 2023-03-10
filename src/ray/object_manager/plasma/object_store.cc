@@ -41,7 +41,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   }
   auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
   auto entry =
-      object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
+      .emplace(object_info.object_id, std::move(ptr)).first->second.get();
   entry->object_info = object_info;
   entry->state = ObjectState::PLASMA_CREATED;
   entry->create_time = std::time(nullptr);
