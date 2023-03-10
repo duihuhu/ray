@@ -161,7 +161,7 @@ void PlasmaStore::RunCommService(int index) {
     std::set<std::string> object_id_set;
     while(1){
       // std::cout<< "send meta thread" <<"\n";
-      doca_error_t result;
+      int result;
       absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
       // // std::cout<< "plasma_meta address " << plasma_meta <<std::endl;
       // ObjectID object_id = ObjectID::FromRandom();
@@ -182,17 +182,21 @@ void PlasmaStore::RunCommService(int index) {
 
       if ( plasma_meta->empty() ) {
         std::cout << "plasma_meta is NULL" <<  std::endl;
+
+        // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
+        // if (result == EXIT_FAILURE) {
+        //     std::cout<< "Fail in sending meta data " <<"\n";
+        //     return;
+        // }
       } else {
         result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta, object_id_set);
-        if ( result != DOCA_SUCCESS ) {
+        if (result != DOCA_SUCCESS) {
           if ( result == DOCA_ERROR_CONNECTION_RESET ) {
-              result = doca_comm_channel_ep_disconnect(ep, peer_addr);
-              if (result != DOCA_SUCCESS)
-                std::cout<< "Failed to disconnect from Comm Channel peer address: "<<std::endl;
-              }
-             StartMetaCommClient();
-          }
-          std::cout<< "Fail in sending meta data " <<"\n";
+            result = doca_comm_channel_ep_disconnect(ep, peer_addr);
+            if (result != DOCA_SUCCESS)
+              std::cout<<"Failed to disconnect from Comm Channel peer address:"<<std::endl;
+            }
+            StartMetaCommClient();
         }
         std::cout << "plasma_meta is not NULL" <<  std::endl;
 
