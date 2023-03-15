@@ -152,7 +152,7 @@ void PlasmaStore::RunCommService(int index) {
     SetThreadName("send meta thread" + std::to_string(index));
     int count = 0;
     StartMetaCommClient();
-    std::cout<< "Succsess InitConnChannel: " <<"\n";
+    printf("Succsess InitConnChannel\n");
 
     // int result;
     // absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
@@ -184,7 +184,7 @@ void PlasmaStore::RunCommService(int index) {
       //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
 
       if ( plasma_meta->empty() ) {
-        std::cout << "plasma_meta is NULL" <<  std::endl;
+        printf("plasma_meta is NULL\n");
 
         // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
         // if (result == EXIT_FAILURE) {
@@ -201,7 +201,7 @@ void PlasmaStore::RunCommService(int index) {
             }
             StartMetaCommClient();
         }
-        std::cout << "plasma_meta is not NULL" <<  std::endl;
+        printf("plasma_meta is not NULL\n");
 
         // std::cout << "plasma_meta is not NULL" <<  std::endl;
         // std::cout << " flat_hash_map space: " << sizeof(*plasma_meta) <<  std::endl;
