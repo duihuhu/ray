@@ -169,6 +169,7 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
           DOCA_ERROR_AGAIN) {
       usleep(1);
     }
+
     if (result != DOCA_SUCCESS) {
       // std::cout<< "Message was not sent: " << doca_get_error_string(result)<<std::endl;
       DOCA_LOG_ERR("Message was not sent: %s", doca_get_error_string(result));
@@ -177,9 +178,9 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
       std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
     }
     object_id_set.insert(entry.first.Binary());
-  }
-  std::cout << "RunDmaExport4" << std::endl;
+    std::cout << "RunDmaExport4" << std::endl;
 
+  }
   // free(export_desc);
 	// result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
   // while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
