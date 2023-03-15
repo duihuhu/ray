@@ -151,6 +151,8 @@ void PlasmaStore::RunCommService(int index) {
     SetThreadName("send meta thread" + std::to_string(index));
     int count = 0;
     StartMetaCommClient();
+    std::cout<< "Succsess InitConnChannel: " <<"\n";
+
     // int result;
     // absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = object_lifecycle_mgr_.GetPlasmaMeta();
     // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
