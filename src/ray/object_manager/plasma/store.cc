@@ -225,6 +225,7 @@ void PlasmaStore::RunCommService(int index) {
 }
 
 void PlasmaStore::StartCommService() {
+  RAY_LOG(ERROR) << "StartCommService";
   comm_threads_ =  std::thread(&PlasmaStore::RunCommService, this, 1);
   // periodical_runner_.RunFnPeriodically(
   //   [this]() { RunCommService(); },
