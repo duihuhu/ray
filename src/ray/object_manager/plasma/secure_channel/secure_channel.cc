@@ -156,7 +156,6 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
     // std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
     //   <<   " allocation information size: " << meta_info.allocation.size << " metainfo.export_desc: " << meta_info.export_desc \
     //   << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
-    std::cout << "RunDmaExport1" << std::endl;
 
     for(int i=0; i<meta_info.export_desc_len; ++i) {
       meta_info.export_desc[i] = export_desc[i];
@@ -164,7 +163,8 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
     std::cout << "RunDmaExport2" << std::endl;
 
     meta_info.export_desc[meta_info.export_desc_len] = '\0';
-    
+    std::cout << "RunDmaExport3" << std::endl;
+
     while ((result = doca_comm_channel_ep_sendto(ep, &meta_info, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
       usleep(1);
@@ -178,6 +178,8 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
     }
     object_id_set.insert(entry.first.Binary());
   }
+  std::cout << "RunDmaExport4" << std::endl;
+
   // free(export_desc);
 	// result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
   // while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
