@@ -175,7 +175,7 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
     }
     object_id_set.insert(entry.first.Binary());
   }
-
+  free(export_desc);
 	// result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
   // while ((result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
 	//        DOCA_ERROR_AGAIN) {
