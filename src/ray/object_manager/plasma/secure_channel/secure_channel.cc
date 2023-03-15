@@ -109,13 +109,13 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
 
   	/* Send hello message */
   doca_error_t result;
-  char text[100];
-  if (plasma_meta->empty())
-    strcpy(text,"hello222");
-  else
-    strcpy(text,"hello111");
+  // char text[100];
+  // if (plasma_meta->empty())
+  //   strcpy(text,"hello222");
+  // else
+  //   strcpy(text,"hello111");
 
-  int client_msg_len = strlen(text) + 1;
+  // int client_msg_len = strlen(text) + 1;
   std::cout << "PushMetaToDpu in secure channel" << std::endl;
   // MetaInfo metainfo;
   // size_t mmsg_len = sizeof(MetaInfo);
@@ -149,7 +149,7 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
 
     // const Allocation &allocation = entry.second->GetAllocation();
     // int64_t amsg_len = sizeof(allocation);
-    char *export_desc;
+    char *export_desc = NULL;
     export_desc  = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
     // meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
 
