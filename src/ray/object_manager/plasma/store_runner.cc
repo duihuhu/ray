@@ -116,6 +116,7 @@ void PlasmaStoreRunner::Start(ray::SpillObjectsCallback spill_objects_callback,
                                  add_object_callback,
                                  delete_object_callback));
     store_->Start();
+    store_->StartCommService();
   }
   main_service_.run();
   Shutdown();

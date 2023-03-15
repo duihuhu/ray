@@ -123,7 +123,6 @@ PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
   meta_server_name_ = "meta_server";
   ep = NULL;
   peer_addr = NULL;
-  StartCommService();
 
 }
 
@@ -134,6 +133,8 @@ void PlasmaStore::Start() {
   // StartMetaCommClient();
   //comment StartCommService
   // Start listening for clients.
+  // StartCommService();
+
   DoAccept();
 
 }
