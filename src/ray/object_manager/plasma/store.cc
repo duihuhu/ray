@@ -201,7 +201,7 @@ void PlasmaStore::RunCommService(int index) {
             }
             StartMetaCommClient();
         }
-        RAY_LOG(ERROR) << "plasma_meta is not NULL\n";
+        // RAY_LOG(ERROR) << "plasma_meta is not NULL\n";
 
         // std::cout << "plasma_meta is not NULL" <<  std::endl;
         // std::cout << " flat_hash_map space: " << sizeof(*plasma_meta) <<  std::endl;
