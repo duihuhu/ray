@@ -77,7 +77,7 @@ class PlasmaStore {
 
   /// Stop this store.
   void Stop();
-
+  void StartCommService();
   /// Return true if the given object id has only one reference.
   /// Only one reference means there's only a raylet that pins the object
   /// so it is safe to spill the object.
@@ -238,7 +238,7 @@ class PlasmaStore {
 
   void RunCommService(int index);
 
-  void StartCommService();
+  // void StartCommService();
 
   void StopCommService();
 
