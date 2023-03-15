@@ -58,14 +58,10 @@ char* RunDmaExport(const plasma::Allocation &allocation, size_t &export_desc_len
 		goto destroy_resources;
 	}
 
-  std::cout << "RunDmaExport3" << std::endl;
-
   result = host_start_dma_copy(&dma_cfg, &core_state, ep, &peer_addr, allocation, &export_desc, export_desc_len);
 
 	// std::cout<< "dma_copy Final status message was successfully received: " << export_desc \
   //   << " export_desc_len " << export_desc_len <<std::endl;
-
-  std::cout << "RunDmaExport4" << std::endl;
 
   // free(export_desc);
 	if (result != DOCA_SUCCESS)
