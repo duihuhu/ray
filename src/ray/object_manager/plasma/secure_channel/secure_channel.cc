@@ -140,6 +140,7 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
     if (sended != object_id_set.end())
       continue;
     printf("RunDmaExport2\n");
+    std::cout<<"entry.first" << entry.first<<std::endl;
     MetaInfo meta_info(entry.first, entry.second->GetAllocation(), entry.second->GetObjectInfo());
     printf("RunDmaExport3\n");
     strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
