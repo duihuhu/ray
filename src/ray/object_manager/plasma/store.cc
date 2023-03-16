@@ -184,7 +184,7 @@ void PlasmaStore::RunCommService(int index) {
       //     plasma_meta->emplace(object_id, std::move(ptr)).first->second.get();
 
       if ( plasma_meta->empty() ) {
-        RAY_LOG(ERROR) << "plasma_meta is NULL\n";
+        // RAY_LOG(ERROR) << "plasma_meta is NULL\n";
 
         // result = PushMetaToDpu(meta_server_name_, ep, peer_addr, plasma_meta);
         // if (result == EXIT_FAILURE) {
