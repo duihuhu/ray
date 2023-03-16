@@ -399,8 +399,9 @@ void ObjectManager::PushLocalObject(const ObjectID &object_id, const NodeID &nod
   owner_address.set_ip_address(object_info.owner_ip_address);
   owner_address.set_port(object_info.owner_port);
   owner_address.set_worker_id(object_info.owner_worker_id.Binary());
-  int total;
+  int total = 0;
   struct timeval recv_start, recv_end;
+  gettimeofday(&recv_start, NULL);
   std::pair<std::shared_ptr<MemoryObjectReader>, ray::Status> reader_status =
       buffer_pool_.CreateObjectReader(object_id, owner_address);
   gettimeofday(&recv_end, NULL);
