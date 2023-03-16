@@ -139,9 +139,13 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
     auto sended = object_id_set.find(entry.first.Binary());
     if (sended != object_id_set.end())
       continue;
+    printf("RunDmaExport2\n");
     MetaInfo meta_info(entry.first, entry.second->GetAllocation(), entry.second->GetObjectInfo());
+    printf("RunDmaExport3\n");
     strcpy(meta_info.owner_ip_address, entry.second->GetObjectInfo().owner_ip_address.c_str());
+    printf("RunDmaExport4\n");
     meta_info.ip_address_len = entry.second->GetObjectInfo().owner_ip_address.length();
+    printf("RunDmaExport5\n");
     size_t amsg_len = sizeof(meta_info);
 
 
@@ -151,7 +155,7 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
 
     // const Allocation &allocation = entry.second->GetAllocation();
     // int64_t amsg_len = sizeof(allocation);
-    printf("RunDmaExport2\n");
+    printf("RunDmaExport6\n");
     char *export_desc = NULL;
     export_desc  = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
     // meta_info.export_desc = RunDmaExport(meta_info.allocation, meta_info.export_desc_len);
@@ -159,15 +163,15 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
     // std::cout << " amsg_len " << amsg_len << " hucc get plasma meta object id " << meta_info.object_id << " allocation information: " << meta_info.allocation.address \
     //   <<   " allocation information size: " << meta_info.allocation.size << " metainfo.export_desc: " << meta_info.export_desc \
     //   << " metainfo.export_desc_len: "<< meta_info.export_desc_len<<std::endl;
-    printf("RunDmaExport3\n");
+    printf("RunDmaExport7\n");
 
     for(int i=0; i<meta_info.export_desc_len; ++i) {
       meta_info.export_desc[i] = export_desc[i];
     }
-    printf("RunDmaExport4\n");
+    printf("RunDmaExport8\n");
 
     meta_info.export_desc[meta_info.export_desc_len] = '\0';
-    printf("RunDmaExport5\n");
+    printf("RunDmaExport9\n");
 
     while ((result = doca_comm_channel_ep_sendto(ep, &meta_info, amsg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr)) ==
           DOCA_ERROR_AGAIN) {
@@ -182,10 +186,10 @@ doca_error_t PushMetaToDpu(const char * server_name, struct doca_comm_channel_ep
       std::cout<< "Message was sent: " << doca_get_error_string(result)<<std::endl;
     }
     object_id_set.insert(entry.first.Binary());
-    printf("RunDmaExport6\n");
+    printf("RunDmaExport10\n");
 
   }
-  printf("RunDmaExport7\n");
+  printf("RunDmaExport11\n");
 
   // free(export_desc);
 	// result = doca_comm_channel_ep_sendto(ep, text, client_msg_len, DOCA_CC_MSG_FLAG_NONE, peer_addr);
