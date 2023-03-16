@@ -332,9 +332,9 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
   //hucc send object HandleSendFinished node1 to node 2
   std::string str_start_time = std::to_string(start_time);
   std::string str_end_time = std::to_string(end_time);
-  std::cout << "HandleSendFinished on " << self_node_id_ << " to " << node_id
-                 << " of object " << object_id << " chunk " << chunk_index
-                 << ", status: " << status.ToString() << "start_time: " << str_start_time << " end_time: " << str_end_time << "\n";
+  // std::cout << "HandleSendFinished on " << self_node_id_ << " to " << node_id
+  //                << " of object " << object_id << " chunk " << chunk_index
+  //                << ", status: " << status.ToString() << "start_time: " << str_start_time << " end_time: " << str_end_time << "\n";
   // RAY_LOG(ERROR) << "HandleSendFinished on " << self_node_id_ << " to " << node_id
   //                << " of object " << object_id << " chunk " << chunk_index
   //                << ", status: " << status.ToString() << "start_time: " << str_start_time << " end_time: " << str_end_time << "\n";
@@ -404,7 +404,7 @@ void ObjectManager::PushLocalObject(const ObjectID &object_id, const NodeID &nod
   std::pair<std::shared_ptr<MemoryObjectReader>, ray::Status> reader_status =
       buffer_pool_.CreateObjectReader(object_id, owner_address);
   gettimeofday(&recv_end, NULL);
-  
+
   total = (recv_end.tv_sec - recv_start.tv_sec)*1000000 + recv_end.tv_usec - recv_start.tv_usec;
   RAY_LOG(ERROR) << "CreateObjectReader time " << total << "\n";
   Status status = reader_status.second;
