@@ -201,7 +201,7 @@ bool CoreWorkerMemoryStore::Put(const RayObject &object, const ObjectID &object_
   std::vector<std::function<void(std::shared_ptr<RayObject>)>> async_callbacks;
   RAY_LOG(DEBUG) << "Putting object into memory store. objectid is " << object_id;
   std::shared_ptr<RayObject> object_entry = nullptr;
-  RAY_LOG(ERROR) << "Putting object into memory store. objectid is " << object_id << " size: " << object.GetSize();
+  // RAY_LOG(ERROR) << "Putting object into memory store. objectid is " << object_id << " size: " << object.GetSize();
   if (object_allocator_ != nullptr) {
     object_entry = object_allocator_(object, object_id);
   } else {
