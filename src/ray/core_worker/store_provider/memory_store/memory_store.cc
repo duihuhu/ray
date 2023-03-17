@@ -128,7 +128,7 @@ void GetRequest::Set(const ObjectID &object_id, std::shared_ptr<RayObject> objec
   }
   object->SetAccessed();
   objects_.emplace(object_id, object);
-  Ray_LOG(ERROR) << "object_id: " << " size: " << object.GetSize() << "\n";
+  // Ray_LOG(ERROR) << "hucc_small_object object_id: " << " size: " << object.GetSize() << "\n";
   if (objects_.size() == num_objects_ ||
       (abort_if_any_object_is_exception_ && object->IsException() &&
        !object->IsInPlasmaError())) {
