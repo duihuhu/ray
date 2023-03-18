@@ -195,7 +195,7 @@ class ObjectManager : public ObjectManagerInterface,
   /// \param object_id The object's object id.
   /// \param node_id The remote node's id.
   /// \return Void.
-  void Push(const ObjectID &object_id, const NodeID &node_id, const struct timeval &recv_start=NULL);
+  void Push(const ObjectID &object_id, const NodeID &node_id, double start_time = 0);
 
   /// Pull a bundle of objects. This will attempt to make all objects in the
   /// bundle local until the request is canceled with the returned ID.
