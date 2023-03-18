@@ -345,7 +345,7 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
   }
 }
 
-void ObjectManager::Push(const ObjectID &object_id, const NodeID &node_id, const struct timeval &recv_start) {
+void ObjectManager::Push(const ObjectID &object_id, const NodeID &node_id, const struct timeval &recv_start=NULL) {
   RAY_LOG(DEBUG) << "Push on " << self_node_id_ << " to " << node_id << " of object "
                  << object_id;
   if (local_objects_.count(object_id) != 0) {
