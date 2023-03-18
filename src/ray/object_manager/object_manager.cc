@@ -345,13 +345,17 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
   }
 }
 
-void ObjectManager::Push(const ObjectID &object_id, const NodeID &node_id) {
+void ObjectManager::Push(const ObjectID &object_id, const NodeID &node_id, const struct timeval &recv_start) {
   RAY_LOG(DEBUG) << "Push on " << self_node_id_ << " to " << node_id << " of object "
                  << object_id;
   if (local_objects_.count(object_id) != 0) {
     return PushLocalObject(object_id, node_id);
   }
-
+  struct timeval recv_end;
+  int total;
+  gettimeofday(&recv_end, NULL);
+  total = (recv_end.tv_sec - recv_start.tv_sec)*1000000 + recv_end.tv_usec - recv_start.tv_usec;
+  RAY_LOG(WARNING) <<"from main thread post to execute push: " << total;
   // Push from spilled object directly if the object is on local disk.
   auto object_url = get_spilled_object_url_(object_id);
   if (!object_url.empty() && RayConfig::instance().is_external_storage_type_fs()) {
@@ -678,6 +682,8 @@ bool ObjectManager::ReceiveObjectChunk(const NodeID &node_id,
 void ObjectManager::HandlePull(const rpc::PullRequest &request,
                                rpc::PullReply *reply,
                                rpc::SendReplyCallback send_reply_callback) {
+  struct timeval recv_start;
+  gettimeofday(&recv_start, NULL);
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
   NodeID node_id = NodeID::FromBinary(request.node_id());
   RAY_LOG(DEBUG) << "Received pull request from node " << node_id << " for object ["
@@ -685,7 +691,7 @@ void ObjectManager::HandlePull(const rpc::PullRequest &request,
   //hucc receive send pull request node1 to node2
   auto ts_handle_pull_request = current_sys_time_us();
   RAY_LOG(WARNING) << "hucc remote get object receive handle pull request from " << node_id << " of object " << object_id << " " << ts_handle_pull_request << "\n";
-  main_service_->post([this, object_id, node_id]() { Push(object_id, node_id); },
+  main_service_->post([this, object_id, node_id, recv_start]() { Push(object_id, node_id, recv_start); },
                       "ObjectManager.HandlePull");
   send_reply_callback(Status::OK(), nullptr, nullptr);
 }
