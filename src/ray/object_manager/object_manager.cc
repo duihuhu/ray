@@ -345,7 +345,7 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
   }
 }
 
-void ObjectManager::Push(const ObjectID &object_id, const NodeID &node_id,  double start_time = 0) {
+void ObjectManager::Push(const ObjectID &object_id, const NodeID &node_id,  double start_time) {
   RAY_LOG(DEBUG) << "Push on " << self_node_id_ << " to " << node_id << " of object "
                  << object_id;
 
