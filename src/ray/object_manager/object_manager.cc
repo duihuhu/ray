@@ -348,8 +348,8 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
 void ObjectManager::Push(const ObjectID &object_id, const NodeID &node_id,  double start_time) {
   RAY_LOG(DEBUG) << "Push on " << self_node_id_ << " to " << node_id << " of object "
                  << object_id;
-  thread::id this_thread_id = this_thread::get_id();
-  RAY_LOG(WARNING) << "thread id: " << this_thread_id;
+  std::thread::id this_thread_id = std::this_thread::get_id();
+  RAY_LOG(WARNING) << "Push thread id: " << this_thread_id;
 
   double end_time = absl::GetCurrentTimeNanos() / 1e9;
   RAY_LOG(WARNING) << "from main service to Push: " << end_time - start_time;
