@@ -264,8 +264,6 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
   reference_counter_->UpdateObjectSize(object_id, return_object.size());
   RAY_LOG(DEBUG) << "Task return object " << object_id << " has size "
                  << return_object.size();
-  RAY_LOG(WARNING) << "Task return object " << object_id << " has size "
-                 << return_object.size();
   const auto nested_refs =
       VectorFromProtobuf<rpc::ObjectReference>(return_object.nested_inlined_refs());
   if (return_object.in_plasma()) {
@@ -276,12 +274,17 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
     // Mark it as in plasma with a dummy object.
     RAY_CHECK(
         in_memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
+    
+    RAY_LOG(WARNING) << "Task return object in plasma" << object_id << " has size "
+            << return_object.size();
   } else {
     // NOTE(swang): If a direct object was promoted to plasma, then we do not
     // record the node ID that it was pinned at, which means that we will not
     // be able to reconstruct it if the plasma object copy is lost. However,
     // this is okay because the pinned copy is on the local node, so we will
     // fate-share with the object if the local node fails.
+    RAY_LOG(WARNING) << "Task return object in request" << object_id << " has size "
+        << return_object.size();
     std::shared_ptr<LocalMemoryBuffer> data_buffer;
     if (return_object.data().size() > 0) {
       data_buffer = std::make_shared<LocalMemoryBuffer>(
