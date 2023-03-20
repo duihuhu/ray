@@ -335,7 +335,7 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
   // std::cout << "HandleSendFinished on " << self_node_id_ << " to " << node_id
   //                << " of object " << object_id << " chunk " << chunk_index
   //                << ", status: " << status.ToString() << "start_time: " << str_start_time << " end_time: " << str_end_time << "\n";
-  RAY_LOG(WARNING) << "HandleSendFinished on " << self_node_id_ << " to " << node_id
+  RAY_LOG(WARNING) << "hucc HandleSendFinished on " << self_node_id_ << " to " << node_id
                  << " of object " << object_id << " chunk " << chunk_index
                  << ", status: " << status.ToString() << "start_time: " << str_start_time << " end_time: " << str_end_time << "\n";
   if (!status.ok()) {
