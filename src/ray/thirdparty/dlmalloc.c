@@ -4051,6 +4051,7 @@ static void* sys_alloc(mstate m, size_t nb) {
   size_t asize; /* allocation size */
 
   ensure_initialization();
+  printf("sys_alloc \n");
 
   /* Directly map large chunks, but only if already initialized */
   if (use_mmap(m) && nb >= mparams.mmap_threshold && m->topsize != 0) {
@@ -4191,7 +4192,6 @@ static void* sys_alloc(mstate m, size_t nb) {
       m->seg.sflags = mmap_flag;
       m->magic = mparams.magic;
       m->release_checks = MAX_RELEASE_CHECK_RATE;
-      printf("sys_alloc %x\n", m->least_addr);
       init_bins(m);
 #if !ONLY_MSPACES
       if (is_global(m))
