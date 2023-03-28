@@ -83,7 +83,7 @@ PlasmaAllocator::PlasmaAllocator(const std::string &plasma_directory,
   // This will unmap the file, but the next one created will be as large
   // as this one (this is an implementation detail of dlmalloc).
 
-  RAY_LOG(WARNING) << " Free ";
+  RAY_LOG(WARNING) << " Free " << allocation.value();
 
 
   Free(std::move(allocation.value()));
