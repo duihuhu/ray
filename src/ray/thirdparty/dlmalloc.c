@@ -4090,6 +4090,7 @@ static void* sys_alloc(mstate m, size_t nb) {
   */
 
   if (MORECORE_CONTIGUOUS && !use_noncontiguous(m)) {
+    printf("MORECORE_CONTIGUOUS\n");
     char* br = CMFAIL;
     size_t ssize = asize; /* sbrk call size */
     msegmentptr ss = (m->top == 0)? 0 : segment_holding(m, (char*)m->top);
