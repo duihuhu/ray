@@ -4305,6 +4305,7 @@ static size_t release_unused_segments(mstate m) {
 }
 
 static int sys_trim(mstate m, size_t pad) {
+  printf("sys_trim\n");
   size_t released = 0;
   ensure_initialization();
   if (pad < MAX_REQUEST && is_initialized(m)) {
