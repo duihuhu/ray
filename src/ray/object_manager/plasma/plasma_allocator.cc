@@ -96,6 +96,7 @@ absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
 
   RAY_LOG(DEBUG) << "allocated " << bytes << " at " << mem;
   if (!mem) {
+    RAY_LOG(WARNING) << "mem null ";
     return absl::nullopt;
   }
   allocated_ += bytes;
