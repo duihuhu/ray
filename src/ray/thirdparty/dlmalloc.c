@@ -5270,10 +5270,8 @@ void* dlrealloc_in_place(void* oldmem, size_t bytes) {
 
 void* dlmemalign(size_t alignment, size_t bytes) {
   if (alignment <= MALLOC_ALIGNMENT) {
-    printf("dlmemalign dlmalloc");
     return dlmalloc(bytes);
   }
-  printf("internal_memalign dlmalloc");
   return internal_memalign(gm, alignment, bytes);
 }
 
