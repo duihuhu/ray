@@ -94,9 +94,9 @@ absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
   void *mem = dlmemalign(kAlignment, bytes);
   RAY_LOG(WARNING) << "allocated " << bytes << " at " << mem << " end " << (mem + bytes);
 
-  RAY_LOG(DEBUG) << "allocated " << bytes << " at " << mem;
+  RAY_LOG(DEBUG) << "Allocate allocated " << bytes << " at " << mem;
   if (!mem) {
-    RAY_LOG(WARNING) << "mem null ";
+    RAY_LOG(WARNING) << "Allocate mem null ";
     return absl::nullopt;
   }
   allocated_ += bytes;
@@ -109,10 +109,14 @@ absl::optional<Allocation> PlasmaAllocator::FallbackAllocate(size_t bytes) {
   RAY_LOG(DEBUG) << "fallback allocating " << bytes;
   void *mem = dlmemalign(kAlignment, bytes);
   RAY_LOG(DEBUG) << "allocated " << bytes << " at " << mem;
+  RAY_LOG(WARNING) << "FallbackAllocate allocated " << bytes << " at " << mem;
+
   // Reset to the default value.
   RAY_CHECK(dlmallopt(M_MMAP_THRESHOLD, MAX_SIZE_T));
 
   if (!mem) {
+    RAY_LOG(WARNING) << "FallbackAllocate mem null ";
+
     return absl::nullopt;
   }
 
