@@ -4051,8 +4051,6 @@ static void* sys_alloc(mstate m, size_t nb) {
   size_t asize; /* allocation size */
 
   ensure_initialization();
-  printf("sys_alloc \n");
-
   /* Directly map large chunks, but only if already initialized */
   if (use_mmap(m) && nb >= mparams.mmap_threshold && m->topsize != 0) {
     void* mem = mmap_alloc(m, nb);
@@ -4677,7 +4675,7 @@ void* dlmalloc(size_t bytes) {
       check_malloced_chunk(gm, mem, nb);
       goto postaction;
     }
-
+    printf("before sys_alloc dlmalloc\n");
     mem = sys_alloc(gm, nb);
 
   postaction:
