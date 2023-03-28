@@ -148,6 +148,8 @@ absl::optional<Allocation> PlasmaAllocator::BuildAllocation(void *addr, size_t s
   ptrdiff_t offset;
 
   if (internal::GetMallocMapinfo(addr, &fd, &mmap_size, &offset)) {
+    RAY_LOG(WARNING) << "GetMallocMapinfo addr" << addr;
+
     return Allocation(addr,
                       static_cast<int64_t>(size),
                       std::move(fd),
