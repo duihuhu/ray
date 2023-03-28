@@ -4589,6 +4589,8 @@ void* dlmalloc(size_t bytes) {
     void* mem;
     size_t nb;
     if (bytes <= MAX_SMALL_REQUEST) {
+      printf("SMALL than MAX_SMALL_REQUEST\n");
+
       bindex_t idx;
       binmap_t smallbits;
       nb = (bytes < MIN_REQUEST)? MIN_CHUNK_SIZE : pad_request(bytes);
