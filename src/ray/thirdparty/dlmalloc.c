@@ -4646,6 +4646,8 @@ void* dlmalloc(size_t bytes) {
     else if (bytes >= MAX_REQUEST)
       nb = MAX_SIZE_T; /* Too big to allocate. Force failure (in sys alloc) */
     else {
+      printf("BIG than MAX_SMALL_REQUEST\n");
+
       nb = pad_request(bytes);
       if (gm->treemap != 0 && (mem = tmalloc_large(gm, nb)) != 0) {
         check_malloced_chunk(gm, mem, nb);
