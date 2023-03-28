@@ -232,7 +232,6 @@ void *fake_mmap(size_t size) {
     RAY_LOG(DEBUG) << "fake_mmap called once already, refusing to overcommit: " << size;
     return MFAIL;
   }
-
   // Add kMmapRegionsGap so that the returned pointer is deliberately not
   // page-aligned. This ensures that the segments of memory returned by
   // fake_mmap are never contiguous.
@@ -256,6 +255,8 @@ void *fake_mmap(size_t size) {
   // We lie to dlmalloc about where mapped memory actually lives.
   pointer = pointer_advance(pointer, kMmapRegionsGap);
   RAY_LOG(DEBUG) << pointer << " = fake_mmap(" << size << ")";
+  RAY_LOG(WARNING) << "fake_mmap size: %d" << size << "\n";
+
   return pointer;
 }
 
