@@ -72,6 +72,8 @@ PlasmaAllocator::PlasmaAllocator(const std::string &plasma_directory,
                               /*fallback_enabled=*/true);
   RAY_CHECK(kFootprintLimit > kDlMallocReserved)
       << "Footprint limit has to be greater than " << kDlMallocReserved;
+
+  RAY_LOG(WARNING) << "kFootprintLimit " << kFootprintLimit << " kDlMallocReserved " << kDlMallocReserved;
   auto allocation = Allocate(kFootprintLimit - kDlMallocReserved);
   RAY_CHECK(allocation.has_value())
       << "PlasmaAllocator initialization failed."
