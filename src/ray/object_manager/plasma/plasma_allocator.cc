@@ -73,8 +73,10 @@ PlasmaAllocator::PlasmaAllocator(const std::string &plasma_directory,
   RAY_CHECK(kFootprintLimit > kDlMallocReserved)
       << "Footprint limit has to be greater than " << kDlMallocReserved;
 
-  RAY_LOG(WARNING) << "kFootprintLimit " << kFootprintLimit << " kDlMallocReserved " << kDlMallocReserved;
   auto allocation = Allocate(kFootprintLimit - kDlMallocReserved);
+
+  RAY_LOG(WARNING) << "kFootprintLimit " << kFootprintLimit << " kDlMallocReserved " << kDlMallocReserved << " allocation address"  << allocation.address << " allocation size " << allocation.size;
+
   RAY_CHECK(allocation.has_value())
       << "PlasmaAllocator initialization failed."
       << " It's likely we don't have enought space in " << plasma_directory;
