@@ -84,6 +84,8 @@ PlasmaAllocator::PlasmaAllocator(const std::string &plasma_directory,
 absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
   RAY_LOG(DEBUG) << "allocating " << bytes;
   void *mem = dlmemalign(kAlignment, bytes);
+  RAY_LOG(WARNING) << "allocated " << bytes << " at " << mem;
+
   RAY_LOG(DEBUG) << "allocated " << bytes << " at " << mem;
   if (!mem) {
     return absl::nullopt;
