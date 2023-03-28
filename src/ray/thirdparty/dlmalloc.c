@@ -4053,7 +4053,6 @@ static void* sys_alloc(mstate m, size_t nb) {
   ensure_initialization();
   /* Directly map large chunks, but only if already initialized */
   if (use_mmap(m) && nb >= mparams.mmap_threshold && m->topsize != 0) {
-    printf("mmap_alloc\n");
     void* mem = mmap_alloc(m, nb);
     if (mem != 0)
       return mem;
@@ -4152,6 +4151,8 @@ static void* sys_alloc(mstate m, size_t nb) {
   }
 
   if (HAVE_MMAP && tbase == CMFAIL) {  /* Try MMAP */
+    printf("CALL_MMAP\n");
+
     char* mp = (char*)(CALL_MMAP(asize));
     if (mp != CMFAIL) {
       tbase = mp;
