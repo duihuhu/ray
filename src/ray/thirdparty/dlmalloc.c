@@ -4584,6 +4584,8 @@ void* dlmalloc(size_t bytes) {
 #endif
 
   if (!PREACTION(gm)) {
+    printf("PREACTION\n");
+
     void* mem;
     size_t nb;
     if (bytes <= MAX_SMALL_REQUEST) {
