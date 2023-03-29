@@ -884,13 +884,10 @@ void CoreWorker::RegisterOwnershipInfoAndResolveFuture(
   object_status.ParseFromString(serialized_object_status);
 
   if (object_status.has_object() && !reference_counter_->OwnedByUs(object_id)) {
-    RAY_LOG(DEBUG) << "ProcessResolvedObject";
     // We already have the inlined object status, process it immediately.
     future_resolver_->ProcessResolvedObject(
         object_id, owner_address, Status::OK(), object_status);
   } else {
-    RAY_LOG(DEBUG) << "ResolveFutureAsync";
-
     // We will ask the owner about the object until the object is
     // created or we can no longer reach the owner.
     future_resolver_->ResolveFutureAsync(object_id, owner_address);
@@ -2709,6 +2706,8 @@ void CoreWorker::HandleRayletNotifyGCSRestart(
 void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &request,
                                        rpc::GetObjectStatusReply *reply,
                                        rpc::SendReplyCallback send_reply_callback) {
+  RAY_LOG(DEBUG) << "hucc rayIDLE HandleGetObjectStatus: "<< "\n";
+
   if (HandleWrongRecipient(WorkerID::FromBinary(request.owner_worker_id()),
                            send_reply_callback)) {
     RAY_LOG(INFO) << "Handling GetObjectStatus for object produced by a previous worker "
@@ -2721,7 +2720,6 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   // Acquire a reference to the object. This prevents the object from being
   // evicted out from under us while we check the object status and start the
   // Get.
-  RAY_LOG(DEBUG) << "hucc rayIDLE HandleGetObjectStatus: "<< "\n";
   AddLocalReference(object_id, "<temporary (get object status)>");
 
   rpc::Address owner_address;
