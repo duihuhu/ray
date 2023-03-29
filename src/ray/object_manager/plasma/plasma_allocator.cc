@@ -74,29 +74,19 @@ PlasmaAllocator::PlasmaAllocator(const std::string &plasma_directory,
       << "Footprint limit has to be greater than " << kDlMallocReserved;
 
   auto allocation = Allocate(kFootprintLimit - kDlMallocReserved);
-
-  RAY_LOG(WARNING) << "kFootprintLimit " << kFootprintLimit << " kDlMallocReserved " << kDlMallocReserved;
-
   RAY_CHECK(allocation.has_value())
       << "PlasmaAllocator initialization failed."
       << " It's likely we don't have enought space in " << plasma_directory;
   // This will unmap the file, but the next one created will be as large
   // as this one (this is an implementation detail of dlmalloc).
-
-  RAY_LOG(WARNING) << " Free ";
-
-
   Free(std::move(allocation.value()));
 }
 
 absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
   RAY_LOG(DEBUG) << "allocating " << bytes;
   void *mem = dlmemalign(kAlignment, bytes);
-  RAY_LOG(WARNING) << "allocated " << bytes << " at " << mem << " end " << (mem + bytes);
-
   RAY_LOG(DEBUG) << "Allocate allocated " << bytes << " at " << mem;
   if (!mem) {
-    RAY_LOG(WARNING) << "Allocate mem null ";
     return absl::nullopt;
   }
   allocated_ += bytes;
@@ -109,8 +99,6 @@ absl::optional<Allocation> PlasmaAllocator::FallbackAllocate(size_t bytes) {
   RAY_LOG(DEBUG) << "fallback allocating " << bytes;
   void *mem = dlmemalign(kAlignment, bytes);
   RAY_LOG(DEBUG) << "allocated " << bytes << " at " << mem;
-  RAY_LOG(WARNING) << "FallbackAllocate allocated " << bytes << " at " << mem;
-
   // Reset to the default value.
   RAY_CHECK(dlmallopt(M_MMAP_THRESHOLD, MAX_SIZE_T));
 

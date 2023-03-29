@@ -255,7 +255,7 @@ void *fake_mmap(size_t size) {
   // We lie to dlmalloc about where mapped memory actually lives.
   pointer = pointer_advance(pointer, kMmapRegionsGap);
   RAY_LOG(DEBUG) << pointer << " = fake_mmap(" << size << ")";
-  RAY_LOG(WARNING) << "fake_mmap size: " << size << " " << pointer << "\n";
+  // RAY_LOG(WARNING) << "fake_mmap size: " << size << " " << pointer << "\n";
 
   return pointer;
 }

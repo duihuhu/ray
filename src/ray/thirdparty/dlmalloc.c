@@ -4090,7 +4090,6 @@ static void* sys_alloc(mstate m, size_t nb) {
   */
 
   if (MORECORE_CONTIGUOUS && !use_noncontiguous(m)) {
-    printf("MORECORE_CONTIGUOUS\n");
     char* br = CMFAIL;
     size_t ssize = asize; /* sbrk call size */
     msegmentptr ss = (m->top == 0)? 0 : segment_holding(m, (char*)m->top);
@@ -4152,8 +4151,6 @@ static void* sys_alloc(mstate m, size_t nb) {
   }
 
   if (HAVE_MMAP && tbase == CMFAIL) {  /* Try MMAP */
-    printf("CALL_MMAP\n");
-
     char* mp = (char*)(CALL_MMAP(asize));
     if (mp != CMFAIL) {
       tbase = mp;
@@ -4305,7 +4302,6 @@ static size_t release_unused_segments(mstate m) {
 }
 
 static int sys_trim(mstate m, size_t pad) {
-  printf("sys_trim\n");
   size_t released = 0;
   ensure_initialization();
   if (pad < MAX_REQUEST && is_initialized(m)) {
@@ -4555,7 +4551,6 @@ static void* tmalloc_small(mstate m, size_t nb) {
 #if !ONLY_MSPACES
 
 void* dlmalloc(size_t bytes) {
-  printf("in dlmalloc\n");
 
   /*
      Basic algorithm:
@@ -4585,13 +4580,9 @@ void* dlmalloc(size_t bytes) {
 #endif
 
   if (!PREACTION(gm)) {
-    printf("PREACTION\n");
-
     void* mem;
     size_t nb;
     if (bytes <= MAX_SMALL_REQUEST) {
-      printf("SMALL than MAX_SMALL_REQUEST\n");
-
       bindex_t idx;
       binmap_t smallbits;
       nb = (bytes < MIN_REQUEST)? MIN_CHUNK_SIZE : pad_request(bytes);
@@ -4647,8 +4638,6 @@ void* dlmalloc(size_t bytes) {
     else if (bytes >= MAX_REQUEST)
       nb = MAX_SIZE_T; /* Too big to allocate. Force failure (in sys alloc) */
     else {
-      printf("BIG than MAX_SMALL_REQUEST\n");
-
       nb = pad_request(bytes);
       if (gm->treemap != 0 && (mem = tmalloc_large(gm, nb)) != 0) {
         check_malloced_chunk(gm, mem, nb);
@@ -4687,7 +4676,6 @@ void* dlmalloc(size_t bytes) {
       check_malloced_chunk(gm, mem, nb);
       goto postaction;
     }
-    printf("before sys_alloc dlmalloc\n");
     mem = sys_alloc(gm, nb);
 
   postaction:
