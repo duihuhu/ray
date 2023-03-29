@@ -232,7 +232,10 @@ void PlasmaStore::StopCommService(){
   comm_threads_.join();
 }
 
-void PlasmaStore::Stop() { acceptor_.close(); StopCommService();}
+void PlasmaStore::Stop() { 
+  acceptor_.close(); 
+  // StopCommService();
+}
 
 // If this client is not already using the object, add the client to the
 // object's list of clients, otherwise do nothing.
