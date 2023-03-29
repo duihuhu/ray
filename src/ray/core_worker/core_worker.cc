@@ -884,10 +884,13 @@ void CoreWorker::RegisterOwnershipInfoAndResolveFuture(
   object_status.ParseFromString(serialized_object_status);
 
   if (object_status.has_object() && !reference_counter_->OwnedByUs(object_id)) {
+    RAY_LOG(DEBUG) << "ProcessResolvedObject";
     // We already have the inlined object status, process it immediately.
     future_resolver_->ProcessResolvedObject(
         object_id, owner_address, Status::OK(), object_status);
   } else {
+    RAY_LOG(DEBUG) << "ResolveFutureAsync";
+
     // We will ask the owner about the object until the object is
     // created or we can no longer reach the owner.
     future_resolver_->ResolveFutureAsync(object_id, owner_address);
