@@ -694,7 +694,7 @@ Status ReadMetaReply(uint8_t *data, size_t size, unsigned long &address, int64_t
   RAY_DCHECK(VerifyFlatbuffer(message, data, size));
   address = message->address();
   object_size = message->object_size();
-  device_num = message->device_name();
+  device_num = message->device_num();
   return Status::OK();
 }
 
