@@ -166,6 +166,9 @@ Status ReadGetReply(uint8_t *data,
 /* Plasma Get object Meta message fuctions */
 Status SendMetaRequest(const std::shared_ptr<StoreConn> &store_conn, ObjectID object_id);
 
+Status ReadMetaRequest(uint8_t *data, size_t size, ObjectID *object_id);
+
+
 /* Plasma Release message functions. */
 
 Status SendReleaseRequest(const std::shared_ptr<StoreConn> &store_conn,
