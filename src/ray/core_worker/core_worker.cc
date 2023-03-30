@@ -2784,7 +2784,11 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
     reply->set_object_size(locality_data.value().object_size);
     RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size;
     if(!obj->HasData()) {
-      plasma_store_provider_->GetObjectMetaFromPlasma(object_id);
+      unsigned long address;
+      int64_t object_size;
+      int device_num;
+      plasma_store_provider_->GetObjectMetaFromPlasma(object_id, &address, &object_size, &device_num);
+      RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (char*) address << " " << object_size << " " << device_num; 
     }
   }
 }

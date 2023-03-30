@@ -678,15 +678,12 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
 /// @brief get object meta through 
 /// @param object_id 
 /// @return Status
-Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id) {
+Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num) {
   RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
   std::vector<uint8_t> buffer;
 
   RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer));
-  unsigned long address;
-  int64_t object_size;
-  int device_num;
-  RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), &address, &object_size, &device_num));
+  RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), address, object_size, device_num));
 
   // RAY_LOG(DEBUG) << "GetObjectMeta " << object_id << " " << (char*) address << " " << object_size << " " <<  device_num;
   // std::vector<ObjectBuffer> buffer;
