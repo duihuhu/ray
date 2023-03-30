@@ -586,7 +586,7 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     }
     auto allocation = entry->GetAllocation();
     RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id << " " << entry->GetAllocation().address << " " << entry->GetObjectInfo().object_id ;
-    RAY_RETURN_NOT_OK(SendMetaReply(client, (unsigned long) allocation->address, allocation.size, allocation.device_name));
+    RAY_RETURN_NOT_OK(SendMetaReply(client, (unsigned long) allocation->address, allocation.size, allocation.device_num));
   } break;
   default:
     // This code should be unreachable.
