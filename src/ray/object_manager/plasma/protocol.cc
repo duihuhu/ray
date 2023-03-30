@@ -692,9 +692,10 @@ Status ReadMetaReply(uint8_t *data, size_t size, unsigned long &address, int64_t
   RAY_DCHECK(data);
   auto message = flatbuffers::GetRoot<fb::PlasmaGetMetaReply>(data);
   RAY_DCHECK(VerifyFlatbuffer(message, data, size));
-  address = message->address();
-  object_size = message->object_size();
-  device_num = message->device_num();
+  RAY_LOG(DEBUG) << "ReadMetaReply " <<  message->address();
+  // address = message->address();
+  // object_size = message->object_size();
+  // device_num = message->device_num();
   return Status::OK();
 }
 
