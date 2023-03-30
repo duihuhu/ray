@@ -682,6 +682,21 @@ Status ReadMetaRequest(uint8_t *data, size_t size, ObjectID *object_id) {
   return Status::OK();
 }
 
+Status SendMetaReply(const std::shared_ptr<Client> &client, unsigned long &address, int64_t &object_size, int &device_name) {
+  flatbuffers::FlatBufferBuilder fbb;
+  auto message = fb::CreatePlasmaGetMetaReply(fbb, address, object_size, device_name);
+  return PlasmaSend(client, MessageType::PlasmaGetMetaReply, &fbb, message);
+}
+
+Status ReadMetaReply(uint8_t *data, size_t size, unsigned long &address, int64_t &object_size, int &device_name) {
+  RAY_DCHECK(data);
+  auto message = flatbuffers::GetRoot<fb::PlasmaEvictReply>(data);
+  RAY_DCHECK(VerifyFlatbuffer(message, data, size));
+  address = message->address();
+  object_size = message->object_size();
+  device_name = message->device_name();
+  return Status::OK();
+}
 
 
 
