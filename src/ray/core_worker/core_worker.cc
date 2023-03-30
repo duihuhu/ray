@@ -2762,12 +2762,10 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   // object value.
   auto *object = reply->mutable_object();
   if (obj->HasData()) {
-    RAY_LOG(DEBUG) << " object has data";
     const auto &data = obj->GetData();
     object->set_data(data->Data(), data->Size());
   }
   if (obj->HasMetadata()) {
-    RAY_LOG(DEBUG) << " object has data meta";
     const auto &metadata = obj->GetMetadata();
     object->set_metadata(metadata->Data(), metadata->Size());
   }
@@ -2782,6 +2780,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
       reply->add_node_ids(node_id.Binary());
     }
     reply->set_object_size(locality_data.value().object_size);
+    RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size;
     plasma_store_provider_->GetObjectMetaFromPlasma(object_id);
   }
 }
