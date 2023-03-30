@@ -2780,7 +2780,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
       reply->add_node_ids(node_id.Binary());
     }
     reply->set_object_size(locality_data.value().object_size);
-    plasma_store_provider_.GetObjectMetaFromPlasma(object_id);
+    plasma_store_provider_->GetObjectMetaFromPlasma(object_id);
   }
 }
 
