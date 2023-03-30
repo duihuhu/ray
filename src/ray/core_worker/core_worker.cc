@@ -2764,6 +2764,8 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   if (obj->HasData()) {
     const auto &data = obj->GetData();
     object->set_data(data->Data(), data->Size());
+    RAY_LOG(DEBUG) << " data->Size() " << data->Size();
+
   }
   if (obj->HasMetadata()) {
     const auto &metadata = obj->GetMetadata();
