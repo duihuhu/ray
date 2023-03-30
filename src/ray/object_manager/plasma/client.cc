@@ -684,12 +684,12 @@ Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id) {
 
   RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer));
 
-  unsigned long address;
-  int64_t object_size;
-  int device_num;
-  RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), address, object_size, device_num));
+  // unsigned long address;
+  // int64_t object_size;
+  // int device_num;
+  // RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), address, object_size, device_num));
 
-  RAY_LOG(DEBUG) << "GetObjectMeta " << object_id << " " << (char*) address << " " << object_size << " " <<  device_num;
+  // RAY_LOG(DEBUG) << "GetObjectMeta " << object_id << " " << (char*) address << " " << object_size << " " <<  device_num;
   // std::vector<ObjectBuffer> buffer;
   // RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaMetaReply, &buffer));
 
