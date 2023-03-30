@@ -163,6 +163,9 @@ Status ReadGetReply(uint8_t *data,
                     std::vector<MEMFD_TYPE> &store_fds,
                     std::vector<int64_t> &mmap_sizes);
 
+/* Plasma Get object Meta message fuctions */
+Status SendMetaRequest(const std::shared_ptr<StoreConn> &store_conn, ObjectID object_id);
+
 /* Plasma Release message functions. */
 
 Status SendReleaseRequest(const std::shared_ptr<StoreConn> &store_conn,
@@ -228,5 +231,5 @@ Status SendEvictReply(const std::shared_ptr<Client> &client, int64_t num_bytes);
 
 Status ReadEvictReply(uint8_t *data, size_t size, int64_t &num_bytes);
 
-Status SendPlasmaMetaReply(const std::shared_ptr<Client> &client, PlasmaError error);
+// Status SendPlasmaMetaReply(const std::shared_ptr<Client> &client, PlasmaError error);
 }  // namespace plasma

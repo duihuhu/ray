@@ -257,6 +257,11 @@ Status CoreWorkerPlasmaStoreProvider::GetIfLocal(
   return Status::OK();
 }
 
+Status GetObjectMetaFromPlasma(const ObjectID &object_id) {
+  RAY_RETURN_NOT_OK(store_client_.GetObjectMeta(object_id));
+  return Status::OK();
+}
+
 Status UnblockIfNeeded(const std::shared_ptr<raylet::RayletClient> &client,
                        const WorkerContext &ctx) {
   if (ctx.CurrentTaskIsDirectCall()) {

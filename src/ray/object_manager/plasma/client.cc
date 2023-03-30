@@ -672,6 +672,22 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
   return Release(object_id);
 }
 
+/// @brief get object meta through 
+/// @param object_id 
+/// @return Status
+Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id) {
+  RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
+  
+  // std::vector<ObjectBuffer> buffer;
+  // RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaMetaReply, &buffer));
+
+  // RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), &sealed_id));
+
+
+  return Status::OK();
+}
+
+
 Status PlasmaClient::Impl::Abort(const ObjectID &object_id) {
   std::lock_guard<std::recursive_mutex> guard(client_mutex_);
   auto object_entry = objects_in_use_.find(object_id);
@@ -871,6 +887,10 @@ std::string PlasmaClient::DebugString() { return impl_->DebugString(); }
 
 bool PlasmaClient::IsInUse(const ObjectID &object_id) {
   return impl_->IsInUse(object_id);
+}
+
+Status PlasmaClient::GetObjectMeta(const ObjectID &object_id) {
+  return impl_->GetObjectMeta(object_id);
 }
 
 int64_t PlasmaClient::store_capacity() { return impl_->store_capacity(); }

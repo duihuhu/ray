@@ -173,6 +173,10 @@ class CoreWorkerPlasmaStoreProvider {
 
   Status Delete(const absl::flat_hash_set<ObjectID> &object_ids, bool local_only);
 
+  /// hucc get object meta from plasma.
+  /// \param[in] object The object to create.
+  Statis GetObjectMetaFromPlasma(const ObjectID &object_id);
+
   /// Lists objects in used (pinned) by the current client.
   ///
   /// \return Output mapping of used object ids to (size, callsite).

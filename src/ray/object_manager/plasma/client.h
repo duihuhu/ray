@@ -326,6 +326,9 @@ class PlasmaClient : public PlasmaClientInterface {
   /// \return The return status.
   Status Disconnect();
 
+  /// Get Object Meta from plasma 
+  Status GetObjectMeta(const ObjectID &object_id);
+
   /// Get the current debug string from the plasma store server.
   ///
   /// \return The debug string.

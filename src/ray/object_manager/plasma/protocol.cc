@@ -664,11 +664,32 @@ Status ReadGetReply(uint8_t *data,
   return Status::OK();
 }
 
-Status SendPlasmaMetaReply(const std::shared_ptr<Client> &client, PlasmaError error) {
+
+
+//Get meta request 
+Status SendMetaRequest(const std::shared_ptr<StoreConn> &store_conn, ObjectID object_id) {
   flatbuffers::FlatBufferBuilder fbb;
-  auto message =
-      fb::CreatePlasmaGetMetaReply(fbb, error);
-  return PlasmaSend(client, MessageType::PlasmaGetMetaReply, &fbb, message);
+  auto message = fb::CreatePlasmaGetMetaRequest(
+      fbb, fbb.CreateString(object_id.Binary()));
+  return PlasmaSend(store_conn, MessageType::PlasmaGetMetaRequest, &fbb, message);
 }
+
+Status ReadMetaRequest(uint8_t *data, size_t size, ObjectID *object_id) {
+  RAY_DCHECK(data);
+  auto message = flatbuffers::GetRoot<fb::PlasmaGetMetaRequest>(data);
+  RAY_DCHECK(VerifyFlatbuffer(message, data, size));
+  *object_id = ObjectID::FromBinary(message->object_id()->str());
+  return Status::OK();
+}
+
+
+
+
+// Status SendPlasmaMetaReply(const std::shared_ptr<Client> &client, PlasmaError error) {
+//   flatbuffers::FlatBufferBuilder fbb;
+//   auto message =
+//       fb::CreatePlasmaGetMetaReply(fbb, error);
+//   return PlasmaSend(client, MessageType::PlasmaGetMetaReply, &fbb, message);
+// }
 
 }  // namespace plasma
