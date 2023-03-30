@@ -684,6 +684,9 @@ Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id) {
 
   RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer))
 
+  unsigned long address;
+  int64_t object_size;
+  int device_name;
   RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), address, object_size, device_name));
 
   RAY_LOG(DEBUG) << "GetObjectMeta " << object_id << " " << (char*) address << " " << object_size << " " <<  device_name;
