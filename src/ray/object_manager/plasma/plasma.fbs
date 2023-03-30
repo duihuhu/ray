@@ -305,6 +305,6 @@ table PlasmaGetMetaReply {
   // error: PlasmaError;
   address: ulong;
   object_size: long;
-  device_name: int;
+  device_num: int;
 
 }
