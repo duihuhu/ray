@@ -2762,10 +2762,12 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   // object value.
   auto *object = reply->mutable_object();
   if (obj->HasData()) {
+    RAY_LOG(DEBUG) << " object has data";
     const auto &data = obj->GetData();
     object->set_data(data->Data(), data->Size());
   }
   if (obj->HasMetadata()) {
+    RAY_LOG(DEBUG) << " object has data meta";
     const auto &metadata = obj->GetMetadata();
     object->set_metadata(metadata->Data(), metadata->Size());
   }
