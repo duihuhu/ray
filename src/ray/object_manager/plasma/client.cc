@@ -682,7 +682,7 @@ Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id) {
   RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
   std::vector<uint8_t> buffer;
 
-  RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer))
+  RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer));
 
   unsigned long address;
   int64_t object_size;
