@@ -80,14 +80,12 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
     if (data.size() > 0) {
       RAY_LOG(DEBUG) << "Object returned directly in GetObjectStatus reply, putting "
                      << object_id << " in memory store";
-      RAY_LOG(DEBUG) << "hucc ProcessResolvedObject Object returned directly in GetObjectStatus reply, putting "
-                     << object_id << " in memory store";
       data_buffer = std::make_shared<LocalMemoryBuffer>(
           const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(data.data())),
           data.size());
     } else {
       RAY_LOG(DEBUG) << "Object not returned directly in GetObjectStatus reply, "
-                     << object_id << " will have to be fetched from Plasma";
+                     << object_id << " will have to be fetched from Plasma" << " reply object_size " << reply.object_size();
     }
     const auto &metadata = reply.object().metadata();
     std::shared_ptr<LocalMemoryBuffer> metadata_buffer;
