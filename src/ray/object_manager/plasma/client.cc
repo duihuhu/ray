@@ -153,7 +153,7 @@ class PlasmaClient::Impl : public std::enable_shared_from_this<PlasmaClient::Imp
 
   Status Seal(const ObjectID &object_id);
 
-  Status GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num);
+  Status GetObjectMeta(const ObjectID &object_id);
 
 
   Status Delete(const std::vector<ObjectID> &object_ids);
@@ -678,17 +678,17 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
 /// @brief get object meta through 
 /// @param object_id 
 /// @return Status
-Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num) {
+Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id) {
   RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
   std::vector<uint8_t> buffer;
 
   RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer));
-  unsigned long address_in;
-  int64_t object_size_in;
-  int device_num_in;
-  RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), &address_in, &object_size_in, &device_num_in));
+  unsigned long address;
+  int64_t object_size;
+  int device_num;
+  RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), &address, &object_size, &device_num));
 
-  RAY_LOG(DEBUG) << "ReadMetaReply GetObjectMeta " << object_id << " " << (char*) address_in << " " << object_size_in << " " <<  device_num_in;
+  RAY_LOG(DEBUG) << "ReadMetaReply GetObjectMeta " << object_id << " " << (char*) address << " " << object_size << " " <<  device_num;
   // std::vector<ObjectBuffer> buffer;
   // RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaMetaReply, &buffer));
 
@@ -900,8 +900,8 @@ bool PlasmaClient::IsInUse(const ObjectID &object_id) {
   return impl_->IsInUse(object_id);
 }
 
-Status PlasmaClient::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num) {
-  return impl_->GetObjectMeta(object_id, address, object_size, device_num);
+Status PlasmaClient::GetObjectMeta(const ObjectID &object_id) {
+  return impl_->GetObjectMeta(object_id);
 }
 
 int64_t PlasmaClient::store_capacity() { return impl_->store_capacity(); }

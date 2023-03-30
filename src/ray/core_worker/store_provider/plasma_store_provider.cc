@@ -257,8 +257,8 @@ Status CoreWorkerPlasmaStoreProvider::GetIfLocal(
   return Status::OK();
 }
 
-Status CoreWorkerPlasmaStoreProvider::GetObjectMetaFromPlasma(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num) {
-  RAY_RETURN_NOT_OK(store_client_.GetObjectMeta(object_id, address, object_size, device_num));
+Status CoreWorkerPlasmaStoreProvider::GetObjectMetaFromPlasma(const ObjectID &object_id) {
+  RAY_RETURN_NOT_OK(store_client_.GetObjectMeta(object_id));
   return Status::OK();
 }
 

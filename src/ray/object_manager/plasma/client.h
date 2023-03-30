@@ -327,7 +327,7 @@ class PlasmaClient : public PlasmaClientInterface {
   Status Disconnect();
 
   /// Get Object Meta from plasma 
-  Status GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num);
+  Status GetObjectMeta(const ObjectID &object_id);
 
   /// Get the current debug string from the plasma store server.
   ///
