@@ -2783,7 +2783,9 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
     }
     reply->set_object_size(locality_data.value().object_size);
     RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size;
-    plasma_store_provider_->GetObjectMetaFromPlasma(object_id);
+    if(!obj->HasData()) {
+      plasma_store_provider_->GetObjectMetaFromPlasma(object_id);
+    }
   }
 }
 

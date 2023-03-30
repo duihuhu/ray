@@ -578,8 +578,14 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     // absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = GetPlasmaMeta();
     // RAY_RETURN_NOT_OK(SendPlasmaMetaReply(client, PlasmaError::OK));
 
-    RAY_RETURN_NOT_OK(ReadMetaRequest(input, input_size, &object_id));
-    RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id;
+    RAY_RETURN_NOT_OK(ReadMetaRequest(input, input_size, &object_id));    
+    auto entry = object_lifecycle_mgr_.GetObject(object_id);
+    if (!entry) {
+      // Object already evicted or deleted.
+      // return false; 
+    }
+    RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id << " " << entry->GetAllocation().address << " " << entry->GetObjectInfo().object_id ;
+
 
   } break;
   default:
