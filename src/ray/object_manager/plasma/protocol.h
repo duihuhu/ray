@@ -168,9 +168,9 @@ Status SendMetaRequest(const std::shared_ptr<StoreConn> &store_conn, ObjectID ob
 
 Status ReadMetaRequest(uint8_t *data, size_t size, ObjectID *object_id);
 
-Status SendMetaReply(const std::shared_ptr<Client> &client, unsigned long long &address, int64_t &object_size, int &device_num);
+Status SendMetaReply(const std::shared_ptr<Client> &client, unsigned long &address, int64_t &object_size, int &device_num);
 
-Status ReadMetaReply(uint8_t *data, size_t size, unsigned long long &address, int64_t &object_size, int &device_num);
+Status ReadMetaReply(uint8_t *data, size_t size, unsigned long *address, int64_t *object_size, int *device_num);
 
 /* Plasma Release message functions. */
 

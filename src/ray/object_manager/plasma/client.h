@@ -143,7 +143,7 @@ class PlasmaClientInterface {
   virtual Status Delete(const std::vector<ObjectID> &object_ids) = 0;
 
     /// Get Object Meta from plasma 
-  virtual Status GetObjectMeta(const ObjectID &object_id) = 0;
+  virtual Status GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num) = 0;
 };
 
 class PlasmaClient : public PlasmaClientInterface {
@@ -330,7 +330,7 @@ class PlasmaClient : public PlasmaClientInterface {
   Status Disconnect();
 
   /// Get Object Meta from plasma 
-  Status GetObjectMeta(const ObjectID &object_id);
+  Status GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num);
 
   /// Get the current debug string from the plasma store server.
   ///
