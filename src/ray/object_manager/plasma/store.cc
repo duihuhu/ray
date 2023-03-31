@@ -583,6 +583,8 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     if (!entry) {
       // Object already evicted or deleted.
       // return false; 
+      RAY_LOG(DEBUG) << "entry is null ";
+      return Status::OK();
     }
     auto allocation = entry->GetAllocation();
     unsigned long address = (unsigned long) entry->GetAllocation().address;
