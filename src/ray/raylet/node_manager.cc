@@ -2821,6 +2821,7 @@ void NodeManager::TriggerGlobalGC() {
 
 void NodeManager::Stop() {
   object_manager_.Stop();
+  object_manager_rdma_.Stop();
   if (heartbeat_sender_) {
     heartbeat_sender_.reset();
   }

@@ -16,9 +16,14 @@ void ObjectManagerRdma::DoAccept() {
 void ObjectManagerRdma::HandleAccept(const boost::system::error_code &error) {
   if (!error) {
     // boost::bind(&ObjectManagerRdma::ProcessInfoMessage, this, boost::asio::placeholders::error);
-     RAY_LOG(DEBUG)  <<"remote ip:"<<socket_.remote_endpoint().address(); 
+     RAY_LOG(DEBUG) <<"remote ip:"<<socket_.remote_endpoint().address(); 
   }
   DoAccept();
+}
+
+void ObjectManagerRdma::Stop() {
+  RAY_LOG(DEBUG) << " ObjectManagerRdma::Stop()  ";
+  acceptor_.close(); 
 }
 
 // enum ibv_mtu pp_mtu_to_enum(int mtu)
