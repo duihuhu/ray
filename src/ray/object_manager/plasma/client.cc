@@ -692,7 +692,8 @@ Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id) {
 
   RAY_LOG(DEBUG) << "ReadMetaReply GetObjectMeta " << object_id << " address " << address << " object_size " << object_size << " device_num " <<  device_num;
 
-  char *virt_address = (char*) address;
+  char *virt_address = NULL;
+  virt_address = (char*) address;
   RAY_LOG(DEBUG) << "virt_address " << virt_address;
 
   // std::vector<ObjectBuffer> buffer;
