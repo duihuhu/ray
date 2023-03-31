@@ -1,4 +1,4 @@
-#progam once
+#pragma once
 // #include <stdio.h>
 // #include <stdlib.h>
 // #include <unistd.h>
@@ -21,9 +21,8 @@
 
 class ObjectManagerRdma {
   public:
-
-  ObjectManagerRdma(instrumented_io_context &main_service,, int port)
-    : acceptor_(main_service, tcp::endpoint(tcp::v4(), port))
+  ObjectManagerRdma(instrumented_io_context &main_service, int port)
+    : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
       ,socket_(main_service) {
         DoAccept();
     }
@@ -31,10 +30,10 @@ class ObjectManagerRdma {
   void DoAccept();
   void HandleAccept(const boost::system::error_code &error, boost::asio::ip::tcp::socket socket_);
 
-  prviate:
+  private:
     boost::asio::ip::tcp::acceptor acceptor_;
     boost::asio::ip::tcp::socket socket_;
-}
+};
 
 // struct Config {
 // 	uint32_t	port;
