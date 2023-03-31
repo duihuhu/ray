@@ -10,10 +10,10 @@ void ObjectManagerRdma::DoAccept() {
   RAY_LOG(DEBUG) << " ObjectManagerRdma::DoAccept()  ";
   acceptor_.async_accept(
       socket_,
-      boost::bind(&ObjectManagerRdma::HandleAccept, this, boost::asio::placeholders::error, std::move(socket_)));
+      boost::bind(&ObjectManagerRdma::HandleAccept, this, boost::asio::placeholders::error));
 }
 
-void ObjectManagerRdma::HandleAccept(const boost::system::error_code &error, boost::asio::ip::tcp::socket socket_) {
+void ObjectManagerRdma::HandleAccept(const boost::system::error_code &error) {
   if (!error) {
     // boost::bind(&ObjectManagerRdma::ProcessInfoMessage, this, boost::asio::placeholders::error);
      RAY_LOG(DEBUG)  <<"remote ip:"<<socket_.remote_endpoint().address(); 
