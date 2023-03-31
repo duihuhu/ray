@@ -153,7 +153,7 @@ class PlasmaClient::Impl : public std::enable_shared_from_this<PlasmaClient::Imp
 
   Status Seal(const ObjectID &object_id);
 
-  Status GetObjectMeta(const ObjectID &object_id);
+  Status GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num);
 
 
   Status Delete(const std::vector<ObjectID> &object_ids);
