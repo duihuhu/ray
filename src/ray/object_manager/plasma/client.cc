@@ -694,7 +694,7 @@ Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id) {
 
   char *virt_address = (char*) address;
   // RAY_LOG(DEBUG) << "virt_address " << virt_address;
-  std::cout << "virt_address" << virt_address <<std::endl;
+  printf("virt_address virt_address %x\n", virt_address);
   // std::vector<ObjectBuffer> buffer;
   // RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaMetaReply, &buffer));
 
