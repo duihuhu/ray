@@ -684,21 +684,17 @@ Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned lon
 
   RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer));
   RAY_DCHECK(buffer.size() > 0);
-  RAY_LOG(DEBUG) << "buffer.size()  " << buffer.size() ;
+  // RAY_LOG(DEBUG) << "buffer.size()  " << buffer.size() ;
   // unsigned long address = 0;
   // int64_t object_size = 0;
   // int device_num = 0;
   RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), address, object_size, device_num));
 
-  RAY_LOG(DEBUG) << "ReadMetaReply GetObjectMeta " << object_id << " address " << *address << " object_size " << object_size << " device_num " <<  device_num;
+  // RAY_LOG(DEBUG) << "ReadMetaReply GetObjectMeta " << object_id << " address " << *address << " object_size " << object_size << " device_num " <<  device_num;
 
-  void *virt_address = (void*) (*address);
-  printf("virt_address %p\n", virt_address);
-  RAY_LOG(DEBUG) << "virt_address virt_address" << virt_address;
-  // std::vector<ObjectBuffer> buffer;
-  // RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaMetaReply, &buffer));
-
-  // RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), &sealed_id));
+  // void *virt_address = (void*) (*address);
+  // printf("virt_address %p\n", virt_address);
+  // RAY_LOG(DEBUG) << "virt_address virt_address" << virt_address;
 
 
   return Status::OK();

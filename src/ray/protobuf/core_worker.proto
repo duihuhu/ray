@@ -177,6 +177,10 @@ message GetObjectStatusReply {
   repeated bytes node_ids = 3;
   // The size of the object in bytes.
   uint64 object_size = 4;
+  
+  uint64 virt_address = 0;
+
+  int device_num = 0;
 }
 
 message WaitForActorOutOfScopeRequest {
