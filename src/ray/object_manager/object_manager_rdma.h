@@ -22,7 +22,7 @@
 class ObjectManagerRdma {
   public:
   ObjectManagerRdma(instrumented_io_context &main_service, int &port, string &address)
-    : acceptor_(main_service, boost::asio::ip::tcp::endpoint(ip::address::from_string(address), port))
+    : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(address), port))
       ,socket_(main_service) {
         DoAccept();
     }
