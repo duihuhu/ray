@@ -28,7 +28,7 @@ class ObjectManagerRdma {
     }
 
   void DoAccept();
-  void HandleAccept(const boost::system::error_code &error, boost::asio::ip::tcp::socket socket_);
+  void HandleAccept(const boost::system::error_code &error);
 
   private:
     boost::asio::ip::tcp::acceptor acceptor_;
