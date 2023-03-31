@@ -45,6 +45,8 @@
 #include "ray/common/asio/instrumented_io_context.h"
 #include "ray/common/bundle_spec.h"
 #include "ray/raylet/placement_group_resource_manager.h"
+#include "ray/object_manager/object_manager_rdma.h"
+
 // clang-format on
 
 namespace ray {
@@ -713,6 +715,9 @@ class NodeManager : public rpc::NodeManagerServiceHandler,
   std::unique_ptr<IObjectDirectory> object_directory_;
   /// Manages client requests for object transfers and availability.
   ObjectManager object_manager_;
+
+  /// Manages client requests for object transfers and availability in rdma
+  ObjectManagerRdma object_manager_rdma_;
   /// A Plasma object store client. This is used for creating new objects in
   /// the object store (e.g., for actor tasks that can't be run because the
   /// actor died) and to pin objects that are in scope in the cluster.
