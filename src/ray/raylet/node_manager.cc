@@ -281,7 +281,7 @@ NodeManager::NodeManager(instrumented_io_context &io_service,
             MarkObjectsAsFailed(error_type, {ref}, JobID::Nil());
           }),
     /// add object_manager_rdma_ init
-    object_manager_rdma_(io_service, 7000),
+    object_manager_rdma_(io_service, 7000, object_manager_config.object_manager_address),
       periodical_runner_(io_service),
       report_resources_period_ms_(config.report_resources_period_ms),
       temp_dir_(config.temp_dir),

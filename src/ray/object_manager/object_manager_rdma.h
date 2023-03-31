@@ -2,7 +2,6 @@
 // #include <stdio.h>
 // #include <stdlib.h>
 // #include <unistd.h>
-// #include <string.h>
 // #include <sys/types.h>
 // #include <sys/socket.h>
 // #include <sys/time.h>
@@ -18,11 +17,12 @@
 #include <boost/asio/error.hpp>
 #include <boost/bind/bind.hpp>
 #include "ray/common/asio/instrumented_io_context.h"
+#include <string>
 
 class ObjectManagerRdma {
   public:
-  ObjectManagerRdma(instrumented_io_context &main_service, int port)
-    : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
+  ObjectManagerRdma(instrumented_io_context &main_service, int &port, string &address)
+    : acceptor_(main_service, boost::asio::ip::tcp::endpoint(ip::address::from_string(address), port))
       ,socket_(main_service) {
         DoAccept();
     }
