@@ -16,7 +16,7 @@ void ObjectManagerRdma::DoAccept() {
 void ObjectManagerRdma::HandleAccept(const boost::system::error_code &error, boost::asio::ip::tcp::socket socket_) {
   if (!error) {
     // boost::bind(&ObjectManagerRdma::ProcessInfoMessage, this, boost::asio::placeholders::error);
-     RAY_LOG(DEBUG)  <<"remote ip:"<<socket_->remote_endpoint().address(); 
+     RAY_LOG(DEBUG)  <<"remote ip:"<<socket_.remote_endpoint().address(); 
   }
   DoAccept();
 }
