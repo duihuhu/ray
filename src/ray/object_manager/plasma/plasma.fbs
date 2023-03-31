@@ -303,7 +303,7 @@ table PlasmaGetMetaRequest {
 table PlasmaGetMetaReply {
   // Error code.
   // error: PlasmaError;
-  address: long ulong;
+  address: ulong;
   object_size: long;
   device_num: int;
 
