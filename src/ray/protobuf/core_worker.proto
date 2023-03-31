@@ -180,7 +180,7 @@ message GetObjectStatusReply {
   
   uint64 virt_address = 0;
 
-  int device_num = 0;
+  int64 device_num = 0;
 }
 
 message WaitForActorOutOfScopeRequest {
