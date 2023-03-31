@@ -179,9 +179,8 @@ message GetObjectStatusReply {
   uint64 object_size = 4;
   
   // This object's virt_address in plasma
-  uint64 virt_address = 0;
-
-  int64 device_num = 0;
+  uint64 virt_address = 5;
+  int64 device_num = 6;
 }
 
 message WaitForActorOutOfScopeRequest {
