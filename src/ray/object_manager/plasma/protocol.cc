@@ -682,7 +682,7 @@ Status ReadMetaRequest(uint8_t *data, size_t size, ObjectID *object_id) {
   return Status::OK();
 }
 
-Status SendMetaReply(const std::shared_ptr<Client> &client, unsigned long &address, int64_t &object_size, int &device_num) {
+Status SendMetaReply(const std::shared_ptr<Client> &client, unsigned long address, int64_t object_size, int device_num) {
   flatbuffers::FlatBufferBuilder fbb;
   auto message = fb::CreatePlasmaGetMetaReply(fbb, address, object_size, device_num);
   return PlasmaSend(client, MessageType::PlasmaGetMetaReply, &fbb, message);
