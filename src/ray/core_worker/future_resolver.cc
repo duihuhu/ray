@@ -85,7 +85,7 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
           data.size());
     } else {
       RAY_LOG(DEBUG) << "Object not returned directly in GetObjectStatus reply, "
-                     << object_id << " will have to be fetched from Plasma" << " reply object_size " << reply.object_size();
+                     << object_id << " will have to be fetched from Plasma" << " reply object_size " << reply.object_size() << " virt_address " << reply.virt_address;
     }
     const auto &metadata = reply.object().metadata();
     std::shared_ptr<LocalMemoryBuffer> metadata_buffer;
