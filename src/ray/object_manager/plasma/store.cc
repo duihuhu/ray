@@ -585,7 +585,7 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
       // return false; 
     }
     auto allocation = entry->GetAllocation();
-    unsigned long address = (unsigned long) allocation.address;
+    unsigned long address = (unsigned long) entry->GetAllocation().address;
 
     RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id << " " << entry->GetAllocation().address << " " << address << " " << entry->GetObjectInfo().object_id ;
     RAY_RETURN_NOT_OK(SendMetaReply(client, address , allocation.size, allocation.device_num));
