@@ -95,7 +95,7 @@ void ObjectManagerRdma::InitRdmaCtx() {
 			return;
 		}
 	}
-
+  RAY_LOG(DEBUG) << "InitRdmaCtx " << ib_devname;
   // ctx = pp_init_ctx(ib_dev, size, rx_depth, ib_port, use_event);
 	// if (!ctx)
 	// 	return 0;
