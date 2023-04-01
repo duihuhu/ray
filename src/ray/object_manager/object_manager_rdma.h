@@ -69,8 +69,8 @@ class ObjectManagerRdma {
   void DoAccept();
   void HandleAccept(const boost::system::error_code &error);
   void Stop();
-  void ObjectManagerRdma::InitRdmaConfig();
-  void ObjectManagerRdma::InitRdmaBaseCfg();
+  void InitRdmaConfig();
+  void InitRdmaBaseCfg();
   private:
     boost::asio::ip::tcp::acceptor acceptor_;
     boost::asio::ip::tcp::socket socket_;
