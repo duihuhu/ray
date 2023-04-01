@@ -131,20 +131,19 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 
   RAY_LOG(DEBUG) << "pp_init_ctx ctx_->buf " << ctx_->buf; 
 
-	if (!ctx_->buf) {
-		fprintf(stderr, "Couldn't allocate work buf.\n");
-		goto clean_ctx;
-	}
+	// if (!ctx_->buf) {
+	// 	fprintf(stderr, "Couldn't allocate work buf.\n");
+	// 	goto clean_ctx;
+	// }
 
 	/* FIXME memset(ctx->buf, 0, size); */
 	// memset(ctx->buf, 0x7b, size);
 
 	ctx_->context = ibv_open_device(ib_dev);
-	if (!ctx_->context) {
-		fprintf(stderr, "Couldn't get context for %s\n",
-			ibv_get_device_name(ib_dev));
-		goto clean_buffer;
-	}
+	// if (!ctx_->context) {
+	// 	fprintf(stderr, "Couldn't get context for %s\n", ibv_get_device_name(ib_dev));
+	// 	goto clean_buffer;
+	// }
 
 	if (use_event) {
 		ctx_->channel = ibv_create_comp_channel(ctx_->context);
