@@ -972,6 +972,7 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
 
 
   if (node_id == self_node_id_) {
+    self_register_time_ =  node_info.register_time();
     return;
   }
   // Store address of the new node manager for rpc requests.
@@ -992,6 +993,12 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
           ResourceCreateUpdated(node_id, resources);
         }
       }));
+
+  if (self_register_time_ == 0) {
+    remote_node_register_time_[node_id] = std::make_pair(node_info.node_manager_address(), node_info.register_time());
+  } else {
+    RAY_LOG(DEBUG) << "active exchange rdma info with server whose register time bigger than self";
+  }
 }
 
 void NodeManager::NodeRemoved(const NodeID &node_id) {

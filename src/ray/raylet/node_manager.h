@@ -766,6 +766,11 @@ class NodeManager : public rpc::NodeManagerServiceHandler,
   absl::flat_hash_map<NodeID, std::pair<std::string, int32_t>>
       remote_node_manager_addresses_;
   
+  /// register time 
+  uint64_t self_register_time_ = 0 ;
+  /// Map from node ids to addresses of the remote node managers and register_time_.
+  absl::flat_hash_map<NodeID, uint64_t>>
+      remote_node_register_time_;
 
   /// Map of workers leased out to direct call clients.
   absl::flat_hash_map<WorkerID, std::shared_ptr<WorkerInterface>> leased_workers_;
