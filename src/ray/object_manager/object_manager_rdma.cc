@@ -129,8 +129,6 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 
 	ctx_->buf = (void *) plasma_address_;
 
-  RAY_LOG(DEBUG) << "pp_init_ctx ctx_->buf " << ctx_->buf; 
-
 	// if (!ctx_->buf) {
 	// 	fprintf(stderr, "Couldn't allocate work buf.\n");
 	// 	goto clean_ctx;
@@ -140,25 +138,27 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	// memset(ctx->buf, 0x7b, size);
 
 	ctx_->context = ibv_open_device(ib_dev);
+  RAY_LOG(DEBUG) << "ibv_open_device success "; 
+
 	// if (!ctx_->context) {
 	// 	fprintf(stderr, "Couldn't get context for %s\n", ibv_get_device_name(ib_dev));
 	// 	goto clean_buffer;
 	// }
 
-	if (use_event) {
-		ctx_->channel = ibv_create_comp_channel(ctx_->context);
-		if (!ctx_->channel) {
-			fprintf(stderr, "Couldn't create completion channel\n");
-			goto clean_device;
-		}
-	} else
-		ctx_->channel = NULL;
+	// if (use_event) {
+	// 	ctx_->channel = ibv_create_comp_channel(ctx_->context);
+	// 	if (!ctx_->channel) {
+	// 		fprintf(stderr, "Couldn't create completion channel\n");
+	// 		goto clean_device;
+	// 	}
+	// } else
+	// 	ctx_->channel = NULL;
 
-	ctx_->pd = ibv_alloc_pd(ctx_->context);
-	if (!ctx_->pd) {
-		fprintf(stderr, "Couldn't allocate PD\n");
-		goto clean_comp_channel;
-	}
+	// ctx_->pd = ibv_alloc_pd(ctx_->context);
+	// if (!ctx_->pd) {
+	// 	fprintf(stderr, "Couldn't allocate PD\n");
+	// 	goto clean_comp_channel;
+	// }
 
 	
 
@@ -221,7 +221,6 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	// 	}
 	// }
 
-  RAY_LOG(DEBUG) << "pp_init_ctx success "; 
   clean_qp:
     ibv_destroy_qp(ctx_->qp);
 
