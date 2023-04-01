@@ -35,6 +35,14 @@ struct Config {
   int use_event;
 };
 
+struct pingpong_dest {
+	int lid;
+	int qpn;
+	int psn;
+	union ibv_gid gid;
+};
+
+
 struct pingpong_context {
 	struct ibv_context	*context;
 	struct ibv_comp_channel *channel;
@@ -80,6 +88,8 @@ class ObjectManagerRdma {
     boost::asio::ip::tcp::acceptor acceptor_;
     boost::asio::ip::tcp::socket socket_;
     struct pingpong_context *ctx_;
+    struct pingpong_dest my_dest_;
+
     struct Config cfg_;
     unsigned long plasma_address_;
     int64_t plasma_size_;

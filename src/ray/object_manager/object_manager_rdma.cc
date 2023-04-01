@@ -4,6 +4,7 @@
 // #include <stdio.h>
 // #include <string.h>
 #include "ray/util/util.h"
+#include <sys/socket.h>
 
 
 void ObjectManagerRdma::DoAccept() {
@@ -120,6 +121,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	int access_flags = IBV_ACCESS_LOCAL_WRITE;
 
 	ctx_ = (struct pingpong_context *) calloc(1, sizeof *ctx_);
+  char gid[33];
 	if (!ctx_)
 		return;
 
@@ -221,6 +223,42 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 			// goto clean_qp;
 		}
 	}
+
+	if (use_event)
+		if (ibv_req_notify_cq(pp_cq(), 0)) {
+      RAY_LOG(ERROR) << "Couldn't request CQ notification";
+			return ;
+		}
+
+  if (pp_get_port_info(ctx_->context, cfg_.ib_port, &ctx_->portinfo)) {
+    RAY_LOG(ERROR) << "Couldn't get port info";
+		return;
+	}
+
+	my_dest_.lid = ctx_->portinfo.lid;
+	if (ctx_->portinfo.link_layer != IBV_LINK_LAYER_ETHERNET &&
+							!my_dest_.lid) {
+    RAY_LOG(ERROR) << "Couldn't get local LID";
+		return;
+	}
+
+	if (cfg_.gidx >= 0) {
+		if (ibv_query_gid(ctx_->context, cfg_.ib_port, cfg_.gidx, &my_dest_.gid)) {
+      RAY_LOG(ERROR) << "can't read sgid of index " << cfg_.gidx;
+			return;
+		}
+	} else
+		memset(&my_dest_.gid, 0, sizeof my_dest_.gid);
+
+	my_dest_.qpn = ctx_->qp->qp_num;
+	my_dest_.psn = lrand48() & 0xffffff;
+	inet_ntop(AF_INET6, &my_dest.gid, gid, sizeof gid);
+	// printf("  local address:  LID 0x%04x, QPN 0x%06x, PSN 0x%06x, GID %s\n",
+	//        my_dest_.lid, my_dest_.qpn, my_dest_.psn, gid);
+  RAY_LOG(DEBUG) << "  local address:  LID " << my_dest_.lid << " QPN " <<  my_dest_.qpn \
+  <<" PSN " << my_dest_.psn << " GID " << gid;
+
+
   RAY_LOG(DEBUG) << "ibv_open_device success " << ibv_get_device_name(ib_dev);
 
   // clean_qp:
