@@ -139,8 +139,6 @@ void ObjectManagerRdma::InitRdmaCtx() {
 	//        my_dest_.lid, my_dest_.qpn, my_dest_.psn, gid);
   RAY_LOG(DEBUG) << "  local address:  LID " << my_dest_.lid << " QPN " <<  my_dest_.qpn \
   <<" PSN " << my_dest_.psn << " GID " << gid;
-
-
   return;
 
 }
@@ -298,6 +296,13 @@ int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
 		     struct ibv_port_attr *attr)
 {
 	return ibv_query_port(context, port, attr);
+}
+
+void ObjectManagerRdma::ExRdmaConfig() {
+  const auto &node_map = gcs_client_->Nodes().GetAll();
+  for (const auto &item : node_map) {
+    RAY_LOG(DEBUG) << "node_manager_address " << item.second.node_manager_address();
+  }
 }
 
 

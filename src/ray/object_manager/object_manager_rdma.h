@@ -66,13 +66,16 @@ struct pingpong_context {
 
 class ObjectManagerRdma {
   public:
-  ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size)
+  ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
+         std::shared_ptr<gcs::GcsClient> gcs_client)
     : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
       ,socket_(main_service),
       plasma_address_(start_address),
-      plasma_size_(plasma_size) {
+      plasma_size_(plasma_size), 
+      gcs_client_(gcs_client) {
         InitRdmaConfig();
         DoAccept();
+        ExRdmaConfig();
     }
 
   void DoAccept();
@@ -85,6 +88,8 @@ class ObjectManagerRdma {
   struct ibv_cq* pp_cq();
   int pp_get_port_info(struct ibv_context *context, int port, struct ibv_port_attr *attr);
   
+  void ExRdmaConfig();
+
   private:
     boost::asio::ip::tcp::acceptor acceptor_;
     boost::asio::ip::tcp::socket socket_;
@@ -94,6 +99,8 @@ class ObjectManagerRdma {
     struct Config cfg_;
     unsigned long plasma_address_;
     int64_t plasma_size_;
+    std::shared_ptr<gcs::GcsClient> gcs_client_;
+
 };
 
 
