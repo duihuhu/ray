@@ -138,12 +138,13 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	// memset(ctx->buf, 0x7b, size);
 
 	ctx_->context = ibv_open_device(ib_dev);
-  RAY_LOG(DEBUG) << "ibv_open_device success "; 
+	if (!ctx_->context) {
+    RAY_LOG(DEBUG) << "Couldn't get context for " << ibv_get_device_name(ib_dev);
 
-	// if (!ctx_->context) {
-	// 	fprintf(stderr, "Couldn't get context for %s\n", ibv_get_device_name(ib_dev));
-	// 	goto clean_buffer;
-	// }
+		// fprintf(stderr, "Couldn't get context for %s\n", ibv_get_device_name(ib_dev));
+		// goto clean_buffer;
+	}
+  RAY_LOG(DEBUG) << "ibv_open_device success " << ibv_get_device_name(ib_dev);
 
 	// if (use_event) {
 	// 	ctx_->channel = ibv_create_comp_channel(ctx_->context);
@@ -221,8 +222,8 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	// 	}
 	// }
 
-  clean_qp:
-    ibv_destroy_qp(ctx_->qp);
+  // clean_qp:
+  //   ibv_destroy_qp(ctx_->qp);
 
   // clean_cq:
   //   ibv_destroy_cq(pp_cq());
@@ -235,14 +236,14 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
   //     ibv_free_dm(ctx_->dm);
 
   // clean_pd:
-    ibv_dealloc_pd(ctx_->pd);
+  //   ibv_dealloc_pd(ctx_->pd);
 
-  clean_comp_channel:
-    if (ctx_->channel)
-      ibv_destroy_comp_channel(ctx_->channel);
+  // clean_comp_channel:
+  //   if (ctx_->channel)
+  //     ibv_destroy_comp_channel(ctx_->channel);
 
-  clean_device:
-    ibv_close_device(ctx_->context);
+  // clean_device:
+  //   ibv_close_device(ctx_->context);
 
   // clean_buffer:
   //   free(ctx_->buf);
