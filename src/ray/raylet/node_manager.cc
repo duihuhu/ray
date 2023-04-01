@@ -1002,7 +1002,6 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
     std::string remote_node_manager_address = node_info.node_manager_address();
     int64_t remote_register_time = node_info.register_time();
     if (self_register_time_ > remote_register_time) {
-      # Todo:
       if(!remote_node_register_time_.empty()) {
         for(auto &entry: remote_node_register_time_) {
           if (self_register_time_ > remote_register_time) {
