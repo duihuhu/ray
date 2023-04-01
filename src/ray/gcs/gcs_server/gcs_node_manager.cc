@@ -47,7 +47,7 @@ void GcsNodeManager::HandleRegisterNode(const rpc::RegisterNodeRequest &request,
   // rpc::RegisterNodeRequest request_wt;
   // request_wt.mutable_node_info()->CopyFrom(request.node_info());
   // request_wt.mutable_node_info()->set_register_time(cur);
-  request.mutable_node_info()->set_register_time(cur);
+  request.mutable_node_info()->add_register_time(cur);
   auto on_done = [this, node_id, request, reply, send_reply_callback](
                      const Status &status) {
     RAY_CHECK_OK(status);
