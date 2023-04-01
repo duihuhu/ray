@@ -160,15 +160,14 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
     RAY_LOG(ERROR) << "Couldn't allocate PD";
 		// goto clean_comp_channel;
 	}
+
+
+  ctx_->mr = ibv_reg_mr(ctx_->pd, ctx_->buf, plasma_size_, access_flags);
+	if (!ctx_->mr) {
+    RAY_LOG(ERROR) << "Couldn't register MR";
+		// goto clean_dm;
+	}
   RAY_LOG(DEBUG) << "ibv_open_device success " << ibv_get_device_name(ib_dev);
-
-	
-
-  // ctx_->mr = ibv_reg_mr(ctx_->pd, ctx_->buf, plasma_size_, access_flags);
-	// if (!ctx_->mr) {
-	// 	fprintf(stderr, "Couldn't register MR\n");
-	// 	goto clean_dm;
-	// }
 
   // ctx_->cq_s.cq = ibv_create_cq(ctx_->context, rx_depth + 1, NULL,
   //             ctx_->channel, 0);
