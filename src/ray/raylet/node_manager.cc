@@ -995,9 +995,26 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
       }));
 
   if (self_register_time_ == 0) {
+    RAY_LOG(DEBUG) << "self_register_time_ is not init";
     remote_node_register_time_[node_id] = std::make_pair(node_info.node_manager_address(), node_info.register_time());
   } else {
-    RAY_LOG(DEBUG) << "active exchange rdma info with server whose register time bigger than self";
+    RAY_LOG(DEBUG) << "self_register_time_ is already init";
+    if (remote_node_register_time_.empty()) {
+      string remote_node_manager_address = node_info.node_manager_address();
+      int64_t remote_register_time = node_info.register_time();
+      if (self_register_time > remote_register_time) {
+        # Todo:
+        continue;
+      }
+    } else {
+      for(auto &entry: remote_node_register_time_) {
+        if (self_register_time > remote_register_time) {
+          # Todo:
+          continue;
+        }
+      }
+      remote_node_register_time_.clear();
+    }
   }
 }
 
