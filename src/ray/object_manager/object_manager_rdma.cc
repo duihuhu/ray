@@ -249,7 +249,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
   clean_ctx:
     free(ctx_);
 
-	return NULL;
+	return;
 }
 
 
