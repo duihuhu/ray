@@ -148,6 +148,10 @@ int64_t PlasmaStoreRunner::GetFallbackAllocated() const {
   return allocator_ ? allocator_->FallbackAllocated() : 0;
 }
 
+unsigned long PlasmaStoreRunner::GetMetaAddress() {
+  return allocator_->StartAddress();
+}
+
 std::unique_ptr<PlasmaStoreRunner> plasma_store_runner;
 
 }  // namespace plasma

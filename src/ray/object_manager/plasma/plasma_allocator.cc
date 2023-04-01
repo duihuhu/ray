@@ -79,6 +79,8 @@ PlasmaAllocator::PlasmaAllocator(const std::string &plasma_directory,
       << " It's likely we don't have enought space in " << plasma_directory;
   // This will unmap the file, but the next one created will be as large
   // as this one (this is an implementation detail of dlmalloc).
+  start_address_ = (unsigned long) allocation.address;
+  plasma_size_ = kFootprintLimit - kDlMallocReserved;
   Free(std::move(allocation.value()));
 }
 
@@ -152,4 +154,10 @@ absl::optional<Allocation> PlasmaAllocator::BuildAllocation(void *addr, size_t s
   }
   return absl::nullopt;
 }
+
+unsigned long PlasmaAllocator::StartAddress() {
+  return start_address_;
+}
+
+
 }  // namespace plasma

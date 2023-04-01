@@ -856,4 +856,7 @@ void ObjectManager::Tick(const boost::system::error_code &e) {
   pull_retry_timer_.async_wait([this](const boost::system::error_code &e) { Tick(e); });
 }
 
+unsigned long ObjectManager::GetMetaAddress() {
+  return plasma::plasma_store_runner->GetMetaAddress();
+}
 }  // namespace ray

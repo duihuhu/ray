@@ -19,55 +19,21 @@
 #include "ray/common/asio/instrumented_io_context.h"
 #include <string>
 
-class ObjectManagerRdma {
-  public:
-  ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address)
-    : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
-      ,socket_(main_service) {
-        DoAccept();
-    }
-
-  void DoAccept();
-  void HandleAccept(const boost::system::error_code &error);
-  void Stop();
-
-  private:
-    boost::asio::ip::tcp::acceptor acceptor_;
-    boost::asio::ip::tcp::socket socket_;
+struct Config {
+	uint32_t	port;
+	char	*ib_devname;
+  int ib_port;
+  int		size;
+  enum ibv_mtu mtu;
+	unsigned int rx_depth;
+	unsigned int iters;
+  int sl;
+  int gidx;
+	int		num_threads;
+	// char	*op_type;
+  char	*server_name;
+  int use_event;
 };
-
-// struct Config {
-// 	uint32_t	port;
-// 	char	*ib_devname;
-//   int ib_port;
-//   int		size;
-//   enum ibv_mtu mtu;
-// 	unsigned int rx_depth;
-// 	unsigned int iters;
-//   int sl;
-//   int gidx;
-// 	int		num_threads;
-// 	// char	*op_type;
-//   char	*server_name;
-//   int use_event;
-// };
-
-// struct Config cfg = {
-//   7000, /*port*/
-// 	NULL, /* dev_name */
-//   1, /*ib_port */
-//   1, 	/*size */
-//   IBV_MTU_4096, /*ibv mtu */
-//   500,  /*rx_depth */
-//   1, /*iters */
-//   0, /*sl */
-//   1, /*gid_idx */
-// 	1, /* num_threads */
-//   // "SR", /* op type */
-// 	NULL, /* server_name */
-//   0,  /* use_event */
-// };
-
 
 struct pingpong_context {
 	struct ibv_context	*context;
@@ -89,6 +55,48 @@ struct pingpong_context {
 	struct ibv_port_attr     portinfo;
 	uint64_t		 completion_timestamp_mask;
 };
+
+class ObjectManagerRdma {
+  public:
+  ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address)
+    : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
+      ,socket_(main_service),
+      plasma_address(start_address) {
+        InitRdmaConfig()
+        DoAccept();
+    }
+
+  void DoAccept();
+  void HandleAccept(const boost::system::error_code &error);
+  void Stop();
+
+  private:
+    boost::asio::ip::tcp::acceptor acceptor_;
+    boost::asio::ip::tcp::socket socket_;
+    struct pingpong_context *ctx;
+    struct Config cfg;
+    unsigned long plasma_address;
+    int64_t plasma_size;
+};
+
+
+// struct Config cfg = {
+//   7000, /*port*/
+// 	NULL, /* dev_name */
+//   1, /*ib_port */
+//   1, 	/*size */
+//   IBV_MTU_4096, /*ibv mtu */
+//   500,  /*rx_depth */
+//   1, /*iters */
+//   0, /*sl */
+//   1, /*gid_idx */
+// 	1, /* num_threads */
+//   // "SR", /* op type */
+// 	NULL, /* server_name */
+//   0,  /* use_event */
+// };
+
+
 
 
 // enum ibv_mtu pp_mtu_to_enum(int mtu);

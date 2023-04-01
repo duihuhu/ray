@@ -26,6 +26,224 @@ void ObjectManagerRdma::Stop() {
   acceptor_.close(); 
 }
 
+void ObjectManagerRdma::InitRdmaBaseCfg() {
+    cfg.port = 7000;
+    cfg.ib_devname = "mlx5_1";
+    cfg.ib_port = 1;
+    cfg.size = 4096;
+    cfg.mtu = IBV_MTU_4096;
+    cfg.rx_depth = 500;
+    cfg.iters = 1;
+    cfg.sl = 0;
+    cfg.gidx = 1;
+    cfg.num_thread = 1;
+    cfg.server_name = NULL;
+    cfg.use_event = 0;
+}
+
+void ObjectManagerRdma::InitRdmaConfig() {
+  InitRdmaBaseCfg();
+  RAY_LOG(DEBUG) << "InitRdmaConfig " << plasma_address;
+  // InitRdmaCtx();
+}
+
+// void ObjectManagerRdma::InitRdmaCtx() {
+//   struct ibv_device      **dev_list;
+// 	struct ibv_device	*ib_dev;
+// 	// struct pingpong_context *ctx;
+// 	// struct pingpong_dest     my_dest;
+// 	// struct pingpong_dest    *rem_dest;
+// 	char                    *ib_devname = cfg.ib_devname;
+// 	unsigned int             port = cfg.port;
+// 	int                      ib_port = 1;
+// 	unsigned int             size = cfg.size;
+// 	enum ibv_mtu		 mtu = cfg.mtu;
+// 	unsigned int             rx_depth = cfg.rx_depth;
+// 	unsigned int             iters = cfg.iters;
+// 	int                      use_event = cfg.use_event;
+// 	int                      routs;
+// 	int                      rcnt, scnt;
+// 	int                      num_cq_events = 0;
+// 	int                      sl = 0;
+// 	int			 gidx = cfg.gidx;
+// 	char			 gid[33];
+// 	struct ts_params	 ts;
+
+//   srand48(getpid() * time(NULL));
+
+// 	page_size = sysconf(_SC_PAGESIZE);
+
+// 	dev_list = ibv_get_device_list(NULL);
+// 	if (!dev_list) {
+// 		perror("Failed to get IB devices list");
+// 		return 0;
+// 	}
+
+// 	if (!ib_devname) {
+// 		ib_dev = *dev_list;
+// 		if (!ib_dev) {
+// 			fprintf(stderr, "No IB devices found\n");
+// 			return 0;
+// 		}
+// 	} else {
+// 		int i;
+// 		for (i = 0; dev_list[i]; ++i)
+// 			if (!strcmp(ibv_get_device_name(dev_list[i]), ib_devname))
+// 				break;
+// 		ib_dev = dev_list[i];
+// 		if (!ib_dev) {
+// 			fprintf(stderr, "IB device %s not found\n", ib_devname);
+// 			return 0;
+// 		}
+// 	}
+
+//   ctx = pp_init_ctx(ib_dev, size, rx_depth, ib_port, use_event);
+// 	if (!ctx)
+// 		return 0;
+
+// }
+
+// static struct pingpong_context *pp_init_ctx(struct ibv_device *ib_dev, int size,
+// 					    int rx_depth, int port, int use_event)
+// {
+// 	struct pingpong_context *ctx;
+// 	int access_flags = IBV_ACCESS_LOCAL_WRITE;
+
+// 	ctx = calloc(1, sizeof *ctx);
+// 	if (!ctx)
+// 		return NULL;
+
+// 	ctx->size       = size;
+// 	ctx->send_flags = IBV_SEND_SIGNALED;
+// 	ctx->rx_depth   = rx_depth;
+
+// 	ctx->buf = memalign(page_size, size);
+// 	if (!ctx->buf) {
+// 		fprintf(stderr, "Couldn't allocate work buf.\n");
+// 		goto clean_ctx;
+// 	}
+
+// 	/* FIXME memset(ctx->buf, 0, size); */
+// 	memset(ctx->buf, 0x7b, size);
+
+// 	ctx->context = ibv_open_device(ib_dev);
+// 	if (!ctx->context) {
+// 		fprintf(stderr, "Couldn't get context for %s\n",
+// 			ibv_get_device_name(ib_dev));
+// 		goto clean_buffer;
+// 	}
+
+// 	if (use_event) {
+// 		ctx->channel = ibv_create_comp_channel(ctx->context);
+// 		if (!ctx->channel) {
+// 			fprintf(stderr, "Couldn't create completion channel\n");
+// 			goto clean_device;
+// 		}
+// 	} else
+// 		ctx->channel = NULL;
+
+// 	ctx->pd = ibv_alloc_pd(ctx->context);
+// 	if (!ctx->pd) {
+// 		fprintf(stderr, "Couldn't allocate PD\n");
+// 		goto clean_comp_channel;
+// 	}
+
+	
+
+//   ctx->mr = ibv_reg_mr(ctx->pd, ctx->buf, size, access_flags);
+// 	if (!ctx->mr) {
+// 		fprintf(stderr, "Couldn't register MR\n");
+// 		goto clean_dm;
+// 	}
+
+// 		ctx->cq_s.cq = ibv_create_cq(ctx->context, rx_depth + 1, NULL,
+// 					     ctx->channel, 0);
+
+// 	if (!pp_cq(ctx)) {
+// 		fprintf(stderr, "Couldn't create CQ\n");
+// 		goto clean_mr;
+// 	}
+
+// 	{
+// 		struct ibv_qp_attr attr;
+// 		struct ibv_qp_init_attr init_attr = {
+// 			.send_cq = pp_cq(ctx),
+// 			.recv_cq = pp_cq(ctx),
+// 			.cap     = {
+// 				.max_send_wr  = 1,
+// 				.max_recv_wr  = rx_depth + 1, 
+// 				.max_send_sge = 1,
+// 				.max_recv_sge = 1
+// 			},
+// 			.qp_type = IBV_QPT_RC
+// 		};
+
+//     ctx->qp = ibv_create_qp(ctx->pd, &init_attr);
+
+// 		if (!ctx->qp)  {
+// 			fprintf(stderr, "Couldn't create QP\n");
+// 			goto clean_cq;
+// 		}
+
+// 		ibv_query_qp(ctx->qp, &attr, IBV_QP_CAP, &init_attr);
+//     if (init_attr.cap.max_inline_data >= size)
+// 			ctx->send_flags |= IBV_SEND_INLINE;
+
+// 	}
+
+// 	{
+// 		struct ibv_qp_attr attr = {
+// 			.qp_state        = IBV_QPS_INIT,
+// 			.pkey_index      = 0,
+// 			.port_num        = port,
+// 			.qp_access_flags = 0
+// 		};
+
+// 		if (ibv_modify_qp(ctx->qp, &attr,
+// 				  IBV_QP_STATE              |
+// 				  IBV_QP_PKEY_INDEX         |
+// 				  IBV_QP_PORT               |
+// 				  IBV_QP_ACCESS_FLAGS)) {
+// 			fprintf(stderr, "Failed to modify QP to INIT\n");
+// 			goto clean_qp;
+// 		}
+// 	}
+
+// 	return ctx;
+
+// clean_qp:
+// 	ibv_destroy_qp(ctx->qp);
+
+// clean_cq:
+// 	ibv_destroy_cq(pp_cq(ctx));
+
+// clean_mr:
+// 	ibv_dereg_mr(ctx->mr);
+
+// clean_dm:
+// 	if (ctx->dm)
+// 		ibv_free_dm(ctx->dm);
+
+// // clean_pd:
+// 	ibv_dealloc_pd(ctx->pd);
+
+// clean_comp_channel:
+// 	if (ctx->channel)
+// 		ibv_destroy_comp_channel(ctx->channel);
+
+// clean_device:
+// 	ibv_close_device(ctx->context);
+
+// clean_buffer:
+// 	free(ctx->buf);
+
+// clean_ctx:
+// 	free(ctx);
+
+// 	return NULL;
+// }
+
+
 // enum ibv_mtu pp_mtu_to_enum(int mtu)
 // {
 // 	switch (mtu) {

@@ -33,7 +33,9 @@ class PlasmaStoreRunner {
     main_service_.post([this, callback]() { store_->GetAvailableMemory(callback); },
                        "PlasmaStoreRunner.GetAvailableMemory");
   }
-
+  /// @brief get plasma start address and size 
+  unsigned long GetMetaAddress();
+  
  private:
   void Shutdown();
   mutable absl::Mutex store_runner_mutex_;

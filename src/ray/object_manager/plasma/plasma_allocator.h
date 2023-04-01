@@ -83,6 +83,8 @@ class PlasmaAllocator : public IAllocator {
   /// Get the number of bytes fallback allocated so far.
   int64_t FallbackAllocated() const override;
 
+  unsigned long StartAddress();
+
  private:
   absl::optional<Allocation> BuildAllocation(void *addr, size_t size);
 
@@ -90,6 +92,8 @@ class PlasmaAllocator : public IAllocator {
   const int64_t kFootprintLimit;
   const size_t kAlignment;
   int64_t allocated_;
+  unsigned long start_address_;
+  int64_t plasma_size_;
   // TODO(scv119): once we refactor object_manager this no longer
   // need to be atomic.
   std::atomic<int64_t> fallback_allocated_;
