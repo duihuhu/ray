@@ -35,7 +35,7 @@ GcsNodeManager::GcsNodeManager(
       gcs_table_storage_(std::move(gcs_table_storage)),
       raylet_client_pool_(std::move(raylet_client_pool)) {}
 
-void GcsNodeManager::HandleRegisterNode(const rpc::RegisterNodeRequest &request,
+void GcsNodeManager::HandleRegisterNode(rpc::RegisterNodeRequest &request,
                                         rpc::RegisterNodeReply *reply,
                                         rpc::SendReplyCallback send_reply_callback) {
   NodeID node_id = NodeID::FromBinary(request.node_info().node_id());

@@ -44,7 +44,7 @@ class GcsNodeManager : public rpc::NodeInfoHandler {
                           std::shared_ptr<rpc::NodeManagerClientPool> raylet_client_pool);
 
   /// Handle register rpc request come from raylet.
-  void HandleRegisterNode(const rpc::RegisterNodeRequest &request,
+  void HandleRegisterNode(rpc::RegisterNodeRequest &request,
                           rpc::RegisterNodeReply *reply,
                           rpc::SendReplyCallback send_reply_callback) override;
 
