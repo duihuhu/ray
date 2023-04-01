@@ -38,7 +38,7 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
     cfg_.gidx = 1;
     cfg_.num_threads = 1;
     cfg_.server_name = NULL;
-    cfg_.use_event = 0;
+    cfg_.use_event = 1;
 }
 
 void ObjectManagerRdma::InitRdmaConfig() {
@@ -139,27 +139,28 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 
 	ctx_->context = ibv_open_device(ib_dev);
 	if (!ctx_->context) {
-    RAY_LOG(DEBUG) << "Couldn't get context for " << ibv_get_device_name(ib_dev);
+    RAY_LOG(ERROR) << "Couldn't get context for " << ibv_get_device_name(ib_dev);
 
 		// fprintf(stderr, "Couldn't get context for %s\n", ibv_get_device_name(ib_dev));
 		// goto clean_buffer;
 	}
+
+	if (use_event) {
+		ctx_->channel = ibv_create_comp_channel(ctx_->context);
+		if (!ctx_->channel) {
+      RAY_LOG(ERROR) << "Couldn't create completion channel";
+			// goto clean_device;
+		}
+	} else
+		ctx_->channel = NULL;
+
+
+	ctx_->pd = ibv_alloc_pd(ctx_->context);
+	if (!ctx_->pd) {
+    RAY_LOG(ERROR) << "Couldn't allocate PD";
+		// goto clean_comp_channel;
+	}
   RAY_LOG(DEBUG) << "ibv_open_device success " << ibv_get_device_name(ib_dev);
-
-	// if (use_event) {
-	// 	ctx_->channel = ibv_create_comp_channel(ctx_->context);
-	// 	if (!ctx_->channel) {
-	// 		fprintf(stderr, "Couldn't create completion channel\n");
-	// 		goto clean_device;
-	// 	}
-	// } else
-	// 	ctx_->channel = NULL;
-
-	// ctx_->pd = ibv_alloc_pd(ctx_->context);
-	// if (!ctx_->pd) {
-	// 	fprintf(stderr, "Couldn't allocate PD\n");
-	// 	goto clean_comp_channel;
-	// }
 
 	
 
