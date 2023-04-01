@@ -17,6 +17,8 @@
 #include <boost/asio/error.hpp>
 #include <boost/bind/bind.hpp>
 #include "ray/common/asio/instrumented_io_context.h"
+#include "ray/rpc/grpc_client.h"
+
 #include <string>
 
 struct Config {
