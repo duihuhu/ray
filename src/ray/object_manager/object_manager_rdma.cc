@@ -167,60 +167,61 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
     RAY_LOG(ERROR) << "Couldn't register MR";
 		// goto clean_dm;
 	}
+
+  ctx_->cq_s.cq = ibv_create_cq(ctx_->context, rx_depth + 1, NULL,
+              ctx_->channel, 0);
+
+	if (!pp_cq()) {
+    RAY_LOG(ERROR) << "Couldn't create CQ";
+		// goto clean_mr;
+	}
+
+	{
+		struct ibv_qp_attr attr;
+		struct ibv_qp_init_attr init_attr = {
+			.send_cq = pp_cq(),
+			.recv_cq = pp_cq(),
+			.cap     = {
+				.max_send_wr  = 1,
+				.max_recv_wr  = rx_depth + 1, 
+				.max_send_sge = 1,
+				.max_recv_sge = 1
+			},
+			.qp_type = IBV_QPT_RC
+		};
+
+    ctx_->qp = ibv_create_qp(ctx_->pd, &init_attr);
+
+		if (!ctx_->qp)  {
+      RAY_LOG(ERROR) << "Couldn't create QP";
+			// goto clean_cq;
+		}
+
+		ibv_query_qp(ctx_->qp, &attr, IBV_QP_CAP, &init_attr);
+    // if (init_attr.cap.max_inline_data >= size)
+		// 	ctx_->send_flags |= IBV_SEND_INLINE;
+
+	}
+
+	{
+		struct ibv_qp_attr attr = {
+			.qp_state        = IBV_QPS_INIT,
+			.pkey_index      = 0,
+			.port_num        = port
+		};
+    attr.qp_access_flags = 0;
+
+		if (ibv_modify_qp(ctx_->qp, &attr,
+				  IBV_QP_STATE              |
+				  IBV_QP_PKEY_INDEX         |
+				  IBV_QP_PORT               |
+				  IBV_QP_ACCESS_FLAGS)) {
+
+      RAY_LOG(ERROR) << "Failed to modify QP to INIT";
+			// goto clean_qp;
+		}
+	}
   RAY_LOG(DEBUG) << "ibv_open_device success " << ibv_get_device_name(ib_dev);
-
-  // ctx_->cq_s.cq = ibv_create_cq(ctx_->context, rx_depth + 1, NULL,
-  //             ctx_->channel, 0);
-
-	// if (!pp_cq()) {
-	// 	fprintf(stderr, "Couldn't create CQ\n");
-	// 	goto clean_mr;
-	// }
-
-	// {
-	// 	struct ibv_qp_attr attr;
-	// 	struct ibv_qp_init_attr init_attr = {
-	// 		.send_cq = pp_cq(),
-	// 		.recv_cq = pp_cq(),
-	// 		.cap     = {
-	// 			.max_send_wr  = 1,
-	// 			.max_recv_wr  = rx_depth + 1, 
-	// 			.max_send_sge = 1,
-	// 			.max_recv_sge = 1
-	// 		},
-	// 		.qp_type = IBV_QPT_RC
-	// 	};
-
-  //   ctx_->qp = ibv_create_qp(ctx_->pd, &init_attr);
-
-	// 	if (!ctx_->qp)  {
-	// 		fprintf(stderr, "Couldn't create QP\n");
-	// 		goto clean_cq;
-	// 	}
-
-	// 	ibv_query_qp(ctx_->qp, &attr, IBV_QP_CAP, &init_attr);
-  //   // if (init_attr.cap.max_inline_data >= size)
-	// 	// 	ctx_->send_flags |= IBV_SEND_INLINE;
-
-	// }
-
-	// {
-	// 	struct ibv_qp_attr attr = {
-	// 		.qp_state        = IBV_QPS_INIT,
-	// 		.pkey_index      = 0,
-	// 		.port_num        = port
-	// 	};
-  //   attr.qp_access_flags = 0;
-
-	// 	if (ibv_modify_qp(ctx_->qp, &attr,
-	// 			  IBV_QP_STATE              |
-	// 			  IBV_QP_PKEY_INDEX         |
-	// 			  IBV_QP_PORT               |
-	// 			  IBV_QP_ACCESS_FLAGS)) {
-	// 		fprintf(stderr, "Failed to modify QP to INIT\n");
-	// 		goto clean_qp;
-	// 	}
-	// }
 
   // clean_qp:
   //   ibv_destroy_qp(ctx_->qp);
