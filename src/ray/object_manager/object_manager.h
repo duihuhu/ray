@@ -246,7 +246,9 @@ class ObjectManager : public ObjectManagerInterface,
   }
 
   bool PullManagerHasPullsQueued() const { return pull_manager_->HasPullsQueued(); }
-
+ 
+  ///GetMetaAddress
+  unsigned long GetMetaAddress();
  private:
   friend class TestObjectManager;
 
@@ -385,9 +387,6 @@ class ObjectManager : public ObjectManagerInterface,
   ///
   /// \param node_id Remote node id, will send rpc request to it
   std::shared_ptr<rpc::ObjectManagerClient> GetRpcClient(const NodeID &node_id);
-
-  ///
-  unsigned long GetMetaAddress();
 
   /// Weak reference to main service. We ensure this object is destroyed before
   /// main_service_ is stopped.
