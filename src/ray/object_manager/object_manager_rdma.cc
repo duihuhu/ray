@@ -119,7 +119,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	// struct pingpong_context *ctx;
 	int access_flags = IBV_ACCESS_LOCAL_WRITE;
 
-	ctx_ = calloc(1, sizeof *ctx_);
+	ctx_ = (struct pingpong_context *) calloc(1, sizeof *ctx_);
 	if (!ctx_)
 		return;
 
