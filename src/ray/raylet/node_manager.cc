@@ -967,12 +967,13 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
   const NodeID node_id = NodeID::FromBinary(node_info.node_id());
 
   RAY_LOG(DEBUG) << "[NodeAdded] Received callback from node id " << node_id;
-  if (node_id == self_node_id_) {
-    return;
-  }
 
   RAY_LOG(DEBUG) << "NodeAdded " << node_info.node_manager_address() " " << node_info.register_time() ;
 
+
+  if (node_id == self_node_id_) {
+    return;
+  }
   // Store address of the new node manager for rpc requests.
   remote_node_manager_addresses_[node_id] =
       std::make_pair(node_info.node_manager_address(), node_info.node_manager_port());
