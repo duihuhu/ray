@@ -65,9 +65,9 @@ void ObjectManagerRdma::InitRdmaCtx() {
 	int                      rcnt, scnt;
 	int                      num_cq_events = 0;
 	int                      sl = 0;
-	int			 gidx = cfg.gidx;
+	int			 gidx = cfg_.gidx;
 	char			 gid[33];
-
+  int page_size;
   srand48(getpid() * time(NULL));
 
 	page_size = sysconf(_SC_PAGESIZE);
