@@ -120,8 +120,8 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	int access_flags = IBV_ACCESS_LOCAL_WRITE;
 
 	ctx_ = calloc(1, sizeof *ctx_);
-	if (!ctx)
-		return NULL;
+	if (!ctx_)
+		return;
 
 	ctx_->size       = plasma_size_;
 	ctx_->send_flags = IBV_SEND_SIGNALED;
@@ -161,7 +161,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	
 
   ctx_->mr = ibv_reg_mr(ctx_->pd, ctx_->buf, plasma_size_, access_flags);
-	if (!ctx->mr) {
+	if (!ctx_->mr) {
 		fprintf(stderr, "Couldn't register MR\n");
 		goto clean_dm;
 	}
