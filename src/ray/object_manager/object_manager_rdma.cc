@@ -108,6 +108,11 @@ void ObjectManagerRdma::InitRdmaCtx() {
 
 }
 
+struct ibv_cq* ObjectManagerRdma::pp_cq()
+{
+    return ctx->cq_s.cq;
+}
+
 void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 					    int rx_depth, int port, int use_event)
 {

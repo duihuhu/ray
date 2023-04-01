@@ -74,6 +74,7 @@ class ObjectManagerRdma {
   void InitRdmaBaseCfg();
   void InitRdmaCtx();
   void pp_init_ctx(struct ibv_device *ib_dev, int rx_depth, int port, int use_event);
+  struct ibv_cq* pp_cq();
 
   private:
     boost::asio::ip::tcp::acceptor acceptor_;
