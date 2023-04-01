@@ -205,9 +205,9 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 		struct ibv_qp_attr attr = {
 			.qp_state        = IBV_QPS_INIT,
 			.pkey_index      = 0,
-			.port_num        = port,
-			.qp_access_flags = 0
+			.port_num        = port
 		};
+    attr.qp_access_flags = 0;
 
 		if (ibv_modify_qp(ctx_->qp, &attr,
 				  IBV_QP_STATE              |
