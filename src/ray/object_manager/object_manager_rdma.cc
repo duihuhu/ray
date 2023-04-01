@@ -44,64 +44,63 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
 void ObjectManagerRdma::InitRdmaConfig() {
   InitRdmaBaseCfg();
   RAY_LOG(DEBUG) << "InitRdmaConfig " << plasma_address_ << " " << plasma_size_;
-  // InitRdmaCtx();
+  InitRdmaCtx();
 }
 
-// void ObjectManagerRdma::InitRdmaCtx() {
-//   struct ibv_device      **dev_list;
-// 	struct ibv_device	*ib_dev;
-// 	// struct pingpong_context *ctx;
-// 	// struct pingpong_dest     my_dest;
-// 	// struct pingpong_dest    *rem_dest;
-// 	char                    *ib_devname = cfg.ib_devname;
-// 	unsigned int             port = cfg.port;
-// 	int                      ib_port = 1;
-// 	unsigned int             size = cfg.size;
-// 	enum ibv_mtu		 mtu = cfg.mtu;
-// 	unsigned int             rx_depth = cfg.rx_depth;
-// 	unsigned int             iters = cfg.iters;
-// 	int                      use_event = cfg.use_event;
-// 	int                      routs;
-// 	int                      rcnt, scnt;
-// 	int                      num_cq_events = 0;
-// 	int                      sl = 0;
-// 	int			 gidx = cfg.gidx;
-// 	char			 gid[33];
-// 	struct ts_params	 ts;
+void ObjectManagerRdma::InitRdmaCtx() {
+  struct ibv_device      **dev_list;
+	struct ibv_device	*ib_dev;
+	// struct pingpong_context *ctx;
+	// struct pingpong_dest     my_dest;
+	// struct pingpong_dest    *rem_dest;
+	char                    *ib_devname = cfg.ib_devname;
+	unsigned int             port = cfg.port;
+	int                      ib_port = 1;
+	unsigned int             size = cfg.size;
+	enum ibv_mtu		 mtu = cfg.mtu;
+	unsigned int             rx_depth = cfg.rx_depth;
+	unsigned int             iters = cfg.iters;
+	int                      use_event = cfg.use_event;
+	int                      routs;
+	int                      rcnt, scnt;
+	int                      num_cq_events = 0;
+	int                      sl = 0;
+	int			 gidx = cfg.gidx;
+	char			 gid[33];
 
-//   srand48(getpid() * time(NULL));
+  srand48(getpid() * time(NULL));
 
-// 	page_size = sysconf(_SC_PAGESIZE);
+	page_size = sysconf(_SC_PAGESIZE);
 
-// 	dev_list = ibv_get_device_list(NULL);
-// 	if (!dev_list) {
-// 		perror("Failed to get IB devices list");
-// 		return 0;
-// 	}
+	dev_list = ibv_get_device_list(NULL);
+	if (!dev_list) {
+		perror("Failed to get IB devices list");
+		return 0;
+	}
 
-// 	if (!ib_devname) {
-// 		ib_dev = *dev_list;
-// 		if (!ib_dev) {
-// 			fprintf(stderr, "No IB devices found\n");
-// 			return 0;
-// 		}
-// 	} else {
-// 		int i;
-// 		for (i = 0; dev_list[i]; ++i)
-// 			if (!strcmp(ibv_get_device_name(dev_list[i]), ib_devname))
-// 				break;
-// 		ib_dev = dev_list[i];
-// 		if (!ib_dev) {
-// 			fprintf(stderr, "IB device %s not found\n", ib_devname);
-// 			return 0;
-// 		}
-// 	}
+	if (!ib_devname) {
+		ib_dev = *dev_list;
+		if (!ib_dev) {
+			fprintf(stderr, "No IB devices found\n");
+			return 0;
+		}
+	} else {
+		int i;
+		for (i = 0; dev_list[i]; ++i)
+			if (!strcmp(ibv_get_device_name(dev_list[i]), ib_devname))
+				break;
+		ib_dev = dev_list[i];
+		if (!ib_dev) {
+			fprintf(stderr, "IB device %s not found\n", ib_devname);
+			return 0;
+		}
+	}
 
-//   ctx = pp_init_ctx(ib_dev, size, rx_depth, ib_port, use_event);
-// 	if (!ctx)
-// 		return 0;
+  // ctx = pp_init_ctx(ib_dev, size, rx_depth, ib_port, use_event);
+	// if (!ctx)
+	// 	return 0;
 
-// }
+}
 
 // static struct pingpong_context *pp_init_ctx(struct ibv_device *ib_dev, int size,
 // 					    int rx_depth, int port, int use_event)
