@@ -1006,7 +1006,7 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
       if(!remote_node_register_time_.empty()) {
         for(auto &entry: remote_node_register_time_) {
           if (self_register_time_ > remote_register_time) {
-            # Todo:
+            //Todo:
           }
         }
         remote_node_register_time_.clear();
