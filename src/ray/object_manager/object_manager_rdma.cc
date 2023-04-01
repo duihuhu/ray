@@ -36,7 +36,7 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
     cfg.iters = 1;
     cfg.sl = 0;
     cfg.gidx = 1;
-    cfg.num_thread = 1;
+    cfg.num_threads = 1;
     cfg.server_name = NULL;
     cfg.use_event = 0;
 }

@@ -62,7 +62,7 @@ class ObjectManagerRdma {
     : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
       ,socket_(main_service),
       plasma_address(start_address) {
-        InitRdmaConfig()
+        InitRdmaConfig();
         DoAccept();
     }
 
