@@ -293,6 +293,12 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	return;
 }
 
+int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
+		     struct ibv_port_attr *attr)
+{
+	return ibv_query_port(context, port, attr);
+}
+
 
 // enum ibv_mtu pp_mtu_to_enum(int mtu)
 // {
