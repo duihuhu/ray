@@ -999,7 +999,7 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
     remote_node_register_time_[node_id] = std::make_pair(node_info.node_manager_address(), node_info.register_time());
   } else {
     RAY_LOG(DEBUG) << "self_register_time_ is already init";
-    string remote_node_manager_address = node_info.node_manager_address();
+    std::string remote_node_manager_address = node_info.node_manager_address();
     int64_t remote_register_time = node_info.register_time();
     if (self_register_time_ > remote_register_time) {
       # Todo:
