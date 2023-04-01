@@ -219,7 +219,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 		}
 	}
 
-
+  RAY_LOG(DEBUG) << "pp_init_ctx success "; 
   clean_qp:
     ibv_destroy_qp(ctx_->qp);
 
@@ -233,7 +233,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
     if (ctx_->dm)
       ibv_free_dm(ctx_->dm);
 
-  clean_pd:
+  // clean_pd:
     ibv_dealloc_pd(ctx_->pd);
 
   clean_comp_channel:
