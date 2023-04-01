@@ -299,6 +299,7 @@ int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
 }
 
 void ObjectManagerRdma::ExRdmaConfig() {
+  RAY_LOG(DEBUG) << "ExRdmaConfig ";
   const auto &node_map = gcs_client_->Nodes().GetAll();
   for (const auto &item : node_map) {
     RAY_LOG(DEBUG) << "node_manager_address " << item.second.node_manager_address();
