@@ -252,7 +252,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 
 	my_dest_.qpn = ctx_->qp->qp_num;
 	my_dest_.psn = lrand48() & 0xffffff;
-	inet_ntop(AF_INET6, &my_dest.gid, gid, sizeof gid);
+	inet_ntop(AF_INET6, &my_dest_.gid, gid, sizeof gid);
 	// printf("  local address:  LID 0x%04x, QPN 0x%06x, PSN 0x%06x, GID %s\n",
 	//        my_dest_.lid, my_dest_.qpn, my_dest_.psn, gid);
   RAY_LOG(DEBUG) << "  local address:  LID " << my_dest_.lid << " QPN " <<  my_dest_.qpn \
