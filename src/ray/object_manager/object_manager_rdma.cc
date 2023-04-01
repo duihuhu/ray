@@ -235,15 +235,15 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
   //   if (ctx_->dm)
   //     ibv_free_dm(ctx_->dm);
 
-  // // clean_pd:
-  //   ibv_dealloc_pd(ctx_->pd);
+  // clean_pd:
+    ibv_dealloc_pd(ctx_->pd);
 
-  // clean_comp_channel:
-  //   if (ctx_->channel)
-  //     ibv_destroy_comp_channel(ctx_->channel);
+  clean_comp_channel:
+    if (ctx_->channel)
+      ibv_destroy_comp_channel(ctx_->channel);
 
-  // clean_device:
-  //   ibv_close_device(ctx_->context);
+  clean_device:
+    ibv_close_device(ctx_->context);
 
   // clean_buffer:
   //   free(ctx_->buf);
