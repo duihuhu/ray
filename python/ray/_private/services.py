@@ -30,7 +30,8 @@ from ray.core.generated.common_pb2 import Language
 
 resource = None
 if sys.platform != "win32":
-    _timeout = 30
+    # _timeout = 30
+    _timeout = 60
 else:
     _timeout = 60
 

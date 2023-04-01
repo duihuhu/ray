@@ -70,7 +70,7 @@ RAY_RUNTIME_ENV_URI_PIN_EXPIRATION_S_ENV_VAR = (
     "RAY_RUNTIME_ENV_TEMPORARY_REFERENCE_EXPIRATION_S"
 )
 # Defaults to 30 seconds. This should be enough time for the job to start.
-RAY_RUNTIME_ENV_URI_PIN_EXPIRATION_S_DEFAULT = 100
+RAY_RUNTIME_ENV_URI_PIN_EXPIRATION_S_DEFAULT = 30
 RAY_STORAGE_ENVIRONMENT_VARIABLE = "RAY_STORAGE"
 # Hook for running a user-specified runtime-env hook. This hook will be called
 # unconditionally given the runtime_env dict passed for ray.init. It must return
