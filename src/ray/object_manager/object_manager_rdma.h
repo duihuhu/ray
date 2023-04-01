@@ -72,6 +72,8 @@ class ObjectManagerRdma {
   void Stop();
   void InitRdmaConfig();
   void InitRdmaBaseCfg();
+  void InitRdmaCtx();
+
   private:
     boost::asio::ip::tcp::acceptor acceptor_;
     boost::asio::ip::tcp::socket socket_;
