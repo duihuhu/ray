@@ -74,14 +74,17 @@ void ObjectManagerRdma::InitRdmaCtx() {
 
 	dev_list = ibv_get_device_list(NULL);
 	if (!dev_list) {
-		perror("Failed to get IB devices list");
+		// perror("Failed to get IB devices list");
+    RAY_LOG(ERROR) << "Failed to get IB devices list";
 		return;
 	}
 
 	if (!ib_devname) {
 		ib_dev = *dev_list;
 		if (!ib_dev) {
-			fprintf(stderr, "No IB devices found\n");
+			// fprintf(stderr, "No IB devices found\n");
+      RAY_LOG(ERROR) << "No IB devices found";
+
 			return;
 		}
 	} else {
@@ -91,7 +94,9 @@ void ObjectManagerRdma::InitRdmaCtx() {
 				break;
 		ib_dev = dev_list[i];
 		if (!ib_dev) {
-			fprintf(stderr, "IB device %s not found\n", ib_devname);
+			// fprintf(stderr, "IB device %s not found\n", ib_devname);
+      RAY_LOG(ERROR) << "IB device" << ib_devname << "not found";
+
 			return;
 		}
 	}
@@ -103,145 +108,144 @@ void ObjectManagerRdma::InitRdmaCtx() {
 
 }
 
-// static struct pingpong_context *pp_init_ctx(struct ibv_device *ib_dev, int size,
-// 					    int rx_depth, int port, int use_event)
-// {
-// 	struct pingpong_context *ctx;
-// 	int access_flags = IBV_ACCESS_LOCAL_WRITE;
+void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
+					    int rx_depth, int port, int use_event)
+{
+	// struct pingpong_context *ctx;
+	int access_flags = IBV_ACCESS_LOCAL_WRITE;
 
-// 	ctx = calloc(1, sizeof *ctx);
-// 	if (!ctx)
-// 		return NULL;
+	ctx = calloc(1, sizeof *ctx);
+	if (!ctx)
+		return NULL;
 
-// 	ctx->size       = size;
-// 	ctx->send_flags = IBV_SEND_SIGNALED;
-// 	ctx->rx_depth   = rx_depth;
+	ctx->size       = plasma_size_;
+	ctx->send_flags = IBV_SEND_SIGNALED;
+	ctx->rx_depth   = rx_depth;
 
-// 	ctx->buf = memalign(page_size, size);
-// 	if (!ctx->buf) {
-// 		fprintf(stderr, "Couldn't allocate work buf.\n");
-// 		goto clean_ctx;
-// 	}
+	ctx->buf = (void *) plasma_address_;
+	if (!ctx->buf) {
+		fprintf(stderr, "Couldn't allocate work buf.\n");
+		goto clean_ctx;
+	}
 
-// 	/* FIXME memset(ctx->buf, 0, size); */
-// 	memset(ctx->buf, 0x7b, size);
+	/* FIXME memset(ctx->buf, 0, size); */
+	// memset(ctx->buf, 0x7b, size);
 
-// 	ctx->context = ibv_open_device(ib_dev);
-// 	if (!ctx->context) {
-// 		fprintf(stderr, "Couldn't get context for %s\n",
-// 			ibv_get_device_name(ib_dev));
-// 		goto clean_buffer;
-// 	}
+	ctx->context = ibv_open_device(ib_dev);
+	if (!ctx->context) {
+		fprintf(stderr, "Couldn't get context for %s\n",
+			ibv_get_device_name(ib_dev));
+		goto clean_buffer;
+	}
 
-// 	if (use_event) {
-// 		ctx->channel = ibv_create_comp_channel(ctx->context);
-// 		if (!ctx->channel) {
-// 			fprintf(stderr, "Couldn't create completion channel\n");
-// 			goto clean_device;
-// 		}
-// 	} else
-// 		ctx->channel = NULL;
+	if (use_event) {
+		ctx->channel = ibv_create_comp_channel(ctx->context);
+		if (!ctx->channel) {
+			fprintf(stderr, "Couldn't create completion channel\n");
+			goto clean_device;
+		}
+	} else
+		ctx->channel = NULL;
 
-// 	ctx->pd = ibv_alloc_pd(ctx->context);
-// 	if (!ctx->pd) {
-// 		fprintf(stderr, "Couldn't allocate PD\n");
-// 		goto clean_comp_channel;
-// 	}
+	ctx->pd = ibv_alloc_pd(ctx->context);
+	if (!ctx->pd) {
+		fprintf(stderr, "Couldn't allocate PD\n");
+		goto clean_comp_channel;
+	}
 
 	
 
-//   ctx->mr = ibv_reg_mr(ctx->pd, ctx->buf, size, access_flags);
-// 	if (!ctx->mr) {
-// 		fprintf(stderr, "Couldn't register MR\n");
-// 		goto clean_dm;
-// 	}
+  ctx->mr = ibv_reg_mr(ctx->pd, ctx->buf, plasma_size_, access_flags);
+	if (!ctx->mr) {
+		fprintf(stderr, "Couldn't register MR\n");
+		goto clean_dm;
+	}
 
-// 		ctx->cq_s.cq = ibv_create_cq(ctx->context, rx_depth + 1, NULL,
-// 					     ctx->channel, 0);
+  ctx->cq_s.cq = ibv_create_cq(ctx->context, rx_depth + 1, NULL,
+              ctx->channel, 0);
 
-// 	if (!pp_cq(ctx)) {
-// 		fprintf(stderr, "Couldn't create CQ\n");
-// 		goto clean_mr;
-// 	}
+	if (!pp_cq(ctx)) {
+		fprintf(stderr, "Couldn't create CQ\n");
+		goto clean_mr;
+	}
 
-// 	{
-// 		struct ibv_qp_attr attr;
-// 		struct ibv_qp_init_attr init_attr = {
-// 			.send_cq = pp_cq(ctx),
-// 			.recv_cq = pp_cq(ctx),
-// 			.cap     = {
-// 				.max_send_wr  = 1,
-// 				.max_recv_wr  = rx_depth + 1, 
-// 				.max_send_sge = 1,
-// 				.max_recv_sge = 1
-// 			},
-// 			.qp_type = IBV_QPT_RC
-// 		};
+	{
+		struct ibv_qp_attr attr;
+		struct ibv_qp_init_attr init_attr = {
+			.send_cq = pp_cq(ctx),
+			.recv_cq = pp_cq(ctx),
+			.cap     = {
+				.max_send_wr  = 1,
+				.max_recv_wr  = rx_depth + 1, 
+				.max_send_sge = 1,
+				.max_recv_sge = 1
+			},
+			.qp_type = IBV_QPT_RC
+		};
 
-//     ctx->qp = ibv_create_qp(ctx->pd, &init_attr);
+    ctx->qp = ibv_create_qp(ctx->pd, &init_attr);
 
-// 		if (!ctx->qp)  {
-// 			fprintf(stderr, "Couldn't create QP\n");
-// 			goto clean_cq;
-// 		}
+		if (!ctx->qp)  {
+			fprintf(stderr, "Couldn't create QP\n");
+			goto clean_cq;
+		}
 
-// 		ibv_query_qp(ctx->qp, &attr, IBV_QP_CAP, &init_attr);
-//     if (init_attr.cap.max_inline_data >= size)
-// 			ctx->send_flags |= IBV_SEND_INLINE;
+		ibv_query_qp(ctx->qp, &attr, IBV_QP_CAP, &init_attr);
+    if (init_attr.cap.max_inline_data >= size)
+			ctx->send_flags |= IBV_SEND_INLINE;
 
-// 	}
+	}
 
-// 	{
-// 		struct ibv_qp_attr attr = {
-// 			.qp_state        = IBV_QPS_INIT,
-// 			.pkey_index      = 0,
-// 			.port_num        = port,
-// 			.qp_access_flags = 0
-// 		};
+	{
+		struct ibv_qp_attr attr = {
+			.qp_state        = IBV_QPS_INIT,
+			.pkey_index      = 0,
+			.port_num        = port,
+			.qp_access_flags = 0
+		};
 
-// 		if (ibv_modify_qp(ctx->qp, &attr,
-// 				  IBV_QP_STATE              |
-// 				  IBV_QP_PKEY_INDEX         |
-// 				  IBV_QP_PORT               |
-// 				  IBV_QP_ACCESS_FLAGS)) {
-// 			fprintf(stderr, "Failed to modify QP to INIT\n");
-// 			goto clean_qp;
-// 		}
-// 	}
+		if (ibv_modify_qp(ctx->qp, &attr,
+				  IBV_QP_STATE              |
+				  IBV_QP_PKEY_INDEX         |
+				  IBV_QP_PORT               |
+				  IBV_QP_ACCESS_FLAGS)) {
+			fprintf(stderr, "Failed to modify QP to INIT\n");
+			goto clean_qp;
+		}
+	}
 
-// 	return ctx;
 
-// clean_qp:
-// 	ibv_destroy_qp(ctx->qp);
+  clean_qp:
+    ibv_destroy_qp(ctx->qp);
 
-// clean_cq:
-// 	ibv_destroy_cq(pp_cq(ctx));
+  clean_cq:
+    ibv_destroy_cq(pp_cq(ctx));
 
-// clean_mr:
-// 	ibv_dereg_mr(ctx->mr);
+  clean_mr:
+    ibv_dereg_mr(ctx->mr);
 
-// clean_dm:
-// 	if (ctx->dm)
-// 		ibv_free_dm(ctx->dm);
+  clean_dm:
+    if (ctx->dm)
+      ibv_free_dm(ctx->dm);
 
-// // clean_pd:
-// 	ibv_dealloc_pd(ctx->pd);
+  // clean_pd:
+    ibv_dealloc_pd(ctx->pd);
 
-// clean_comp_channel:
-// 	if (ctx->channel)
-// 		ibv_destroy_comp_channel(ctx->channel);
+  clean_comp_channel:
+    if (ctx->channel)
+      ibv_destroy_comp_channel(ctx->channel);
 
-// clean_device:
-// 	ibv_close_device(ctx->context);
+  clean_device:
+    ibv_close_device(ctx->context);
 
-// clean_buffer:
-// 	free(ctx->buf);
+  clean_buffer:
+    free(ctx->buf);
 
-// clean_ctx:
-// 	free(ctx);
+  clean_ctx:
+    free(ctx);
 
-// 	return NULL;
-// }
+	return NULL;
+}
 
 
 // enum ibv_mtu pp_mtu_to_enum(int mtu)

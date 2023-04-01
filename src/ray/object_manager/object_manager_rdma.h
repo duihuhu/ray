@@ -47,7 +47,7 @@ struct pingpong_context {
 	} cq_s;
 	struct ibv_qp		*qp;
 	struct ibv_qp_ex	*qpx;
-	char			*buf;
+	void			*buf;
 	int			 size;
 	int			 send_flags;
 	int			 rx_depth;
@@ -73,6 +73,7 @@ class ObjectManagerRdma {
   void InitRdmaConfig();
   void InitRdmaBaseCfg();
   void InitRdmaCtx();
+  void pp_init_ctx();
 
   private:
     boost::asio::ip::tcp::acceptor acceptor_;
