@@ -169,7 +169,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
   ctx_->cq_s.cq = ibv_create_cq(ctx_->context, rx_depth + 1, NULL,
               ctx_->channel, 0);
 
-	if (!pp_cq(ctx_)) {
+	if (!pp_cq()) {
 		fprintf(stderr, "Couldn't create CQ\n");
 		goto clean_mr;
 	}
@@ -177,8 +177,8 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	{
 		struct ibv_qp_attr attr;
 		struct ibv_qp_init_attr init_attr = {
-			.send_cq = pp_cq(ctx_),
-			.recv_cq = pp_cq(ctx_),
+			.send_cq = pp_cq(),
+			.recv_cq = pp_cq(),
 			.cap     = {
 				.max_send_wr  = 1,
 				.max_recv_wr  = rx_depth + 1, 
@@ -196,8 +196,8 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 		}
 
 		ibv_query_qp(ctx_->qp, &attr, IBV_QP_CAP, &init_attr);
-    if (init_attr.cap.max_inline_data >= size)
-			ctx_->send_flags |= IBV_SEND_INLINE;
+    // if (init_attr.cap.max_inline_data >= size)
+		// 	ctx_->send_flags |= IBV_SEND_INLINE;
 
 	}
 
@@ -224,7 +224,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
     ibv_destroy_qp(ctx_->qp);
 
   clean_cq:
-    ibv_destroy_cq(pp_cq(ctx_));
+    ibv_destroy_cq(pp_cq());
 
   clean_mr:
     ibv_dereg_mr(ctx_->mr);
