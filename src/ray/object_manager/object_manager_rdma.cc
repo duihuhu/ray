@@ -110,7 +110,7 @@ void ObjectManagerRdma::InitRdmaCtx() {
 
 struct ibv_cq* ObjectManagerRdma::pp_cq()
 {
-    return ctx->cq_s.cq;
+    return ctx_->cq_s.cq;
 }
 
 void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
@@ -119,16 +119,16 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	// struct pingpong_context *ctx;
 	int access_flags = IBV_ACCESS_LOCAL_WRITE;
 
-	ctx = calloc(1, sizeof *ctx);
+	ctx_ = calloc(1, sizeof *ctx_);
 	if (!ctx)
 		return NULL;
 
-	ctx->size       = plasma_size_;
-	ctx->send_flags = IBV_SEND_SIGNALED;
-	ctx->rx_depth   = rx_depth;
+	ctx_->size       = plasma_size_;
+	ctx_->send_flags = IBV_SEND_SIGNALED;
+	ctx_->rx_depth   = rx_depth;
 
-	ctx->buf = (void *) plasma_address_;
-	if (!ctx->buf) {
+	ctx_->buf = (void *) plasma_address_;
+	if (!ctx_->buf) {
 		fprintf(stderr, "Couldn't allocate work buf.\n");
 		goto clean_ctx;
 	}
@@ -136,40 +136,40 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	/* FIXME memset(ctx->buf, 0, size); */
 	// memset(ctx->buf, 0x7b, size);
 
-	ctx->context = ibv_open_device(ib_dev);
-	if (!ctx->context) {
+	ctx_->context = ibv_open_device(ib_dev);
+	if (!ctx_->context) {
 		fprintf(stderr, "Couldn't get context for %s\n",
 			ibv_get_device_name(ib_dev));
 		goto clean_buffer;
 	}
 
 	if (use_event) {
-		ctx->channel = ibv_create_comp_channel(ctx->context);
-		if (!ctx->channel) {
+		ctx_->channel = ibv_create_comp_channel(ctx_->context);
+		if (!ctx_->channel) {
 			fprintf(stderr, "Couldn't create completion channel\n");
 			goto clean_device;
 		}
 	} else
-		ctx->channel = NULL;
+		ctx_->channel = NULL;
 
-	ctx->pd = ibv_alloc_pd(ctx->context);
-	if (!ctx->pd) {
+	ctx_->pd = ibv_alloc_pd(ctx_->context);
+	if (!ctx_->pd) {
 		fprintf(stderr, "Couldn't allocate PD\n");
 		goto clean_comp_channel;
 	}
 
 	
 
-  ctx->mr = ibv_reg_mr(ctx->pd, ctx->buf, plasma_size_, access_flags);
+  ctx_->mr = ibv_reg_mr(ctx_->pd, ctx_->buf, plasma_size_, access_flags);
 	if (!ctx->mr) {
 		fprintf(stderr, "Couldn't register MR\n");
 		goto clean_dm;
 	}
 
-  ctx->cq_s.cq = ibv_create_cq(ctx->context, rx_depth + 1, NULL,
-              ctx->channel, 0);
+  ctx_->cq_s.cq = ibv_create_cq(ctx_->context, rx_depth + 1, NULL,
+              ctx_->channel, 0);
 
-	if (!pp_cq(ctx)) {
+	if (!pp_cq(ctx_)) {
 		fprintf(stderr, "Couldn't create CQ\n");
 		goto clean_mr;
 	}
@@ -177,8 +177,8 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	{
 		struct ibv_qp_attr attr;
 		struct ibv_qp_init_attr init_attr = {
-			.send_cq = pp_cq(ctx),
-			.recv_cq = pp_cq(ctx),
+			.send_cq = pp_cq(ctx_),
+			.recv_cq = pp_cq(ctx_),
 			.cap     = {
 				.max_send_wr  = 1,
 				.max_recv_wr  = rx_depth + 1, 
@@ -188,16 +188,16 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 			.qp_type = IBV_QPT_RC
 		};
 
-    ctx->qp = ibv_create_qp(ctx->pd, &init_attr);
+    ctx_->qp = ibv_create_qp(ctx_->pd, &init_attr);
 
-		if (!ctx->qp)  {
+		if (!ctx_->qp)  {
 			fprintf(stderr, "Couldn't create QP\n");
 			goto clean_cq;
 		}
 
-		ibv_query_qp(ctx->qp, &attr, IBV_QP_CAP, &init_attr);
+		ibv_query_qp(ctx_->qp, &attr, IBV_QP_CAP, &init_attr);
     if (init_attr.cap.max_inline_data >= size)
-			ctx->send_flags |= IBV_SEND_INLINE;
+			ctx_->send_flags |= IBV_SEND_INLINE;
 
 	}
 
@@ -209,7 +209,7 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 			.qp_access_flags = 0
 		};
 
-		if (ibv_modify_qp(ctx->qp, &attr,
+		if (ibv_modify_qp(ctx_->qp, &attr,
 				  IBV_QP_STATE              |
 				  IBV_QP_PKEY_INDEX         |
 				  IBV_QP_PORT               |
@@ -221,33 +221,33 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 
 
   clean_qp:
-    ibv_destroy_qp(ctx->qp);
+    ibv_destroy_qp(ctx_->qp);
 
   clean_cq:
-    ibv_destroy_cq(pp_cq(ctx));
+    ibv_destroy_cq(pp_cq(ctx_));
 
   clean_mr:
-    ibv_dereg_mr(ctx->mr);
+    ibv_dereg_mr(ctx_->mr);
 
   clean_dm:
-    if (ctx->dm)
-      ibv_free_dm(ctx->dm);
+    if (ctx_->dm)
+      ibv_free_dm(ctx_->dm);
 
-  // clean_pd:
-    ibv_dealloc_pd(ctx->pd);
+  clean_pd:
+    ibv_dealloc_pd(ctx_->pd);
 
   clean_comp_channel:
-    if (ctx->channel)
-      ibv_destroy_comp_channel(ctx->channel);
+    if (ctx_->channel)
+      ibv_destroy_comp_channel(ctx_->channel);
 
   clean_device:
-    ibv_close_device(ctx->context);
+    ibv_close_device(ctx_->context);
 
   clean_buffer:
-    free(ctx->buf);
+    free(ctx_->buf);
 
   clean_ctx:
-    free(ctx);
+    free(ctx_);
 
 	return NULL;
 }
