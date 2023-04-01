@@ -128,6 +128,9 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	ctx_->rx_depth   = rx_depth;
 
 	ctx_->buf = (void *) plasma_address_;
+
+  RAY_LOG(DEBUG) << "pp_init_ctx ctx_->buf " << ctx_->buf; 
+
 	if (!ctx_->buf) {
 		fprintf(stderr, "Couldn't allocate work buf.\n");
 		goto clean_ctx;
@@ -160,94 +163,94 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 
 	
 
-  ctx_->mr = ibv_reg_mr(ctx_->pd, ctx_->buf, plasma_size_, access_flags);
-	if (!ctx_->mr) {
-		fprintf(stderr, "Couldn't register MR\n");
-		goto clean_dm;
-	}
+  // ctx_->mr = ibv_reg_mr(ctx_->pd, ctx_->buf, plasma_size_, access_flags);
+	// if (!ctx_->mr) {
+	// 	fprintf(stderr, "Couldn't register MR\n");
+	// 	goto clean_dm;
+	// }
 
-  ctx_->cq_s.cq = ibv_create_cq(ctx_->context, rx_depth + 1, NULL,
-              ctx_->channel, 0);
+  // ctx_->cq_s.cq = ibv_create_cq(ctx_->context, rx_depth + 1, NULL,
+  //             ctx_->channel, 0);
 
-	if (!pp_cq()) {
-		fprintf(stderr, "Couldn't create CQ\n");
-		goto clean_mr;
-	}
+	// if (!pp_cq()) {
+	// 	fprintf(stderr, "Couldn't create CQ\n");
+	// 	goto clean_mr;
+	// }
 
-	{
-		struct ibv_qp_attr attr;
-		struct ibv_qp_init_attr init_attr = {
-			.send_cq = pp_cq(),
-			.recv_cq = pp_cq(),
-			.cap     = {
-				.max_send_wr  = 1,
-				.max_recv_wr  = rx_depth + 1, 
-				.max_send_sge = 1,
-				.max_recv_sge = 1
-			},
-			.qp_type = IBV_QPT_RC
-		};
+	// {
+	// 	struct ibv_qp_attr attr;
+	// 	struct ibv_qp_init_attr init_attr = {
+	// 		.send_cq = pp_cq(),
+	// 		.recv_cq = pp_cq(),
+	// 		.cap     = {
+	// 			.max_send_wr  = 1,
+	// 			.max_recv_wr  = rx_depth + 1, 
+	// 			.max_send_sge = 1,
+	// 			.max_recv_sge = 1
+	// 		},
+	// 		.qp_type = IBV_QPT_RC
+	// 	};
 
-    ctx_->qp = ibv_create_qp(ctx_->pd, &init_attr);
+  //   ctx_->qp = ibv_create_qp(ctx_->pd, &init_attr);
 
-		if (!ctx_->qp)  {
-			fprintf(stderr, "Couldn't create QP\n");
-			goto clean_cq;
-		}
+	// 	if (!ctx_->qp)  {
+	// 		fprintf(stderr, "Couldn't create QP\n");
+	// 		goto clean_cq;
+	// 	}
 
-		ibv_query_qp(ctx_->qp, &attr, IBV_QP_CAP, &init_attr);
-    // if (init_attr.cap.max_inline_data >= size)
-		// 	ctx_->send_flags |= IBV_SEND_INLINE;
+	// 	ibv_query_qp(ctx_->qp, &attr, IBV_QP_CAP, &init_attr);
+  //   // if (init_attr.cap.max_inline_data >= size)
+	// 	// 	ctx_->send_flags |= IBV_SEND_INLINE;
 
-	}
+	// }
 
-	{
-		struct ibv_qp_attr attr = {
-			.qp_state        = IBV_QPS_INIT,
-			.pkey_index      = 0,
-			.port_num        = port
-		};
-    attr.qp_access_flags = 0;
+	// {
+	// 	struct ibv_qp_attr attr = {
+	// 		.qp_state        = IBV_QPS_INIT,
+	// 		.pkey_index      = 0,
+	// 		.port_num        = port
+	// 	};
+  //   attr.qp_access_flags = 0;
 
-		if (ibv_modify_qp(ctx_->qp, &attr,
-				  IBV_QP_STATE              |
-				  IBV_QP_PKEY_INDEX         |
-				  IBV_QP_PORT               |
-				  IBV_QP_ACCESS_FLAGS)) {
-			fprintf(stderr, "Failed to modify QP to INIT\n");
-			goto clean_qp;
-		}
-	}
+	// 	if (ibv_modify_qp(ctx_->qp, &attr,
+	// 			  IBV_QP_STATE              |
+	// 			  IBV_QP_PKEY_INDEX         |
+	// 			  IBV_QP_PORT               |
+	// 			  IBV_QP_ACCESS_FLAGS)) {
+	// 		fprintf(stderr, "Failed to modify QP to INIT\n");
+	// 		goto clean_qp;
+	// 	}
+	// }
 
   RAY_LOG(DEBUG) << "pp_init_ctx success "; 
   clean_qp:
     ibv_destroy_qp(ctx_->qp);
 
-  clean_cq:
-    ibv_destroy_cq(pp_cq());
+  // clean_cq:
+  //   ibv_destroy_cq(pp_cq());
 
-  clean_mr:
-    ibv_dereg_mr(ctx_->mr);
+  // clean_mr:
+  //   ibv_dereg_mr(ctx_->mr);
 
-  clean_dm:
-    if (ctx_->dm)
-      ibv_free_dm(ctx_->dm);
+  // clean_dm:
+  //   if (ctx_->dm)
+  //     ibv_free_dm(ctx_->dm);
 
-  // clean_pd:
-    ibv_dealloc_pd(ctx_->pd);
+  // // clean_pd:
+  //   ibv_dealloc_pd(ctx_->pd);
 
-  clean_comp_channel:
-    if (ctx_->channel)
-      ibv_destroy_comp_channel(ctx_->channel);
+  // clean_comp_channel:
+  //   if (ctx_->channel)
+  //     ibv_destroy_comp_channel(ctx_->channel);
 
-  clean_device:
-    ibv_close_device(ctx_->context);
+  // clean_device:
+  //   ibv_close_device(ctx_->context);
 
-  clean_buffer:
-    free(ctx_->buf);
+  // clean_buffer:
+  //   free(ctx_->buf);
 
-  clean_ctx:
-    free(ctx_);
+  // clean_ctx:
+  //   free(ctx_);
 
 	return;
 }
