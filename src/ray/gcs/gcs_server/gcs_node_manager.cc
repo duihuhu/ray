@@ -39,7 +39,7 @@ void GcsNodeManager::HandleRegisterNode(const rpc::RegisterNodeRequest &request,
                                         rpc::RegisterNodeReply *reply,
                                         rpc::SendReplyCallback send_reply_callback) {
   NodeID node_id = NodeID::FromBinary(request.node_info().node_id());
-  auto cur = current_sys_time_us();
+  int64_t cur = current_sys_time_us();
   RAY_LOG(INFO) << "Registering node info, node id = " << node_id
                 << ", address = " << request.node_info().node_manager_address()
                 << ", node name = " << request.node_info().node_name() << " time " << cur;
