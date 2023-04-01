@@ -974,7 +974,7 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
   // Store address of the new node manager for rpc requests.
   remote_node_manager_addresses_[node_id] =
       std::make_pair(node_info.node_manager_address(), node_info.node_manager_port());
-
+  RAY_LOG(DEBUG) << "NodeAdded " << node_info.node_manager_address();
   // Fetch resource info for the remote node and update cluster resource map.
   RAY_CHECK_OK(gcs_client_->NodeResources().AsyncGetResources(
       node_id,
