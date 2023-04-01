@@ -27,23 +27,23 @@ void ObjectManagerRdma::Stop() {
 }
 
 void ObjectManagerRdma::InitRdmaBaseCfg() {
-    cfg.port = 7000;
-    cfg.ib_devname = "mlx5_1";
-    cfg.ib_port = 1;
-    cfg.size = 4096;
-    cfg.mtu = IBV_MTU_4096;
-    cfg.rx_depth = 500;
-    cfg.iters = 1;
-    cfg.sl = 0;
-    cfg.gidx = 1;
-    cfg.num_threads = 1;
-    cfg.server_name = NULL;
-    cfg.use_event = 0;
+    cfg_.port = 7000;
+    cfg_.ib_devname = "mlx5_1";
+    cfg_.ib_port = 1;
+    cfg_.size = 4096;
+    cfg_.mtu = IBV_MTU_4096;
+    cfg_.rx_depth = 500;
+    cfg_.iters = 1;
+    cfg_.sl = 0;
+    cfg_.gidx = 1;
+    cfg_.num_threads = 1;
+    cfg_.server_name = NULL;
+    cfg_.use_event = 0;
 }
 
 void ObjectManagerRdma::InitRdmaConfig() {
   InitRdmaBaseCfg();
-  RAY_LOG(DEBUG) << "InitRdmaConfig " << plasma_address;
+  RAY_LOG(DEBUG) << "InitRdmaConfig " << plasma_address_ << " " << plasma_size_;
   // InitRdmaCtx();
 }
 

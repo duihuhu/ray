@@ -152,6 +152,10 @@ unsigned long PlasmaStoreRunner::GetMetaAddress() {
   return allocator_->StartAddress();
 }
 
+int64_t PlasmaStoreRunner::GetMetaSize() {
+  return allocator_->TotalPlasmaSize();
+}
+
 std::unique_ptr<PlasmaStoreRunner> plasma_store_runner;
 
 }  // namespace plasma

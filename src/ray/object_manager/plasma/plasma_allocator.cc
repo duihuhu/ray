@@ -159,5 +159,9 @@ unsigned long PlasmaAllocator::StartAddress() {
   return start_address_;
 }
 
+int64_t PlasmaAllocator::TotalPlasmaSize() {
+  return plasma_size_;
+}
+
 
 }  // namespace plasma

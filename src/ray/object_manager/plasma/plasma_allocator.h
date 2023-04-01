@@ -84,6 +84,7 @@ class PlasmaAllocator : public IAllocator {
   int64_t FallbackAllocated() const override;
 
   unsigned long StartAddress();
+  int64_t TotalPlasmaSize();
 
  private:
   absl::optional<Allocation> BuildAllocation(void *addr, size_t size);

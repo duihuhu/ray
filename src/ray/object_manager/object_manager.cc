@@ -859,4 +859,9 @@ void ObjectManager::Tick(const boost::system::error_code &e) {
 unsigned long ObjectManager::GetMetaAddress() {
   return plasma::plasma_store_runner->GetMetaAddress();
 }
+
+int64_t ObjectManager::GetMetaSize() {
+  return plasma::plasma_store_runner->GetMetaSize();
+}
+
 }  // namespace ray

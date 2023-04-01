@@ -249,6 +249,8 @@ class ObjectManager : public ObjectManagerInterface,
  
   ///GetMetaAddress
   unsigned long GetMetaAddress();
+  int64_t GetMetaSize();
+
  private:
   friend class TestObjectManager;
 
