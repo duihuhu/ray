@@ -154,8 +154,8 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 					    int rx_depth, int port, int use_event)
 {
 	// struct pingpong_context *ctx;
-	int access_flags = IBV_ACCESS_LOCAL_WRITE;
-
+	// int access_flags = IBV_ACCESS_LOCAL_WRITE;
+  int access_flags =  IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_ATOMIC;
 	ctx_ = (struct pingpong_context *) calloc(1, sizeof *ctx_);
 
 	if (!ctx_)
