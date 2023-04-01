@@ -968,7 +968,7 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
 
   RAY_LOG(DEBUG) << "[NodeAdded] Received callback from node id " << node_id;
 
-  RAY_LOG(DEBUG) << "NodeAdded " << node_info.node_manager_address() " " << node_info.register_time() ;
+  RAY_LOG(DEBUG) << "NodeAdded " << node_info.node_manager_address() << " " << node_info.register_time();
 
 
   if (node_id == self_node_id_) {
