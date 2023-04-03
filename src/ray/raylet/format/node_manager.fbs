@@ -177,6 +177,7 @@ table FetchOrReconstruct {
   task_id: string;
   
   // List of object virt_address and object_sizes of the objects that we want to reconstruct or fetch.
+
   virt_address: [ulong];
   object_sizes: [int];
 }
