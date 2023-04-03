@@ -81,10 +81,10 @@ std::vector<ray::rpc::ObjectReference> FlatbufferToObjectReference(
 
 void FlatbufferToObjectReferenceWithMeta(
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::ulong>> &object_virt_address,
-    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::int64>> &object_sizes,
-    vector<unsigned long> &object_meta_virt_address,
-    vector<int64_t> &object_meta_sizes) {
-  RAY_CHECK(object_ids.size() == owner_addresses.size());
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::int>> &object_sizes,
+    std::vector<unsigned long> &object_meta_virt_address,
+    std::vector<int> &object_meta_sizes) {
+  RAY_CHECK(object_virt_address.size() == object_sizes.size());
   for (int64_t i = 0; i < object_ids.size(); i++) {
     object_meta_virt_address.push_back(object_virt_address.Get(i));
     object_meta_sizes.push_back(object_sizes.Get(i)); 
