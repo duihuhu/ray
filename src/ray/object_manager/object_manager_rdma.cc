@@ -6,10 +6,6 @@
 #include "ray/util/util.h"
 #include <sys/socket.h>
 
-
-
-
-
 void ObjectManagerRdma::DoAccept() {
   // RAY_LOG(DEBUG) << " ObjectManagerRdma::DoAccept()  ";
   // acceptor_.async_accept(
@@ -22,7 +18,7 @@ void ObjectManagerRdma::DoAccept() {
     {
       if (!ec)
       {
-        Message *rem_dest = new Message();
+        struct pingpong_dest *rem_dest = new pingpong_dest();
         remote_dest_[socket.remote_endpoint().address()] = rem_dest;
         std::make_shared<Session>(std::move(socket), rem_dest, my_dest_)->Start();
       }

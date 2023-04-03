@@ -109,7 +109,7 @@ class Session
   : public std::enable_shared_from_this<Session>
 {
 public:
-  Session(tcp::socket socket, Message *rem_dest_, Message &my_dest_)
+  Session(tcp::socket socket, pingpong_dest *rem_dest_, pingpong_dest &my_dest_)
     : socket_(std::move(socket)),
       rem_dest_(rem_dest_),
       my_dest_(my_dest_)
