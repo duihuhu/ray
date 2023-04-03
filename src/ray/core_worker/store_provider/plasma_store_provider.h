@@ -212,8 +212,8 @@ class CoreWorkerPlasmaStoreProvider {
       const TaskID &task_id,
       absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
       bool *got_exception,
-      const std::vector<unsigned long> &batch_virt_address;
-      const std::vector<int64_t> &batch_object_size;);
+      const std::vector<unsigned long> &batch_virt_address,
+      const std::vector<int64_t> &batch_object_size);
 
   /// Print a warning if we've attempted the fetch for too long and some
   /// objects are still unavailable.
