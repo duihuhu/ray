@@ -38,7 +38,9 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
     struct pingpong_dest* rem_dest = new pingpong_dest();
     size_t reply_length = boost::asio::read(s,
         boost::asio::buffer(&rem_dest, sizeof(struct pingpong_dest)));
-    remote_dest_[ip_address] = rem_dest;
+    // remote_dest_[ip_address] = rem_dest;
+    remote_dest_.emplace(ip_address, rem_dest);
+
 }
 
 // void ObjectManagerRdma::HandleAccept(const boost::system::error_code &error) {
