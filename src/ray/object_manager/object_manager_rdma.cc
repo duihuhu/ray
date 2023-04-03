@@ -342,6 +342,11 @@ int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
 	return ibv_query_port(context, port, attr);
 }
 
+void ObjectManagerRdma::PrintRemoteRdmaInfo() {
+  for(auto &entry: remote_dest_) {
+    std::cout<<"PrintRemoteRdmaInfo " << entry.first;
+  }
+}
 // void ObjectManagerRdma::ExRdmaConfig() {
 //   RAY_LOG(DEBUG) << "ExRdmaConfig ";
 //   const auto &node_map = gcs_client_->Nodes().GetAll();

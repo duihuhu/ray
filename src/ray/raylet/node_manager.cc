@@ -80,7 +80,7 @@ std::vector<ray::rpc::ObjectReference> FlatbufferToObjectReference(
 }
 
 void FlatbufferToObjectReferenceWithMeta(
-    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::ulong>> &object_virt_address,
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::uint64_t>> &object_virt_address,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::int>> &object_sizes,
     std::vector<unsigned long> &object_meta_virt_address,
     std::vector<int> &object_meta_sizes) {
@@ -1641,6 +1641,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
   FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), object_virt_address, object_sizes);
+  object_manager_rdma_.PrintRemoteRdmaInfo();
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 
