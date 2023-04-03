@@ -316,8 +316,8 @@ class RayletClient : public RayletClientInterface {
                                  bool fetch_only,
                                  bool mark_worker_blocked,
                                  const TaskID &current_task_id,
-                                 const std::vector<ObjectID> &batch_virt_address,
-                                 const std::vector<ObjectID> &batch_object_size);
+                                 const std::vector<unsigned long> &batch_virt_address,
+                                 const std::vector<int64_t> &batch_object_size);
 
   /// Notify the raylet that this client (worker) is no longer blocked.
   ///
