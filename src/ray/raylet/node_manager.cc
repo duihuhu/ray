@@ -80,8 +80,8 @@ std::vector<ray::rpc::ObjectReference> FlatbufferToObjectReference(
 }
 
 void FlatbufferToObjectReferenceWithMeta(
-    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::uint64_t>> &object_virt_address,
-    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::int>> &object_sizes,
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::Ulong>> &object_virt_address,
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::Int>> &object_sizes,
     std::vector<unsigned long> &object_meta_virt_address,
     std::vector<int> &object_meta_sizes) {
   RAY_CHECK(object_virt_address.size() == object_sizes.size());
