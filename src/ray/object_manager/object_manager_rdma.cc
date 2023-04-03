@@ -19,7 +19,7 @@ void ObjectManagerRdma::DoAccept() {
       if (!ec)
       {
         struct pingpong_dest *rem_dest = new pingpong_dest();
-        remote_dest_.emplace(socket.remote_endpoint().address(), rem_dest);
+        remote_dest_.emplace(std::to_string(socket.remote_endpoint().address()), rem_dest);
         std::make_shared<Session>(std::move(socket), rem_dest, my_dest_)->Start();
       }
 
