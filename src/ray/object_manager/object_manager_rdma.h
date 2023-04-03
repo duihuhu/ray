@@ -77,7 +77,7 @@ class ObjectManagerRdma {
       gcs_client_(gcs_client) {
         InitRdmaConfig();
         DoAccept();
-        ExRdmaConfig();
+        // ExRdmaConfig();
     }
 
   void DoAccept();
@@ -90,22 +90,70 @@ class ObjectManagerRdma {
   struct ibv_cq* pp_cq();
   int pp_get_port_info(struct ibv_context *context, int port, struct ibv_port_attr *attr);
   
-  void ExRdmaConfig();
+  // void ExRdmaConfig();
+  void ConnectAndEx(std::string ip_address);
 
   private:
     boost::asio::ip::tcp::acceptor acceptor_;
     boost::asio::ip::tcp::socket socket_;
     struct pingpong_context *ctx_;
     struct pingpong_dest my_dest_;
-
     struct Config cfg_;
     unsigned long plasma_address_;
     int64_t plasma_size_;
     std::shared_ptr<ray::gcs::GcsClient> gcs_client_;
-
+    absl::flat_hash_map<std::string, pingpong_dest*> remote_dest_;
 };
 
+class Session
+  : public std::enable_shared_from_this<Session>
+{
+public:
+  Session(tcp::socket socket, Message *rem_dest_, Message &my_dest_)
+    : socket_(std::move(socket)),
+      rem_dest_(rem_dest_),
+      my_dest_(my_dest_)
+  {
+  }
 
+  void Start()
+  {
+    DoRead();
+  }
+
+private:
+  void DoRead()
+  {
+    auto self(shared_from_this());
+    socket_.async_read_some(boost::asio::buffer(rem_dest_, sizeof(pingpong_dest)),
+        [this, self](boost::system::error_code ec, std::size_t length)
+        {
+          if (!ec)
+          {    
+            DoWrite(length);
+          }
+        });
+  }
+
+  void DoWrite(std::size_t length)
+  {
+    auto self(shared_from_this());
+    boost::asio::async_write(socket_, boost::asio::buffer(&my_dest_, sizeof(pingpong_dest)),
+        [this, self](boost::system::error_code ec, std::size_t /*length*/)
+        {
+          if (!ec)
+          {
+            DoRead();
+          }
+        });
+  }
+
+  tcp::socket socket_;
+  // enum { max_length = 1024 };
+  // char data_[max_length];
+  pingpong_dest *rem_dest_;
+  pingpong_dest my_dest_;
+};
 // struct Config cfg = {
 //   7000, /*port*/
 // 	NULL, /* dev_name */

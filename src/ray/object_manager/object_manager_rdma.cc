@@ -7,24 +7,60 @@
 #include <sys/socket.h>
 
 
+
+
+
 void ObjectManagerRdma::DoAccept() {
-  RAY_LOG(DEBUG) << " ObjectManagerRdma::DoAccept()  ";
+  // RAY_LOG(DEBUG) << " ObjectManagerRdma::DoAccept()  ";
+  // acceptor_.async_accept(
+  //     socket_,
+  //     boost::bind(&ObjectManagerRdma::HandleAccept, this, boost::asio::placeholders::error));
+  
+
   acceptor_.async_accept(
-      socket_,
-      boost::bind(&ObjectManagerRdma::HandleAccept, this, boost::asio::placeholders::error));
+    [this](boost::system::error_code ec, tcp::socket socket)
+    {
+      if (!ec)
+      {
+        Message *rem_dest = new Message();
+        remote_dest_[socket.remote_endpoint().address()] = rem_dest;
+        std::make_shared<Session>(std::move(socket), rem_dest, my_dest_)->Start();
+      }
+
+      DoAccept();
+    });
+
 }
 
-void ObjectManagerRdma::HandleAccept(const boost::system::error_code &error) {
-  if (!error) {
-    // boost::bind(&ObjectManagerRdma::ProcessInfoMessage, this, boost::asio::placeholders::error);
-     RAY_LOG(DEBUG) <<"remote ip:"<<socket_.remote_endpoint().address(); 
-  }
-  DoAccept();
+void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
+    boost::asio::io_context io_context;
+    boost::asio::ip::tcp::socket s(io_context);
+    boost::asio::ip::tcp::resolver resolver(io_context);
+    boost::asio::connect(s, resolver.resolve(ip_address, cfg_.port));
+    boost::asio::write(s, boost::asio::buffer(&my_dest_, sizeof(struct pingpong_dest)));
+    struct pingpong_dest* rem_dest = new pingpong_dest();
+    size_t reply_length = boost::asio::read(s,
+        boost::asio::buffer(&rem_dest, sizeof(struct pingpong_dest)));
+    remote_dest_[ip_address] = rem_dest;
 }
+
+// void ObjectManagerRdma::HandleAccept(const boost::system::error_code &error) {
+//   if (!error) {
+//     // boost::bind(&ObjectManagerRdma::ProcessInfoMessage, this, boost::asio::placeholders::error);
+//      RAY_LOG(DEBUG) <<"remote ip:"<<socket_.remote_endpoint().address(); 
+//   }
+//   DoAccept();
+// }
 
 void ObjectManagerRdma::Stop() {
   RAY_LOG(DEBUG) << " ObjectManagerRdma::Stop()  ";
-  acceptor_.close(); 
+  acceptor_.close();
+  if (!remote_dest_.empty()) {
+    for (auto &entry: remote_dest_) {
+      free(entry.second);
+    }
+    remote_dest_.clear();
+  }
 }
 
 void ObjectManagerRdma::InitRdmaBaseCfg() {
@@ -298,13 +334,13 @@ int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
 	return ibv_query_port(context, port, attr);
 }
 
-void ObjectManagerRdma::ExRdmaConfig() {
-  RAY_LOG(DEBUG) << "ExRdmaConfig ";
-  const auto &node_map = gcs_client_->Nodes().GetAll();
-  for (const auto &item : node_map) {
-    RAY_LOG(DEBUG) << "node_manager_address " << item.second.node_manager_address();
-  }
-}
+// void ObjectManagerRdma::ExRdmaConfig() {
+//   RAY_LOG(DEBUG) << "ExRdmaConfig ";
+//   const auto &node_map = gcs_client_->Nodes().GetAll();
+//   for (const auto &item : node_map) {
+//     RAY_LOG(DEBUG) << "node_manager_address " << item.second.node_manager_address();
+//   }
+// }
 
 
 // enum ibv_mtu pp_mtu_to_enum(int mtu)
