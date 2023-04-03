@@ -92,6 +92,7 @@ class ObjectManagerRdma {
   
   // void ExRdmaConfig();
   void ConnectAndEx(std::string ip_address);
+  void FreeRdmaResource();
 
   private:
     boost::asio::ip::tcp::acceptor acceptor_;

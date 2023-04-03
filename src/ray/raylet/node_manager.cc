@@ -1003,6 +1003,7 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
     int64_t remote_register_time = node_info.register_time();
     if (self_register_time_ > remote_register_time) {
       object_manager_rdma_.ConnectAndEx(node_info.node_manager_address());
+      RAY_LOG(DEBUG) << "Accomplish ConnectAndEx with " << node_info.node_manager_address();
       if(!remote_node_register_time_.empty()) {
         for(auto &entry: remote_node_register_time_) {
           if (self_register_time_ > entry.second.second) {

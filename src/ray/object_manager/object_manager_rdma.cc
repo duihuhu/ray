@@ -22,7 +22,6 @@ void ObjectManagerRdma::DoAccept() {
         remote_dest_.emplace(socket.remote_endpoint().address().to_string(), rem_dest);
         std::make_shared<Session>(std::move(socket), rem_dest, my_dest_)->Start();
       }
-
       DoAccept();
     });
 
@@ -58,6 +57,7 @@ void ObjectManagerRdma::Stop() {
     }
     remote_dest_.clear();
   }
+  FreeRdmaResource();
 }
 
 void ObjectManagerRdma::InitRdmaBaseCfg() {
@@ -323,6 +323,17 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
   //   free(ctx_);
 
 	return;
+}
+
+void ObjectManagerRdma::FreeRdmaResource() {
+    ibv_destroy_qp(ctx_->qp);
+    ibv_destroy_cq(pp_cq());
+    ibv_dereg_mr(ctx_->mr);
+    ibv_free_dm(ctx_->dm);
+    ibv_dealloc_pd(ctx_->pd);
+    ibv_destroy_comp_channel(ctx_->channel);
+    ibv_close_device(ctx_->context);
+    free(ctx_);
 }
 
 int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
