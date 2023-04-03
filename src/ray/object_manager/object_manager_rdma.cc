@@ -88,23 +88,23 @@ void ObjectManagerRdma::InitRdmaCtx() {
 	// struct pingpong_dest     my_dest;
 	// struct pingpong_dest    *rem_dest;
 	char                    *ib_devname = cfg_.ib_devname;
-	unsigned int             port = cfg_.port;
+	// unsigned int             port = cfg_.port;
 	int                      ib_port = 1;
-	unsigned int             size = cfg_.size;
-	enum ibv_mtu		 mtu = cfg_.mtu;
+	// unsigned int             size = cfg_.size;
+	// enum ibv_mtu		 mtu = cfg_.mtu;
 	unsigned int             rx_depth = cfg_.rx_depth;
-	unsigned int             iters = cfg_.iters;
+	// unsigned int             iters = cfg_.iters;
 	int                      use_event = cfg_.use_event;
-	int                      routs;
+	// int                      routs;
 	// int                      rcnt, scnt;
-	int                      num_cq_events = 0;
-	int                      sl = 0;
+	// int                      num_cq_events = 0;
+	// int                      sl = 0;
 	int			 gidx = cfg_.gidx;
 	char			 gid[33];
-  int page_size;
+  // int page_size;
   srand48(getpid() * time(NULL));
 
-	page_size = sysconf(_SC_PAGESIZE);
+	// page_size = sysconf(_SC_PAGESIZE);
 
 	dev_list = ibv_get_device_list(NULL);
 	if (!dev_list) {

@@ -968,9 +968,6 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
 
   RAY_LOG(DEBUG) << "[NodeAdded] Received callback from node id " << node_id;
 
-  RAY_LOG(DEBUG) << "NodeAdded " << node_info.node_manager_address() << " " << node_info.register_time();
-
-
   if (node_id == self_node_id_) {
     self_register_time_ =  node_info.register_time();
     return;
@@ -1001,8 +998,10 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
     RAY_LOG(DEBUG) << "self_register_time_ is already init";
     std::string remote_node_manager_address = node_info.node_manager_address();
     int64_t remote_register_time = node_info.register_time();
+    RAY_LOG(DEBUG) << "remote_node_manager_address "<< remote_node_manager_address;
+
     if (self_register_time_ > remote_register_time) {
-      object_manager_rdma_.ConnectAndEx(node_info.node_manager_address());
+      object_manager_rdma_.ConnectAndEx(remote_node_manager_address);
       RAY_LOG(DEBUG) << "Accomplish ConnectAndEx with " << node_info.node_manager_address();
       if(!remote_node_register_time_.empty()) {
         for(auto &entry: remote_node_register_time_) {
