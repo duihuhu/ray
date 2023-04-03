@@ -1014,6 +1014,9 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
   if (self_register_time_ == 0) {
     RAY_LOG(DEBUG) << "self_register_time_ is not init";
     remote_node_register_time_[node_id] = std::make_pair(node_info.node_manager_address(), node_info.register_time());
+    //todo need one hash to record which is already connect
+    // object_manager_rdma_.ConnectAndEx(entry.second.first);
+
   } else {
     RAY_LOG(DEBUG) << "self_register_time_ is already init " << node_info.node_manager_address();
     std::string remote_node_manager_address = node_info.node_manager_address();
