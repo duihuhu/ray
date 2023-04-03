@@ -28,7 +28,6 @@ void ObjectManagerRdma::DoAccept() {
 }
 
 void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
-    RAY_LOG(DEBUG) << "ConnectAndEx " << ip_address;
     boost::asio::io_context io_context;
     boost::asio::ip::tcp::socket s(io_context);
     boost::asio::ip::tcp::resolver resolver(io_context);

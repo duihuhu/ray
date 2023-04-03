@@ -970,6 +970,14 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
 
   if (node_id == self_node_id_) {
     self_register_time_ =  node_info.register_time();
+    if(!remote_node_register_time_.empty()) {
+      for(auto &entry: remote_node_register_time_) {
+        if (self_register_time_ > entry.second.second) {
+          object_manager_rdma_.ConnectAndEx(entry.second.first);
+        }
+      }
+      remote_node_register_time_.clear();
+    }
     return;
   }
   // Store address of the new node manager for rpc requests.
@@ -995,7 +1003,7 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
     RAY_LOG(DEBUG) << "self_register_time_ is not init";
     remote_node_register_time_[node_id] = std::make_pair(node_info.node_manager_address(), node_info.register_time());
   } else {
-    RAY_LOG(DEBUG) << "self_register_time_ is already init " << node_info.node_manager_address();
+    RAY_LOG(DEBUG) << "self_register_time_ is already init " << node_info.node_manager_address() <<;
     std::string remote_node_manager_address = node_info.node_manager_address();
     int64_t remote_register_time = node_info.register_time();
     if (self_register_time_ > remote_register_time) {

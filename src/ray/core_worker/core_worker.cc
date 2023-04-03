@@ -1139,6 +1139,13 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     auto current = it++;
     if (current->second->IsInPlasmaError()) {
       RAY_LOG(DEBUG) << current->first << " in plasma, doing fetch-and-get";
+      auto it = plasma_node_virt_info_.find(current->first);
+      if (it == plasma_node_virt_info_.end()) {
+        RAY_LOG(DEBUG) << current->first << " has no information in  plasma_node_virt_info_";
+      } else {
+        RAY_LOG(DEBUG) << current->first << " virtual address " << it.second.first <<  " object size " << it.second.second;
+      }
+
       plasma_object_ids.insert(current->first);
       result_map.erase(current);
     }
