@@ -1634,8 +1634,8 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   // auto ts_breakdown_get_object_node_manager = current_sys_time_us();
   //end hucc
 
-  vector<unsigned long> object_virt_address;
-  vector<uint64_t>  object_sizes;
+  std::vector<unsigned long> object_virt_address;
+  std::vector<uint64_t>  object_sizes;
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
