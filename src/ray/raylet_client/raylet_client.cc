@@ -211,7 +211,7 @@ Status raylet::RayletClient::FetchOrReconstruct(
     bool mark_worker_blocked,
     const TaskID &current_task_id,
     const std::vector<unsigned long> &batch_virt_address,
-    const std::vector<int64_t> &batch_object_size) {
+    const std::vector<int> &batch_object_size) {
   RAY_CHECK(object_ids.size() == owner_addresses.size());
   //hucc add for plasma
   // std::unordered_map<std::string, int> stat_addr;

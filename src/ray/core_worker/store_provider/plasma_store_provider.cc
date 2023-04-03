@@ -171,7 +171,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
     absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
     bool *got_exception,
     const std::vector<unsigned long> &batch_virt_address,
-    const std::vector<int64_t> &batch_object_size) {
+    const std::vector<int> &batch_object_size) {
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
   //hucc breakdown get_object
@@ -290,7 +290,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   int64_t batch_size = RayConfig::instance().worker_fetch_request_size();
   std::vector<ObjectID> batch_ids;
   std::vector<unsigned long> batch_virt_address;
-  std::vector<int64_t> batch_object_size;
+  std::vector<int> batch_object_size;
 
   absl::flat_hash_set<ObjectID> remaining(object_ids.begin(), object_ids.end());
 
