@@ -239,8 +239,8 @@ Status raylet::RayletClient::FetchOrReconstruct(
                                          fetch_only,
                                          mark_worker_blocked,
                                          to_flatbuf(fbb, current_task_id),
-                                         to_flatbuf(fbb, batch_virt_address, batch_virt_address.size()),
-                                         to_flatbuf(fbb, batch_object_size, batch_object_size.size()));
+                                         fbb.CreateVector(batch_virt_address),
+                                         fbb.CreateVector(batch_object_size));
   fbb.Finish(message);
   return conn_->WriteMessage(MessageType::FetchOrReconstruct, &fbb);
 }
