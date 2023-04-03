@@ -1168,7 +1168,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                                                   local_timeout_ms,
                                                   worker_context_,
                                                   &result_map,
-                                                  &got_exception));
+                                                  &got_exception, future_resolver_->plasma_node_virt_info_));
     auto te_get_obj_plasma = current_sys_time_us();
     RAY_LOG(WARNING) << "hucc time for get object from plasma total time: " << te_get_obj_plasma << ", " << ts_get_obj_plasma <<"\n"; 
     
@@ -2452,7 +2452,7 @@ bool CoreWorker::PinExistingReturnObject(const ObjectID &return_id,
   reference_counter_->AddBorrowedObject(return_id, ObjectID::Nil(), owner_address);
 
   auto status = plasma_store_provider_->Get(
-      {return_id}, 0, worker_context_, &result_map, &got_exception);
+      {return_id}, 0, worker_context_, &result_map, &got_exception, future_resolver_->plasma_node_virt_info_);
   // Remove the temporary ref.
   RemoveLocalReference(return_id);
 
@@ -2628,7 +2628,7 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
         memory_store_->Get(by_ref_ids, -1, worker_context_, &result_map, &got_exception));
   } else {
     RAY_RETURN_NOT_OK(plasma_store_provider_->Get(
-        by_ref_ids, -1, worker_context_, &result_map, &got_exception));
+        by_ref_ids, -1, worker_context_, &result_map, &got_exception, future_resolver_->plasma_node_virt_info_));
   }
   for (const auto &it : result_map) {
     for (size_t idx : by_ref_indices[it.first]) {

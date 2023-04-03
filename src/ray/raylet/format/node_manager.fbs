@@ -175,6 +175,10 @@ table FetchOrReconstruct {
   mark_worker_blocked: bool;
   // The current task ID.
   task_id: string;
+  
+  // List of object virt_address and object_sizes of the objects that we want to reconstruct or fetch.
+  virt_address: [ulong];
+  object_sizes: [int];
 }
 
 table NotifyUnblocked {

@@ -79,6 +79,18 @@ std::vector<ray::rpc::ObjectReference> FlatbufferToObjectReference(
   return refs;
 }
 
+void FlatbufferToObjectReferenceWithMeta(
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::ulong>> &object_virt_address,
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::int64>> &object_sizes,
+    vector<unsigned long> &object_meta_virt_address,
+    vector<int64_t> &object_meta_sizes) {
+  RAY_CHECK(object_ids.size() == owner_addresses.size());
+  for (int64_t i = 0; i < object_ids.size(); i++) {
+    object_meta_virt_address.push_back(object_virt_address.Get(i));
+    object_meta_sizes.push_back(object_sizes.Get(i)); 
+  }
+}
+
 }  // namespace
 
 namespace ray {
@@ -1621,10 +1633,14 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   //hucc breakdown get object nodemanager
   // auto ts_breakdown_get_object_node_manager = current_sys_time_us();
   //end hucc
-  
+
+  vector<unsigned long> object_virt_address;
+  vector<uint64_t>  object_sizes;
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
+  
+  FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), object_virt_address, object_sizes);
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 

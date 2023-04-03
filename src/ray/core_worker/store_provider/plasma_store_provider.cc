@@ -169,7 +169,9 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
     bool in_direct_call,
     const TaskID &task_id,
     absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
-    bool *got_exception) {
+    bool *got_exception,
+    const std::vector<ObjectID> &batch_virt_address,
+    const std::vector<ObjectID> &batch_object_size) {
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
   //hucc breakdown get_object
@@ -185,7 +187,9 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
                                          owner_addresses,
                                          fetch_only,
                                          /*mark_worker_blocked*/ !in_direct_call,
-                                         task_id));
+                                         task_id,
+                                         batch_virt_address,
+                                         batch_object_size));
 
   std::vector<plasma::ObjectBuffer> plasma_results;
   RAY_RETURN_NOT_OK(store_client_.Get(batch_ids,
@@ -282,21 +286,37 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     int64_t timeout_ms,
     const WorkerContext &ctx,
     absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
-    bool *got_exception) {
+    bool *got_exception, absl::flat_hash_map<ObjectID, std::pair<unsigned long, int64_t>> &plasma_node_virt_info_) {
   int64_t batch_size = RayConfig::instance().worker_fetch_request_size();
   std::vector<ObjectID> batch_ids;
+  std::vector<ObjectID> batch_virt_address;
+  std::vector<ObjectID> batch_object_size;
+
   absl::flat_hash_set<ObjectID> remaining(object_ids.begin(), object_ids.end());
 
   // First, attempt to fetch all of the required objects once without reconstructing.
   std::vector<ObjectID> id_vector(object_ids.begin(), object_ids.end());
   int64_t total_size = static_cast<int64_t>(object_ids.size());
+  
+  std::vector<unsigned long> virt_address_vector;
+  std::vector<int64_t> object_size_vector;
+  for (auto &entry: id_vector) {
+    auto it = plasma_node_virt_info_.find(entry);
+    virt_address_vector.push_back(it->second.first);
+    object_size_vector.push_back(it->second.second);
+  }
   //hucc time for get obj from local plasma
   auto ts_get_obj_local_plasma = current_sys_time_us();
   
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
+    batch_virt_address.clear();
+    batch_object_size.clear();
     for (int64_t i = start; i < batch_size && i < total_size; i++) {
       batch_ids.push_back(id_vector[start + i]);
+      batch_virt_address.push_back(virt_address_vector[start + i]);
+      batch_object_size.push_back(object_size_vector[start + i]);
+
     }
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
@@ -305,7 +325,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  ctx.CurrentTaskIsDirectCall(),
                                                  ctx.GetCurrentTaskID(),
                                                  results,
-                                                 got_exception));
+                                                 got_exception, 
+                                                 batch_virt_address,
+                                                 batch_object_size));
   }
   auto te_get_obj_local_plasma = current_sys_time_us();
   RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
@@ -354,7 +376,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  ctx.CurrentTaskIsDirectCall(),
                                                  ctx.GetCurrentTaskID(),
                                                  results,
-                                                 got_exception));
+                                                 got_exception,
+                                                 batch_virt_address,
+                                                 batch_object_size));
     should_break = timed_out || *got_exception;
 
     if ((previous_size - remaining.size()) < batch_ids.size()) {
