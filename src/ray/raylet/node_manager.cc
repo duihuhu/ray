@@ -995,14 +995,14 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
     RAY_LOG(DEBUG) << "self_register_time_ is not init";
     remote_node_register_time_[node_id] = std::make_pair(node_info.node_manager_address(), node_info.register_time());
   } else {
-    RAY_LOG(DEBUG) << "self_register_time_ is already init";
+    RAY_LOG(DEBUG) << "self_register_time_ is already init " << node_info.node_manager_address();
     std::string remote_node_manager_address = node_info.node_manager_address();
     int64_t remote_register_time = node_info.register_time();
     RAY_LOG(DEBUG) << "remote_node_manager_address "<< remote_node_manager_address;
 
     if (self_register_time_ > remote_register_time) {
       object_manager_rdma_.ConnectAndEx(remote_node_manager_address);
-      RAY_LOG(DEBUG) << "Accomplish ConnectAndEx with " << node_info.node_manager_address();
+      RAY_LOG(DEBUG) << "Accomplish ConnectAndEx with " << remote_node_manager_address;
       if(!remote_node_register_time_.empty()) {
         for(auto &entry: remote_node_register_time_) {
           if (self_register_time_ > entry.second.second) {
