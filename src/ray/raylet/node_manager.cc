@@ -80,8 +80,8 @@ std::vector<ray::rpc::ObjectReference> FlatbufferToObjectReference(
 }
 
 void FlatbufferToObjectReferenceWithMeta(
-    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::Ulong>> &object_virt_address,
-    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::Int>> &object_sizes,
+    const flatbuffers::Vector<flatbuffers::Offset<unsigned long>> &object_virt_address,
+    const flatbuffers::Vector<flatbuffers::Offset<int>> &object_sizes,
     std::vector<unsigned long> &object_meta_virt_address,
     std::vector<int> &object_meta_sizes) {
   RAY_CHECK(object_virt_address.size() == object_sizes.size());
@@ -1635,7 +1635,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   //end hucc
 
   std::vector<unsigned long> object_virt_address;
-  std::vector<uint64_t>  object_sizes;
+  std::vector<int>  object_sizes;
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
