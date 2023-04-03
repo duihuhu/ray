@@ -102,7 +102,7 @@ class ObjectManagerRdma {
     unsigned long plasma_address_;
     int64_t plasma_size_;
     std::shared_ptr<ray::gcs::GcsClient> gcs_client_;
-    absl::flat_hash_map<std::string, pingpong_dest*> remote_dest_;
+    absl::flat_hash_map<std::string, struct pingpong_dest*> remote_dest_;
 };
 
 class Session
