@@ -1641,7 +1641,6 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
   FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), object_virt_address, object_sizes);
-  object_manager_rdma_.PrintRemoteRdmaInfo();
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 
@@ -1663,6 +1662,8 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       // This will start a fetch for the objects that gets canceled once the
       // objects are local, or if the worker dies.
       dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
+      object_manager_rdma_.PrintRemoteRdmaInfo();
+
     }
   } else {
     // The values are needed. Add all requested objects to the list to
