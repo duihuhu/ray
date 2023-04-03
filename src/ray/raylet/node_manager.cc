@@ -86,8 +86,8 @@ void FlatbufferToObjectReferenceWithMeta(
     std::vector<int> &object_meta_sizes) {
   RAY_CHECK(object_virt_address.size() == object_sizes.size());
   for (int64_t i = 0; i < object_virt_address.size(); i++) {
-    object_meta_virt_address.push_back(object_virt_address.Get(i));
-    object_meta_sizes.push_back(object_sizes.Get(i)); 
+    object_meta_virt_address.emplace_back(object_virt_address.Get(i));
+    object_meta_sizes.emplace_back(object_sizes.Get(i)); 
   }
 }
 
