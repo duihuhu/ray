@@ -32,7 +32,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
     boost::asio::io_context io_context;
     boost::asio::ip::tcp::socket s(io_context);
     boost::asio::ip::tcp::resolver resolver(io_context);
-    boost::asio::connect(s, resolver.resolve(ip_address, cfg_.port));
+    boost::asio::connect(s, resolver.resolve(ip_address, std::to_string(cfg_.port)));
     boost::asio::write(s, boost::asio::buffer(&my_dest_, sizeof(struct pingpong_dest)));
     struct pingpong_dest* rem_dest = new pingpong_dest();
     size_t reply_length = boost::asio::read(s,
