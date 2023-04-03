@@ -64,7 +64,8 @@ class FutureResolver {
                              const rpc::Address &owner_address,
                              const Status &status,
                              const rpc::GetObjectStatusReply &object_status);
-
+  absl::flat_hash_map<ObjectID, std::pair<unsigned long, int64_t>>
+    plasma_node_virt_info_;
  private:
   /// Used to store values of resolved futures.
   std::shared_ptr<CoreWorkerMemoryStore> in_memory_store_;
@@ -83,8 +84,7 @@ class FutureResolver {
   /// object has gone out of scope.
   const rpc::Address rpc_address_;
 
-  absl::flat_hash_map<ObjectID, std::pair<unsigned long, int64_t>>
-    plasma_node_virt_info_;
+
 };
 
 }  // namespace core
