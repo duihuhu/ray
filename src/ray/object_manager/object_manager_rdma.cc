@@ -174,15 +174,15 @@ void ObjectManagerRdma::InitRdmaCtx(struct pingpong_context *ctx, struct pingpon
 			return;
 		}
 	} else
-		memset(&my_dest.gid, 0, sizeof my_dest.gid);
+		memset(&my_dest->gid, 0, sizeof my_dest->gid);
 
 	my_dest.qpn = ctx->qp->qp_num;
 	my_dest.psn = lrand48() & 0xffffff;
 	inet_ntop(AF_INET6, &my_dest.gid, gid, sizeof gid);
 	// printf("  local address:  LID 0x%04x, QPN 0x%06x, PSN 0x%06x, GID %s\n",
 	//        my_dest_.lid, my_dest_.qpn, my_dest_.psn, gid);
-  RAY_LOG(DEBUG) << "  local address:  LID " << my_dest.lid << " QPN " <<  my_dest.qpn \
-  <<" PSN " << my_dest.psn << " GID " << gid;
+  RAY_LOG(DEBUG) << "  local address:  LID " << my_dest->lid << " QPN " <<  my_dest->qpn \
+  <<" PSN " << my_dest->psn << " GID " << gid;
   return;
 
 }
