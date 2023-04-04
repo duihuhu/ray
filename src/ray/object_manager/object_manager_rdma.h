@@ -95,7 +95,7 @@ public:
   void ConnectAndEx(std::string ip_address);
   void FreeRdmaResource(struct pingpong_context *ctx);
   void PrintRemoteRdmaInfo();
-  void FetchObjectFromRemotePlasma(const WorkerID &worker_id, const std::vector<string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes);
+  void FetchObjectFromRemotePlasma(const ray::WorkerID &worker_id, const std::vector<std::string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes);
   int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest);
   void QueryQp(struct pingpong_context *ctx);
 
