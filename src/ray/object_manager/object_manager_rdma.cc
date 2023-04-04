@@ -47,8 +47,8 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
         boost::asio::buffer(rem_dest, sizeof(struct pingpong_dest)));
     // remote_dest_.emplace(ip_address, rem_dest);
     CovRdmaStatus(ctx, rem_dest, my_dest);
-    remote_dest_[socket.remote_endpoint().address().to_string()] = std::make_pair(std::make_pair(ctx, my_dest),rem_dest);
-    // remote_dest_.emplace(socket.remote_endpoint().address().to_string(), std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
+    // remote_dest_[socket.remote_endpoint().address().to_string()] = std::make_pair(std::make_pair(ctx, my_dest),rem_dest);
+    remote_dest_.emplace(ip_address, std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
 }
 
 // void ObjectManagerRdma::HandleAccept(const boost::system::error_code &error) {
