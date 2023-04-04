@@ -23,8 +23,7 @@ void ObjectManagerRdma::DoAccept() {
         struct pingpong_context *ctx = new pingpong_context();
         InitRdmaCtx(ctx, my_dest);
         // remote_dest_.emplace(socket.remote_endpoint().address().to_string(), rem_dest);
-        // remote_dest_.emplace(socket.remote_endpoint().address().to_string(), std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
-        remote_dest_[socket.remote_endpoint().address().to_string()] = std::make_pair(std::make_pair(ctx, my_dest),rem_dest);
+        remote_dest_.emplace(socket.remote_endpoint().address().to_string(), std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
 
         std::make_shared<Session>(std::move(socket), ctx, rem_dest, my_dest)->Start();
       }
