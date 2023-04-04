@@ -82,12 +82,17 @@ std::vector<ray::rpc::ObjectReference> FlatbufferToObjectReference(
 void FlatbufferToObjectReferenceWithMeta(
     const flatbuffers::Vector<unsigned long> &object_virt_address,
     const flatbuffers::Vector<int> &object_sizes,
+     const flatbuffers::Vector<flatbuffers::Offset<ray::protocol::Address>>
+        &owner_addresses,
     std::vector<unsigned long> &object_meta_virt_address,
-    std::vector<int> &object_meta_sizes) {
+    std::vector<int> &object_meta_sizes,
+    std::vector<string> &object_address) {
   RAY_CHECK(object_virt_address.size() == object_sizes.size());
   for (int64_t i = 0; i < object_virt_address.size(); i++) {
     object_meta_virt_address.emplace_back(object_virt_address.Get(i));
     object_meta_sizes.emplace_back(object_sizes.Get(i)); 
+    const auto &addr = owner_addresses.Get(i);
+    object_address.emplace_back(addr->ip_address()->str());
   }
 }
 
@@ -1638,11 +1643,12 @@ void NodeManager::ProcessFetchOrReconstructMessage(
 
   std::vector<unsigned long> object_virt_address;
   std::vector<int>  object_sizes;
+  std::vector<std::string> object_address;
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
-  FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), object_virt_address, object_sizes);
+  FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), *message->owner_address(), object_virt_address, object_sizes, object_address);
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 
@@ -1665,6 +1671,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       // objects are local, or if the worker dies.
       dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
       object_manager_rdma_.PrintRemoteRdmaInfo();
+      object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes);
 
     }
   } else {

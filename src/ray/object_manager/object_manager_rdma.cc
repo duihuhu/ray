@@ -19,8 +19,12 @@ void ObjectManagerRdma::DoAccept() {
       if (!ec)
       {
         struct pingpong_dest *rem_dest = new pingpong_dest();
-        remote_dest_.emplace(socket.remote_endpoint().address().to_string(), rem_dest);
-        std::make_shared<Session>(std::move(socket), rem_dest, my_dest_)->Start();
+        struct pingpong_dest *my_dest = new pingpong_dest();
+        struct pingpong_context *ctx = new pingpong_context();
+        InitRdmaCtx(ctx, my_dest);
+        // remote_dest_.emplace(socket.remote_endpoint().address().to_string(), rem_dest);
+        remote_dest_.emplace(socket.remote_endpoint().address().to_string(), std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
+        std::make_shared<Session>(std::move(socket), ctx, rem_dest, my_dest_)->Start();
       }
       DoAccept();
     });
@@ -32,12 +36,16 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
     boost::asio::ip::tcp::socket s(io_context);
     boost::asio::ip::tcp::resolver resolver(io_context);
     boost::asio::connect(s, resolver.resolve(ip_address, std::to_string(cfg_.port)));
-    boost::asio::write(s, boost::asio::buffer(&my_dest_, sizeof(struct pingpong_dest)));
+    struct pingpong_dest *my_dest = new pingpong_dest();
+    struct pingpong_context *ctx = new pingpong_context();
+    InitRdmaCtx(ctx, my_dest);
+    boost::asio::write(s, boost::asio::buffer(&my_dest, sizeof(struct pingpong_dest)));
     struct pingpong_dest* rem_dest = new pingpong_dest();
     size_t reply_length = boost::asio::read(s,
         boost::asio::buffer(rem_dest, sizeof(struct pingpong_dest)));
-    remote_dest_.emplace(ip_address, rem_dest);
-
+    // remote_dest_.emplace(ip_address, rem_dest);
+    CovRdmaStatus(ctx, rem_dest);
+    remote_dest_.emplace(socket.remote_endpoint().address().to_string(), std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
 }
 
 // void ObjectManagerRdma::HandleAccept(const boost::system::error_code &error) {
@@ -53,11 +61,12 @@ void ObjectManagerRdma::Stop() {
   acceptor_.close();
   if (!remote_dest_.empty()) {
     for (auto &entry: remote_dest_) {
-      free(entry.second);
+      FreeRdmaResource(entry.second.first.first);
+      free(entry.second.first.second);
+      free(entry.second.second);
     }
     remote_dest_.clear();
   }
-  FreeRdmaResource();
 }
 
 void ObjectManagerRdma::InitRdmaBaseCfg() {
@@ -78,10 +87,10 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
 void ObjectManagerRdma::InitRdmaConfig() {
   InitRdmaBaseCfg();
   RAY_LOG(DEBUG) << "InitRdmaConfig " << plasma_address_ << " " << plasma_size_;
-  InitRdmaCtx();
+  // InitRdmaCtx();
 }
 
-void ObjectManagerRdma::InitRdmaCtx() {
+void ObjectManagerRdma::InitRdmaCtx(struct pingpong_context *ctx, struct pingpong_dest *my_dest) {
   struct ibv_device      **dev_list;
 	struct ibv_device	*ib_dev;
 	// struct pingpong_context *ctx;
@@ -135,68 +144,68 @@ void ObjectManagerRdma::InitRdmaCtx() {
 		}
 	}
   RAY_LOG(DEBUG) << "InitRdmaCtx " << ib_devname;
-  pp_init_ctx(ib_dev, rx_depth, ib_port, use_event);
+  pp_init_ctx(ctx, ib_dev, rx_depth, ib_port, use_event);
 	// if (!ctx)
 	// 	return 0;
 
   if (use_event)
-		if (ibv_req_notify_cq(pp_cq(), 0)) {
+		if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
       RAY_LOG(ERROR) << "Couldn't request CQ notification";
 			return ;
 		}
 
-  if (pp_get_port_info(ctx_->context, cfg_.ib_port, &ctx_->portinfo)) {
+  if (pp_get_port_info(ctx->context, cfg_.ib_port, &ctx->portinfo)) {
     RAY_LOG(ERROR) << "Couldn't get port info";
 		return;
 	}
 
-	my_dest_.lid = ctx_->portinfo.lid;
-	if (ctx_->portinfo.link_layer != IBV_LINK_LAYER_ETHERNET &&
-							!my_dest_.lid) {
+	my_dest.lid = ctx->portinfo.lid;
+	if (ctx->portinfo.link_layer != IBV_LINK_LAYER_ETHERNET &&
+							!my_dest.lid) {
     RAY_LOG(ERROR) << "Couldn't get local LID";
 		return;
 	}
 
 	if (cfg_.gidx >= 0) {
-		if (ibv_query_gid(ctx_->context, cfg_.ib_port, cfg_.gidx, &my_dest_.gid)) {
+		if (ibv_query_gid(ctx->context, cfg_.ib_port, cfg_.gidx, &my_dest.gid)) {
       RAY_LOG(ERROR) << "can't read sgid of index " << cfg_.gidx;
 			return;
 		}
 	} else
-		memset(&my_dest_.gid, 0, sizeof my_dest_.gid);
+		memset(&my_dest.gid, 0, sizeof my_dest.gid);
 
-	my_dest_.qpn = ctx_->qp->qp_num;
-	my_dest_.psn = lrand48() & 0xffffff;
-	inet_ntop(AF_INET6, &my_dest_.gid, gid, sizeof gid);
+	my_dest.qpn = ctx->qp->qp_num;
+	my_dest.psn = lrand48() & 0xffffff;
+	inet_ntop(AF_INET6, &my_dest.gid, gid, sizeof gid);
 	// printf("  local address:  LID 0x%04x, QPN 0x%06x, PSN 0x%06x, GID %s\n",
 	//        my_dest_.lid, my_dest_.qpn, my_dest_.psn, gid);
-  RAY_LOG(DEBUG) << "  local address:  LID " << my_dest_.lid << " QPN " <<  my_dest_.qpn \
-  <<" PSN " << my_dest_.psn << " GID " << gid;
+  RAY_LOG(DEBUG) << "  local address:  LID " << my_dest.lid << " QPN " <<  my_dest.qpn \
+  <<" PSN " << my_dest.psn << " GID " << gid;
   return;
 
 }
 
-struct ibv_cq* ObjectManagerRdma::pp_cq()
+struct ibv_cq* ObjectManagerRdma::pp_cq(struct pingpong_context *ctx)
 {
-    return ctx_->cq_s.cq;
+    return ctx->cq_s.cq;
 }
 
-void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
+void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_device *ib_dev,
 					    int rx_depth, int port, int use_event)
 {
 	// struct pingpong_context *ctx;
 	// int access_flags = IBV_ACCESS_LOCAL_WRITE;
   int access_flags =  IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_ATOMIC;
-	ctx_ = (struct pingpong_context *) calloc(1, sizeof *ctx_);
+	// ctx = (struct pingpong_context *) calloc(1, sizeof *ctx);
 
-	if (!ctx_)
-		return;
+	// if (!ctx)
+	// 	return;
 
-	ctx_->size       = plasma_size_;
-	ctx_->send_flags = IBV_SEND_SIGNALED;
-	ctx_->rx_depth   = rx_depth;
+	ctx->size       = plasma_size_;
+	ctx->send_flags = IBV_SEND_SIGNALED;
+	ctx->rx_depth   = rx_depth;
 
-	ctx_->buf = (void *) plasma_address_;
+	ctx->buf = (void *) plasma_address_;
 
 	// if (!ctx_->buf) {
 	// 	fprintf(stderr, "Couldn't allocate work buf.\n");
@@ -206,8 +215,8 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	/* FIXME memset(ctx->buf, 0, size); */
 	// memset(ctx->buf, 0x7b, size);
 
-	ctx_->context = ibv_open_device(ib_dev);
-	if (!ctx_->context) {
+	ctx->context = ibv_open_device(ib_dev);
+	if (!ctx->context) {
     RAY_LOG(ERROR) << "Couldn't get context for " << ibv_get_device_name(ib_dev);
 
 		// fprintf(stderr, "Couldn't get context for %s\n", ibv_get_device_name(ib_dev));
@@ -215,32 +224,32 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	}
 
 	if (use_event) {
-		ctx_->channel = ibv_create_comp_channel(ctx_->context);
-		if (!ctx_->channel) {
+		ctx->channel = ibv_create_comp_channel(ctx->context);
+		if (!ctx->channel) {
       RAY_LOG(ERROR) << "Couldn't create completion channel";
 			// goto clean_device;
 		}
 	} else
-		ctx_->channel = NULL;
+		ctx->channel = NULL;
 
 
-	ctx_->pd = ibv_alloc_pd(ctx_->context);
-	if (!ctx_->pd) {
+	ctx->pd = ibv_alloc_pd(ctx->context);
+	if (!ctx->pd) {
     RAY_LOG(ERROR) << "Couldn't allocate PD";
 		// goto clean_comp_channel;
 	}
 
 
-  ctx_->mr = ibv_reg_mr(ctx_->pd, ctx_->buf, plasma_size_, access_flags);
-	if (!ctx_->mr) {
+  ctx->mr = ibv_reg_mr(ctx->pd, ctx->buf, plasma_size_, access_flags);
+	if (!ctx->mr) {
     RAY_LOG(ERROR) << "Couldn't register MR";
 		// goto clean_dm;
 	}
 
-  ctx_->cq_s.cq = ibv_create_cq(ctx_->context, rx_depth + 1, NULL,
-              ctx_->channel, 0);
+  ctx->cq_s.cq = ibv_create_cq(ctx->context, rx_depth + 1, NULL,
+              ctx->channel, 0);
 
-	if (!pp_cq()) {
+	if (!pp_cq(ctx)) {
     RAY_LOG(ERROR) << "Couldn't create CQ";
 		// goto clean_mr;
 	}
@@ -248,8 +257,8 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 	{
 		struct ibv_qp_attr attr;
 		struct ibv_qp_init_attr init_attr = {
-			.send_cq = pp_cq(),
-			.recv_cq = pp_cq(),
+			.send_cq = pp_cq(ctx),
+			.recv_cq = pp_cq(ctx),
 			.cap     = {
 				.max_send_wr  = 1,
 				.max_recv_wr  = rx_depth + 1, 
@@ -259,14 +268,14 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 			.qp_type = IBV_QPT_RC
 		};
 
-    ctx_->qp = ibv_create_qp(ctx_->pd, &init_attr);
+    ctx_->qp = ibv_create_qp(ctx->pd, &init_attr);
 
-		if (!ctx_->qp)  {
+		if (!ctx->qp)  {
       RAY_LOG(ERROR) << "Couldn't create QP";
 			// goto clean_cq;
 		}
 
-		ibv_query_qp(ctx_->qp, &attr, IBV_QP_CAP, &init_attr);
+		ibv_query_qp(ctx->qp, &attr, IBV_QP_CAP, &init_attr);
     // if (init_attr.cap.max_inline_data >= size)
 		// 	ctx_->send_flags |= IBV_SEND_INLINE;
 
@@ -278,9 +287,9 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
 			.pkey_index      = 0,
 			.port_num        = port
 		};
-    attr.qp_access_flags = 0;
-
-		if (ibv_modify_qp(ctx_->qp, &attr,
+    // attr.qp_access_flags = 0;
+    attr.qp_access_flags = IBV_ACCESS_LOCAL_WRITE  | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_ATOMIC;
+		if (ibv_modify_qp(ctx->qp, &attr,
 				  IBV_QP_STATE              |
 				  IBV_QP_PKEY_INDEX         |
 				  IBV_QP_PORT               |
@@ -294,46 +303,108 @@ void ObjectManagerRdma::pp_init_ctx(struct ibv_device *ib_dev,
   RAY_LOG(DEBUG) << "ibv_open_device success " << ibv_get_device_name(ib_dev);
 
   // clean_qp:
-  //   ibv_destroy_qp(ctx_->qp);
+  //   ibv_destroy_qp(ctx->qp);
 
   // clean_cq:
-  //   ibv_destroy_cq(pp_cq());
+  //   ibv_destroy_cq(pp_cq(ctx));
 
   // clean_mr:
-  //   ibv_dereg_mr(ctx_->mr);
+  //   ibv_dereg_mr(ctx->mr);
 
   // clean_dm:
-  //   if (ctx_->dm)
-  //     ibv_free_dm(ctx_->dm);
+  //   if (ctx->dm)
+  //     ibv_free_dm(ctx->dm);
 
   // clean_pd:
-  //   ibv_dealloc_pd(ctx_->pd);
+  //   ibv_dealloc_pd(ctx->pd);
 
   // clean_comp_channel:
   //   if (ctx_->channel)
-  //     ibv_destroy_comp_channel(ctx_->channel);
+  //     ibv_destroy_comp_channel(ctx->channel);
 
   // clean_device:
-  //   ibv_close_device(ctx_->context);
+  //   ibv_close_device(ctx->context);
 
   // clean_buffer:
-  //   free(ctx_->buf);
+  //   free(ctx->buf);
 
   // clean_ctx:
-  //   free(ctx_);
+  //   free(ctx);
 
 	return;
 }
 
-void ObjectManagerRdma::FreeRdmaResource() {
-    ibv_destroy_qp(ctx_->qp);
-    ibv_destroy_cq(pp_cq());
-    ibv_dereg_mr(ctx_->mr);
-    ibv_free_dm(ctx_->dm);
-    ibv_dealloc_pd(ctx_->pd);
-    ibv_destroy_comp_channel(ctx_->channel);
-    ibv_close_device(ctx_->context);
-    free(ctx_);
+
+int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest)
+{
+	struct ibv_qp_attr attr = {
+		.qp_state		= IBV_QPS_RTR,
+		.path_mtu		= cfg_.mtu,
+		.dest_qp_num		= dest->qpn,
+		.rq_psn			= dest->psn,
+		.max_dest_rd_atomic	= 1,
+		.min_rnr_timer		= 12,
+		.ah_attr		= {
+			.is_global	= 0,
+			.dlid		= dest->lid,
+			.sl		= cfg_.sl,
+			.src_path_bits	= 0,
+			.port_num	= cfg_.ib_port
+		}
+	};
+
+	if (dest->gid.global.interface_id) {
+		attr.ah_attr.is_global = 1;
+		attr.ah_attr.grh.hop_limit = 1;
+		attr.ah_attr.grh.dgid = dest->gid;
+		attr.ah_attr.grh.sgid_index = cfg_.gidx;
+	}
+	if (ibv_modify_qp(ctx->qp, &attr,
+			  IBV_QP_STATE              |
+			  IBV_QP_AV                 |
+			  IBV_QP_PATH_MTU           |
+			  IBV_QP_DEST_QPN           |
+			  IBV_QP_RQ_PSN             |
+			  IBV_QP_MAX_DEST_RD_ATOMIC |
+			  IBV_QP_MIN_RNR_TIMER)) {
+		// fprintf(stderr, "Failed to modify QP to RTR\n");
+    RAY_LOG(ERROR) << "Failed to modify QP to RTR";
+		return 1;
+	}
+
+	attr.qp_state	    = IBV_QPS_RTS;
+	attr.timeout	    = 14;
+	attr.retry_cnt	    = 7;
+	attr.rnr_retry	    = 7;
+	attr.sq_psn	    = my_dest_.my_psn;
+	attr.max_rd_atomic  = 1;
+	if (ibv_modify_qp(ctx->qp, &attr,
+			  IBV_QP_STATE              |
+			  IBV_QP_TIMEOUT            |
+			  IBV_QP_RETRY_CNT          |
+			  IBV_QP_RNR_RETRY          |
+			  IBV_QP_SQ_PSN             |
+			  IBV_QP_MAX_QP_RD_ATOMIC)) {
+		// fprintf(stderr, "Failed to modify QP to RTS\n");
+    RAY_LOG(ERROR) << "Failed to modify QP to RTS";
+		return 1;
+	}
+  RAY_LOG(DEBUG) << "Accomplish modify QP to RTS";
+
+	return 0;
+}
+
+
+
+void ObjectManagerRdma::FreeRdmaResource(struct pingpong_context *ctx) {
+    ibv_destroy_qp(ctx->qp);
+    ibv_destroy_cq(pp_cq(ctx));
+    ibv_dereg_mr(ctx->mr);
+    ibv_free_dm(ctx->dm);
+    ibv_dealloc_pd(ctx->pd);
+    ibv_destroy_comp_channel(ctx->channel);
+    ibv_close_device(ctx->context);
+    free(ctx);
 }
 
 int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
@@ -347,6 +418,32 @@ void ObjectManagerRdma::PrintRemoteRdmaInfo() {
     std::cout<<"PrintRemoteRdmaInfo " << entry.first;
   }
 }
+
+void ObjectManagerRdma::FetchObjectFromRemotePlasma(const WorkerID &worker_id, const std::vector<string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes) {
+  RAY_LOG(DEBUG) << "Starting get object through rdma for worker " << worker_id;
+  if (QueryQp(ctx_)) {
+
+  }
+  for(int i = 0; i < object_address.size(); ++i) {
+    std::string address = object_address[i];
+    auto it = remote_dest_.find(address);
+  }
+}
+
+void ObjectManagerRdma::QueryQp() {
+  struct ibv_qp_attr attr;
+  struct ibv_qp_init_attr init_attr;
+  
+  if (ibv_query_qp(ctx_->qp, &attr,
+        IBV_QP_STATE, &init_attr)) {
+    fprintf(stderr, "Failed to query QP state\n");
+    return -1;
+  }
+  if(attr.qp_state != IBV_QPS_RTS) {
+    CovRdmaStatus()
+  }
+}
+
 // void ObjectManagerRdma::ExRdmaConfig() {
 //   RAY_LOG(DEBUG) << "ExRdmaConfig ";
 //   const auto &node_map = gcs_client_->Nodes().GetAll();

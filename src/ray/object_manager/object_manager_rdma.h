@@ -67,7 +67,7 @@ struct pingpong_context {
 };
 
 class ObjectManagerRdma {
-  public:
+public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
          std::shared_ptr<ray::gcs::GcsClient> gcs_client)
     : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
@@ -85,36 +85,39 @@ class ObjectManagerRdma {
   void Stop();
   void InitRdmaConfig();
   void InitRdmaBaseCfg();
-  void InitRdmaCtx();
-  void pp_init_ctx(struct ibv_device *ib_dev, int rx_depth, int port, int use_event);
-  struct ibv_cq* pp_cq();
+  void InitRdmaCtx(struct pingpong_context *ctx, struct pingpong_dest *my_dest);
+  void pp_init_ctx(struct pingpong_context *ctx, struct ibv_device *ib_dev, int rx_depth, int port, int use_event);
+  struct ibv_cq* pp_cq(struct pingpong_context *ctx);
   int pp_get_port_info(struct ibv_context *context, int port, struct ibv_port_attr *attr);
   
   // void ExRdmaConfig();
   void ConnectAndEx(std::string ip_address);
-  void FreeRdmaResource();
+  void FreeRdmaResource(struct pingpong_context *ctx);
   void PrintRemoteRdmaInfo();
+  void FetchObjectFromRemotePlasma(const WorkerID &worker_id, const std::vector<string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes);
+  int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest);
 
-  private:
-    boost::asio::ip::tcp::acceptor acceptor_;
-    boost::asio::ip::tcp::socket socket_;
-    struct pingpong_context *ctx_;
-    struct pingpong_dest my_dest_;
-    struct Config cfg_;
-    unsigned long plasma_address_;
-    int64_t plasma_size_;
-    std::shared_ptr<ray::gcs::GcsClient> gcs_client_;
-    absl::flat_hash_map<std::string, struct pingpong_dest*> remote_dest_;
+private:
+  boost::asio::ip::tcp::acceptor acceptor_;
+  boost::asio::ip::tcp::socket socket_;
+  // struct pingpong_context *ctx_;
+  // struct pingpong_dest my_dest_;
+  struct Config cfg_;
+  unsigned long plasma_address_;
+  int64_t plasma_size_;
+  std::shared_ptr<ray::gcs::GcsClient> gcs_client_;
+  absl::flat_hash_map<std::string, std::pair<pair<struct pingpong_context *ctx, struct pingpong_dest*>, struct pingpong_dest*> remote_dest_;
 };
 
 class Session
   : public std::enable_shared_from_this<Session>
 {
 public:
-  Session(tcp::socket socket, pingpong_dest *rem_dest_, pingpong_dest &my_dest_)
+  Session(tcp::socket socket, struct pingpong_context *ctx, struct pingpong_dest *rem_dest, struct pingpong_dest *my_dest)
     : socket_(std::move(socket)),
-      rem_dest_(rem_dest_),
-      my_dest_(my_dest_)
+      rem_dest_(rem_dest),
+      my_dest_(my_dest),
+      ctx_(ctx)
   {
   }
 
@@ -127,9 +130,11 @@ private:
   void DoRead()
   {
     auto self(shared_from_this());
-    socket_.async_read_some(boost::asio::buffer(rem_dest_, sizeof(pingpong_dest)),
+    // socket_.async_read_some(boost::asio::buffer(rem_dest_, sizeof(pingpong_dest)),
+    socket_.async_read(boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
+          ObjectManagerRdma::CovRdmaStatus(ctx_, rem_dest_);
           if (!ec)
           {    
             DoWrite(length);
@@ -140,7 +145,7 @@ private:
   void DoWrite(std::size_t length)
   {
     auto self(shared_from_this());
-    boost::asio::async_write(socket_, boost::asio::buffer(&my_dest_, sizeof(pingpong_dest)),
+    boost::asio::async_write(socket_, boost::asio::buffer(my_dest_, sizeof(struct pingpong_dest)),
         [this, self](boost::system::error_code ec, std::size_t /*length*/)
         {
           if (!ec)
@@ -153,8 +158,9 @@ private:
   tcp::socket socket_;
   // enum { max_length = 1024 };
   // char data_[max_length];
-  pingpong_dest *rem_dest_;
-  pingpong_dest my_dest_;
+  struct pingpong_dest *rem_dest_;
+  struct pingpong_dest *my_dest_;
+  struct pingpong_context *ctx_;
 };
 // struct Config cfg = {
 //   7000, /*port*/
