@@ -161,24 +161,24 @@ void ObjectManagerRdma::InitRdmaCtx(struct pingpong_context *ctx, struct pingpon
 		return;
 	}
 
-	my_dest.lid = ctx->portinfo.lid;
+	my_dest->lid = ctx->portinfo.lid;
 	if (ctx->portinfo.link_layer != IBV_LINK_LAYER_ETHERNET &&
-							!my_dest.lid) {
+							!my_dest->lid) {
     RAY_LOG(ERROR) << "Couldn't get local LID";
 		return;
 	}
 
 	if (cfg_.gidx >= 0) {
-		if (ibv_query_gid(ctx->context, cfg_.ib_port, cfg_.gidx, &my_dest.gid)) {
+		if (ibv_query_gid(ctx->context, cfg_.ib_port, cfg_.gidx, &my_dest->gid)) {
       RAY_LOG(ERROR) << "can't read sgid of index " << cfg_.gidx;
 			return;
 		}
 	} else
 		memset(&my_dest->gid, 0, sizeof my_dest->gid);
 
-	my_dest.qpn = ctx->qp->qp_num;
-	my_dest.psn = lrand48() & 0xffffff;
-	inet_ntop(AF_INET6, &my_dest.gid, gid, sizeof gid);
+	my_dest->qpn = ctx->qp->qp_num;
+	my_dest->psn = lrand48() & 0xffffff;
+	inet_ntop(AF_INET6, &my_dest->gid, gid, sizeof gid);
 	// printf("  local address:  LID 0x%04x, QPN 0x%06x, PSN 0x%06x, GID %s\n",
 	//        my_dest_.lid, my_dest_.qpn, my_dest_.psn, gid);
   RAY_LOG(DEBUG) << "  local address:  LID " << my_dest->lid << " QPN " <<  my_dest->qpn \
@@ -378,7 +378,7 @@ static int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct
 	attr.timeout	    = 14;
 	attr.retry_cnt	    = 7;
 	attr.rnr_retry	    = 7;
-	attr.sq_psn	    = my_dest.my_psn;
+	attr.sq_psn	    = my_dest->my_psn;
 	attr.max_rd_atomic  = 1;
 	if (ibv_modify_qp(ctx->qp, &attr,
 			  IBV_QP_STATE              |
