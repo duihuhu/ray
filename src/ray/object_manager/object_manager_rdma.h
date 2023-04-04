@@ -18,6 +18,7 @@
 #include <boost/bind/bind.hpp>
 #include "ray/common/asio/instrumented_io_context.h"
 #include "ray/gcs/gcs_client/gcs_client.h"
+#include "ray/common/id.h"
 
 #include <string>
 

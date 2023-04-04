@@ -417,16 +417,16 @@ void ObjectManagerRdma::PrintRemoteRdmaInfo() {
   for(auto &entry: remote_dest_) {
     // std::cout<<"PrintRemoteRdmaInfo " << entry.first;
     RAY_LOG(DEBUG) << "PrintRemoteRdmaInfo " << entry.first;
-
   }
 }
 
-void ObjectManagerRdma::FetchObjectFromRemotePlasma(const WorkerID &worker_id, const std::vector<string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes) {
+void ObjectManagerRdma::FetchObjectFromRemotePlasma(const WorkerID &worker_id, const std::vector<std::string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes) {
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker " << worker_id;
   for(int i = 0; i < object_address.size(); ++i) {
     std::string address = object_address[i];
     auto it = remote_dest_.find(address);
-    QueryQp(it.second.first);
+    if(it!=remote_dest_.end())
+      QueryQp(it.second.first);
   }
 }
 
