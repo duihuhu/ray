@@ -270,7 +270,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 			.qp_type = IBV_QPT_RC
 		};
 
-    ctx_->qp = ibv_create_qp(ctx->pd, &init_attr);
+    ctx->qp = ibv_create_qp(ctx->pd, &init_attr);
 
 		if (!ctx->qp)  {
       RAY_LOG(ERROR) << "Couldn't create QP";
@@ -337,7 +337,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 }
 
 
-static int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest)
+int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest)
 {
 	struct ibv_qp_attr attr = {
 		.qp_state		= IBV_QPS_RTR,
