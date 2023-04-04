@@ -136,7 +136,7 @@ private:
     async_read(socket_, boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
-          ObjectManagerRdma::CovRdmaStatus(ctx_, rem_dest_);
+          ObjectManagerRdma::CovRdmaStatus(ctx_, rem_dest_, my_dest_);
           if (!ec)
           {    
             DoWrite(length);
