@@ -96,7 +96,7 @@ public:
   void FreeRdmaResource(struct pingpong_context *ctx);
   void PrintRemoteRdmaInfo();
   void FetchObjectFromRemotePlasma(const ray::WorkerID &worker_id, const std::vector<std::string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes);
-  static int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
+  int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
   void QueryQp(struct pingpong_context *ctx);
 
 private:
@@ -115,11 +115,12 @@ class Session
   : public std::enable_shared_from_this<Session>
 {
 public:
-  Session(tcp::socket socket, struct pingpong_context *ctx, struct pingpong_dest *rem_dest, struct pingpong_dest *my_dest)
+  Session(tcp::socket socket, struct pingpong_context *ctx, struct pingpong_dest *rem_dest, struct pingpong_dest *my_dest, struct Config cfg)
     : socket_(std::move(socket)),
       rem_dest_(rem_dest),
       my_dest_(my_dest),
-      ctx_(ctx)
+      ctx_(ctx),
+      cfg_(cfg)
   {
   }
 
@@ -127,8 +128,6 @@ public:
   {
     DoRead();
   }
-  int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
-
 private:
   void DoRead()
   {
@@ -137,7 +136,7 @@ private:
     async_read(socket_, boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
-          ObjectManagerRdma::CovRdmaStatus(ctx_, rem_dest_, my_dest_);
+          object_manager_rdma_.CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
           if (!ec)
           {    
             DoWrite(length);
@@ -164,6 +163,8 @@ private:
   struct pingpong_dest *rem_dest_;
   struct pingpong_dest *my_dest_;
   struct pingpong_context *ctx_;
+  struct Config cfg_;
+  ObjectManagerRdma object_manager_rdma_;
 };
 // struct Config cfg = {
 //   7000, /*port*/

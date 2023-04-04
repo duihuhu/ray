@@ -25,7 +25,7 @@ void ObjectManagerRdma::DoAccept() {
         // remote_dest_.emplace(socket.remote_endpoint().address().to_string(), rem_dest);
         remote_dest_.emplace(socket.remote_endpoint().address().to_string(), std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
 
-        std::make_shared<Session>(std::move(socket), ctx, rem_dest, my_dest)->Start();
+        std::make_shared<Session>(std::move(socket), ctx, rem_dest, my_dest, cfg_)->Start();
       }
       DoAccept();
     });
@@ -337,7 +337,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 }
 
 
-static int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest)
+int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest)
 {
 	struct ibv_qp_attr attr = {
 		.qp_state		= IBV_QPS_RTR,
