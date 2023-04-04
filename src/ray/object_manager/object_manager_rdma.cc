@@ -336,10 +336,8 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 	return;
 }
 
-
-int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest)
-{
-	struct ibv_qp_attr attr = {
+int con_rdma_status(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest) {
+  	struct ibv_qp_attr attr = {
 		.qp_state		= IBV_QPS_RTR,
 		.path_mtu		= cfg_.mtu,
 		.dest_qp_num		= dest->qpn,
@@ -394,6 +392,15 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
   RAY_LOG(DEBUG) << "Accomplish modify QP to RTS";
 
 	return 0;
+}
+int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
+{
+  return con_rdma_status(ctx, dest, my_dest);
+}
+
+int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest)
+{
+  return con_rdma_status(ctx, dest, my_dest);
 }
 
 

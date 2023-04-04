@@ -127,7 +127,7 @@ public:
   {
     DoRead();
   }
-  friend int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
+  int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
 
 private:
   void DoRead()
