@@ -415,33 +415,33 @@ int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
 
 void ObjectManagerRdma::PrintRemoteRdmaInfo() {
   for(auto &entry: remote_dest_) {
-    std::cout<<"PrintRemoteRdmaInfo " << entry.first;
+    // std::cout<<"PrintRemoteRdmaInfo " << entry.first;
+    RAY_LOG(DEBUG) << "PrintRemoteRdmaInfo " << entry.first;
+
   }
 }
 
 void ObjectManagerRdma::FetchObjectFromRemotePlasma(const WorkerID &worker_id, const std::vector<string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes) {
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker " << worker_id;
-  if (QueryQp(ctx_)) {
-
-  }
   for(int i = 0; i < object_address.size(); ++i) {
     std::string address = object_address[i];
     auto it = remote_dest_.find(address);
+    QueryQp(it.second.first);
   }
 }
 
-void ObjectManagerRdma::QueryQp() {
+void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
   struct ibv_qp_attr attr;
   struct ibv_qp_init_attr init_attr;
   
-  if (ibv_query_qp(ctx_->qp, &attr,
+  if (ibv_query_qp(ctx->qp, &attr,
         IBV_QP_STATE, &init_attr)) {
-    fprintf(stderr, "Failed to query QP state\n");
+    // fprintf(stderr, "Failed to query QP state\n");
+    RAY_LOG(ERROR) << "Failed to query QP state ";
     return -1;
   }
-  if(attr.qp_state != IBV_QPS_RTS) {
-    CovRdmaStatus()
-  }
+  RAY_LOG(DEBUG) << "query QP state " << attr.qp_state;
+
 }
 
 // void ObjectManagerRdma::ExRdmaConfig() {
