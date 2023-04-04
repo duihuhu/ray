@@ -24,7 +24,7 @@ void ObjectManagerRdma::DoAccept() {
         InitRdmaCtx(ctx, my_dest);
         // remote_dest_.emplace(socket.remote_endpoint().address().to_string(), rem_dest);
         remote_dest_.emplace(socket.remote_endpoint().address().to_string(), std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
-        std::make_shared<Session>(std::move(socket), ctx, rem_dest, my_dest_)->Start();
+        std::make_shared<Session>(std::move(socket), ctx, rem_dest, my_dest)->Start();
       }
       DoAccept();
     });
@@ -44,7 +44,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
     size_t reply_length = boost::asio::read(s,
         boost::asio::buffer(rem_dest, sizeof(struct pingpong_dest)));
     // remote_dest_.emplace(ip_address, rem_dest);
-    CovRdmaStatus(ctx, rem_dest);
+    CovRdmaStatus(ctx, rem_dest, my_dest);
     remote_dest_.emplace(socket.remote_endpoint().address().to_string(), std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
 }
 
@@ -335,7 +335,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 }
 
 
-int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest)
+int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest)
 {
 	struct ibv_qp_attr attr = {
 		.qp_state		= IBV_QPS_RTR,
@@ -376,7 +376,7 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 	attr.timeout	    = 14;
 	attr.retry_cnt	    = 7;
 	attr.rnr_retry	    = 7;
-	attr.sq_psn	    = my_dest_.my_psn;
+	attr.sq_psn	    = my_dest.my_psn;
 	attr.max_rd_atomic  = 1;
 	if (ibv_modify_qp(ctx->qp, &attr,
 			  IBV_QP_STATE              |
