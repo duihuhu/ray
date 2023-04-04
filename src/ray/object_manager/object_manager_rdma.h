@@ -96,7 +96,7 @@ public:
   void FreeRdmaResource(struct pingpong_context *ctx);
   void PrintRemoteRdmaInfo();
   void FetchObjectFromRemotePlasma(const ray::WorkerID &worker_id, const std::vector<std::string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes);
-  int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
+  static int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
   void QueryQp(struct pingpong_context *ctx);
 
 private:
@@ -104,7 +104,7 @@ private:
   boost::asio::ip::tcp::socket socket_;
   // struct pingpong_context *ctx_;
   // struct pingpong_dest my_dest_;
-  struct Config cfg_;
+  static struct Config cfg_;
   unsigned long plasma_address_;
   int64_t plasma_size_;
   std::shared_ptr<ray::gcs::GcsClient> gcs_client_;
@@ -137,7 +137,7 @@ private:
     async_read(socket_, boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
-          CovRdmaStatus(ctx_, rem_dest_, my_dest_);
+          ObjectManagerRdma::CovRdmaStatus(ctx_, rem_dest_, my_dest_);
           if (!ec)
           {    
             DoWrite(length);
