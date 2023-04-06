@@ -489,7 +489,7 @@ int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *d
 	attr.timeout	    = 14;
 	attr.retry_cnt	    = 7;
 	attr.rnr_retry	    = 7;
-	attr.sq_psn	    = my_dest->my_psn;
+	attr.sq_psn	    = my_dest->psn;
 	attr.max_rd_atomic  = 1;
 	if (ibv_modify_qp(ctx->qp, &attr,
 			  IBV_QP_STATE              |
