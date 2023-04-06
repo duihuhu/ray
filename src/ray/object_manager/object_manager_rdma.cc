@@ -455,16 +455,16 @@ int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *d
 		.qp_state		= IBV_QPS_RTR,
 		.path_mtu		= cfg_.mtu,
 		.dest_qp_num		= dest->qpn,
-		.rq_psn			= dest->psn,
+		// .rq_psn			= dest->psn,
 		.max_dest_rd_atomic	= 1,
 		.min_rnr_timer		= 12,
-		.ah_attr		= {
-			.is_global	= 0,
-			.dlid		= dest->lid,
-			.sl		= cfg_.sl,
-			.src_path_bits	= 0,
-			.port_num	= cfg_.ib_port
-		}
+		// .ah_attr		= {
+		// 	.is_global	= 0,
+		// 	.dlid		= dest->lid,
+		// 	.sl		= cfg_.sl,
+		// 	.src_path_bits	= 0,
+		// 	.port_num	= cfg_.ib_port
+		// }
 	};
 
 	if (dest->gid.global.interface_id) {
