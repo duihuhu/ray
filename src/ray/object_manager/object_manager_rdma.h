@@ -128,6 +128,8 @@ public:
   {
     DoRead();
   }
+  int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
+
 private:
   void DoRead()
   {
@@ -136,7 +138,7 @@ private:
     async_read(socket_, boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
-          object_manager_rdma_.CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
+          CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
           if (!ec)
           {    
             DoWrite(length);
@@ -164,7 +166,7 @@ private:
   struct pingpong_dest *my_dest_;
   struct pingpong_context *ctx_;
   struct Config cfg_;
-  ObjectManagerRdma object_manager_rdma_;
+  // ObjectManagerRdma object_manager_rdma_;
 };
 // struct Config cfg = {
 //   7000, /*port*/

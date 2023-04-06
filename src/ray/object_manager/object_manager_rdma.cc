@@ -446,6 +446,68 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 
 }
 
+
+
+int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest)
+{
+	struct ibv_qp_attr attr = {
+		.qp_state		= IBV_QPS_RTR,
+		.path_mtu		= cfg_.mtu,
+		.dest_qp_num		= dest->qpn,
+		.rq_psn			= dest->psn,
+		.max_dest_rd_atomic	= 1,
+		.min_rnr_timer		= 12,
+		.ah_attr		= {
+			.is_global	= 0,
+			.dlid		= dest->lid,
+			.sl		= cfg_.sl,
+			.src_path_bits	= 0,
+			.port_num	= cfg_.ib_port
+		}
+	};
+
+	if (dest->gid.global.interface_id) {
+		attr.ah_attr.is_global = 1;
+		attr.ah_attr.grh.hop_limit = 1;
+		attr.ah_attr.grh.dgid = dest->gid;
+		attr.ah_attr.grh.sgid_index = cfg_.gidx;
+	}
+	if (ibv_modify_qp(ctx->qp, &attr,
+			  IBV_QP_STATE              |
+			  IBV_QP_AV                 |
+			  IBV_QP_PATH_MTU           |
+			  IBV_QP_DEST_QPN           |
+			  IBV_QP_RQ_PSN             |
+			  IBV_QP_MAX_DEST_RD_ATOMIC |
+			  IBV_QP_MIN_RNR_TIMER)) {
+		// fprintf(stderr, "Failed to modify QP to RTR\n");
+    RAY_LOG(ERROR) << "Failed to modify QP to RTR";
+		return 1;
+	}
+
+	attr.qp_state	    = IBV_QPS_RTS;
+	attr.timeout	    = 14;
+	attr.retry_cnt	    = 7;
+	attr.rnr_retry	    = 7;
+	attr.sq_psn	    = my_dest->my_psn;
+	attr.max_rd_atomic  = 1;
+	if (ibv_modify_qp(ctx->qp, &attr,
+			  IBV_QP_STATE              |
+			  IBV_QP_TIMEOUT            |
+			  IBV_QP_RETRY_CNT          |
+			  IBV_QP_RNR_RETRY          |
+			  IBV_QP_SQ_PSN             |
+			  IBV_QP_MAX_QP_RD_ATOMIC)) {
+		// fprintf(stderr, "Failed to modify QP to RTS\n");
+    RAY_LOG(ERROR) << "Failed to modify QP to RTS";
+		return 1;
+	}
+  RAY_LOG(DEBUG) << "Accomplish modify QP to RTS";
+
+	return 0;
+}
+
+
 // void ObjectManagerRdma::ExRdmaConfig() {
 //   RAY_LOG(DEBUG) << "ExRdmaConfig ";
 //   const auto &node_map = gcs_client_->Nodes().GetAll();
