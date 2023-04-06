@@ -448,7 +448,7 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 
 
 
-int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest)
+int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest,  struct Config &cfg_)
 {
 	struct ibv_qp_attr attr = {
 		.qp_state		= IBV_QPS_RTR,
