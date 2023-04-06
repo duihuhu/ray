@@ -378,7 +378,7 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 	attr.timeout	    = 14;
 	attr.retry_cnt	    = 7;
 	attr.rnr_retry	    = 7;
-	attr.sq_psn	    = my_dest->my_psn;
+	attr.sq_psn	    = my_dest->psn;
 	attr.max_rd_atomic  = 1;
 	if (ibv_modify_qp(ctx->qp, &attr,
 			  IBV_QP_STATE              |
@@ -428,7 +428,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     std::string address = object_address[i];
     auto it = remote_dest_.find(address);
     if(it!=remote_dest_.end())
-      QueryQp(it.second.first);
+      // QueryQp(it.second.first);
   }
 }
 
@@ -440,7 +440,7 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
         IBV_QP_STATE, &init_attr)) {
     // fprintf(stderr, "Failed to query QP state\n");
     RAY_LOG(ERROR) << "Failed to query QP state ";
-    return -1;
+    return ;
   }
   RAY_LOG(DEBUG) << "query QP state " << attr.qp_state;
 
