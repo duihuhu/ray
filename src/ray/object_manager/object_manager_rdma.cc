@@ -443,6 +443,14 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i];
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       PollCompletion(it->second.first.first);
+      std::ofstream outfile;
+      std::string filename = "buffer" + ".txt";
+      void *buffer = (void *) local_address;
+      outfile.open(filename);
+      for(int i=0; i<1024; ++i){
+        outfile1<<local_address[i];
+      }
+      outfile1.close();
   }
 }
 
@@ -469,7 +477,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
   sge.addr = buf;
-	sge.length = 10;
+	sge.length = 1024;
 	sge.lkey = ctx->mr->lkey;
 	memset(&sr, 0, sizeof(sr));
 	sr.next = NULL;

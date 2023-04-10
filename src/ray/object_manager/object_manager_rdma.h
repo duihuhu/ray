@@ -20,7 +20,7 @@
 #include "ray/gcs/gcs_client/gcs_client.h"
 #include "ray/common/id.h"
 #include "ray/object_manager/object_manager.h"
-
+#include <fstream>
 #include <string>
 
 struct Config {
