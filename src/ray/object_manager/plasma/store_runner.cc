@@ -161,6 +161,7 @@ unsigned long PlasmaStoreRunner::AllocateObjectSizeRdma(size_t sizes) {
   RAY_CHECK(allocation.has_value())
       << "PlasmaAllocator AllocateObjectSizeRdma failed.";
   return (unsigned long) allocation->address;
+}
 
 std::unique_ptr<PlasmaStoreRunner> plasma_store_runner;
 
