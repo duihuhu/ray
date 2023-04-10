@@ -72,7 +72,7 @@ struct pingpong_context {
 class ObjectManagerRdma {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
-         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ObjectManager &object_manager)
+         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager)
     : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
       ,socket_(main_service),
       plasma_address_(start_address),
@@ -113,7 +113,7 @@ private:
   int64_t plasma_size_;
   std::shared_ptr<ray::gcs::GcsClient> gcs_client_;
   absl::flat_hash_map<std::string, std::pair<std::pair<struct pingpong_context*, struct pingpong_dest*>, struct pingpong_dest*>> remote_dest_;
-  ObjectManager &object_manager_;
+  ray::ObjectManager &object_manager_;
 };
 
 class Session
