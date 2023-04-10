@@ -436,11 +436,11 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     if(it!=remote_dest_.end())
       // continue;
       QueryQp(it->second.first.first);
-      unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
-      RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
-      RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i];
-      PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
-      PollCompletion(it->second.first.first);
+      // unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
+      // RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
+      // RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i];
+      // PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
+      // PollCompletion(it->second.first.first);
   }
 }
 
