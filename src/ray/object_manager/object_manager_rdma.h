@@ -101,7 +101,7 @@ public:
   void FetchObjectFromRemotePlasma(const ray::WorkerID &worker_id, const std::vector<std::string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes);
   int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
   void QueryQp(struct pingpong_context *ctx);
-  int PostSend(struct pingppng_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode);
+  int PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode);
 
 private:
   boost::asio::ip::tcp::acceptor acceptor_;
