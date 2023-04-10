@@ -484,7 +484,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	sr.next = NULL;
 	sr.wr_id = 0;
 	sr.sg_list = &sge;
-	sr.num_sge = 1;
+	sr.num_sge = 2;
 	sr.opcode = IBV_WR_RDMA_READ;
 	sr.send_flags = IBV_SEND_SIGNALED;
 	if (opcode != IBV_WR_SEND) {
