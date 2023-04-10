@@ -470,7 +470,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	sr.wr_id = 0;
 	sr.sg_list = &sge;
 	sr.num_sge = 1;
-	sr.opcode = opcode;
+	sr.opcode = IBV_WR_RDMA_READ;
 	sr.send_flags = IBV_SEND_SIGNALED;
 	if (opcode != IBV_WR_SEND) {
 		sr.wr.rdma.remote_addr = remote_address;
