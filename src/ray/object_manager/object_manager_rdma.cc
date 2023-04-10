@@ -438,6 +438,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       QueryQp(it->second.first.first);
       unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
+      RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i];
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       PollCompletion(it->second.first.first);
   }
@@ -480,7 +481,6 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 		sr.wr.rdma.rkey	= rem_dest->rkey;
 	}
 	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
-  RAY_LOG(DEBUG) << "ibv_post_send rc" << rc;
 	if (rc)
     RAY_LOG(ERROR) << "failed to post sr";
 	else {

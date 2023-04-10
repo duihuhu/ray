@@ -79,6 +79,7 @@ public:
       plasma_size_(plasma_size), 
       gcs_client_(gcs_client),
       object_manager_(object_manager) {
+        RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
         InitRdmaConfig();
         DoAccept();
         // ExRdmaConfig();
@@ -147,7 +148,7 @@ private:
         {
           if (!ec)
           {
-            RAY_LOG(DEBUG) << "do read remote info remote psn" << rem_dest_->psn << " remote rkey " << rem_dest_->rkey;
+            RAY_LOG(DEBUG) << "do read remote info remote psn " << rem_dest_->psn << " remote rkey " << rem_dest_->rkey;
             CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
             DoWrite(length);
           }
