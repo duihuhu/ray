@@ -250,7 +250,7 @@ class ObjectManager : public ObjectManagerInterface,
   ///GetMetaAddress
   unsigned long GetMetaAddress();
   int64_t GetMetaSize();
-  unsigned long AllocateObjectSizeRdma(size_t object_size) {
+  unsigned long AllocateObjectSizeRdma(size_t object_size);
 
  private:
   friend class TestObjectManager;
