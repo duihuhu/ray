@@ -181,8 +181,10 @@ void ObjectManagerRdma::InitRdmaCtx(struct pingpong_context *ctx, struct pingpon
 	inet_ntop(AF_INET6, &my_dest->gid, gid, sizeof gid);
 	// printf("  local address:  LID 0x%04x, QPN 0x%06x, PSN 0x%06x, GID %s\n",
 	//        my_dest_.lid, my_dest_.qpn, my_dest_.psn, gid);
+  my_dest->rkey = ctx->mr->rkey;
+  
   RAY_LOG(DEBUG) << "  local address:  LID " << my_dest->lid << " QPN " <<  my_dest->qpn \
-  <<" PSN " << my_dest->psn << " GID " << gid;
+  <<" PSN " << my_dest->psn << " GID " << gid << " local lkey " << ctx->mr->lkey << " remote rkey " << my_dest->rkey;
   return;
 
 }
@@ -434,6 +436,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     if(it!=remote_dest_.end())
       // continue;
       QueryQp(it->second.first.first);
+
   }
 }
 
@@ -451,7 +454,49 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 
 }
 
-
+int ObjectManagerRdma::PostSend(struct pingppng_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode) {
+  struct ibv_send_wr sr;
+	struct ibv_send_wr *bad_wr;
+	struct ibv_sge sge;
+	int rc;
+	int flags;	
+	memset(&sge, 0, sizeof(sge));
+	// sge.addr = (uintptr_t)res->buf;
+  sge.addr = buf;
+	sge.length = msg_size;
+	sge.lkey = ctx->mr->lkey;
+	memset(&sr, 0, sizeof(sr));
+	sr.next = NULL;
+	sr.wr_id = 0;
+	sr.sg_list = &sge;
+	sr.num_sge = 1;
+	sr.opcode = opcode;
+	sr.send_flags = IBV_SEND_SIGNALED;
+	if (opcode != IBV_WR_SEND) {
+		sr.wr.rdma.remote_addr = remote_address;
+		sr.wr.rdma.rkey	= rem_dest->rkey;
+	}
+	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
+	if (rc)
+		fprintf(stderr, "failed to post sr\n");
+	else {
+		switch (opcode) {
+		case IBV_WR_SEND:
+			fprintf(stdout, "Send request was posted\n");
+			break;
+		case IBV_WR_RDMA_READ:
+			fprintf(stdout, "RDMA read request was posted\n");
+			break;
+		case IBV_WR_RDMA_WRITE:
+			fprintf(stdout, "RDMA write request was posted\n");
+			break;
+		default:
+			fprintf(stdout, "Unknown request was posted\n");
+			break;
+		}
+	}
+	return rc;
+}
 
 int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest,  struct Config &cfg_)
 {

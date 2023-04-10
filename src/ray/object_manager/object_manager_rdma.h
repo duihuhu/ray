@@ -19,6 +19,7 @@
 #include "ray/common/asio/instrumented_io_context.h"
 #include "ray/gcs/gcs_client/gcs_client.h"
 #include "ray/common/id.h"
+#include "ray/object_manager/object_manager.h"
 
 #include <string>
 
@@ -43,6 +44,7 @@ struct pingpong_dest {
 	int qpn;
 	int psn;
 	union ibv_gid gid;
+  uint32_t rkey;
 };
 
 
@@ -70,12 +72,13 @@ struct pingpong_context {
 class ObjectManagerRdma {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
-         std::shared_ptr<ray::gcs::GcsClient> gcs_client)
+         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ObjectManager &object_manager)
     : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
       ,socket_(main_service),
       plasma_address_(start_address),
       plasma_size_(plasma_size), 
-      gcs_client_(gcs_client) {
+      gcs_client_(gcs_client),
+      object_manager_(object_manager) {
         InitRdmaConfig();
         DoAccept();
         // ExRdmaConfig();
@@ -98,6 +101,7 @@ public:
   void FetchObjectFromRemotePlasma(const ray::WorkerID &worker_id, const std::vector<std::string> &object_address, const std::vector<unsigned long>  object_virt_address, const std::vector<int>  object_sizes);
   int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
   void QueryQp(struct pingpong_context *ctx);
+  int PostSend(struct pingppng_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode);
 
 private:
   boost::asio::ip::tcp::acceptor acceptor_;
@@ -109,6 +113,7 @@ private:
   int64_t plasma_size_;
   std::shared_ptr<ray::gcs::GcsClient> gcs_client_;
   absl::flat_hash_map<std::string, std::pair<std::pair<struct pingpong_context*, struct pingpong_dest*>, struct pingpong_dest*>> remote_dest_;
+  ObjectManager &object_manager_;
 };
 
 class Session
@@ -140,7 +145,7 @@ private:
         {
           if (!ec)
           {
-            RAY_LOG(DEBUG) << "do read remote info " << rem_dest_->psn;
+            RAY_LOG(DEBUG) << "do read remote info " << rem_dest_->psn << " remote rkey " << rem_dest_->rkey;
             CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
             DoWrite(length);
           }
