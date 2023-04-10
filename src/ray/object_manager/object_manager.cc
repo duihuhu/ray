@@ -865,7 +865,7 @@ int64_t ObjectManager::GetMetaSize() {
 }
 
 unsigned long ObjectManager::AllocateObjectSizeRdma(size_t object_size) {
-  return plasma::plasma_store_runnser->AllocateObjectSizeRdma(object_size);
+  return plasma::plasma_store_runner->AllocateObjectSizeRdma(object_size);
 }
 
 }  // namespace ray
