@@ -457,6 +457,7 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 }
 
 int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode) {
+  RAY_LOG(ERROR) << "ObjectManagerRdma PostSend";
   struct ibv_send_wr sr;
 	struct ibv_send_wr *bad_wr;
 	struct ibv_sge sge;
@@ -478,6 +479,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 		sr.wr.rdma.remote_addr = remote_address;
 		sr.wr.rdma.rkey	= rem_dest->rkey;
 	}
+
 	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
 	if (rc)
 		// fprintf(stderr, "failed to post sr\n");
