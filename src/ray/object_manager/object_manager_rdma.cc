@@ -446,7 +446,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       std::ofstream outfile;
       std::string filename = "buffer.txt";
       void *buffer = (void *) local_address;
-      uint8_t *buf = (char*) buffer;
+      uint8_t *buf = (uint8_t*) buffer;
       RAY_LOG(DEBUG) << "buffer pointer " << buffer;
       RAY_LOG(DEBUG) << "buf pointer " << buf;
 
