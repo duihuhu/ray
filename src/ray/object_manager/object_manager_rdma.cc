@@ -484,7 +484,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	sr.next = NULL;
 	sr.wr_id = 0;
 	sr.sg_list = &sge;
-	sr.num_sge = 2;
+	sr.num_sge = 1;
 	sr.opcode = IBV_WR_RDMA_READ;
 	sr.send_flags = IBV_SEND_SIGNALED;
 	if (opcode != IBV_WR_SEND) {
@@ -574,7 +574,7 @@ int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *d
 	attr.retry_cnt	    = 7;
 	attr.rnr_retry	    = 7;
 	attr.sq_psn	    = my_dest->psn;
-	attr.max_rd_atomic  = 1;
+	attr.max_rd_atomic  = 16;
 	if (ibv_modify_qp(ctx->qp, &attr,
 			  IBV_QP_STATE              |
 			  IBV_QP_TIMEOUT            |
