@@ -448,6 +448,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       void *buffer = (void *) local_address;
       uint8_t *buf = (char*) buffer;
       RAY_LOG(DEBUG) << "buffer pointer " << buffer;
+      RAY_LOG(DEBUG) << "buf pointer " << buf;
+
       outfile.open(filename);
       for(int i=0; i<1024; ++i){
         outfile<<buf[i];
