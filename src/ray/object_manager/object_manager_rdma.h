@@ -147,7 +147,7 @@ private:
     //     });
 
     size_t reply_length = boost::asio::read(socket_,
-    boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)));
+    boost::asio::buffer(&rem_dest_, sizeof(struct pingpong_dest)));
     RAY_LOG(DEBUG) << "do read remote info " << rem_dest_->psn << " my_dest_ info " << my_dest_->psn;
     CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
     DoWrite(reply_length);
