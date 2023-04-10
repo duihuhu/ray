@@ -448,9 +448,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       void *buffer = (void *) local_address;
       outfile.open(filename);
       for(int i=0; i<1024; ++i){
-        outfile1<<local_address[i];
+        outfile<<local_address[i];
       }
-      outfile1.close();
+      outfile.close();
   }
 }
 
