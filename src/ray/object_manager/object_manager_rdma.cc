@@ -440,7 +440,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       QueryQp(it->second.first.first);
       unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
-      RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i];
+      RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i];
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       PollCompletion(it->second.first.first);
       std::ofstream outfile;
@@ -448,7 +448,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       void *buffer = (void *) local_address;
       uint8_t *buf = (uint8_t*) buffer;
       outfile.open(filename);
-      for(int i=0; i<2048; ++i){
+      for(int i=0; i<1024; ++i){
         outfile<<buf[i];
       }
       outfile.close();
