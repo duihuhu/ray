@@ -266,10 +266,10 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 			.send_cq = pp_cq(ctx),
 			.recv_cq = pp_cq(ctx),
 			.cap     = {
-				.max_send_wr  = rx_depth + 1,
+				.max_send_wr  = 1,
 				.max_recv_wr  = rx_depth + 1, 
-				.max_send_sge = rx_depth + 1,
-				.max_recv_sge = rx_depth + 1
+				.max_send_sge = 1,
+				.max_recv_sge = 1
 			},
 			.qp_type = IBV_QPT_RC
 		};
@@ -348,7 +348,7 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 		.path_mtu		= cfg_.mtu,
 		.dest_qp_num		= dest->qpn,
 		// .rq_psn			= dest->psn,
-		.max_dest_rd_atomic	= 16,
+		.max_dest_rd_atomic	= 1,
 		.min_rnr_timer		= 12,
 		// .ah_attr		= {
 		// 	.is_global	= 0,
@@ -478,13 +478,13 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
   sge.addr = buf;
-	sge.length = 2048;
+	sge.length = 1024;
 	sge.lkey = ctx->mr->lkey;
 	memset(&sr, 0, sizeof(sr));
 	sr.next = NULL;
 	sr.wr_id = 0;
 	sr.sg_list = &sge;
-	sr.num_sge = 2;
+	sr.num_sge = 1;
 	sr.opcode = IBV_WR_RDMA_READ;
 	sr.send_flags = IBV_SEND_SIGNALED;
 	if (opcode != IBV_WR_SEND) {
@@ -534,7 +534,7 @@ int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *d
 		.path_mtu		= cfg_.mtu,
 		.dest_qp_num		= dest->qpn,
 		// .rq_psn			= dest->psn,
-		.max_dest_rd_atomic	= 16,
+		.max_dest_rd_atomic	= 1,
 		.min_rnr_timer		= 12,
 		// .ah_attr		= {
 		// 	.is_global	= 0,
@@ -574,7 +574,7 @@ int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *d
 	attr.retry_cnt	    = 7;
 	attr.rnr_retry	    = 7;
 	attr.sq_psn	    = my_dest->psn;
-	attr.max_rd_atomic  = 16;
+	attr.max_rd_atomic  = 1;
 	if (ibv_modify_qp(ctx->qp, &attr,
 			  IBV_QP_STATE              |
 			  IBV_QP_TIMEOUT            |
