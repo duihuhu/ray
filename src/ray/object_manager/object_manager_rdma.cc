@@ -199,7 +199,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 {
 	// struct pingpong_context *ctx;
 	// int access_flags = IBV_ACCESS_LOCAL_WRITE;
-  int access_flags =  IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_ATOMIC;
+  int access_flags =  IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE ;
 	// ctx = (struct pingpong_context *) calloc(1, sizeof *ctx);
 
 	// if (!ctx)
@@ -436,11 +436,11 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     if(it!=remote_dest_.end())
       // continue;
       QueryQp(it->second.first.first);
-      // unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
-      // RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
-      // RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i];
-      // PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
-      // PollCompletion(it->second.first.first);
+      unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
+      RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
+      RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i];
+      PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
+      PollCompletion(it->second.first.first);
   }
 }
 
