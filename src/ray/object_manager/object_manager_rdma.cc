@@ -266,10 +266,10 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 			.send_cq = pp_cq(ctx),
 			.recv_cq = pp_cq(ctx),
 			.cap     = {
-				.max_send_wr  = 1,
+				.max_send_wr  = rx_depth + 1,
 				.max_recv_wr  = rx_depth + 1, 
-				.max_send_sge = 1,
-				.max_recv_sge = 1
+				.max_send_sge = rx_depth + 1,
+				.max_recv_sge = rx_depth + 1
 			},
 			.qp_type = IBV_QPT_RC
 		};
@@ -484,7 +484,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	sr.next = NULL;
 	sr.wr_id = 0;
 	sr.sg_list = &sge;
-	sr.num_sge = 1;
+	sr.num_sge = 2;
 	sr.opcode = IBV_WR_RDMA_READ;
 	sr.send_flags = IBV_SEND_SIGNALED;
 	if (opcode != IBV_WR_SEND) {
