@@ -375,7 +375,6 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 			  IBV_QP_RQ_PSN             |
 			  IBV_QP_MAX_DEST_RD_ATOMIC |
 			  IBV_QP_MIN_RNR_TIMER)) {
-		// fprintf(stderr, "Failed to modify QP to RTR\n");
     RAY_LOG(ERROR) << "Failed to modify QP to RTR";
 		return 1;
 	}
@@ -492,7 +491,6 @@ int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *d
 			  IBV_QP_RQ_PSN             |
 			  IBV_QP_MAX_DEST_RD_ATOMIC |
 			  IBV_QP_MIN_RNR_TIMER)) {
-		// fprintf(stderr, "Failed to modify QP to RTR\n");
     RAY_LOG(ERROR) << "Failed to modify QP to RTR";
 		return 1;
 	}
