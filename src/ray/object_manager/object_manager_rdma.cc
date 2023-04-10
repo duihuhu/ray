@@ -348,7 +348,7 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 		.path_mtu		= cfg_.mtu,
 		.dest_qp_num		= dest->qpn,
 		// .rq_psn			= dest->psn,
-		.max_dest_rd_atomic	= 1,
+		.max_dest_rd_atomic	= 16,
 		.min_rnr_timer		= 12,
 		// .ah_attr		= {
 		// 	.is_global	= 0,
@@ -534,7 +534,7 @@ int Session::CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *d
 		.path_mtu		= cfg_.mtu,
 		.dest_qp_num		= dest->qpn,
 		// .rq_psn			= dest->psn,
-		.max_dest_rd_atomic	= 1,
+		.max_dest_rd_atomic	= 16,
 		.min_rnr_timer		= 12,
 		// .ah_attr		= {
 		// 	.is_global	= 0,
