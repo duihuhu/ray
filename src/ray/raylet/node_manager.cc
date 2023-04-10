@@ -983,7 +983,9 @@ void NodeManager::WarnResourceDeadlock() {
 void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
   const NodeID node_id = NodeID::FromBinary(node_info.node_id());
 
-  RAY_LOG(DEBUG) << "[NodeAdded] Received callback from node id " << node_id;
+  // RAY_LOG(DEBUG) << "[NodeAdded] Received callback from node id " << node_id;
+
+  RAY_LOG(DEBUG) << "[NodeAdded] Received callback from node id " << node_id << " self " << self_node_id_;
 
   if (node_id == self_node_id_) {
     self_register_time_ =  node_info.register_time();
