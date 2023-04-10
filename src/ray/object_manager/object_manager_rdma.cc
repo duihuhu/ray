@@ -436,6 +436,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     if(it!=remote_dest_.end())
       // continue;
       QueryQp(it->second.first.first);
+      unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
+      RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
 
   }
 }
