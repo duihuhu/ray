@@ -447,11 +447,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       std::string filename = "buffer.txt";
       void *buffer = (void *) local_address;
       uint8_t *buf = (uint8_t*) buffer;
-      RAY_LOG(DEBUG) << "buffer pointer " << buffer;
-      RAY_LOG(DEBUG) << "buf pointer " << buf;
-
       outfile.open(filename);
-      for(int i=0; i<1024; ++i){
+      for(int i=0; i<4096; ++i){
         outfile<<buf[i];
       }
       outfile.close();
@@ -481,7 +478,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
   sge.addr = buf;
-	sge.length = 1024;
+	sge.length = 4096;
 	sge.lkey = ctx->mr->lkey;
 	memset(&sr, 0, sizeof(sr));
 	sr.next = NULL;
