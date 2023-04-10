@@ -439,6 +439,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
+      PollCompletion(it->second.first.first);
   }
 }
 
@@ -457,7 +458,7 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 }
 
 int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode) {
-  RAY_LOG(ERROR) << "ObjectManagerRdma PostSend";
+  RAY_LOG(DEBUG) << "ObjectManagerRdma PostSend";
   struct ibv_send_wr sr;
 	struct ibv_send_wr *bad_wr;
 	struct ibv_sge sge;
@@ -502,6 +503,31 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 			// fprintf(stdout, "Unknown request was posted\n");
       RAY_LOG(DEBUG) << "Unknown request was posted";
 			break;
+		}
+	}
+	return rc;
+}
+
+int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx){
+  struct ibv_wc wc;
+	int poll_result;
+	int rc = 0;
+	do {
+		poll_result = ibv_poll_cq(pp_cq(), 1, &wc);
+	} while (poll_result==0);
+	if (poll_result < 0) {
+    RAY_LOG(ERROR) << "poll cq failed";
+		rc = 1;
+	} else if (poll_result == 0) {
+    RAY_LOG(ERROR) << "completion wasn't found in the cq after timeout";
+		rc = 1;
+	} else {
+		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
+    RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
+		if ( wc.status != IBV_WC_SUCCESS) {
+			// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);
+      RAY_LOG(ERROR) << "got bad completion with status " << wc.status << " verdor syndrome: " << wc.vendor_err;
+      rc = 1;
 		}
 	}
 	return rc;
