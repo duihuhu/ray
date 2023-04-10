@@ -481,13 +481,12 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
 	if (rc)
 		// fprintf(stderr, "failed to post sr\n");
-    RAY_LOG(ERROR) << "RDMA read request was posted";
-
+    RAY_LOG(ERROR) << "failed to post sr";
 	else {
 		switch (opcode) {
 		case IBV_WR_SEND:
 			// fprintf(stdout, "Send request was posted\n");
-      RAY_LOG(DEBUG) << "RDMA read request was posted";
+      RAY_LOG(DEBUG) << "Send request was posted";
 			break;
 		case IBV_WR_RDMA_READ:
 			// fprintf(stdout, "RDMA read request was posted\n");
@@ -495,11 +494,11 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 			break;
 		case IBV_WR_RDMA_WRITE:
 			// fprintf(stdout, "RDMA write request was posted\n");
-      RAY_LOG(DEBUG) << "RDMA read request was posted";
+      RAY_LOG(DEBUG) << "RDMA write request was posted";
 			break;
 		default:
 			// fprintf(stdout, "Unknown request was posted\n");
-      RAY_LOG(DEBUG) << "RDMA read request was posted";
+      RAY_LOG(DEBUG) << "Unknown request was posted";
 			break;
 		}
 	}
