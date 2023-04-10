@@ -448,7 +448,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       void *buffer = (void *) local_address;
       uint8_t *buf = (uint8_t*) buffer;
       outfile.open(filename);
-      for(int i=0; i<4096; ++i){
+      for(int i=0; i<2048; ++i){
         outfile<<buf[i];
       }
       outfile.close();
@@ -478,13 +478,13 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
   sge.addr = buf;
-	sge.length = 4096;
+	sge.length = 2048;
 	sge.lkey = ctx->mr->lkey;
 	memset(&sr, 0, sizeof(sr));
 	sr.next = NULL;
 	sr.wr_id = 0;
 	sr.sg_list = &sge;
-	sr.num_sge = 2;
+	sr.num_sge = 1;
 	sr.opcode = IBV_WR_RDMA_READ;
 	sr.send_flags = IBV_SEND_SIGNALED;
 	if (opcode != IBV_WR_SEND) {
@@ -492,7 +492,6 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 		sr.wr.rdma.rkey	= rem_dest->rkey;
 	}
 	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
-  RAY_LOG(DEBUG) << "rc number " << rc;
 
 	if (rc)
     RAY_LOG(ERROR) << "Failed to post sr";
