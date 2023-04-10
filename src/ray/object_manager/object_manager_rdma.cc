@@ -469,7 +469,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
   sge.addr = buf;
-	sge.length = msg_size;
+	sge.length = 10;
 	sge.lkey = ctx->mr->lkey;
 	memset(&sr, 0, sizeof(sr));
 	sr.next = NULL;
@@ -487,9 +487,8 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 
 	if (rc)
     RAY_LOG(ERROR) << "Failed to post sr";
-	else {
+	else
     RAY_LOG(DEBUG) << "RDMA read request was posted";
-	}
 	return rc;
 }
 
