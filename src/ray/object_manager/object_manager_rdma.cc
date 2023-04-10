@@ -387,7 +387,6 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 	// attr.retry_cnt	    = 7;
 	// attr.rnr_retry	    = 7;
 	// attr.sq_psn	    = my_dest->psn;
-	// attr.max_rd_atomic  = 1;
   {
     struct ibv_qp_attr attr = {
         .qp_state = IBV_QPS_RTS,
@@ -395,8 +394,10 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
         .timeout = 14,
         .retry_cnt = 7,
         .rnr_retry = 7,
-        .max_rd_atomic = 1, 
+        // .max_rd_atomic = 1, 
       };
+    attr.max_rd_atomic  = 1;
+
     if (ibv_modify_qp(ctx->qp, &attr,
           IBV_QP_STATE              |
           IBV_QP_TIMEOUT            |
