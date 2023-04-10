@@ -483,6 +483,8 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 		sr.wr.rdma.rkey	= rem_dest->rkey;
 	}
 	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
+  RAY_LOG(DEBUG) << "rc number" << rc;
+
 	if (rc)
     RAY_LOG(ERROR) << "Failed to post sr";
 	else {
