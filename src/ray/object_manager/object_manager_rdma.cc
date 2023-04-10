@@ -513,7 +513,7 @@ int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx){
 	int poll_result;
 	int rc = 0;
 	do {
-		poll_result = ibv_poll_cq(pp_cq(), 1, &wc);
+		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
 	} while (poll_result==0);
 	if (poll_result < 0) {
     RAY_LOG(ERROR) << "poll cq failed";
