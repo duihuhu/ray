@@ -135,7 +135,7 @@ private:
   {
     auto self(shared_from_this());
     // socket_.async_read_some(boost::asio::buffer(rem_dest_, sizeof(pingpong_dest)),
-    read(socket_, boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
+    async_read(socket_, boost::asio::buffer(&rem_dest_, sizeof(struct pingpong_dest)),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
           if (!ec)
