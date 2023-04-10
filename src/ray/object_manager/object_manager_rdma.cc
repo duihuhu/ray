@@ -45,6 +45,8 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
     size_t reply_length = boost::asio::read(s,
         boost::asio::buffer(rem_dest, sizeof(struct pingpong_dest)));
     // remote_dest_.emplace(ip_address, rem_dest);
+    RAY_LOG(DEBUG) << "do read remote info remote psn " << rem_dest->psn << " remote rkey " << rem_dest->rkey;
+
     CovRdmaStatus(ctx, rem_dest, my_dest);
     // remote_dest_[socket.remote_endpoint().address().to_string()] = std::make_pair(std::make_pair(ctx, my_dest),rem_dest);
     remote_dest_.emplace(ip_address, std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
