@@ -150,7 +150,7 @@ private:
     boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)));
     RAY_LOG(DEBUG) << "do read remote info " << rem_dest_->psn;
     CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
-    DoWrite(length);
+    DoWrite(reply_length);
   }
 
   void DoWrite(std::size_t length)
