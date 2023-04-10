@@ -134,8 +134,8 @@ private:
   void DoRead()
   {
     auto self(shared_from_this());
-    // socket_.async_read_some(boost::asio::buffer(rem_dest_, sizeof(pingpong_dest)),
-    async_read(socket_, boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
+    socket_.async_read_some(boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
+    // async_read(socket_, boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
           CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
