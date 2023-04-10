@@ -1018,6 +1018,11 @@ void NodeManager::NodeAdded(const GcsNodeInfo &node_info) {
 
   std::string remote_node_manager_address = node_info.node_manager_address();
   int64_t remote_register_time = node_info.register_time();
+  while(1) {
+    usleep(1);
+    if (self_register_time_ != 0)
+      break;
+  }
   if (self_register_time_ == 0) {
     RAY_LOG(DEBUG) << "self_register_time_ is not init";
     remote_node_register_time_[node_id] = std::make_pair(node_info.node_manager_address(), node_info.register_time());
