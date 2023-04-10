@@ -184,7 +184,7 @@ void ObjectManagerRdma::InitRdmaCtx(struct pingpong_context *ctx, struct pingpon
   my_dest->rkey = ctx->mr->rkey;
   
   RAY_LOG(DEBUG) << "  local address:  LID " << my_dest->lid << " QPN " <<  my_dest->qpn \
-  <<" PSN " << my_dest->psn << " GID " << gid << " local lkey " << ctx->mr->lkey << " remote rkey " << my_dest->rkey;
+  <<" PSN " << my_dest->psn << " GID " << gid << " local lkey " << ctx->mr->lkey << " remote rkey " << ctx->mr->rkey;
   return;
 
 }

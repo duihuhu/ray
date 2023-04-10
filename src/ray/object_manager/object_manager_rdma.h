@@ -145,7 +145,7 @@ private:
         {
           if (!ec)
           {
-            RAY_LOG(DEBUG) << "do read remote info " << rem_dest_->psn << " remote rkey " << rem_dest_->rkey;
+            RAY_LOG(DEBUG) << "do read remote info remote psn" << rem_dest_->psn << " remote rkey " << rem_dest_->rkey;
             CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
             DoWrite(length);
           }
