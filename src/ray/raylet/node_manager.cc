@@ -1655,10 +1655,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
 
   std::vector<unsigned long> object_virt_address;
   std::vector<int>  object_sizes;
-  std::vector<NodeID> owner_raylet_id;
-  std::vector<std::string>  owner_ip_address;
-  std::vector<int> owner_port;
-  std::vector<WorkerID>  owner_worker_id;
+  std::vector<ray::ObjectInfo> object_info;
 
   std::vector<std::string> object_address;
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);

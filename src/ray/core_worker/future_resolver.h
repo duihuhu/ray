@@ -22,6 +22,7 @@
 #include "ray/rpc/worker/core_worker_client.h"
 #include "ray/rpc/worker/core_worker_client_pool.h"
 #include "src/ray/protobuf/core_worker.pb.h"
+#include "ray/object_manager/common.h"
 
 namespace ray {
 namespace core {
