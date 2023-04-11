@@ -92,7 +92,6 @@ void FlatbufferToObjectReferenceWithMeta(
       &owner_addresses,
     std::vector<unsigned long> &object_meta_virt_address,
     std::vector<int> &object_sizes,
-    std::vector<int> &object_meta_sizes,
     std::vector<std::string> &object_address,
     const std::vector<ray::ObjectInfo>  &object_info) {
 
@@ -102,13 +101,12 @@ void FlatbufferToObjectReferenceWithMeta(
     ray::ObjectInfo obj_info;
     object_meta_virt_address.emplace_back(object_virt_address.Get(i));
     object_sizes.emplace_back(flat_object_sizes.Get(i) + flat_object_meta_data_sizes.Get(i));
-    object_meta_sizes.emplace_back(flat_object_meta_data_sizes.Get(i));
     const auto &addr = owner_addresses.Get(i);
     object_address.emplace_back(addr->ip_address()->str());
     
     obj_info.object_id = ObjectID::FromBinary(object_ids.Get(i)->str());
     obj_info.data_size = flat_object_sizes.Get(i);
-    obj_info.metadata_size = object_metadata_sizes.Get(i);
+    obj_info.metadata_size = flat_object_meta_data_sizes.Get(i);
     obj_info.owner_raylet_id = NodeID::FromBinary(owner_raylet_id.Get(i)->str());
     obj_info.owner_ip_address = owner_ip_address_str[i];
     obj_info.owner_port = owner_port[i];
@@ -1672,8 +1670,6 @@ void NodeManager::ProcessFetchOrReconstructMessage(
 
   std::vector<unsigned long> object_virt_address;
   std::vector<int>  object_sizes;
-  std::vector<int>  object_meta_sizes;
-
   std::vector<ray::ObjectInfo> object_info;
 
   std::vector<std::string> object_address;
@@ -1682,7 +1678,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
   FlatbufferToObjectReferenceWithMeta(*message->object_ids(), *message->virt_address(), *message->object_sizes(), *message->object_meta_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
-                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), object_virt_address, object_sizes, object_meta_sizes, object_address, object_info);
+                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), object_virt_address, object_sizes, object_address, object_info);
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 
