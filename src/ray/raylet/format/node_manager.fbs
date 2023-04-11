@@ -180,6 +180,7 @@ table FetchOrReconstruct {
 
   virt_address: [ulong];
   object_sizes: [int];
+  object_meta_sizes: [int];
   owner_raylet_id: [string];
   owner_ip_address: [string];
   owner_port: [int];

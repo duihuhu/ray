@@ -214,6 +214,7 @@ class CoreWorkerPlasmaStoreProvider {
       bool *got_exception,
       const std::vector<unsigned long> &batch_virt_address,
       const std::vector<int> &batch_object_size,
+      const std::vector<int> &batch_object_meta_size,
       const std::vector<ray::NodeID> &batch_owner_raylet_id,
       const std::vector<std::string> &batch_owner_ip_address,
       const std::vector<int> &batch_owner_port,

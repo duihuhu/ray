@@ -172,6 +172,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
     bool *got_exception,
     const std::vector<unsigned long> &batch_virt_address,
     const std::vector<int> &batch_object_size,
+    const std::vector<int> &batch_object_meta_size,
     const std::vector<ray::NodeID> &batch_owner_raylet_id,
     const std::vector<std::string> &batch_owner_ip_address,
     const std::vector<int> &batch_owner_port,
@@ -194,6 +195,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
                                          task_id,
                                          batch_virt_address,
                                          batch_object_size,
+                                         batch_object_meta_size,
                                          batch_owner_raylet_id,
                                          batch_owner_ip_address,
                                          batch_owner_port,
@@ -299,6 +301,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<ObjectID> batch_ids;
   std::vector<unsigned long> batch_virt_address;
   std::vector<int> batch_object_size;
+  std::vector<int> batch_object_meta_size;
+
   std::vector<ray::NodeID> batch_owner_raylet_id;
   std::vector<std::string> batch_owner_ip_address;
   std::vector<int> batch_owner_port;
@@ -312,6 +316,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   
   std::vector<unsigned long> virt_address_vector;
   std::vector<int> object_size_vector;
+  std::vector<int> object_meta_size_vector;
+
   std::vector<ray::NodeID> owner_raylet_id_vector;
   std::vector<std::string> owner_ip_address_vector;
   std::vector<int> owner_port_vector;
@@ -320,7 +326,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   for (auto &entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     virt_address_vector.push_back(it->second.first);
-    object_size_vector.push_back(it->second.second.data_size + it->second.second.metadata_size);
+    object_size_vector.push_back(it->second.second.data_size);
+    object_meta_size_vector.push_back(it->second.second.metadata_size);
     owner_raylet_id_vector.push_back(it->second.second.owner_raylet_id);
     owner_ip_address_vector.push_back(it->second.second.owner_ip_address);
     owner_port_vector.push_back(it->second.second.owner_port);
@@ -337,6 +344,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       batch_ids.push_back(id_vector[start + i]);
       batch_virt_address.push_back(virt_address_vector[start + i]);
       batch_object_size.push_back(object_size_vector[start + i]);
+      batch_object_meta_size.push_back(object_size_vector[start + i]);
 
       batch_owner_raylet_id.push_back(owner_raylet_id_vector[start + i]);
       batch_owner_ip_address.push_back(owner_ip_address_vector[start + i]);
@@ -354,6 +362,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  got_exception, 
                                                  batch_virt_address,
                                                  batch_object_size,
+                                                 batch_object_meta_size,
                                                  batch_owner_raylet_id,
                                                  batch_owner_ip_address,
                                                  batch_owner_port,
@@ -409,6 +418,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  got_exception,
                                                  batch_virt_address,
                                                  batch_object_size,
+                                                 batch_object_meta_size,
                                                  batch_owner_raylet_id,
                                                  batch_owner_ip_address,
                                                  batch_owner_port,

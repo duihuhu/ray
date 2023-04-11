@@ -80,24 +80,41 @@ std::vector<ray::rpc::ObjectReference> FlatbufferToObjectReference(
 }
 
 void FlatbufferToObjectReferenceWithMeta(
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &object_ids,
     const flatbuffers::Vector<unsigned long> &object_virt_address,
-    const flatbuffers::Vector<int> &object_sizes,
+    const flatbuffers::Vector<int> &flat_object_sizes,
+    const flatbuffers::Vector<int> &flat_object_meta_data_sizes,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &owner_raylet_id,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &owner_ip_address,
     const flatbuffers::Vector<int> &owner_port,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &owner_worker_id,
-
     const flatbuffers::Vector<flatbuffers::Offset<ray::protocol::Address>>
       &owner_addresses,
     std::vector<unsigned long> &object_meta_virt_address,
+    std::vector<int> &object_sizes,
     std::vector<int> &object_meta_sizes,
-    std::vector<std::string> &object_address) {
-  RAY_CHECK(object_virt_address.size() == object_sizes.size());
+    std::vector<std::string> &object_address,
+    const std::vector<ray::ObjectInfo>  &object_info) {
+
+  std::vector<std::string> owner_ip_address_str = string_vec_from_flatbuf(owner_ip_address);
+  RAY_CHECK(object_virt_address.size() == flat_object_sizes.size());
   for (int64_t i = 0; i < object_virt_address.size(); i++) {
+    ray::ObjectInfo obj_info;
     object_meta_virt_address.emplace_back(object_virt_address.Get(i));
-    object_meta_sizes.emplace_back(object_sizes.Get(i)); 
+    object_sizes.emplace_back(flat_object_sizes.Get(i) + flat_object_meta_data_sizes.Get(i));
+    object_meta_sizes.emplace_back(flat_object_meta_data_sizes.Get(i));
     const auto &addr = owner_addresses.Get(i);
     object_address.emplace_back(addr->ip_address()->str());
+    
+    obj_info.object_id = ObjectID::FromBinary(object_ids.Get(i)->str());
+    obj_info.data_size = flat_object_sizes.Get(i);
+    obj_info.metadata_size = object_metadata_sizes.Get(i);
+    obj_info.owner_raylet_id = NodeID::FromBinary(owner_raylet_id.Get(i)->str());
+    obj_info.owner_ip_address = owner_ip_address_str[i];
+    obj_info.owner_port = owner_port[i];
+    obj_info.owner_worker_id = WorkerID::FromBinary(owner_worker_id.Get(i)->str());
+    object_info.emplace_back(obj_info);
+    
   }
 }
 
@@ -1655,6 +1672,8 @@ void NodeManager::ProcessFetchOrReconstructMessage(
 
   std::vector<unsigned long> object_virt_address;
   std::vector<int>  object_sizes;
+  std::vector<int>  object_meta_sizes;
+
   std::vector<ray::ObjectInfo> object_info;
 
   std::vector<std::string> object_address;
@@ -1662,8 +1681,8 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
-  FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
-                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), object_virt_address, object_sizes, object_address);
+  FlatbufferToObjectReferenceWithMeta(*message->object_ids(), *message->virt_address(), *message->object_sizes(), *message->object_meta_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
+                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), object_virt_address, object_sizes, object_meta_sizes, object_address, object_info);
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 
