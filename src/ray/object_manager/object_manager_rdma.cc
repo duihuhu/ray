@@ -448,7 +448,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       std::ofstream outfile;
       std::string filename = "buffer.txt";
       void *buffer = (void *) local_address;
-      uint64_t *buf = (uint64_t*) buffer;
+      uint8_t *buf = (uint8_t*) buffer;
       outfile.open(filename);
       for(int j=0; j<object_sizes[i]; ++j){
         outfile<<buf[j];
