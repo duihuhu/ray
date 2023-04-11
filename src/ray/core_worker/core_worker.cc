@@ -2811,7 +2811,6 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
       reply->set_owner_port(object_info.owner_port);
       /// Owner's worker ID.
       reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
-}
     }
   }
 }
