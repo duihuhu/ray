@@ -55,7 +55,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
 }
 
 const LocalObject *ObjectStore::GetObject(const ObjectID &object_id) const {
-  RAY_LOG(DEBUG) << "ObjectStore GetObject " << object_info.object_id;
+  RAY_LOG(DEBUG) << "ObjectStore GetObject " << object_id;
   auto it = object_table_.find(object_id);
   if (it == object_table_.end()) {
     return nullptr;
