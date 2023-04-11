@@ -293,9 +293,11 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 			.pkey_index      = 0,
 			.port_num        = port
 		};
-    attr.qp_access_flags = 0;
+    // attr.qp_access_flags = 0;
     // attr.qp_access_flags = IBV_ACCESS_LOCAL_WRITE  | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_ATOMIC;
-		if (ibv_modify_qp(ctx->qp, &attr,
+    attr.qp_access_flags = IBV_ACCESS_LOCAL_WRITE  | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE ;
+
+    if (ibv_modify_qp(ctx->qp, &attr,
 				  IBV_QP_STATE              |
 				  IBV_QP_PKEY_INDEX         |
 				  IBV_QP_PORT               |
