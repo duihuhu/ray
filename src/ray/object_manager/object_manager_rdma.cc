@@ -283,7 +283,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 
 		ibv_query_qp(ctx->qp, &attr, IBV_QP_CAP, &init_attr);
     if (init_attr.cap.max_inline_data >= plasma_size_)
-			ctx_->send_flags |= IBV_SEND_INLINE;
+			ctx->send_flags |= IBV_SEND_INLINE;
 
 	}
 
