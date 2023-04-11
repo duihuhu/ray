@@ -69,6 +69,9 @@ class IObjectStore {
   virtual bool DeleteObject(const ObjectID &object_id) = 0;
 
   virtual absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() = 0;
+
+  virtual void InsertObjectInfo(Allocation& allocation , ray::ObjectInfo &object_info) = 0;
+
 };
 
 // ObjectStore implements IObjectStore. It uses IAllocator
@@ -90,7 +93,7 @@ class ObjectStore : public IObjectStore {
   // hucc GetPlasmaMeta
   absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() override;
 
-  void InsertObjectInfo(Allocation& allocation , ray::ObjectInfo &object_info);
+  void InsertObjectInfo(Allocation& allocation , ray::ObjectInfo &object_info) override;
 
  private:
   friend struct ObjectStatsCollectorTest;

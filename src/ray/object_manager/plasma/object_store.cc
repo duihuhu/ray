@@ -103,6 +103,8 @@ absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectStore::GetPl
 }
 
 void ObjectStore::InsertObjectInfo(Allocation& allocation , ray::ObjectInfo &object_info) {
+  RAY_CHECK(object_table_.count(object_info.object_id) == 0)
+      << object_info.object_id << " already exists!";
   auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
   auto entry =
       object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
