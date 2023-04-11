@@ -246,7 +246,7 @@ Status raylet::RayletClient::FetchOrReconstruct(
                                          fbb.CreateVector(batch_virt_address),
                                          fbb.CreateVector(batch_object_size),
                                          to_flatbuf(fbb, batch_owner_raylet_id),
-                                         string_vec_from_flatbuf(batch_owner_ip_address),
+                                         string_vec_to_flatbuf(fbb, batch_owner_ip_address),
                                          fbb.CreateVector(batch_owner_port),
                                          to_flatbuf(fbb, batch_owner_worker_id));
   fbb.Finish(message);
