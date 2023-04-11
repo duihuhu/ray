@@ -103,6 +103,7 @@ absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectStore::GetPl
 }
 
 void ObjectStore::InsertObjectInfo(Allocation& allocation , ray::ObjectInfo &object_info) {
+  auto source = plasma::flatbuf::ObjectSource::ReceivedFromRemoteRaylet;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
       << object_info.object_id << " already exists!";
   auto ptr = std::make_unique<LocalObject>(std::move(allocation));
@@ -112,7 +113,7 @@ void ObjectStore::InsertObjectInfo(Allocation& allocation , ray::ObjectInfo &obj
   entry->state = ObjectState::PLASMA_CREATED;
   entry->create_time = std::time(nullptr);
   entry->construct_duration = -1;
-  entry->source = 2;
+  entry->source = source;
 }
 
 }  // namespace plasma
