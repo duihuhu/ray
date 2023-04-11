@@ -94,13 +94,13 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
         objectinfo.data_size = reply.data_size();
         objectinfo.metadata_size = reply.metadata_size();
         /// Owner's raylet ID.
-        objectinfo.owner_raylet_id = NodeID::Binary(reply.owner_raylet_id());
+        objectinfo.owner_raylet_id = NodeID::FromBinary(reply.owner_raylet_id());
         /// Owner's IP address.
         objectinfo.owner_ip_address = reply.owner_ip_address();
         /// Owner's port.
         objectinfo.owner_port = reply.owner_port();
         /// Owner's worker ID.
-        objectinfo.owner_worker_id = WorkerID::Binary(reply.owner_worker_id());
+        objectinfo.owner_worker_id = WorkerID::FromBinary(reply.owner_worker_id());
 
         plasma_node_virt_info_[object_id] =  std::make_pair(reply.virt_address(), objectinfo);
       }
