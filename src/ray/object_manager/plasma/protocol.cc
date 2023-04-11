@@ -687,7 +687,7 @@ Status SendMetaReply(const std::shared_ptr<Client> &client, unsigned long &addre
   auto message = fb::CreatePlasmaGetMetaReply(fbb, 
                                             address, object_size, device_num, 
                                             fbb.CreateString(object_info.owner_raylet_id.Binary()),
-                                            object_info.owner_ip_address,  
+                                            fbb.CreateString(object_info.owner_ip_address),  
                                             object_info.owner_port,
                                             fbb.CreateString(object_info.owner_worker_id.Binary()),
                                             object_info.data_size,
@@ -705,7 +705,7 @@ Status ReadMetaReply(uint8_t *data, size_t size, unsigned long *address, int64_t
   *device_num = message->device_num();
 
   object_info->owner_raylet_id = NodeID::FromBinary(message->owner_raylet_id()->str());
-  object_info->owner_ip_address = message->owner_ip_address();
+  object_info->owner_ip_address = message->owner_ip_address()->str();
   object_info->owner_port = message->owner_port();
   object_info->owner_worker_id = WorkerID::FromBinary(message->owner_worker_id()->str());
   object_info->data_size = message->data_size();
