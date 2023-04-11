@@ -187,8 +187,6 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
   // }
   //hucc end 
 
-  RAY_LOG(WARNING) << "FetchAndGetFromPlasmaStore ";
-
   RAY_RETURN_NOT_OK(
       raylet_client_->FetchOrReconstruct(batch_ids,
                                          owner_addresses,

@@ -55,6 +55,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
 }
 
 const LocalObject *ObjectStore::GetObject(const ObjectID &object_id) const {
+  RAY_LOG(DEBUG) << "ObjectStore GetObject " << object_info.object_id;
   auto it = object_table_.find(object_id);
   if (it == object_table_.end()) {
     return nullptr;
@@ -106,6 +107,7 @@ void ObjectStore::InsertObjectInfo(absl::optional<Allocation>& allocation , ray:
   auto source = plasma::flatbuf::ObjectSource::ReceivedFromRemoteRaylet;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
       << object_info.object_id << " already exists!";
+  RAY_LOG(DEBUG) << "InsertObjectInfo " << object_info.object_id;
   auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
   auto entry =
       object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
