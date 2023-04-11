@@ -78,7 +78,7 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
     cfg_.ib_devname = "mlx5_1";
     cfg_.ib_port = 1;
     cfg_.size = 4096;
-    cfg_.mtu = IBV_MTU_4096;
+    cfg_.mtu = IBV_MTU_1024;
     cfg_.rx_depth = 500;
     cfg_.iters = 1;
     cfg_.sl = 0;
@@ -266,7 +266,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 			.send_cq = pp_cq(ctx),
 			.recv_cq = pp_cq(ctx),
 			.cap     = {
-				.max_send_wr  = rx_depth + 1,
+				.max_send_wr  = 1,
 				.max_recv_wr  = rx_depth + 1, 
 				.max_send_sge = 1,
 				.max_recv_sge = 1
@@ -281,9 +281,9 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 			// goto clean_cq;
 		}
 
-		// ibv_query_qp(ctx->qp, &attr, IBV_QP_CAP, &init_attr);
-    // if (init_attr.cap.max_inline_data >= size)
-		// 	ctx_->send_flags |= IBV_SEND_INLINE;
+		ibv_query_qp(ctx->qp, &attr, IBV_QP_CAP, &init_attr);
+    if (init_attr.cap.max_inline_data >= plasma_size_)
+			ctx_->send_flags |= IBV_SEND_INLINE;
 
 	}
 
@@ -293,8 +293,8 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 			.pkey_index      = 0,
 			.port_num        = port
 		};
-    // attr.qp_access_flags = 0;
-    attr.qp_access_flags = IBV_ACCESS_LOCAL_WRITE  | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_ATOMIC;
+    attr.qp_access_flags = 0;
+    // attr.qp_access_flags = IBV_ACCESS_LOCAL_WRITE  | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_ATOMIC;
 		if (ibv_modify_qp(ctx->qp, &attr,
 				  IBV_QP_STATE              |
 				  IBV_QP_PKEY_INDEX         |
@@ -448,7 +448,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       void *buffer = (void *) local_address;
       uint8_t *buf = (uint8_t*) buffer;
       outfile.open(filename);
-      for(int i=0; i<2048; ++i){
+      for(int i=0; i<1024; ++i){
         outfile<<buf[i];
       }
       outfile.close();
@@ -478,7 +478,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
   sge.addr = buf;
-	sge.length = 2048;
+	sge.length = 1024;
 	sge.lkey = ctx->mr->lkey;
 	memset(&sr, 0, sizeof(sr));
 	sr.next = NULL;
