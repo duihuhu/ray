@@ -445,15 +445,15 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i];
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       PollCompletion(it->second.first.first);
-      std::ofstream outfile;
-      std::string filename = "buffer.txt";
-      void *buffer = (void *) local_address;
-      uint8_t *buf = (uint8_t*) buffer;
-      outfile.open(filename);
-      for(int j=0; j<object_sizes[i]; ++j){
-        outfile<<buf[j];
-      }
-      outfile.close();
+      // std::ofstream outfile;
+      // std::string filename = "buffer.txt";
+      // void *buffer = (void *) local_address;
+      // uint8_t *buf = (uint8_t*) buffer;
+      // outfile.open(filename);
+      // for(int j=0; j<object_sizes[i]; ++j){
+      //   outfile<<buf[j];
+      // }
+      // outfile.close();
   }
 }
 

@@ -153,7 +153,7 @@ class PlasmaClient::Impl : public std::enable_shared_from_this<PlasmaClient::Imp
 
   Status Seal(const ObjectID &object_id);
 
-  Status GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num);
+  Status GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info);
 
 
   Status Delete(const std::vector<ObjectID> &object_ids);
@@ -536,13 +536,13 @@ Status PlasmaClient::Impl::GetBuffers(
         RAY_LOG(FATAL) << "Arrow GPU library is not enabled.";
       }
 
-      std::ofstream outfile2;
-      RAY_LOG(INFO) << "object_id write" << object_ids[i] << "\n";
-      outfile2.open("buffer2.txt");
-      for(int i=0; i<(object->data_size + object->metadata_size); ++i){
-        outfile2<<(physical_buf.get()->Data())[i];
-      }
-      outfile2.close();
+      // std::ofstream outfile2;
+      // RAY_LOG(INFO) << "object_id write" << object_ids[i] << "\n";
+      // outfile2.open("buffer2.txt");
+      // for(int i=0; i<(object->data_size + object->metadata_size); ++i){
+      //   outfile2<<(physical_buf.get()->Data())[i];
+      // }
+      // outfile2.close();
       // Finish filling out the return values.
       physical_buf = wrap_buffer(object_ids[i], physical_buf);
 
@@ -678,7 +678,7 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
 /// @brief get object meta through 
 /// @param object_id 
 /// @return Status
-Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num) {
+Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
   RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
   std::vector<uint8_t> buffer;
 
@@ -688,7 +688,7 @@ Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned lon
   // unsigned long address = 0;
   // int64_t object_size = 0;
   // int device_num = 0;
-  RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), address, object_size, device_num));
+  RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), address, object_size, device_num, object_info));
 
   // RAY_LOG(DEBUG) << "ReadMetaReply GetObjectMeta " << object_id << " address " << *address << " object_size " << object_size << " device_num " <<  device_num;
 
@@ -902,8 +902,8 @@ bool PlasmaClient::IsInUse(const ObjectID &object_id) {
   return impl_->IsInUse(object_id);
 }
 
-Status PlasmaClient::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num) {
-  return impl_->GetObjectMeta(object_id, address, object_size, device_num);
+Status PlasmaClient::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
+  return impl_->GetObjectMeta(object_id, address, object_size, device_num, object_info);
 }
 
 int64_t PlasmaClient::store_capacity() { return impl_->store_capacity(); }

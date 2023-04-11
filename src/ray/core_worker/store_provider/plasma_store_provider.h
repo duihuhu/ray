@@ -176,7 +176,7 @@ class CoreWorkerPlasmaStoreProvider {
 
   /// hucc get object meta from plasma.
   /// \param[in] object The object to create.
-  Status GetObjectMetaFromPlasma(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num);
+  Status GetObjectMetaFromPlasma(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info);
      
   /// Lists objects in used (pinned) by the current client.
   ///
