@@ -102,5 +102,15 @@ absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectStore::GetPl
   return &object_table_;
 }
 
+void ObjectStore::InsertObjectInfo(Allocation& allocation , ray::ObjectInfo &object_info) {
+  auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
+  auto entry =
+      object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
+  entry->object_info = object_info;
+  entry->state = ObjectState::PLASMA_CREATED;
+  entry->create_time = std::time(nullptr);
+  entry->construct_duration = -1;
+  entry->source = 2;
+}
 
 }  // namespace plasma

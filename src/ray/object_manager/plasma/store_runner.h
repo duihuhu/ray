@@ -36,7 +36,7 @@ class PlasmaStoreRunner {
   /// @brief get plasma start address and size 
   unsigned long GetMetaAddress();
   int64_t GetMetaSize();
-  unsigned long AllocateObjectSizeRdma(size_t size);
+  unsigned long AllocateObjectSizeRdma(size_t size, ray::ObjectInfo &object_info);
  private:
   void Shutdown();
   mutable absl::Mutex store_runner_mutex_;

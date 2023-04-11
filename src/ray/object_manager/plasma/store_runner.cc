@@ -156,11 +156,13 @@ int64_t PlasmaStoreRunner::GetMetaSize() {
   return allocator_->TotalPlasmaSize();
 }
 
-unsigned long PlasmaStoreRunner::AllocateObjectSizeRdma(size_t sizes) {
+unsigned long PlasmaStoreRunner::AllocateObjectSizeRdma(size_t sizes, ray::ObjectInfo &object_info) {
   auto allocation = allocator_->Allocate(sizes);
+  unsigned long address =  (unsigned long) allocation->address;
   RAY_CHECK(allocation.has_value())
       << "PlasmaAllocator AllocateObjectSizeRdma failed.";
-  return (unsigned long) allocation->address;
+  store_.InsertObjectInfo(allocation, object_info);
+  return address;
 }
 
 std::unique_ptr<PlasmaStoreRunner> plasma_store_runner;
