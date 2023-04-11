@@ -1143,7 +1143,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
       if (it == future_resolver_->plasma_node_virt_info_.end()) {
         RAY_LOG(DEBUG) << current->first << " has no information in  plasma_node_virt_info_";
       } else {
-        RAY_LOG(DEBUG) << current->first << " virtual address " << it->second.first <<  " object size " << it->second.second;
+        RAY_LOG(DEBUG) << current->first << " virtual address " << it->second.first <<  " object size " << (it->second.second.data_size+it->second.second.metadata_size);
       }
 
       plasma_object_ids.insert(current->first);
@@ -2800,6 +2800,18 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
       
       reply->set_virt_address(virt_address);
       reply->set_device_num(device_num);
+      // object info
+      reply->set_data_size(object_info.data_size);
+      reply->set_metadata_size(object_info.metadata_size);
+      /// Owner's raylet ID.
+      reply->set_owner_raylet_id(object_info.owner_raylet_id.Binary());
+      /// Owner's IP address.
+      reply->set_owner_ip_address(object_info.owner_ip_address);
+      /// Owner's port.
+      reply->set_owner_port(object_info.owner_port);
+      /// Owner's worker ID.
+      reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
+}
     }
   }
 }

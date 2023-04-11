@@ -181,7 +181,19 @@ message GetObjectStatusReply {
   // This object's virt_address in plasma
   uint64 virt_address = 5;
   int64 device_num = 6;
+
+  int64 data_size = 7;
+  int64 metadata_size = 8;
+  /// Owner's raylet ID.
+  bytes owner_raylet_id = 9;
+  /// Owner's IP address.
+  string owner_ip_address = 10;
+  /// Owner's port.
+  int64 owner_port = 11;
+  /// Owner's worker ID.
+  bytes owner_worker_id = 12;
 }
+
 
 message WaitForActorOutOfScopeRequest {
   // The ID of the worker this message is intended for.

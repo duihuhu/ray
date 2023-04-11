@@ -82,8 +82,13 @@ std::vector<ray::rpc::ObjectReference> FlatbufferToObjectReference(
 void FlatbufferToObjectReferenceWithMeta(
     const flatbuffers::Vector<unsigned long> &object_virt_address,
     const flatbuffers::Vector<int> &object_sizes,
-     const flatbuffers::Vector<flatbuffers::Offset<ray::protocol::Address>>
-        &owner_addresses,
+    const flatbuffers::Vector<flatbuffers::String> &owner_raylet_id,
+    const flatbuffers::Vector<std::string> &owner_ip_address,
+    const flatbuffers::Vector<int> &owner_port,
+    const flatbuffers::Vector<flatbuffers::String> &owner_worker_id,
+
+    const flatbuffers::Vector<flatbuffers::Offset<ray::protocol::Address>>
+      &owner_addresses,
     std::vector<unsigned long> &object_meta_virt_address,
     std::vector<int> &object_meta_sizes,
     std::vector<std::string> &object_address) {
@@ -1650,12 +1655,18 @@ void NodeManager::ProcessFetchOrReconstructMessage(
 
   std::vector<unsigned long> object_virt_address;
   std::vector<int>  object_sizes;
+  std::vector<NodeID> owner_raylet_id;
+  std::vector<std::string>  owner_ip_address;
+  std::vector<int> owner_port;
+  std::vector<WorkerID>  owner_worker_id;
+
   std::vector<std::string> object_address;
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
-  FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), *message->owner_addresses(), object_virt_address, object_sizes, object_address);
+  FlatbufferToObjectReferenceWithMeta(*message->virt_address(), *message->object_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
+                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), object_virt_address, object_sizes, object_address);
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 

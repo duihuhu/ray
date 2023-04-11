@@ -150,7 +150,7 @@ class CoreWorkerPlasmaStoreProvider {
              const WorkerContext &ctx,
              absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
              bool *got_exception,
-             absl::flat_hash_map<ObjectID, std::pair<unsigned long, int64_t>> &plasma_node_virt_info_);
+             absl::flat_hash_map<ObjectID, std::pair<unsigned long, ray::ObjectInfo>> &plasma_node_virt_info_);
 
   /// Get objects directly from the local plasma store, without waiting for the
   /// objects to be fetched from another node. This should only be used
@@ -213,7 +213,11 @@ class CoreWorkerPlasmaStoreProvider {
       absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
       bool *got_exception,
       const std::vector<unsigned long> &batch_virt_address,
-      const std::vector<int> &batch_object_size);
+      const std::vector<int> &batch_object_size,
+      const std::vector<ray::NodeID> &batch_owner_raylet_id,
+      const std::vector<std::string> &batch_owner_ip_address,
+      const std::vector<int> &batch_owner_port,
+      const std::vector<ray::WorkerID> &batch_owner_worker_id);
 
   /// Print a warning if we've attempted the fetch for too long and some
   /// objects are still unavailable.

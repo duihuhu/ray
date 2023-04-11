@@ -171,7 +171,11 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
     absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
     bool *got_exception,
     const std::vector<unsigned long> &batch_virt_address,
-    const std::vector<int> &batch_object_size) {
+    const std::vector<int> &batch_object_size,
+    const std::vector<ray::NodeID> &batch_owner_raylet_id,
+    const std::vector<std::string> &batch_owner_ip_address,
+    const std::vector<int> &batch_owner_port,
+    const std::vector<ray::WorkerID> &batch_owner_worker_id) {
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
   //hucc breakdown get_object
@@ -189,7 +193,11 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
                                          /*mark_worker_blocked*/ !in_direct_call,
                                          task_id,
                                          batch_virt_address,
-                                         batch_object_size));
+                                         batch_object_size,
+                                         batch_owner_raylet_id,
+                                         batch_owner_ip_address,
+                                         batch_owner_port,
+                                         batch_owner_worker_id));
 
   std::vector<plasma::ObjectBuffer> plasma_results;
   RAY_RETURN_NOT_OK(store_client_.Get(batch_ids,
@@ -286,12 +294,16 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     int64_t timeout_ms,
     const WorkerContext &ctx,
     absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
-    bool *got_exception, absl::flat_hash_map<ObjectID, std::pair<unsigned long, int64_t>> &plasma_node_virt_info_) {
+    bool *got_exception, absl::flat_hash_map<ObjectID, std::pair<unsigned long, ray::ObjectInfo>> &plasma_node_virt_info_) {
   int64_t batch_size = RayConfig::instance().worker_fetch_request_size();
   std::vector<ObjectID> batch_ids;
   std::vector<unsigned long> batch_virt_address;
   std::vector<int> batch_object_size;
-
+  std::vector<ray::NodeID> batch_owner_raylet_id;
+  std::vector<std::string> batch_owner_ip_address;
+  std::vector<int> batch_owner_port;
+  std::vector<ray::WorkerID> batch_owner_worker_id;
+  
   absl::flat_hash_set<ObjectID> remaining(object_ids.begin(), object_ids.end());
 
   // First, attempt to fetch all of the required objects once without reconstructing.
@@ -299,11 +311,20 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   int64_t total_size = static_cast<int64_t>(object_ids.size());
   
   std::vector<unsigned long> virt_address_vector;
-  std::vector<int64_t> object_size_vector;
+  std::vector<int> object_size_vector;
+  std::vector<ray::NodeID> owner_raylet_id_vector;
+  std::vector<std::string> owner_ip_address_vector;
+  std::vector<int> owner_port_vector;
+  std::vector<ray::WorkerID> owner_worker_id_vector;
+
   for (auto &entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     virt_address_vector.push_back(it->second.first);
-    object_size_vector.push_back(it->second.second);
+    object_size_vector.push_back(it->second.second.data_size + it->second.second.metadata_size);
+    owner_raylet_id_vector.push_back(it->second.second.owner_raylet_id);
+    owner_ip_address_vector.push_back(it->second.second.owner_ip_address);
+    owner_port_vector.push_back(it->second.second.owner_port);
+    owner_worker_id_vector.push_back(it->second.second.owner_worker_id);
   }
   //hucc time for get obj from local plasma
   auto ts_get_obj_local_plasma = current_sys_time_us();
@@ -317,6 +338,11 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       batch_virt_address.push_back(virt_address_vector[start + i]);
       batch_object_size.push_back(object_size_vector[start + i]);
 
+      batch_owner_raylet_id.push_back(owner_raylet_id_vector[start + i]);
+      batch_owner_ip_address.push_back(owner_ip_address_vector[start + i]);
+      batch_owner_port.push_back(owner_port_vector[start + i]);
+      batch_owner_worker_id.push_back(owner_worker_id_vector[start + i]);
+
     }
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
@@ -327,7 +353,11 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  results,
                                                  got_exception, 
                                                  batch_virt_address,
-                                                 batch_object_size));
+                                                 batch_object_size,
+                                                 batch_owner_raylet_id,
+                                                 batch_owner_ip_address,
+                                                 batch_owner_port,
+                                                 batch_owner_worker_id));
   }
   auto te_get_obj_local_plasma = current_sys_time_us();
   RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
@@ -378,7 +408,11 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  results,
                                                  got_exception,
                                                  batch_virt_address,
-                                                 batch_object_size));
+                                                 batch_object_size,
+                                                 batch_owner_raylet_id,
+                                                 batch_owner_ip_address,
+                                                 batch_owner_port,
+                                                 batch_owner_worker_id));
     should_break = timed_out || *got_exception;
 
     if ((previous_size - remaining.size()) < batch_ids.size()) {
