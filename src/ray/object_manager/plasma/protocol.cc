@@ -686,11 +686,10 @@ Status SendMetaReply(const std::shared_ptr<Client> &client, unsigned long &addre
   flatbuffers::FlatBufferBuilder fbb;
   auto message = fb::CreatePlasmaGetMetaReply(fbb, 
                                             address, object_size, device_num, 
-                                            fbb.CreateString(object_info.object_id.Binary()), 
-                                            fbb.CreateString(object_info.owner_raylet_id),
-                                            fbb.CreateString(object_info.owner_ip_address),
+                                            fbb.CreateString(object_info.owner_raylet_id.Binary()),
+                                            object_info.owner_ip_address,  
                                             object_info.owner_port,
-                                            fbb.CreateString(object_info.owner_worker_id()),
+                                            fbb.CreateString(object_info.owner_worker_id.Binary()),
                                             data_size,
                                             metadata_size);
   return PlasmaSend(client, MessageType::PlasmaGetMetaReply, &fbb, message);
@@ -704,14 +703,13 @@ Status ReadMetaReply(uint8_t *data, size_t size, unsigned long *address, int64_t
   *address = message->address();
   *object_size = message->object_size();
   *device_num = message->device_num();
-
-  object_info->data_size = message->data_size();
-  object_info->metadata_size = message->metadata_size();
-  object_info->object_id = ObjectID::FromBinary(message->object_id()->str());
+  
   object_info->owner_raylet_id = NodeID::FromBinary(message->owner_raylet_id()->str());
   object_info->owner_ip_address = message->owner_ip_address()->str();
   object_info->owner_port = message->owner_port();
   object_info->owner_worker_id = WorkerID::FromBinary(message->owner_worker_id()->str());
+  object_info->data_size = message->data_size();
+  object_info->metadata_size = message->metadata_size();
   return Status::OK();
 }
 
