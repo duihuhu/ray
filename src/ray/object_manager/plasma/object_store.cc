@@ -102,11 +102,11 @@ absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectStore::GetPl
   return &object_table_;
 }
 
-void ObjectStore::InsertObjectInfo(Allocation& allocation , ray::ObjectInfo &object_info) {
+void ObjectStore::InsertObjectInfo(absl::optional<Allocation>& allocation , ray::ObjectInfo &object_info) {
   auto source = plasma::flatbuf::ObjectSource::ReceivedFromRemoteRaylet;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
       << object_info.object_id << " already exists!";
-  auto ptr = std::make_unique<LocalObject>(std::move(allocation));
+  auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
   auto entry =
       object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
   entry->object_info = object_info;

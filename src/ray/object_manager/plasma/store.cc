@@ -699,7 +699,7 @@ std::string PlasmaStore::GetDebugDump() const {
   return buffer.str();
 }
 
-void PlasmaStore::InsertObjectInfo(Allocation& allocation , ray::ObjectInfo &object_info) {
+void PlasmaStore::InsertObjectInfo(absl::optional<Allocation>& allocation , ray::ObjectInfo &object_info) {
   object_lifecycle_mgr_.InsertObjectInfo(allocation, object_info);
 }
 
