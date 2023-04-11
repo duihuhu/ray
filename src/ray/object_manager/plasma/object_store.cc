@@ -113,7 +113,7 @@ void ObjectStore::InsertObjectInfo(absl::optional<Allocation>& allocation , ray:
   auto entry =
       object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
   entry->object_info = object_info;
-  entry->state = ObjectState::PLASMA_CREATED;
+  entry->state = ObjectState::PLASMA_SEALED;
   entry->create_time = std::time(nullptr);
   entry->construct_duration = -1;
   entry->source = source;
