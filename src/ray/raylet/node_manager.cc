@@ -1703,6 +1703,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
 
       object_manager_rdma_.PrintRemoteRdmaInfo();
       object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes, object_info);
+
     }
   } else {
     // The values are needed. Add all requested objects to the list to
