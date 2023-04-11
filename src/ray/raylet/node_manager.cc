@@ -93,7 +93,7 @@ void FlatbufferToObjectReferenceWithMeta(
     std::vector<unsigned long> &object_meta_virt_address,
     std::vector<int> &object_sizes,
     std::vector<std::string> &object_address,
-    const std::vector<ray::ObjectInfo>  &object_info) {
+    std::vector<ray::ObjectInfo>  &object_info) {
 
   std::vector<std::string> owner_ip_address_str = string_vec_from_flatbuf(owner_ip_address);
   RAY_CHECK(object_virt_address.size() == flat_object_sizes.size());
