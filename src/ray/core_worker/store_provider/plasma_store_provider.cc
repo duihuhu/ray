@@ -415,7 +415,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
     //hucc time for get obj from remote plasma
     // auto ts_get_obj_remote_plasma = current_sys_time_us();
-    RAY_LOG(WARNING) << "remote FetchAndGetFromPlasmaStore ";
+    RAY_LOG(WARNING) << "CoreWorkerPlasmaStoreProvider Get remaining empty" << remaining.empty();
 
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
