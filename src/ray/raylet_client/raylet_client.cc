@@ -211,7 +211,11 @@ Status raylet::RayletClient::FetchOrReconstruct(
     bool mark_worker_blocked,
     const TaskID &current_task_id,
     const std::vector<unsigned long> &batch_virt_address,
-    const std::vector<int> &batch_object_size) {
+    const std::vector<int> &batch_object_size,
+    const std::vector<ray::NodeID> &batch_owner_raylet_id,
+    const std::vector<std::string> &batch_owner_ip_address,
+    const std::vector<int> &batch_owner_port,
+    const std::vector<ray::WorkerID> &batch_owner_worker_id) {
   RAY_CHECK(object_ids.size() == owner_addresses.size());
   //hucc add for plasma
   // std::unordered_map<std::string, int> stat_addr;
@@ -240,7 +244,11 @@ Status raylet::RayletClient::FetchOrReconstruct(
                                          mark_worker_blocked,
                                          to_flatbuf(fbb, current_task_id),
                                          fbb.CreateVector(batch_virt_address),
-                                         fbb.CreateVector(batch_object_size));
+                                         fbb.CreateVector(batch_object_size),
+                                         to_flatbuf(fbb, batch_owner_raylet_id),
+                                         fbb.CreateVector(batch_owner_ip_address),
+                                         fbb.CreateVector(batch_owner_port),
+                                         to_flatbuf(fbb, batch_owner_worker_id));
   fbb.Finish(message);
   return conn_->WriteMessage(MessageType::FetchOrReconstruct, &fbb);
 }
