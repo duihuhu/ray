@@ -161,7 +161,7 @@ unsigned long PlasmaStoreRunner::AllocateObjectSizeRdma(size_t sizes, ray::Objec
   unsigned long address =  (unsigned long) allocation->address;
   RAY_CHECK(allocation.has_value())
       << "PlasmaAllocator AllocateObjectSizeRdma failed.";
-  store_->InsertObjectInfo(allocation, object_info);
+  // store_->InsertObjectInfo(allocation, object_info);
   return address;
 }
 
