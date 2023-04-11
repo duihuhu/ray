@@ -340,11 +340,16 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     batch_ids.clear();
     batch_virt_address.clear();
     batch_object_size.clear();
+    batch_object_meta_size.clear();
+    batch_owner_raylet_id.clear();
+    batch_owner_ip_address.clear();
+    batch_owner_port.clear();
+    batch_owner_worker_id.clear();
     for (int64_t i = start; i < batch_size && i < total_size; i++) {
       batch_ids.push_back(id_vector[start + i]);
       batch_virt_address.push_back(virt_address_vector[start + i]);
       batch_object_size.push_back(object_size_vector[start + i]);
-      batch_object_meta_size.push_back(object_size_vector[start + i]);
+      batch_object_meta_size.push_back(object_meta_size_vector[start + i]);
 
       batch_owner_raylet_id.push_back(owner_raylet_id_vector[start + i]);
       batch_owner_ip_address.push_back(owner_ip_address_vector[start + i]);
