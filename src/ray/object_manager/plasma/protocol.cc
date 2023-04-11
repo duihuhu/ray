@@ -695,7 +695,7 @@ Status SendMetaReply(const std::shared_ptr<Client> &client, unsigned long &addre
   return PlasmaSend(client, MessageType::PlasmaGetMetaReply, &fbb, message);
 }
 
-Status ReadMetaReply(uint8_t *data, size_t size, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info,) {
+Status ReadMetaReply(uint8_t *data, size_t size, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
   RAY_DCHECK(data);
   auto message = flatbuffers::GetRoot<fb::PlasmaGetMetaReply>(data);
   RAY_DCHECK(VerifyFlatbuffer(message, data, size));
