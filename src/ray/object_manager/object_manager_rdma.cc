@@ -78,7 +78,7 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
     cfg_.ib_devname = "mlx5_1";
     cfg_.ib_port = 1;
     cfg_.size = 4096;
-    cfg_.mtu = IBV_MTU_1024;
+    cfg_.mtu = IBV_MTU_4096;
     cfg_.rx_depth = 500;
     cfg_.iters = 1;
     cfg_.sl = 0;
@@ -447,9 +447,10 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       
       auto ts_fetch_rdma = current_sys_time_us();
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
+      auto tm_fetch_rdma = current_sys_time_us();
       PollCompletion(it->second.first.first);
       auto te_fetch_rdma = current_sys_time_us();
-      RAY_LOG(DEBUG) << "FetchObjectFromRemotePlasma: " << te_fetch_rdma - ts_fetch_rdma; 
+      RAY_LOG(DEBUG) << "FetchObjectFromRemotePlasma: " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - tm_fetch_rdma; 
       // std::ofstream outfile;
       // std::string filename = "buffer.txt";
       // void *buffer = (void *) local_address;
