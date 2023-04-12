@@ -389,7 +389,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   int64_t remaining_timeout = timeout_ms;
   auto fetch_start_time_ms = current_time_ms();
   auto ts_remain_time = current_sys_time_us();
-
   while (!remaining.empty() && !should_break) {
     batch_ids.clear();
     for (const auto &id : remaining) {
@@ -458,18 +457,17 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
   }
 
+
   if (!remaining.empty() && timed_out) {
     RAY_RETURN_NOT_OK(UnblockIfNeeded(raylet_client_, ctx));
     return Status::TimedOut("Get timed out: some object(s) not ready.");
   }
-
+  auto te_remain_time = current_sys_time_us();
+  RAY_LOG(DEBUG) << "hucc time for get remain obj time : " << te_remain_time - ts_remain_time;  
   // Notify unblocked because we blocked when calling FetchOrReconstruct with
   // fetch_only=false.
   return UnblockIfNeeded(raylet_client_, ctx);
 }
-auto te_remain_time = current_sys_time_us();
-
-RAY_LOG(DEBUG) << "hucc time for get remain obj time : " << te_remain_time - ts_remain_time;
 
 Status CoreWorkerPlasmaStoreProvider::Contains(const ObjectID &object_id,
                                                bool *has_object) {
