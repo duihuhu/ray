@@ -445,15 +445,11 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
       RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i];
       
-      auto ts_fetch_rdma = current_sys_time_us();
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
-      auto tm_fetch_rdma = current_sys_time_us();
       // PollCompletion(it->second.first.first);
       auto ctx =  it->second.first.first;
       main_service_->post([this, ctx]() { PollCompletion(ctx); },
                     "ObjectManagerRdma.PollCompletion");
-      auto te_fetch_rdma = current_sys_time_us();
-      RAY_LOG(DEBUG) << "FetchObjectFromRemotePlasma: " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - tm_fetch_rdma; 
       // std::ofstream outfile;
       // std::string filename = "buffer.txt";
       // void *buffer = (void *) local_address;
@@ -513,6 +509,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 
 int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx){
   // RAY_LOG(DEBUG) << "PollCompletion ";
+  auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
 	int poll_result;
 	int rc = 0;
@@ -534,6 +531,8 @@ int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx){
       rc = 1;
 		}
 	}
+  auto te_fetch_rdma = current_sys_time_us();
+  RAY_LOG(DEBUG) << "FetchObjectFromRemotePlasma: " << te_fetch_rdma - ts_fetch_rdma; 
 	return rc;
 }
 
