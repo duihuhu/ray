@@ -1710,6 +1710,8 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     // subscribe to in the task dependency manager. These objects will be
     // pulled from remote node managers. If an object's owner dies, an error
     // will be stored as the object's value.
+    RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects ";
+
     const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
     AsyncResolveObjects(client,
                         refs,
