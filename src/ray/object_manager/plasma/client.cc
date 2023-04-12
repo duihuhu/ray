@@ -440,8 +440,6 @@ Status PlasmaClient::Impl::GetBuffers(
     ObjectBuffer *object_buffers,
     bool is_from_worker) {
   // Fill out the info for the objects that are already in use locally.
-  RAY_LOG(DEBUG) << "PlasmaClient GetBuffers ";
-  auto ts_get_buffer = current_sys_time_us();
   bool all_present = true;
   for (int64_t i = 0; i < num_objects; ++i) {
     auto object_entry = objects_in_use_.find(object_ids[i]);
@@ -570,9 +568,6 @@ Status PlasmaClient::Impl::GetBuffers(
       RAY_DCHECK(!object_buffers[i].data);
     }
   }
-  auto te_get_buffer = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc store_get_buffer: " << te_get_buffer - ts_get_buffer << " " << te_get_buffer - te_get_remote_plasma;
-
   return Status::OK();
 }
 

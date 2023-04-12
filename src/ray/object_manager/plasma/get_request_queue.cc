@@ -58,6 +58,7 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
   // Create a get request for this object.
   auto get_request = std::make_shared<GetRequest>(
       io_context_, client, object_ids, is_from_worker, unique_ids.size());
+  auto ts_add_request = current_sys_time_ms;
   for (const auto &object_id : unique_ids) {
     // Check if this object is already present
     // locally. If so, record that the object is being used and mark it as accounted for.
@@ -94,6 +95,8 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
                              }
                            });
   }
+  auto te_add_request = current_sys_time_ms;
+  RAY_LOG(DEBUG) << "GetRequestQueue AddRequest " << te_add_request - ts_add_request;
 }
 
 void GetRequestQueue::RemoveGetRequestsForClient(
