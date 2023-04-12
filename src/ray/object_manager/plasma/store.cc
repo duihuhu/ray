@@ -111,8 +111,11 @@ PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
           // absl failed to check thread safety for lambda
           [this](const ObjectID &object_id, const auto &request)
               ABSL_NO_THREAD_SAFETY_ANALYSIS {
+                auto ts_in_get_request = current_sys_time_us();
                 mutex_.AssertHeld();
                 this->AddToClientObjectIds(object_id, request->client);
+                auto te_in_get_request = current_sys_time_us();
+                RAY_LOG(DEBUG) << "in get_request_queue_" << te_in_get_request - ts_in_get_request;
               },
           [this](const auto &request) { this->ReturnFromGet(request); }) {
   const auto event_stats_print_interval_ms =
@@ -523,12 +526,9 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     int64_t timeout_ms;
     bool is_from_worker;
     RAY_LOG(WARNING) << "hucc client get request" << "\n";
-    auto ts_plasma_get_request = current_sys_time_us();
     RAY_RETURN_NOT_OK(ReadGetRequest(
         input, input_size, object_ids_to_get, &timeout_ms, &is_from_worker));
     ProcessGetRequest(client, object_ids_to_get, timeout_ms, is_from_worker);
-    auto te_plasma_get_request = current_sys_time_us();
-    RAY_LOG(DEBUG) << "PlasmaGetRequest ReadGetRequest" << te_plasma_get_request - ts_plasma_get_request;
   } break;
   case fb::MessageType::PlasmaReleaseRequest: {
     RAY_RETURN_NOT_OK(ReadReleaseRequest(input, input_size, &object_id));
