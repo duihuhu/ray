@@ -84,7 +84,6 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
   if (get_request->num_unique_objects_satisfied ==
           get_request->num_unique_objects_to_wait_for ||
       timeout_ms == 0) {
-    auto ts_add_request = current_sys_time_us();
     OnGetRequestCompleted(get_request);
   } else if (timeout_ms != -1) {
     // Set a timer that will cause the get request to return to the client. Note
