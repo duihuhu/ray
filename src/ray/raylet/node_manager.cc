@@ -1667,6 +1667,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   //hucc breakdown get object nodemanager
   // auto ts_breakdown_get_object_node_manager = current_sys_time_us();
   //end hucc
+  auto ts_fetch_rdma = current_sys_time_us();
 
   std::vector<unsigned long> object_virt_address;
   std::vector<int>  object_sizes;
@@ -1701,7 +1702,6 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       // objects are local, or if the worker dies.
       // dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
 
-      auto ts_fetch_rdma = current_sys_time_us();
       object_manager_rdma_.PrintRemoteRdmaInfo();
       object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes, object_info);
       dependency_manager_.InsertObjectLocal(object_info);
