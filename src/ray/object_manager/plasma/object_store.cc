@@ -58,7 +58,7 @@ const LocalObject *ObjectStore::GetObject(const ObjectID &object_id) const {
   RAY_LOG(DEBUG) << "ObjectStore GetObject " << object_id;
   auto it = object_table_.find(object_id);
   if (it == object_table_.end()) {
-    RAY_LOG(DEBUG) << "ObjectStore GetObject nullptr" ;
+    RAY_LOG(DEBUG) << "ObjectStore GetObject nullptr" << object_id ;
     return nullptr;
   }
   return it->second.get();

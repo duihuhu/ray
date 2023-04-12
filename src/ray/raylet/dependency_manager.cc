@@ -124,7 +124,6 @@ void DependencyManager::StartOrUpdateGetRequest(
   }
 
   if (modified) {
-    RAY_LOG(DEBUG) << "StartOrUpdateGetRequest modified";
     std::vector<rpc::ObjectReference> refs;
     for (auto &obj_id : get_request.first) {
       auto it = required_objects_.find(obj_id);
