@@ -58,8 +58,6 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
   // Create a get request for this object.
   auto get_request = std::make_shared<GetRequest>(
       io_context_, client, object_ids, is_from_worker, unique_ids.size());
-  auto ts_add_request = current_sys_time_us();
-  RAY_LOG(DEBUG) << "AddRequest " << ts_add_request;
   for (const auto &object_id : unique_ids) {
     // Check if this object is already present
     // locally. If so, record that the object is being used and mark it as accounted for.
@@ -78,20 +76,25 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
       object_get_requests_[object_id].push_back(get_request);
     }
   }
-  auto te_add_request = current_sys_time_us();
-  RAY_LOG(DEBUG) << "AddRequest find" << te_add_request << " " << ts_add_request << " " << te_add_request - te_add_request;
+
   // If all of the objects are present already or if the timeout is 0, return to
   // the client.
   if (get_request->num_unique_objects_satisfied ==
           get_request->num_unique_objects_to_wait_for ||
       timeout_ms == 0) {
+    auto ts_add_request = current_sys_time_us();
+    RAY_LOG(DEBUG) << "OnGetRequestCompleted" << ts_add_request << " " << timeout_ms;
     OnGetRequestCompleted(get_request);
   } else if (timeout_ms != -1) {
     // Set a timer that will cause the get request to return to the client. Note
     // that a timeout of -1 is used to indicate that no timer should be set.
+    auto ts_add_request = current_sys_time_us();
+    RAY_LOG(DEBUG) << "OnGetRequestCompleted AsyncWait " << ts_add_request << " " << timeout_ms;
+
     get_request->AsyncWait(timeout_ms,
                            [this, get_request](const boost::system::error_code &ec) {
                              if (ec != boost::asio::error::operation_aborted) {
+
                                // Timer was not cancelled, take necessary action.
                                OnGetRequestCompleted(get_request);
                              }
