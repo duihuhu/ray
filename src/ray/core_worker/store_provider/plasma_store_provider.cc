@@ -441,7 +441,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
     //hucc time for get obj from remote plasma
     auto te_get_obj_remote_plasma = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
+    RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time in while: " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma << " empty: " << remaining.empty() << "\n";
 
     if (check_signals_) {
       Status status = check_signals_();
