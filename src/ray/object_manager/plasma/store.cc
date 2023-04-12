@@ -332,6 +332,7 @@ void PlasmaStore::ReturnFromGet(const std::shared_ptr<GetRequest> &get_request) 
       }
     }
   }
+  auto ts_send_get_reply = current_sys_time_us();
   // Send the get reply to the client.
   Status s = SendGetReply(std::dynamic_pointer_cast<Client>(get_request->client),
                           &get_request->object_ids[0],
@@ -339,6 +340,9 @@ void PlasmaStore::ReturnFromGet(const std::shared_ptr<GetRequest> &get_request) 
                           get_request->object_ids.size(),
                           store_fds,
                           mmap_sizes);
+  auto te_send_get_reply = current_sys_time_us();
+  RAY_LOG(DEBUG) << "SendGetReply time " << te_send_get_reply - ts_send_get_reply;
+
   // If we successfully sent the get reply message to the client, then also send
   // the file descriptors.
   if (s.ok()) {
