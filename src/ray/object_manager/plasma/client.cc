@@ -440,6 +440,7 @@ Status PlasmaClient::Impl::GetBuffers(
     ObjectBuffer *object_buffers,
     bool is_from_worker) {
   // Fill out the info for the objects that are already in use locally.
+  RAY_LOG(DEBUG) << "PlasmaClient GetBuffers ";
   auto ts_get_buffer = current_sys_time_us();
   bool all_present = true;
   for (int64_t i = 0; i < num_objects; ++i) {
