@@ -486,11 +486,15 @@ Status PlasmaClient::Impl::GetBuffers(
   // If we get here, then the objects aren't all currently in use by this
   // client, so we need to send a request to the plasma store.
   //hucc get remote plasma
-  auto ts_get_remote_plasma = current_sys_time_us();
+  auto t1 = current_sys_time_us();
   RAY_RETURN_NOT_OK(SendGetRequest(
       store_conn_, &object_ids[0], num_objects, timeout_ms, is_from_worker));
+  auto t2 = current_sys_time_us();
+
   std::vector<uint8_t> buffer;
   RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetReply, &buffer));
+  auto t3 = current_sys_time_us();
+
   std::vector<ObjectID> received_object_ids(num_objects);
   std::vector<PlasmaObject> object_data(num_objects);
   PlasmaObject *object;
@@ -503,8 +507,8 @@ Status PlasmaClient::Impl::GetBuffers(
                                  num_objects,
                                  store_fds,
                                  mmap_sizes));
-  auto te_get_remote_plasma = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc get remote plasma plasma: " << te_get_remote_plasma - ts_get_remote_plasma << "\n";
+  auto t4 = current_sys_time_us();
+  RAY_LOG(DEBUG) << "hucc get remote plasma plasma: " << t4-t3 << " " << t3-t2 << " " << t2-t1;
  
   // We mmap all of the file descriptors here so that we can avoid look them up
   // in the subsequent loop based on just the store file descriptor and without
