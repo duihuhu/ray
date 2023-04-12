@@ -78,7 +78,8 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
       object_get_requests_[object_id].push_back(get_request);
     }
   }
-
+  auto te_add_request = current_sys_time_us();
+  RAY_LOG(DEBUG) << "AddRequest find" << te_add_request << " " << ts_add_request << " " << te_add_request - te_add_request;
   // If all of the objects are present already or if the timeout is 0, return to
   // the client.
   if (get_request->num_unique_objects_satisfied ==
