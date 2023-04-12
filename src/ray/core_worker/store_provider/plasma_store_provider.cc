@@ -409,10 +409,10 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     size_t previous_size = remaining.size();
     // This is a separate IPC from the FetchAndGet in direct call mode.
-    if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
-      RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
-          /*release_resources_during_plasma_fetch=*/false));
-    }
+    // if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
+    //   RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
+    //       /*release_resources_during_plasma_fetch=*/false));
+    // }
     auto t3 = current_sys_time_us();
 
     //hucc time for get obj from remote plasma
