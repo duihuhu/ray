@@ -598,7 +598,7 @@ Status SendGetReply(const std::shared_ptr<Client> &client,
                     int64_t num_objects,
                     const std::vector<MEMFD_TYPE> &store_fds,
                     const std::vector<int64_t> &mmap_sizes) {
-  auto ts_send_get_reply = current_sys_time_us();
+  // auto ts_send_get_reply = current_sys_time_us();
   flatbuffers::FlatBufferBuilder fbb;
   std::vector<PlasmaObjectSpec> objects;
 
@@ -630,10 +630,10 @@ Status SendGetReply(const std::shared_ptr<Client> &client,
       fbb.CreateVector(MakeNonNull(unique_fd_ids.data()), unique_fd_ids.size()),
       fbb.CreateVector(MakeNonNull(mmap_sizes.data()), mmap_sizes.size()),
       fbb.CreateVector(MakeNonNull(handles.data()), handles.size()));
-  auto status = PlasmaSend(client, MessageType::PlasmaGetReply, &fbb, message);
-  auto te_send_get_reply = current_sys_time_us();
-  RAY_LOG(DEBUG) << "SendGetReply " << ts_send_get_reply  << " " << te_send_get_reply << " " << te_send_get_reply - ts_send_get_reply << " " << object_ids[0];
-  return status;
+  // auto status = PlasmaSend(client, MessageType::PlasmaGetReply, &fbb, message);
+  // auto te_send_get_reply = current_sys_time_us();
+  // RAY_LOG(DEBUG) << "SendGetReply " << ts_send_get_reply  << " " << te_send_get_reply << " " << te_send_get_reply - ts_send_get_reply << " " << object_ids[0];
+  return PlasmaSend(client, MessageType::PlasmaGetReply, &fbb, message);
 }
 
 Status ReadGetReply(uint8_t *data,
