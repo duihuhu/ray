@@ -136,6 +136,11 @@ class DependencyManager : public TaskDependencyManagerInterface {
   /// \return Void.
   void RemoveTaskDependencies(const TaskID &task_id);
 
+
+
+  void InsertObjectLocal(const std::vector<ray::ObjectInfo> &object_info);
+
+
   /// Handle an object becoming locally available.
   ///
   /// \param object_id The object ID of the object to mark as locally

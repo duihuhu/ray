@@ -255,6 +255,12 @@ std::vector<TaskID> DependencyManager::HandleObjectMissing(
   return waiting_task_ids;
 }
 
+void DependencyManager::InsertObjectLocal(const std::vector<ray::ObjectInfo> &object_info) {
+  for (auto it: object_info) {
+    local_objects_.insert(it.object_id);
+  }
+}
+
 std::vector<TaskID> DependencyManager::HandleObjectLocal(const ray::ObjectID &object_id) {
   // Add the object to the table of locally available objects.
   auto inserted = local_objects_.insert(object_id);
