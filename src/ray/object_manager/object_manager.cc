@@ -865,6 +865,7 @@ int64_t ObjectManager::GetMetaSize() {
 }
 
 unsigned long ObjectManager::AllocateObjectSizeRdma(size_t object_size, ray::ObjectInfo &object_info) {
+  HandleObjectAdded(object_info);
   return plasma::plasma_store_runner->AllocateObjectSizeRdma(object_size, object_info);
 }
 
