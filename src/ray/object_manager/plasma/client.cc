@@ -505,7 +505,7 @@ Status PlasmaClient::Impl::GetBuffers(
                                  store_fds,
                                  mmap_sizes));
   auto te_get_remote_plasma = current_sys_time_us();
-  // RAY_LOG(ERROR) << "hucc get remote plasma plasma: " << te_get_remote_plasma << ", " << ts_get_remote_plasma << "," << te_get_remote_plasma - ts_get_remote_plasma << "\n";
+  RAY_LOG(DEBUG) << "hucc get remote plasma plasma: " << te_get_remote_plasma - ts_get_remote_plasma << "\n";
  
   // We mmap all of the file descriptors here so that we can avoid look them up
   // in the subsequent loop based on just the store file descriptor and without
@@ -570,7 +570,7 @@ Status PlasmaClient::Impl::GetBuffers(
     }
   }
   auto te_get_buffer = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc store_get_buffer: " << te_get_buffer - ts_get_buffer;
+  RAY_LOG(DEBUG) << "hucc store_get_buffer: " << te_get_buffer - ts_get_buffer << " " << te_get_buffer - te_get_remote_plasma;
 
   return Status::OK();
 }
