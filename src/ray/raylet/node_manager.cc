@@ -1690,7 +1690,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   //end hucc 
 
   if (message->fetch_only()) {
-    RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects fetch_only";
+    RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects fetch_only " << object_info[0].object_id;
 
     std::shared_ptr<WorkerInterface> worker = worker_pool_.GetRegisteredWorker(client);
     if (!worker) {
@@ -1712,7 +1712,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     // subscribe to in the task dependency manager. These objects will be
     // pulled from remote node managers. If an object's owner dies, an error
     // will be stored as the object's value.
-    RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects ";
+    RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects " << object_info[0].object_id;
 
     const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
     AsyncResolveObjects(client,
