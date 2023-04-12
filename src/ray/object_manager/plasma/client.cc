@@ -570,7 +570,7 @@ Status PlasmaClient::Impl::GetBuffers(
     }
   }
   auto te_get_buffer = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc store_get_buffer: " << te_store_get_object - ts_store_get_object;
+  RAY_LOG(DEBUG) << "hucc store_get_buffer: " << te_get_buffer - ts_get_buffer;
 
   return Status::OK();
 }
