@@ -523,9 +523,12 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     int64_t timeout_ms;
     bool is_from_worker;
     RAY_LOG(WARNING) << "hucc client get request" << "\n";
+    auto ts_plasma_get_request = current_sys_time_us();
     RAY_RETURN_NOT_OK(ReadGetRequest(
         input, input_size, object_ids_to_get, &timeout_ms, &is_from_worker));
     ProcessGetRequest(client, object_ids_to_get, timeout_ms, is_from_worker);
+    auto te_plasma_get_request = current_sys_time_us();
+    RAY_LOG(DEBUG) << "PlasmaGetRequest ReadGetRequest" << te_plasma_get_request - ts_plasma_get_request;
   } break;
   case fb::MessageType::PlasmaReleaseRequest: {
     RAY_RETURN_NOT_OK(ReadReleaseRequest(input, input_size, &object_id));
