@@ -444,8 +444,12 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i], object_info[i]);
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
       RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i];
+      
+      auto ts_fetch_rdma = current_sys_time_us();
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       PollCompletion(it->second.first.first);
+      auto te_fetch_rdma = current_sys_time_us();
+      RAY_LOG(DEBUG) << "FetchObjectFromRemotePlasma: " << te_fetch_rdma - ts_fetch_rdma; 
       // std::ofstream outfile;
       // std::string filename = "buffer.txt";
       // void *buffer = (void *) local_address;
@@ -498,14 +502,13 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 
 	if (rc)
     RAY_LOG(ERROR) << "Failed to post sr";
-	else
-    RAY_LOG(DEBUG) << "RDMA read request was posted";
+	// else
+  //   RAY_LOG(DEBUG) << "RDMA read request was posted";
 	return rc;
 }
 
 int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx){
-  RAY_LOG(DEBUG) << "PollCompletion ";
-
+  // RAY_LOG(DEBUG) << "PollCompletion ";
   struct ibv_wc wc;
 	int poll_result;
 	int rc = 0;
