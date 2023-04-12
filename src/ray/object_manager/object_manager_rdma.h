@@ -73,7 +73,8 @@ class ObjectManagerRdma {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
          std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager)
-    : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
+    :  main_service_(&main_service),
+      acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
       ,socket_(main_service),
       plasma_address_(start_address),
       plasma_size_(plasma_size), 
@@ -108,6 +109,7 @@ public:
   int PollCompletion(struct pingpong_context *ctx);
 
 private:
+  instrumented_io_context *main_service_;
   boost::asio::ip::tcp::acceptor acceptor_;
   boost::asio::ip::tcp::socket socket_;
   // struct pingpong_context *ctx_;
