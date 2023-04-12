@@ -389,6 +389,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   int64_t remaining_timeout = timeout_ms;
   auto fetch_start_time_ms = current_time_ms();
   while (!remaining.empty() && !should_break) {
+    auto t1 = current_sys_time_us();
     batch_ids.clear();
     for (const auto &id : remaining) {
       if (int64_t(batch_ids.size()) == batch_size) {
@@ -404,6 +405,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       remaining_timeout -= batch_timeout;
       timed_out = remaining_timeout <= 0;
     }
+    auto t2 = current_sys_time_us();
 
     size_t previous_size = remaining.size();
     // This is a separate IPC from the FetchAndGet in direct call mode.
@@ -411,6 +413,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
           /*release_resources_during_plasma_fetch=*/false));
     }
+    auto t3 = current_sys_time_us();
+
     //hucc time for get obj from remote plasma
     auto ts_get_obj_remote_plasma = current_sys_time_us();
     RAY_LOG(WARNING) << "CoreWorkerPlasmaStoreProvider Get remaining empty" << remaining.empty() << " should_break " << should_break;
@@ -447,6 +451,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
         return status;
       }
     }
+    auto t4 = current_sys_time_us();
 
     if (RayConfig::instance().yield_plasma_lock_workaround() && !should_break &&
         remaining.size() > 0) {
@@ -456,6 +461,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       // periods. See https://github.com/ray-project/ray/pull/16402 for more context.
       std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
+    auto t5 = current_sys_time_us();
+    RAY_LOG(WARNING) << "hucc time for break while remain " << t5-t4 << " , " <<  t4-t3 << " , " << t3-t2  << " , " << t2-t1;
+
   }
 
   if (!remaining.empty() && timed_out) {
