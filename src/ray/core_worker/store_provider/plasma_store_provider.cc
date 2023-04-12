@@ -457,13 +457,14 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
   }
 
+  auto tm_remain_time = current_sys_time_us();
 
   if (!remaining.empty() && timed_out) {
     RAY_RETURN_NOT_OK(UnblockIfNeeded(raylet_client_, ctx));
     return Status::TimedOut("Get timed out: some object(s) not ready.");
   }
   auto te_remain_time = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc time for get remain obj time : " << te_remain_time - ts_remain_time;  
+  RAY_LOG(DEBUG) << "hucc time for get remain obj time : " << te_remain_time - ts_remain_time << " " << te_remain_time - tm_remain_time;  
   // Notify unblocked because we blocked when calling FetchOrReconstruct with
   // fetch_only=false.
   return UnblockIfNeeded(raylet_client_, ctx);
