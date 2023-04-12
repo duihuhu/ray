@@ -204,7 +204,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
                                       /*is_from_worker=*/true));
   auto te_store_get_object = current_sys_time_us();
 
-  RAY_LOG(DEBUG) << "hucc store_get_object: " << te_store_get_object - ts_store_get_object << plasma_results.size() << " " << in_direct_call;
+  RAY_LOG(DEBUG) << "hucc store_get_object: " << te_store_get_object - ts_store_get_object << " " << batch_ids[0] << " " << plasma_results.size() << " " << in_direct_call;
 
 
   // Add successfully retrieved objects to the result map and remove them from
