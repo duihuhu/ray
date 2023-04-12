@@ -409,10 +409,10 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     size_t previous_size = remaining.size();
     // This is a separate IPC from the FetchAndGet in direct call mode.
-    // if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
-    //   RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
-    //       /*release_resources_during_plasma_fetch=*/false));
-    // }
+    if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
+      RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
+          /*release_resources_during_plasma_fetch=*/false));
+    }
     auto t3 = current_sys_time_us();
 
     //hucc time for get obj from remote plasma
@@ -441,7 +441,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
     //hucc time for get obj from remote plasma
     auto te_get_obj_remote_plasma = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
+    RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
 
     if (check_signals_) {
       Status status = check_signals_();
@@ -462,7 +462,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     auto t5 = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for break while remain " << t5-t4 << " , " <<  t4-t3 << " , " << t3-t2  << " , " << t2-t1;
+    RAY_LOG(WARNING) << "hucc time for break while remain "  << t2-t1  << " , " << t3-t2  << " , " <<  t4-t3  << " , "  << t5-t4;
 
   }
 
