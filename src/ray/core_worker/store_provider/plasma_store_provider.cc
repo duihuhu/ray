@@ -179,13 +179,6 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
     const std::vector<ray::WorkerID> &batch_owner_worker_id) {
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
-  //hucc breakdown get_object
-  // auto ts_breakdown_get_object = current_sys_time_us();
-  // for (size_t i = 0; i < batch_ids.size(); i++) {
-  //   const auto &object_id = batch_ids[i];
-  //   RAY_LOG(WARNING) << "hucc breakdown get_object raylet: " << ts_breakdown_get_object << " object_id: "<< object_id << " task_id: " << task_id <<"\n";
-  // }
-  //hucc end 
 
   RAY_RETURN_NOT_OK(
       raylet_client_->FetchOrReconstruct(batch_ids,
@@ -201,11 +194,18 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
                                          batch_owner_port,
                                          batch_owner_worker_id));
 
+  //hucc breakdown get_object
+  auto ts_store_get_object = current_sys_time_us();
+
   std::vector<plasma::ObjectBuffer> plasma_results;
   RAY_RETURN_NOT_OK(store_client_.Get(batch_ids,
                                       timeout_ms,
                                       &plasma_results,
                                       /*is_from_worker=*/true));
+  auto te_store_get_object = current_sys_time_us();
+
+  RAY_LOG(DEBUG) << "hucc store_get_object: " << te_store_get_object - ts_store_get_object;
+
 
   // Add successfully retrieved objects to the result map and remove them from
   // the set of IDs to get.
