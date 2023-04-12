@@ -1690,6 +1690,8 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   //end hucc 
 
   if (message->fetch_only()) {
+    RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects fetch_only";
+
     std::shared_ptr<WorkerInterface> worker = worker_pool_.GetRegisteredWorker(client);
     if (!worker) {
       worker = worker_pool_.GetRegisteredDriver(client);
