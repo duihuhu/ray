@@ -204,7 +204,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
                                       /*is_from_worker=*/true));
   auto te_store_get_object = current_sys_time_us();
 
-  RAY_LOG(DEBUG) << "hucc store_get_object: " << te_store_get_object - ts_store_get_object << " " << batch_ids.size() " " <<batch_ids[0] << " " << plasma_results.size() << " " << fetch_only;
+  RAY_LOG(DEBUG) << "hucc store_get_object: " << te_store_get_object - ts_store_get_object << " " << batch_ids.size() << " " <<batch_ids[0] << " " << plasma_results.size() << " " << fetch_only;
 
 
   // Add successfully retrieved objects to the result map and remove them from
@@ -215,7 +215,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
       std::shared_ptr<TrackedBuffer> data = nullptr;
       std::shared_ptr<Buffer> metadata = nullptr;
       if (plasma_results[i].data && plasma_results[i].data->Size()) {
-        RAY_LOG(DEBUG) << "hucc store_get_object has size: " << te_store_get_object - ts_store_get_object << " " << " " << i << batch_ids[i] << " " << plasma_results.size() << " " << plasma_results[i].data << " " << plasma_results[i].data->Size() << " "<< fetch_only;
+        RAY_LOG(DEBUG) << "hucc store_get_object has size: " << te_store_get_object - ts_store_get_object << " " << i << " " << batch_ids[i] << " " << plasma_results.size() << " " << plasma_results[i].data << " " << plasma_results[i].data->Size() << " "<< fetch_only;
 
         // We track the set of active data buffers in active_buffers_. On destruction,
         // the buffer entry will be removed from the set via callback.
