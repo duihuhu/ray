@@ -204,7 +204,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
                                       /*is_from_worker=*/true));
   auto te_store_get_object = current_sys_time_us();
 
-  RAY_LOG(DEBUG) << "hucc store_get_object: " << te_store_get_object - ts_store_get_object;
+  RAY_LOG(DEBUG) << "hucc store_get_object: " << te_store_get_object - ts_store_get_object << plasma_results.size();
 
 
   // Add successfully retrieved objects to the result map and remove them from
@@ -419,21 +419,21 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     auto ts_get_obj_remote_plasma = current_sys_time_us();
     // RAY_LOG(WARNING) << "CoreWorkerPlasmaStoreProvider Get remaining empty" << remaining.empty() << " should_break " << should_break;
 
-    // RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
-    //                                              batch_ids,
-    //                                              batch_timeout,
-    //                                              /*fetch_only=*/false,
-    //                                              ctx.CurrentTaskIsDirectCall(),
-    //                                              ctx.GetCurrentTaskID(),
-    //                                              results,
-    //                                              got_exception,
-    //                                              batch_virt_address,
-    //                                              batch_object_size,
-    //                                              batch_object_meta_size,
-    //                                              batch_owner_raylet_id,
-    //                                              batch_owner_ip_address,
-    //                                              batch_owner_port,
-    //                                              batch_owner_worker_id));
+    RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
+                                                 batch_ids,
+                                                 batch_timeout,
+                                                 /*fetch_only=*/false,
+                                                 ctx.CurrentTaskIsDirectCall(),
+                                                 ctx.GetCurrentTaskID(),
+                                                 results,
+                                                 got_exception,
+                                                 batch_virt_address,
+                                                 batch_object_size,
+                                                 batch_object_meta_size,
+                                                 batch_owner_raylet_id,
+                                                 batch_owner_ip_address,
+                                                 batch_owner_port,
+                                                 batch_owner_worker_id));
     should_break = timed_out || *got_exception;
 
     if ((previous_size - remaining.size()) < batch_ids.size()) {
