@@ -486,10 +486,14 @@ Status PlasmaClient::Impl::GetBuffers(
   // If we get here, then the objects aren't all currently in use by this
   // client, so we need to send a request to the plasma store.
   //hucc get remote plasma
+
+
+
   auto t1 = current_sys_time_us();
   RAY_RETURN_NOT_OK(SendGetRequest(
       store_conn_, &object_ids[0], num_objects, timeout_ms, is_from_worker));
   auto t2 = current_sys_time_us();
+  RAY_LOG(DEBUG) << "hucc get remote plasma plasma num_objects: " << num_objects ;
 
   std::vector<uint8_t> buffer;
   RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetReply, &buffer));
