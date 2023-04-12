@@ -384,92 +384,92 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   // If not all objects were successfully fetched, repeatedly call FetchOrReconstruct
   // and Get from the local object store in batches. This loop will run indefinitely
   // until the objects are all fetched if timeout is -1.
-  bool should_break = false;
-  bool timed_out = false;
-  int64_t remaining_timeout = timeout_ms;
-  auto fetch_start_time_ms = current_time_ms();
-  while (!remaining.empty() && !should_break) {
-    auto t1 = current_sys_time_us();
-    batch_ids.clear();
-    for (const auto &id : remaining) {
-      if (int64_t(batch_ids.size()) == batch_size) {
-        break;
-      }
-      batch_ids.push_back(id);
-    }
+  // bool should_break = false;
+  // bool timed_out = false;
+  // int64_t remaining_timeout = timeout_ms;
+  // auto fetch_start_time_ms = current_time_ms();
+  // while (!remaining.empty() && !should_break) {
+  //   auto t1 = current_sys_time_us();
+  //   batch_ids.clear();
+  //   for (const auto &id : remaining) {
+  //     if (int64_t(batch_ids.size()) == batch_size) {
+  //       break;
+  //     }
+  //     batch_ids.push_back(id);
+  //   }
 
-    int64_t batch_timeout = std::max(RayConfig::instance().get_timeout_milliseconds(),
-                                     int64_t(10 * batch_ids.size()));
-    if (remaining_timeout >= 0) {
-      batch_timeout = std::min(remaining_timeout, batch_timeout);
-      remaining_timeout -= batch_timeout;
-      timed_out = remaining_timeout <= 0;
-    }
-    auto t2 = current_sys_time_us();
+  //   int64_t batch_timeout = std::max(RayConfig::instance().get_timeout_milliseconds(),
+  //                                    int64_t(10 * batch_ids.size()));
+  //   if (remaining_timeout >= 0) {
+  //     batch_timeout = std::min(remaining_timeout, batch_timeout);
+  //     remaining_timeout -= batch_timeout;
+  //     timed_out = remaining_timeout <= 0;
+  //   }
+  //   auto t2 = current_sys_time_us();
 
-    size_t previous_size = remaining.size();
-    // This is a separate IPC from the FetchAndGet in direct call mode.
-    if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
-      RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
-          /*release_resources_during_plasma_fetch=*/false));
-    }
-    auto t3 = current_sys_time_us();
+  //   size_t previous_size = remaining.size();
+  //   // This is a separate IPC from the FetchAndGet in direct call mode.
+  //   if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
+  //     RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
+  //         /*release_resources_during_plasma_fetch=*/false));
+  //   }
+  //   auto t3 = current_sys_time_us();
 
-    //hucc time for get obj from remote plasma
-    auto ts_get_obj_remote_plasma = current_sys_time_us();
-    // RAY_LOG(WARNING) << "CoreWorkerPlasmaStoreProvider Get remaining empty" << remaining.empty() << " should_break " << should_break;
+  //   //hucc time for get obj from remote plasma
+  //   auto ts_get_obj_remote_plasma = current_sys_time_us();
+  //   // RAY_LOG(WARNING) << "CoreWorkerPlasmaStoreProvider Get remaining empty" << remaining.empty() << " should_break " << should_break;
 
-    RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
-                                                 batch_ids,
-                                                 batch_timeout,
-                                                 /*fetch_only=*/false,
-                                                 ctx.CurrentTaskIsDirectCall(),
-                                                 ctx.GetCurrentTaskID(),
-                                                 results,
-                                                 got_exception,
-                                                 batch_virt_address,
-                                                 batch_object_size,
-                                                 batch_object_meta_size,
-                                                 batch_owner_raylet_id,
-                                                 batch_owner_ip_address,
-                                                 batch_owner_port,
-                                                 batch_owner_worker_id));
-    should_break = timed_out || *got_exception;
+  //   RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
+  //                                                batch_ids,
+  //                                                batch_timeout,
+  //                                                /*fetch_only=*/false,
+  //                                                ctx.CurrentTaskIsDirectCall(),
+  //                                                ctx.GetCurrentTaskID(),
+  //                                                results,
+  //                                                got_exception,
+  //                                                batch_virt_address,
+  //                                                batch_object_size,
+  //                                                batch_object_meta_size,
+  //                                                batch_owner_raylet_id,
+  //                                                batch_owner_ip_address,
+  //                                                batch_owner_port,
+  //                                                batch_owner_worker_id));
+  //   should_break = timed_out || *got_exception;
 
-    if ((previous_size - remaining.size()) < batch_ids.size()) {
-      WarnIfFetchHanging(fetch_start_time_ms, remaining);
-    }
-    //hucc time for get obj from remote plasma
-    auto te_get_obj_remote_plasma = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time in while: " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma << " empty: " << remaining.empty() << "\n";
+  //   if ((previous_size - remaining.size()) < batch_ids.size()) {
+  //     WarnIfFetchHanging(fetch_start_time_ms, remaining);
+  //   }
+  //   //hucc time for get obj from remote plasma
+  //   auto te_get_obj_remote_plasma = current_sys_time_us();
+  //   RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time in while: " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma << " empty: " << remaining.empty() << "\n";
 
-    if (check_signals_) {
-      Status status = check_signals_();
-      if (!status.ok()) {
-        // TODO(edoakes): in this case which status should we return?
-        RAY_RETURN_NOT_OK(UnblockIfNeeded(raylet_client_, ctx));
-        return status;
-      }
-    }
-    auto t4 = current_sys_time_us();
+  //   if (check_signals_) {
+  //     Status status = check_signals_();
+  //     if (!status.ok()) {
+  //       // TODO(edoakes): in this case which status should we return?
+  //       RAY_RETURN_NOT_OK(UnblockIfNeeded(raylet_client_, ctx));
+  //       return status;
+  //     }
+  //   }
+  //   auto t4 = current_sys_time_us();
 
-    if (RayConfig::instance().yield_plasma_lock_workaround() && !should_break &&
-        remaining.size() > 0) {
-      // Yield the plasma lock to other threads. This is a temporary workaround since we
-      // are holding the lock for a long time, so it can easily starve inbound RPC
-      // requests to Release() buffers which only require holding the lock for brief
-      // periods. See https://github.com/ray-project/ray/pull/16402 for more context.
-      std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-    auto t5 = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for break while remain "  << t2-t1  << " , " << t3-t2  << " , " <<  t4-t3  << " , "  << t5-t4;
+  //   if (RayConfig::instance().yield_plasma_lock_workaround() && !should_break &&
+  //       remaining.size() > 0) {
+  //     // Yield the plasma lock to other threads. This is a temporary workaround since we
+  //     // are holding the lock for a long time, so it can easily starve inbound RPC
+  //     // requests to Release() buffers which only require holding the lock for brief
+  //     // periods. See https://github.com/ray-project/ray/pull/16402 for more context.
+  //     std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  //   }
+  //   auto t5 = current_sys_time_us();
+  //   RAY_LOG(WARNING) << "hucc time for break while remain "  << t2-t1  << " , " << t3-t2  << " , " <<  t4-t3  << " , "  << t5-t4;
 
-  }
+  // }
 
-  if (!remaining.empty() && timed_out) {
-    RAY_RETURN_NOT_OK(UnblockIfNeeded(raylet_client_, ctx));
-    return Status::TimedOut("Get timed out: some object(s) not ready.");
-  }
+  // if (!remaining.empty() && timed_out) {
+  //   RAY_RETURN_NOT_OK(UnblockIfNeeded(raylet_client_, ctx));
+  //   return Status::TimedOut("Get timed out: some object(s) not ready.");
+  // }
 
   // Notify unblocked because we blocked when calling FetchOrReconstruct with
   // fetch_only=false.
