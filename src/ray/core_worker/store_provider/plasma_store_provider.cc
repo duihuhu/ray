@@ -393,11 +393,26 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   while (!remaining.empty() && !should_break) {
     auto t1 = current_sys_time_us();
     batch_ids.clear();
+    batch_virt_address.clear();
+    batch_object_size.clear();
+    batch_object_meta_size.clear();
+    batch_owner_raylet_id.clear();
+    batch_owner_ip_address.clear();
+    batch_owner_port.clear();
+    batch_owner_worker_id.clear();
     for (const auto &id : remaining) {
       if (int64_t(batch_ids.size()) == batch_size) {
         break;
       }
       batch_ids.push_back(id);
+      auto it = plasma_node_virt_info_.find(id);
+      batch_virt_address.push_back(it->second.first);
+      batch_object_size.push_back(it->second.second.data_size);
+      batch_object_meta_size.push_back(it->second.second.metadata_size);
+      batch_owner_raylet_id.push_back(it->second.second.owner_raylet_id);
+      batch_owner_ip_address.push_back(it->second.second.owner_ip_address);
+      batch_owner_port.push_back(it->second.second.owner_port);
+      batch_owner_worker_id.push_back(it->second.second.owner_worker_id);
     }
 
     int64_t batch_timeout = std::max(RayConfig::instance().get_timeout_milliseconds(),
