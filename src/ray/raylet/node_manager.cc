@@ -1701,9 +1701,12 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       // objects are local, or if the worker dies.
       // dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
 
+      auto ts_fetch_rdma = current_sys_time_us();
       object_manager_rdma_.PrintRemoteRdmaInfo();
       object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes, object_info);
       dependency_manager_.InsertObjectLocal(object_info);
+      auto te_fetch_rdma = current_sys_time_us();
+      RAY_LOG(DEBUG) << "FetchObjectFromRemotePlasma: " << te_fetch_rdma - ts_fetch_rdma; 
     }
   } else {
     // The values are needed. Add all requested objects to the list to
