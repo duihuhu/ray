@@ -77,13 +77,14 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
     }
   }
 
+  RAY_LOG(DEBUG) << "OnGetRequestCompleted" << get_request->num_unique_objects_satisfied << " " << get_request->num_unique_objects_to_wait_for;
+
   // If all of the objects are present already or if the timeout is 0, return to
   // the client.
   if (get_request->num_unique_objects_satisfied ==
           get_request->num_unique_objects_to_wait_for ||
       timeout_ms == 0) {
     auto ts_add_request = current_sys_time_us();
-    RAY_LOG(DEBUG) << "OnGetRequestCompleted" << ts_add_request << " " << timeout_ms;
     OnGetRequestCompleted(get_request);
   } else if (timeout_ms != -1) {
     // Set a timer that will cause the get request to return to the client. Note
