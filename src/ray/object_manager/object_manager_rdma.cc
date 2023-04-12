@@ -449,8 +449,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       auto tm_fetch_rdma = current_sys_time_us();
       // PollCompletion(it->second.first.first);
-      main_service_->post([this, it->second.first.first]() { PollCompletion(it->second.first.first); },
-                    "ObjectManager.ObjectAddedPush");
+      auto ctx =  it->second.first.first;
+      main_service_->post([this, ctx]() { PollCompletion(it->second.first.first); },
+                    "ObjectManagerRdma.PollCompletion");
       auto te_fetch_rdma = current_sys_time_us();
       RAY_LOG(DEBUG) << "FetchObjectFromRemotePlasma: " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - tm_fetch_rdma; 
       // std::ofstream outfile;
