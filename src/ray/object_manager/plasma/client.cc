@@ -508,7 +508,8 @@ Status PlasmaClient::Impl::GetBuffers(
                                  store_fds,
                                  mmap_sizes));
   auto t4 = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc get remote plasma plasma: " << t4-t3 << " " << t3-t2 << " " << t2-t1 << object_ids[0];
+  RAY_LOG(DEBUG) << "hucc get remote plasma plasma: " << t4-t3 << " " << t3-t2 << " " << t2-t1 << object_ids[0] << " " << buffer.size();
+ 
  
   // We mmap all of the file descriptors here so that we can avoid look them up
   // in the subsequent loop based on just the store file descriptor and without
