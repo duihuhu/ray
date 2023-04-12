@@ -388,7 +388,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   bool timed_out = false;
   int64_t remaining_timeout = timeout_ms;
   auto fetch_start_time_ms = current_time_ms();
-  auto ts_remain_time = current_sys_time_us();
   while (!remaining.empty() && !should_break) {
     batch_ids.clear();
     for (const auto &id : remaining) {
@@ -439,6 +438,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     //hucc time for get obj from remote plasma
     // auto te_get_obj_remote_plasma = current_sys_time_us();
     // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
+    auto ts_remain_time = current_sys_time_us();
+
     if (check_signals_) {
       Status status = check_signals_();
       if (!status.ok()) {
@@ -447,6 +448,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
         return status;
       }
     }
+    auto te_remain_time = current_sys_time_us();
+    RAY_LOG(DEBUG) << "hucc time for check_signals_ : " << te_remain_time - ts_remain_time;  
+
     if (RayConfig::instance().yield_plasma_lock_workaround() && !should_break &&
         remaining.size() > 0) {
       // Yield the plasma lock to other threads. This is a temporary workaround since we
@@ -457,14 +461,11 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
   }
 
-  auto tm_remain_time = current_sys_time_us();
-
   if (!remaining.empty() && timed_out) {
     RAY_RETURN_NOT_OK(UnblockIfNeeded(raylet_client_, ctx));
     return Status::TimedOut("Get timed out: some object(s) not ready.");
   }
-  auto te_remain_time = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc time for get remain obj time : " << te_remain_time - ts_remain_time << " " << te_remain_time - tm_remain_time;  
+
   // Notify unblocked because we blocked when calling FetchOrReconstruct with
   // fetch_only=false.
   return UnblockIfNeeded(raylet_client_, ctx);
