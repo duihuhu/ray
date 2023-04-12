@@ -114,7 +114,10 @@ PlasmaStore::PlasmaStore(instrumented_io_context &main_service,
                 mutex_.AssertHeld();
                 this->AddToClientObjectIds(object_id, request->client);
               },
-          [this](const auto &request) { this->ReturnFromGet(request); }) {
+          [this](const auto &request) { 
+            auto ts_return_from_get = current_sys_time_us();
+            RAY_LOG(DEBUG) << "ReturnFromGet " << ts_return_from_get;
+            this->ReturnFromGet(request); }) {
   const auto event_stats_print_interval_ms =
       RayConfig::instance().event_stats_print_interval_ms();
   if (event_stats_print_interval_ms > 0 && RayConfig::instance().event_stats()) {
@@ -332,8 +335,6 @@ void PlasmaStore::ReturnFromGet(const std::shared_ptr<GetRequest> &get_request) 
       }
     }
   }
-  auto ts_return_from_get = current_sys_time_us();
-  RAY_LOG(DEBUG) << "ReturnFromGet " << ts_return_from_get;
   // Send the get reply to the client.
   Status s = SendGetReply(std::dynamic_pointer_cast<Client>(get_request->client),
                           &get_request->object_ids[0],
