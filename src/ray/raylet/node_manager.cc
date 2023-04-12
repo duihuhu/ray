@@ -317,14 +317,14 @@ NodeManager::NodeManager(instrumented_io_context &io_service,
             ref.set_object_id(object_id.Binary());
             MarkObjectsAsFailed(error_type, {ref}, JobID::Nil());
           }),
-    /// add object_manager_rdma_ init
-    object_manager_rdma_(io_service, 7000, object_manager_config.object_manager_address, \
-        object_manager_.GetMetaAddress(), object_manager_.GetMetaSize(), gcs_client_, object_manager_),
       periodical_runner_(io_service),
       report_resources_period_ms_(config.report_resources_period_ms),
       temp_dir_(config.temp_dir),
       initial_config_(config),
       dependency_manager_(object_manager_),
+          /// add object_manager_rdma_ init
+      object_manager_rdma_(io_service, 7000, object_manager_config.object_manager_address, \
+      object_manager_.GetMetaAddress(), object_manager_.GetMetaSize(), gcs_client_, object_manager_, dependency_manager_),
       wait_manager_(/*is_object_local*/
                     [this](const ObjectID &object_id) {
                       return dependency_manager_.CheckObjectLocal(object_id);
@@ -1703,7 +1703,6 @@ void NodeManager::ProcessFetchOrReconstructMessage(
 
       object_manager_rdma_.PrintRemoteRdmaInfo();
       object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes, object_info);
-
     }
   } else {
     // The values are needed. Add all requested objects to the list to

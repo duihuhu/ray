@@ -20,6 +20,7 @@
 #include "ray/gcs/gcs_client/gcs_client.h"
 #include "ray/common/id.h"
 #include "ray/object_manager/object_manager.h"
+#include "ray/raylet/dependency_manager.h"
 #include <fstream>
 #include <string>
 
@@ -72,13 +73,16 @@ struct pingpong_context {
 class ObjectManagerRdma {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
-         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager)
+         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager &dependency_manager)
     : acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port))
       ,socket_(main_service),
       plasma_address_(start_address),
       plasma_size_(plasma_size), 
       gcs_client_(gcs_client),
-      object_manager_(object_manager) {
+      object_manager_(object_manager),
+      dependency_manager_(dependency_manager),
+
+       {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
         InitRdmaConfig();
         DoAccept();
@@ -118,6 +122,7 @@ private:
   //remote ip , local ctx, local dest, remote dest
   absl::flat_hash_map<std::string, std::pair<std::pair<struct pingpong_context*, struct pingpong_dest*>, struct pingpong_dest*>> remote_dest_;
   ray::ObjectManager &object_manager_;
+  ray::raylet::DependencyManager &dependency_manager_;
 };
 
 class Session
