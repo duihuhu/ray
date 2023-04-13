@@ -2795,8 +2795,11 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
       int64_t object_size = 0;
       int device_num = 0;
       ray::ObjectInfo object_info;
+      auto ts_get_meta_from_plasma = current_sys_time_us();
       plasma_store_provider_->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
-      RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size;
+      auto te_get_meta_from_plasma = current_sys_time_us();
+
+      RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size << te_get_meta_from_plasma - ts_get_meta_from_plasma;
       
       reply->set_virt_address(virt_address);
       reply->set_device_num(device_num);

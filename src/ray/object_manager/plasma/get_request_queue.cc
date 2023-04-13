@@ -82,14 +82,14 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
   if (get_request->num_unique_objects_satisfied ==
           get_request->num_unique_objects_to_wait_for ||
       timeout_ms == 0) {
-    auto ts_add_request = current_sys_time_us();
-    RAY_LOG(DEBUG) << "OnGetRequestCompleted " << ts_add_request << " " << get_request->num_unique_objects_satisfied << " " << get_request->num_unique_objects_to_wait_for << " " << timeout_ms;
+    // auto ts_add_request = current_sys_time_us();
+    // RAY_LOG(DEBUG) << "OnGetRequestCompleted " << ts_add_request << " " << get_request->num_unique_objects_satisfied << " " << get_request->num_unique_objects_to_wait_for << " " << timeout_ms;
     OnGetRequestCompleted(get_request);
   } else if (timeout_ms != -1) {
     // Set a timer that will cause the get request to return to the client. Note
     // that a timeout of -1 is used to indicate that no timer should be set.
-    auto ts_add_request = current_sys_time_us();
-    RAY_LOG(DEBUG) << "OnGetRequestCompleted AsyncWait " << ts_add_request << " " << get_request->num_unique_objects_satisfied << " " << get_request->num_unique_objects_to_wait_for  << " " << timeout_ms;
+    // auto ts_add_request = current_sys_time_us();
+    // RAY_LOG(DEBUG) << "OnGetRequestCompleted AsyncWait " << ts_add_request << " " << get_request->num_unique_objects_satisfied << " " << get_request->num_unique_objects_to_wait_for  << " " << timeout_ms;
 
     get_request->AsyncWait(timeout_ms,
                            [this, get_request](const boost::system::error_code &ec) {
