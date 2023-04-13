@@ -156,8 +156,8 @@ int64_t PlasmaStoreRunner::GetMetaSize() {
   return allocator_->TotalPlasmaSize();
 }
 
-absl::optional<Allocation> PlasmaStoreRunner::AllocateObjectSizeRdma(size_t sizes) {
-  auto allocation = allocator_->Allocate(sizes);
+absl::optional<Allocation>& PlasmaStoreRunner::AllocateObjectSizeRdma(size_t sizes) {
+  absl::optional<Allocation>& allocation = allocator_->Allocate(sizes);
   // unsigned long address =  (unsigned long) allocation->address;
   RAY_CHECK(allocation.has_value())
       << "PlasmaAllocator AllocateObjectSizeRdma failed.";
