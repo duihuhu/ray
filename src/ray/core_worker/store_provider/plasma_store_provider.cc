@@ -300,6 +300,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
     bool *got_exception, absl::flat_hash_map<ObjectID, std::pair<unsigned long, ray::ObjectInfo>> &plasma_node_virt_info_) {
   int64_t batch_size = RayConfig::instance().worker_fetch_request_size();
+  //hucc time for get obj from local plasma
+  auto ts_get_obj_local_plasma = current_sys_time_us();
   std::vector<ObjectID> batch_ids;
   std::vector<unsigned long> batch_virt_address;
   std::vector<int> batch_object_size;
@@ -335,8 +337,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     owner_port_vector.push_back(it->second.second.owner_port);
     owner_worker_id_vector.push_back(it->second.second.owner_worker_id);
   }
-  //hucc time for get obj from local plasma
-  auto ts_get_obj_local_plasma = current_sys_time_us();
   
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
@@ -476,7 +476,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       // are holding the lock for a long time, so it can easily starve inbound RPC
       // requests to Release() buffers which only require holding the lock for brief
       // periods. See https://github.com/ray-project/ray/pull/16402 for more context.
-      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     auto t5 = current_sys_time_us();
     RAY_LOG(WARNING) << "hucc time for break while remain "  << t2-t1  << " , " << t3-t2  << " , " <<  t4-t3  << " , "  << t5-t4;

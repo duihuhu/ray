@@ -41,7 +41,6 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
                                            const rpc::Address &owner_address,
                                            const Status &status,
                                            const rpc::GetObjectStatusReply &reply) {
-  auto ts_get_object_status = current_sys_time_us();
   if (!status.ok()) {
     RAY_LOG(WARNING) << "Error retrieving the value of object ID " << object_id
                      << " that was deserialized: " << status.ToString();
@@ -123,8 +122,6 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
     RAY_UNUSED(in_memory_store_->Put(
         RayObject(data_buffer, metadata_buffer, inlined_refs), object_id));
   }
-  auto te_get_object_status = current_sys_time_us();
-  RAY_LOG(DEBUG) << "add GetObjectStatus " << te_get_object_status - ts_get_object_status;
 }
 
 }  // namespace core
