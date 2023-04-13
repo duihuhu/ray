@@ -437,6 +437,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker " << worker_id;
   for(uint64_t i = 0; i < object_address.size(); ++i) {
     std::string address = object_address[i];
+    ray::ObjectInfo &obj_info = object_info[i];
     auto it = remote_dest_.find(address);
     if(it!=remote_dest_.end())
       // continue;
@@ -449,7 +450,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       // PollCompletion(it->second.first.first);
       auto ctx =  it->second.first.first;
-      main_service_->post([this, ctx, allocation, object_info[i]]() { PollCompletion(ctx, allocation, object_info[i]); },
+      main_service_->post([this, ctx, allocation, obj_info]() { PollCompletion(ctx, allocation, obj_info); },
                     "ObjectManagerRdma.PollCompletion");
       // std::ofstream outfile;
       // std::string filename = "buffer.txt";
