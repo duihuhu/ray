@@ -869,7 +869,7 @@ absl::optional<Allocation> ObjectManager::AllocateObjectSizeRdma(size_t object_s
   return plasma::plasma_store_runner->AllocateObjectSizeRdma(object_size);
 }
 
-void ObjectManager::InsertObjectInfo(absl::optional<Allocation> &allocation, ray::ObjectInfo &object_info) {
+void ObjectManager::InsertObjectInfo(absl::optional<plasma::Allocation> &allocation, ray::ObjectInfo &object_info) {
   HandleObjectAdded(object_info);
   return plasma::plasma_store_runner->InsertObjectInfo(allocation, object_info);
 }
