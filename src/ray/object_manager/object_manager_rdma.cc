@@ -442,7 +442,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     if(it!=remote_dest_.end())
       // continue;
       QueryQp(it->second.first.first);
-      auto allocation = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
+      absl::optional<plasma::Allocation> allocation = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
       unsigned long local_address =(unsigned long) allocation->address;
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
       RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i];
