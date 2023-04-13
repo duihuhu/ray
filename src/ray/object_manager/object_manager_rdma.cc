@@ -437,7 +437,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker " << worker_id;
   for(uint64_t i = 0; i < object_address.size(); ++i) {
     std::string address = object_address[i];
-    ray::ObjectInfo &obj_info = object_info[i];
+    const ray::ObjectInfo &obj_info = object_info[i];
     auto it = remote_dest_.find(address);
     if(it!=remote_dest_.end())
       // continue;
@@ -509,7 +509,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	return rc;
 }
 
-int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, absl::optional<plasma::Allocation> &allocation, ray::ObjectInfo &object_info){
+int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info){
   // RAY_LOG(DEBUG) << "PollCompletion ";
   auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;

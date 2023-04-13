@@ -37,7 +37,7 @@ class PlasmaStoreRunner {
   unsigned long GetMetaAddress();
   int64_t GetMetaSize();
   absl::optional<Allocation> AllocateObjectSizeRdma(size_t size);
-  void InsertObjectInfo(const absl::optional<Allocation> &allocation, ray::ObjectInfo &object_info);
+  void InsertObjectInfo(const absl::optional<Allocation> &allocation, const ray::ObjectInfo &object_info);
 
  private:
   void Shutdown();

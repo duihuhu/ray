@@ -251,7 +251,7 @@ class ObjectManager : public ObjectManagerInterface,
   unsigned long GetMetaAddress();
   int64_t GetMetaSize();
   absl::optional<plasma::Allocation> AllocateObjectSizeRdma(size_t object_size);
-  void InsertObjectInfo(const absl::optional<plasma::Allocation> &allocation, ray::ObjectInfo &object_info);
+  void InsertObjectInfo(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info);
 
  private:
   friend class TestObjectManager;

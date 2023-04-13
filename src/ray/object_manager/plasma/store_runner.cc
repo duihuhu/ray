@@ -166,7 +166,7 @@ absl::optional<Allocation> PlasmaStoreRunner::AllocateObjectSizeRdma(size_t size
   return allocation;
 }
 
-void PlasmaStoreRunner::InsertObjectInfo(const absl::optional<Allocation> &allocation, ray::ObjectInfo &object_info) {
+void PlasmaStoreRunner::InsertObjectInfo(const absl::optional<Allocation> &allocation, const ray::ObjectInfo &object_info) {
   store_->InsertObjectInfo(allocation, object_info);
 }
 

@@ -146,7 +146,7 @@ class ObjectLifecycleManager : public IObjectLifecycleManager {
   // hucc GetPlasmaMeta
   absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta();
 
-  void InsertObjectInfo(const absl::optional<Allocation>& allocation , ray::ObjectInfo &object_info);
+  void InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info);
  private:
   // Test only
   ObjectLifecycleManager(std::unique_ptr<IObjectStore> store,
