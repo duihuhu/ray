@@ -93,7 +93,7 @@ class ObjectStore : public IObjectStore {
   // hucc GetPlasmaMeta
   absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() override;
 
-  void InsertObjectInfo(absl::optional<Allocation>& allocation , ray::ObjectInfo &object_info) override;
+  void InsertObjectInfo(const absl::optional<Allocation>& allocation , ray::ObjectInfo &object_info) override;
 
  private:
   friend struct ObjectStatsCollectorTest;
