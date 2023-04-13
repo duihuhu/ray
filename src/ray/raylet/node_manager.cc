@@ -571,7 +571,7 @@ ray::Status NodeManager::RegisterGcs() {
           debug_msg << "Event stats:\n\n"
                     << io_service_.stats().StatsString() << "\n\n"
                     << DebugString() << "\n\n";
-          // RAY_LOG(INFO) << AppendToEachLine(debug_msg.str(), "[state-dump] ");
+          RAY_LOG(INFO) << AppendToEachLine(debug_msg.str(), "[state-dump] ");
         },
         event_stats_print_interval_ms,
         "NodeManager.deadline_timer.print_event_loop_stats");
