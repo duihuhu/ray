@@ -29,6 +29,8 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
   rpc::GetObjectStatusRequest request;
   request.set_object_id(object_id.Binary());
   request.set_owner_worker_id(owner_address.worker_id());
+  auto ts_get_object_status = current_sys_time_us();
+  RAY_LOG(DEBUG) << "Start GetObjectStatus " << ts_get_object_status;
   conn->GetObjectStatus(
       request,
       [this, object_id, owner_address](const Status &status,
@@ -41,6 +43,8 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
                                            const rpc::Address &owner_address,
                                            const Status &status,
                                            const rpc::GetObjectStatusReply &reply) {
+  auto te_get_object_status = current_sys_time_us();
+  RAY_LOG(DEBUG) << "End GetObjectStatus " << te_get_object_status;
   if (!status.ok()) {
     RAY_LOG(WARNING) << "Error retrieving the value of object ID " << object_id
                      << " that was deserialized: " << status.ToString();
