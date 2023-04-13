@@ -476,7 +476,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       // are holding the lock for a long time, so it can easily starve inbound RPC
       // requests to Release() buffers which only require holding the lock for brief
       // periods. See https://github.com/ray-project/ray/pull/16402 for more context.
-      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+      std::this_thread::sleep_for(std::chrono::milliseconds(0.01));
     }
     auto t5 = current_sys_time_us();
     RAY_LOG(WARNING) << "hucc time for break while remain "  << t2-t1  << " , " << t3-t2  << " , " <<  t4-t3  << " , "  << t5-t4;
