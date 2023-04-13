@@ -29,7 +29,6 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
   rpc::GetObjectStatusRequest request;
   request.set_object_id(object_id.Binary());
   request.set_owner_worker_id(owner_address.worker_id());
-  auto ts_get_object_status = current_sys_time_us();
   conn->GetObjectStatus(
       request,
       [this, object_id, owner_address](const Status &status,
