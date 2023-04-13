@@ -524,7 +524,7 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     int64_t timeout_ms;
     bool is_from_worker;
     auto ts_plasma_get_request = current_sys_time_us();
-    RAY_LOG(DEBUG) << "hucc client get request" << ts_plasma_get_request;
+    RAY_LOG(DEBUG) << "hucc client get request " << ts_plasma_get_request;
     RAY_RETURN_NOT_OK(ReadGetRequest(
         input, input_size, object_ids_to_get, &timeout_ms, &is_from_worker));
     ProcessGetRequest(client, object_ids_to_get, timeout_ms, is_from_worker);

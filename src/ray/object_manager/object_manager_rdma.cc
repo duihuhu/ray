@@ -441,14 +441,15 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     if(it!=remote_dest_.end())
       // continue;
       QueryQp(it->second.first.first);
-      unsigned long local_address = object_manager_.AllocateObjectSizeRdma(object_sizes[i], object_info[i]);
+      auto allocation = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
+      unsigned long local_address =(unsigned long) allocation->address;
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
       RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i];
       
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       // PollCompletion(it->second.first.first);
       auto ctx =  it->second.first.first;
-      main_service_->post([this, ctx]() { PollCompletion(ctx); },
+      main_service_->post([this, ctx, allocation, object_info[i]]() { PollCompletion(ctx, allocation, object_info[i]); },
                     "ObjectManagerRdma.PollCompletion");
       // std::ofstream outfile;
       // std::string filename = "buffer.txt";
@@ -507,7 +508,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	return rc;
 }
 
-int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx){
+int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, absl::optional<Allocation> &allocation, ray::ObjectInfo &object_info){
   // RAY_LOG(DEBUG) << "PollCompletion ";
   auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
@@ -525,11 +526,14 @@ int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx){
 	} else {
 		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
     RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
+    if ( wc.status == IBV_WC_SUCCESS) {
+      object_manager_.InsertObjectInfo(allocation, object_info);
+    }
 		if ( wc.status != IBV_WC_SUCCESS) {
 			// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);
       RAY_LOG(ERROR) << "got bad completion with status " << wc.status << " verdor syndrome: " << wc.vendor_err;
       rc = 1;
-		}
+		} 
 	}
   auto te_fetch_rdma = current_sys_time_us();
   RAY_LOG(DEBUG) << "FetchObjectFromRemotePlasma: " << te_fetch_rdma - ts_fetch_rdma; 
