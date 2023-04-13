@@ -864,7 +864,7 @@ int64_t ObjectManager::GetMetaSize() {
   return plasma::plasma_store_runner->GetMetaSize();
 }
 
-absl::optional<plasma::Allocation> ObjectManager::AllocateObjectSizeRdma(size_t object_size) {
+absl::optional<plasma::Allocation>& ObjectManager::AllocateObjectSizeRdma(size_t object_size) {
   // HandleObjectAdded(object_info);
   return plasma::plasma_store_runner->AllocateObjectSizeRdma(object_size);
 }
