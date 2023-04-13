@@ -70,7 +70,7 @@ class IObjectStore {
 
   virtual absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() = 0;
 
-  virtual void InsertObjectInfo(absl::optional<Allocation>& allocation , ray::ObjectInfo &object_info) = 0;
+  virtual void InsertObjectInfo(const absl::optional<Allocation>& allocation , ray::ObjectInfo &object_info) = 0;
 
 };
 
