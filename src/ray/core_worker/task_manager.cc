@@ -271,6 +271,22 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
     // it as local in the in-memory store so that the data locality policy
     // will choose the right raylet for any queued dependent tasks.
     reference_counter_->UpdateObjectPinnedAtRaylet(object_id, worker_raylet_id);
+
+    ray::ObjectInfo objectinfo;
+    objectinfo.object_id = object_id;
+    objectinfo.data_size = return_object.data_size();
+    objectinfo.metadata_size = return_object.metadata_size();
+    /// Owner's raylet ID.
+    objectinfo.owner_raylet_id = NodeID::FromBinary(return_object.owner_raylet_id());
+    /// Owner's IP address.
+    objectinfo.owner_ip_address = return_object.owner_ip_address();
+    /// Owner's port.
+    objectinfo.owner_port = return_object.owner_port();
+    /// Owner's worker ID.
+    objectinfo.owner_worker_id = WorkerID::FromBinary(return_object.owner_worker_id());
+
+    plasma_node_virt_info_[object_id] =  std::make_pair(return_object.virt_address(), objectinfo);
+
     // Mark it as in plasma with a dummy object.
     RAY_CHECK(
         in_memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
