@@ -24,6 +24,7 @@
 #include "src/ray/protobuf/common.pb.h"
 #include "src/ray/protobuf/core_worker.pb.h"
 #include "src/ray/protobuf/gcs.pb.h"
+#include "ray/object_manager/common.h"
 
 namespace ray {
 namespace core {
