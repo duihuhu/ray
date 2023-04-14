@@ -116,8 +116,7 @@ class TaskManager : public TaskFinisherInterface, public TaskResubmissionInterfa
         put_in_local_plasma_callback_(put_in_local_plasma_callback),
         retry_task_callback_(retry_task_callback),
         push_error_callback_(push_error_callback),
-        max_lineage_bytes_(max_lineage_bytes),
-        plasma_node_virt_info_(plasma_node_virt_info) {
+        max_lineage_bytes_(max_lineage_bytes){
     reference_counter_->SetReleaseLineageCallback(
         [this](const ObjectID &object_id, std::vector<ObjectID> *ids_to_release) {
           return RemoveLineageReference(object_id, ids_to_release);
@@ -443,7 +442,7 @@ class TaskManager : public TaskFinisherInterface, public TaskResubmissionInterfa
   /// Optional shutdown hook to call when pending tasks all finish.
   std::function<void()> shutdown_hook_ GUARDED_BY(mu_) = nullptr;
 
-  absl::flat_hash_map<ObjectID, std::pair<unsigned long, ray::ObjectInfo>> &plasma_node_virt_info_;
+  // absl::flat_hash_map<ObjectID, std::pair<unsigned long, ray::ObjectInfo>> &plasma_node_virt_info_;
   friend class TaskManagerTest;
 };
 
