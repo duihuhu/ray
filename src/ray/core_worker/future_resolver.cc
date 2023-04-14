@@ -86,7 +86,7 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
     } else {
       RAY_LOG(DEBUG) << "Object not returned directly in GetObjectStatus reply, "
                      << object_id << " will have to be fetched from Plasma" << " reply object_size " << reply.object_size() << " virt_address " << reply.virt_address()
-                     << " reply object info " << reply.metadata_size();
+                     << " reply object info " << reply.metadata_size() << " " << owner_address.raylet_id();
       auto it = plasma_node_virt_info_.find(object_id);
       if (it == plasma_node_virt_info_.end()) {
         ray::ObjectInfo objectinfo;
