@@ -219,7 +219,7 @@ class CoreWorkerPlasmaStoreProvider {
       const std::vector<std::string> &batch_owner_ip_address,
       const std::vector<int> &batch_owner_port,
       const std::vector<ray::WorkerID> &batch_owner_worker_id,
-      const std::vector<ray::string> &batch_rem_ip_address);
+      const std::vector<std::string> &batch_rem_ip_address);
 
   /// Print a warning if we've attempted the fetch for too long and some
   /// objects are still unavailable.
