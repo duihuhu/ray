@@ -1684,7 +1684,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
   FlatbufferToObjectReferenceWithMeta(*message->object_ids(), *message->virt_address(), *message->object_sizes(), *message->object_meta_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
-                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), *message->rem_ip_address(),object_virt_address, object_sizes, object_address, rem_ip_address, object_info);
+                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), *message->rem_ip_address(), object_virt_address, object_sizes, object_address, rem_ip_address, object_info);
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 
@@ -1710,7 +1710,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       // dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
 
       object_manager_rdma_.PrintRemoteRdmaInfo();
-      object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes, object_info);
+      object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
       dependency_manager_.InsertObjectLocal(object_info);
     }
   } else {
