@@ -193,8 +193,8 @@ bool DependencyManager::RequestTaskDependencies(
   }
 
   if (!required_objects.empty()) {
-    // task_entry.pull_request_id =
-    //     object_manager_.Pull(required_objects, BundlePriority::TASK_ARGS);
+    task_entry.pull_request_id =
+        object_manager_.Pull(required_objects, BundlePriority::TASK_ARGS);
     RAY_LOG(DEBUG) << "Started pull for dependencies of task " << task_id
                    << " request: " << task_entry.pull_request_id;
   }
