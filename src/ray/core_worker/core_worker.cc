@@ -1149,7 +1149,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
       if (it == future_resolver_->plasma_node_virt_info_.end()) {
         RAY_LOG(DEBUG) << current->first << " has no information in  plasma_node_virt_info_";
       } else {
-        RAY_LOG(DEBUG) << current->first << " virtual address " << it->second.first.first <<  " object size " << (it->second.second.second.data_size+it->second.second.second.metadata_size);
+        RAY_LOG(DEBUG) << current->first << " virtual address " << it->second.first.first <<  " object size " << (it->second.second.data_size+it->second.second.metadata_size);
       }
 
       plasma_object_ids.insert(current->first);
