@@ -86,11 +86,11 @@ void FlatbufferToObjectReferenceWithMeta(
     const flatbuffers::Vector<int> &flat_object_meta_data_sizes,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &owner_raylet_id,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &owner_ip_address,
-    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &rem_ip_address,
     const flatbuffers::Vector<int> &owner_port,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &owner_worker_id,
     const flatbuffers::Vector<flatbuffers::Offset<ray::protocol::Address>>
       &owner_addresses,
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &rem_ip_address,
     std::vector<unsigned long> &object_meta_virt_address,
     std::vector<int> &object_sizes,
     std::vector<std::string> &object_address,
