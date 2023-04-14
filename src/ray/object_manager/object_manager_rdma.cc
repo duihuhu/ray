@@ -437,6 +437,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker " << worker_id;
   for(uint64_t i = 0; i < object_address.size(); ++i) {
     std::string address = object_address[i];
+    RAY_LOG(DEBUG) << "address " << address;
     const ray::ObjectInfo &obj_info = object_info[i];
     auto it = remote_dest_.find(address);
     if(it!=remote_dest_.end())
