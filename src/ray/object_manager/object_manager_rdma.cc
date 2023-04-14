@@ -442,7 +442,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     if(it!=remote_dest_.end())
       // continue;
       QueryQp(it->second.first.first);
-      if(object_manager_.CheckInsertObjectInfo(obj_info))
+      if(object_manager_.CheckInsertObjectInfo(object_info[i].object_id))
         continue;
 
       auto allocation = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
