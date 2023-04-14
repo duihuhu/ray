@@ -338,7 +338,7 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
 void TaskManager::CompletePendingTask(const TaskID &task_id,
                                       const rpc::PushTaskReply &reply,
                                       const rpc::Address &worker_addr) {
-  RAY_LOG(DEBUG) << "Completing task " << task_id;
+  RAY_LOG(WARNING) << "Completing task " << task_id;
   // Objects that were stored in plasma upon the first successful execution of
   // this task. These objects will get stored in plasma again, even if they
   // were returned directly in the worker's reply. This ensures that any
