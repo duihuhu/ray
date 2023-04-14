@@ -185,6 +185,7 @@ table FetchOrReconstruct {
   owner_ip_address: [string];
   owner_port: [int];
   owner_worker_id: [string];
+  rem_ip_address: [string];
 }
 
 table NotifyUnblocked {

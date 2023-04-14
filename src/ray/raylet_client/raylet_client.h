@@ -322,7 +322,8 @@ class RayletClient : public RayletClientInterface {
                                  const std::vector<ray::NodeID> &batch_owner_raylet_id,
                                  const std::vector<std::string> &batch_owner_ip_address,
                                  const std::vector<int> &batch_owner_port,
-                                 const std::vector<ray::WorkerID> &batch_owner_worker_id);
+                                 const std::vector<ray::WorkerID> &batch_owner_worker_id,
+                                 const std::vector<ray::string> &batch_rem_ip_address);
 
   /// Notify the raylet that this client (worker) is no longer blocked.
   ///

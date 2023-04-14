@@ -65,7 +65,8 @@ class FutureResolver {
                              const rpc::Address &owner_address,
                              const Status &status,
                              const rpc::GetObjectStatusReply &object_status);
-  absl::flat_hash_map<ObjectID, std::pair<unsigned long, ray::ObjectInfo>>
+
+  absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>>
     plasma_node_virt_info_;
  private:
   /// Used to store values of resolved futures.

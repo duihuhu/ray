@@ -216,7 +216,8 @@ Status raylet::RayletClient::FetchOrReconstruct(
     const std::vector<ray::NodeID> &batch_owner_raylet_id,
     const std::vector<std::string> &batch_owner_ip_address,
     const std::vector<int> &batch_owner_port,
-    const std::vector<ray::WorkerID> &batch_owner_worker_id) {
+    const std::vector<ray::WorkerID> &batch_owner_worker_id,
+    const std::vector<std::string> &batch_rem_ip_address) {
   RAY_CHECK(object_ids.size() == owner_addresses.size());
   //hucc add for plasma
   // std::unordered_map<std::string, int> stat_addr;
@@ -250,7 +251,8 @@ Status raylet::RayletClient::FetchOrReconstruct(
                                          to_flatbuf(fbb, batch_owner_raylet_id),
                                          string_vec_to_flatbuf(fbb, batch_owner_ip_address),
                                          fbb.CreateVector(batch_owner_port),
-                                         to_flatbuf(fbb, batch_owner_worker_id));
+                                         to_flatbuf(fbb, batch_owner_worker_id),
+                                         string_vec_to_flatbuf(fbb, batch_rem_ip_address));
   fbb.Finish(message);
   return conn_->WriteMessage(MessageType::FetchOrReconstruct, &fbb);
 }

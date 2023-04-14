@@ -86,6 +86,7 @@ void FlatbufferToObjectReferenceWithMeta(
     const flatbuffers::Vector<int> &flat_object_meta_data_sizes,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &owner_raylet_id,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &owner_ip_address,
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &rem_ip_address,
     const flatbuffers::Vector<int> &owner_port,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &owner_worker_id,
     const flatbuffers::Vector<flatbuffers::Offset<ray::protocol::Address>>
@@ -93,9 +94,12 @@ void FlatbufferToObjectReferenceWithMeta(
     std::vector<unsigned long> &object_meta_virt_address,
     std::vector<int> &object_sizes,
     std::vector<std::string> &object_address,
+    std::vector<std::string> &ip_address,
     std::vector<ray::ObjectInfo>  &object_info) {
 
   std::vector<std::string> owner_ip_address_str = string_vec_from_flatbuf(owner_ip_address);
+  std::vector<std::string> ip_address_str = string_vec_from_flatbuf(rem_ip_address);
+
   RAY_CHECK(object_virt_address.size() == flat_object_sizes.size());
   for (int64_t i = 0; i < object_virt_address.size(); i++) {
     ray::ObjectInfo obj_info;
@@ -112,6 +116,7 @@ void FlatbufferToObjectReferenceWithMeta(
     obj_info.owner_port = owner_port[i];
     obj_info.owner_worker_id = WorkerID::FromBinary(owner_worker_id.Get(i)->str());
     object_info.emplace_back(obj_info);
+    ip_address.emplace_back(ip_address_str[i]);
     
   }
 }
@@ -1671,14 +1676,15 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   std::vector<unsigned long> object_virt_address;
   std::vector<int>  object_sizes;
   std::vector<ray::ObjectInfo> object_info;
-
   std::vector<std::string> object_address;
+  std::vector<std::string> rem_ip_address;
+
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
   FlatbufferToObjectReferenceWithMeta(*message->object_ids(), *message->virt_address(), *message->object_sizes(), *message->object_meta_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
-                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), object_virt_address, object_sizes, object_address, object_info);
+                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), *message->rem_ip_address(),object_virt_address, object_sizes, object_address, rem_ip_address, object_info);
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 
