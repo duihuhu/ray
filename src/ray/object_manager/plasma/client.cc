@@ -688,6 +688,8 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
 /// @param object_id 
 /// @return Status
 Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
+  std::unique_lock<std::recursive_mutex> guard(client_mutex_);
+
   RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
   std::vector<uint8_t> buffer;
 
