@@ -338,12 +338,12 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   for (auto &entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     virt_address_vector.push_back(it->second.first.first);
-    object_size_vector.push_back(it->second.second.second.data_size);
-    object_meta_size_vector.push_back(it->second.second.second.metadata_size);
-    owner_raylet_id_vector.push_back(it->second.second.second.owner_raylet_id);
-    owner_ip_address_vector.push_back(it->second.second.second.owner_ip_address);
-    owner_port_vector.push_back(it->second.second.second.owner_port);
-    owner_worker_id_vector.push_back(it->second.second.second.owner_worker_id);
+    object_size_vector.push_back(it->second.second.data_size);
+    object_meta_size_vector.push_back(it->second.second.metadata_size);
+    owner_raylet_id_vector.push_back(it->second.second.owner_raylet_id);
+    owner_ip_address_vector.push_back(it->second.second.owner_ip_address);
+    owner_port_vector.push_back(it->second.second.owner_port);
+    owner_worker_id_vector.push_back(it->second.second.owner_worker_id);
     rem_ip_address_vector.push_back(it->second.first.second);
 
   }
@@ -423,12 +423,12 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       batch_ids.push_back(id);
       auto it = plasma_node_virt_info_.find(id);
       batch_virt_address.push_back(it->second.first.first);
-      batch_object_size.push_back(it->second.second.second.data_size);
-      batch_object_meta_size.push_back(it->second.second.second.metadata_size);
-      batch_owner_raylet_id.push_back(it->second.second.second.owner_raylet_id);
-      batch_owner_ip_address.push_back(it->second.second.second.owner_ip_address);
-      batch_owner_port.push_back(it->second.second.second.owner_port);
-      batch_owner_worker_id.push_back(it->second.second.second.owner_worker_id);
+      batch_object_size.push_back(it->second.second.data_size);
+      batch_object_meta_size.push_back(it->second.second.metadata_size);
+      batch_owner_raylet_id.push_back(it->second.second.owner_raylet_id);
+      batch_owner_ip_address.push_back(it->second.second.owner_ip_address);
+      batch_owner_port.push_back(it->second.second.owner_port);
+      batch_owner_worker_id.push_back(it->second.second.owner_worker_id);
       batch_rem_ip_address.push_back(it->second.first.second);
 
     }
