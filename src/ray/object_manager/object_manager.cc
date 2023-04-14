@@ -874,6 +874,12 @@ void ObjectManager::InsertObjectInfo(const absl::optional<plasma::Allocation> &a
   return plasma::plasma_store_runner->InsertObjectInfo(allocation, object_info);
 }
 
-
+bool ObjectManager::CheckInsertObjectInfo(const ray::ObjectInfo &object_info) {
+  auto it = local_objects_.find(object_id);
+  if(it == local_objects_.end()) {
+    return false;
+  }
+  return true;
+}
 
 }  // namespace ray

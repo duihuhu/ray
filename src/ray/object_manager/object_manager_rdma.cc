@@ -442,6 +442,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     if(it!=remote_dest_.end())
       // continue;
       QueryQp(it->second.first.first);
+      if(object_manager_.CheckInsertObjectInfo(obj_info)):
+        continue;
+
       auto allocation = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
       RAY_LOG(DEBUG) << " Allocate space allocation->address " << allocation->address << " object_id " << object_info[i].object_id;
 
