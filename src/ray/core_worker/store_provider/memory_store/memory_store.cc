@@ -230,10 +230,12 @@ bool CoreWorkerMemoryStore::Put(const RayObject &object, const ObjectID &object_
       async_callbacks = std::move(callbacks);
       object_async_get_requests_.erase(async_callback_it);
     }
+    RAY_LOG(DEBUG) << "Putting object_async_get_requests_ " << object_id;
 
     bool should_add_entry = true;
     auto object_request_iter = object_get_requests_.find(object_id);
     if (object_request_iter != object_get_requests_.end()) {
+      RAY_LOG(DEBUG) << "Putting object_get_requests_ " << object_id;
       auto &get_requests = object_request_iter->second;
       for (auto &get_request : get_requests) {
         get_request->Set(object_id, object_entry);
