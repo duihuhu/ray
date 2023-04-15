@@ -347,7 +347,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     rem_ip_address_vector.push_back(it->second.first.second);
 
   }
-  RAY_LOG(WARNING) << "hucc time for get obj size " << total_size<< "\n";
 
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
