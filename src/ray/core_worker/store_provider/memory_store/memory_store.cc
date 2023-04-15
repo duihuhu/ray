@@ -367,7 +367,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   }
 
 
-  RAY_LOG(DEBUG) << "hucc memory store while before"; 
 
   bool done = false;
   bool timed_out = false;
@@ -379,6 +378,9 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     iteration_timeout = RayConfig::instance().get_timeout_milliseconds();
   }
 
+
+  RAY_LOG(DEBUG) << "hucc memory store while before " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
+
   // Repeatedly call Wait() on a shorter timeout so we can check for signals between
   // calls. If timeout_ms == -1, this should run forever until all objects are
   // ready or a signal is received. Else it should run repeatedly until that timeout
@@ -387,20 +389,18 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // hucc add time for Wait for get_request already
   // auto ts_get_wobj = current_sys_time_us();
 
-  // while (!timed_out && signal_status.ok() &&
-  //        !(done = get_request->Wait(iteration_timeout))) {
-  //   RAY_LOG(DEBUG) << "hucc memory store while in"; 
+  while (!timed_out && signal_status.ok() &&
+         !(done = get_request->Wait(iteration_timeout))) {
+    if (check_signals_) {
+      signal_status = check_signals_();
+    }
 
-  //   if (check_signals_) {
-  //     signal_status = check_signals_();
-  //   }
-
-  //   if (remaining_timeout >= 0) {
-  //     remaining_timeout -= iteration_timeout;
-  //     iteration_timeout = std::min(remaining_timeout, iteration_timeout);
-  //     timed_out = remaining_timeout <= 0;
-  //   }
-  // }
+    if (remaining_timeout >= 0) {
+      remaining_timeout -= iteration_timeout;
+      iteration_timeout = std::min(remaining_timeout, iteration_timeout);
+      timed_out = remaining_timeout <= 0;
+    }
+  }
   // auto te_get_wobj = current_sys_time_us();
   // RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << te_get_wobj - ts_get_wobj << " " << te_get_wobj << ", " << ts_get_wobj <<"\n"; 
 
