@@ -508,7 +508,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
 
 	if (rc)
-    RAY_LOG(ERROR) << "Failed to post sr";
+    RAY_LOG(ERROR) << "Failed to post sr " << rc;
 	// else
   //   RAY_LOG(DEBUG) << "RDMA read request was posted";
 	return rc;
