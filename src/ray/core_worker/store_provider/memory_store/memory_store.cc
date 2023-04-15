@@ -125,7 +125,7 @@ void GetRequest::Wait() {
 void GetRequest::Set(const ObjectID &object_id, std::shared_ptr<RayObject> object) {
   std::unique_lock<std::mutex> lock(mutex_);
   if (is_ready_) {
-    Ray_LOG(DEBUG) << "GetRequest already " << is_ready_;
+    RAY_LOG(DEBUG) << "GetRequest already " << is_ready_;
     return;  // We have already hit the number of objects to return limit.
   }
   object->SetAccessed();
@@ -135,7 +135,7 @@ void GetRequest::Set(const ObjectID &object_id, std::shared_ptr<RayObject> objec
       (abort_if_any_object_is_exception_ && object->IsException() &&
        !object->IsInPlasmaError())) {
     is_ready_ = true;
-    Ray_LOG(DEBUG) << "GetRequest Set " << is_ready_;
+    RAY_LOG(DEBUG) << "GetRequest Set " << is_ready_;
 
     cv_.notify_all();
   }
