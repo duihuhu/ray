@@ -73,6 +73,8 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
       // data size to -1 to indicate that the object is not present.
       get_request->objects[object_id].data_size = -1;
       // Add the get request to the relevant data structures.
+      RAY_LOG(DEBUG) << "object_get_requests_ push " << object_id; 
+
       object_get_requests_[object_id].push_back(get_request);
     }
   }
