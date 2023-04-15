@@ -347,6 +347,9 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
     size_t required_objects = num_objects - (object_ids.size() - remaining_ids.size());
 
+
+    RAY_LOG(DEBUG) << "object_get_requests_ push " << object_id; 
+
     // hucc request object_ids size/remaining size
     // Otherwise, create a GetRequest to track remaining objects.
     get_request = std::make_shared<GetRequest>(std::move(remaining_ids),
@@ -368,7 +371,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   if (should_notify_raylet) {
     // hucc add time for NotifyDirectCallTaskBlocked
     // auto ts_ndctb = current_sys_time_us();
-    RAY_LOG(DEBUG) << "hucc memory store NotifyDirectCallTaskBlocked "; 
 
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
 
