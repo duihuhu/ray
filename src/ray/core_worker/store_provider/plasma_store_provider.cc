@@ -457,7 +457,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
-                                                 0,
+                                                 batch_timeout,
                                                  /*fetch_only=*/false,
                                                  ctx.CurrentTaskIsDirectCall(),
                                                  ctx.GetCurrentTaskID(),
@@ -490,14 +490,14 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
     auto t4 = current_sys_time_us();
 
-    // if (RayConfig::instance().yield_plasma_lock_workaround() && !should_break &&
-    //     remaining.size() > 0) {
-    //   // Yield the plasma lock to other threads. This is a temporary workaround since we
-    //   // are holding the lock for a long time, so it can easily starve inbound RPC
-    //   // requests to Release() buffers which only require holding the lock for brief
-    //   // periods. See https://github.com/ray-project/ray/pull/16402 for more context.
-    //   std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    // }
+    if (RayConfig::instance().yield_plasma_lock_workaround() && !should_break &&
+        remaining.size() > 0) {
+      // Yield the plasma lock to other threads. This is a temporary workaround since we
+      // are holding the lock for a long time, so it can easily starve inbound RPC
+      // requests to Release() buffers which only require holding the lock for brief
+      // periods. See https://github.com/ray-project/ray/pull/16402 for more context.
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
     auto t5 = current_sys_time_us();
     RAY_LOG(WARNING) << "hucc time for break while remain "  << t2-t1  << " , " << t3-t2  << " , " <<  t4-t3  << " , "  << t5-t4;
 
