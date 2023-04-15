@@ -134,6 +134,8 @@ void GetRequest::Set(const ObjectID &object_id, std::shared_ptr<RayObject> objec
       (abort_if_any_object_is_exception_ && object->IsException() &&
        !object->IsInPlasmaError())) {
     is_ready_ = true;
+    Ray_LOG(ERROR) << "GetRequest Set " << " is_ready_ " << is_ready_ << "\n";
+
     cv_.notify_all();
   }
 }
