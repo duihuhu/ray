@@ -133,7 +133,7 @@ void GetRequest::Set(const ObjectID &object_id, std::shared_ptr<RayObject> objec
   if (objects_.size() == num_objects_ ||
       (abort_if_any_object_is_exception_ && object->IsException() &&
        !object->IsInPlasmaError())) {
-    RAY_LOG(DEBUG) << "is_ready_ " << is_ready_;
+    RAY_LOG(DEBUG) << "is_ready_ " << is_ready_ << " " << object_id;
     is_ready_ = true;
     cv_.notify_all();
   }
