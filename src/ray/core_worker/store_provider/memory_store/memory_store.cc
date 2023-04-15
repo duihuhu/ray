@@ -304,8 +304,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   int count = 0;
 
   {
-
-
     absl::flat_hash_set<ObjectID> remaining_ids;
     absl::flat_hash_set<ObjectID> ids_to_remove;
 
@@ -348,7 +346,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     size_t required_objects = num_objects - (object_ids.size() - remaining_ids.size());
 
 
-    RAY_LOG(DEBUG) << "object_get_requests_ push " << object_id; 
 
     // hucc request object_ids size/remaining size
     // Otherwise, create a GetRequest to track remaining objects.
@@ -357,6 +354,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
                                                remove_after_get,
                                                abort_if_any_object_is_exception);
     for (const auto &object_id : get_request->ObjectIds()) {
+      RAY_LOG(DEBUG) << "object_get_requests_ push " << object_id; 
       object_get_requests_[object_id].push_back(get_request);
     }
   }
