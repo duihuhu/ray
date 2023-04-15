@@ -56,6 +56,7 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
                                  bool is_from_worker) {
   const absl::flat_hash_set<ObjectID> unique_ids(object_ids.begin(), object_ids.end());
   // Create a get request for this object.
+  RAY_LOG(DEBUG) << "object_get_requests_ push " << object_id; 
   auto get_request = std::make_shared<GetRequest>(
       io_context_, client, object_ids, is_from_worker, unique_ids.size());
   for (const auto &object_id : unique_ids) {
