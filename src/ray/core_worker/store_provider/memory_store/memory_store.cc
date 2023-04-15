@@ -389,6 +389,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
+    RAY_LOG(DEBUG) << "hucc memory store while in"; 
+
     if (check_signals_) {
       signal_status = check_signals_();
     }
@@ -412,6 +414,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     //hucc time for get object from get_request
     // auto ts_get_req_obj = current_sys_time_us();
     for (size_t i = 0; i < object_ids.size(); i++) {
+      RAY_LOG(DEBUG) << "hucc memory store for in"; 
+
       const auto &object_id = object_ids[i];
       if ((*results)[i] == nullptr) {
         (*results)[i] = get_request->Get(object_id);
