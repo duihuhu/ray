@@ -347,7 +347,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     rem_ip_address_vector.push_back(it->second.first.second);
 
   }
-  
+  RAY_LOG(WARNING) << "hucc time for get obj size " << total_size<< "\n";
+
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
     batch_virt_address.clear();
@@ -372,9 +373,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       batch_rem_ip_address.push_back(rem_ip_address_vector[start + i]);
 
     }
-
-    RAY_LOG(WARNING) << "hucc time for get obj from remaining: " << remaining.size()<< "\n";
-
 
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
