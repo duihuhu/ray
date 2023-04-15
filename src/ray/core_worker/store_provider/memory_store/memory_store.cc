@@ -221,6 +221,8 @@ bool CoreWorkerMemoryStore::Put(const RayObject &object, const ObjectID &object_
 
     auto iter = objects_.find(object_id);
     if (iter != objects_.end()) {
+      RAY_LOG(DEBUG) << "Putting already in objects_" << object_id;
+
       return true;  // Object already exists in the store, which is fine.
     }
 
