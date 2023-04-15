@@ -102,6 +102,7 @@ bool GetRequest::Wait(int64_t timeout_ms) {
   std::unique_lock<std::mutex> lock(mutex_);
   auto remaining_timeout_ms = timeout_ms;
   auto timeout_timestamp = current_time_ms() + timeout_ms;
+  RAY_LOG(DEBUG) << " GetRequest Wait " << is_ready_;
   while (!is_ready_) {
     auto status = cv_.wait_for(lock, std::chrono::milliseconds(remaining_timeout_ms));
     auto current_timestamp = current_time_ms();
