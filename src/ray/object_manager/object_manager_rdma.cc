@@ -266,7 +266,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 			.send_cq = pp_cq(ctx),
 			.recv_cq = pp_cq(ctx),
 			.cap     = {
-				.max_send_wr  = 1,
+				.max_send_wr  = rx_depth + 1,
 				.max_recv_wr  = rx_depth + 1, 
 				.max_send_sge = 1,
 				.max_recv_sge = 1
