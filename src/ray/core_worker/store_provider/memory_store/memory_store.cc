@@ -338,8 +338,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     size_t required_objects = num_objects - (object_ids.size() - remaining_ids.size());
 
     // hucc request object_ids size/remaining size
-    RAY_LOG(DEBUG) << "hucc memory store object_ids size remaining size " << object_ids.size() << " " << remaining_ids.size() <<"\n"; 
-
     // Otherwise, create a GetRequest to track remaining objects.
     get_request = std::make_shared<GetRequest>(std::move(remaining_ids),
                                                required_objects,
@@ -348,8 +346,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     for (const auto &object_id : get_request->ObjectIds()) {
       object_get_requests_[object_id].push_back(get_request);
     }
-
-    RAY_LOG(DEBUG) << "hucc memory store object_ids size remaining size " << object_ids.size() << " " << remaining_ids.size() <<"\n"; 
   }
 
   // Only send block/unblock IPCs for non-actor tasks on the main thread.
@@ -364,7 +360,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     // auto ts_ndctb = current_sys_time_us();
     RAY_LOG(DEBUG) << "hucc memory store NotifyDirectCallTaskBlocked "; 
 
-    RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
+    // RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
 
     // auto te_ndctb = current_sys_time_us();
     // RAY_LOG(INFO) << "hucc time for NotifyDirectCallTaskBlocked in local mem: " << te_ndctb - ts_ndctb << "\n";
@@ -406,7 +402,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << te_get_wobj - ts_get_wobj << " " << te_get_wobj << ", " << ts_get_wobj <<"\n"; 
 
   if (should_notify_raylet) {
-    RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());
+    // RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());
   }
 
   {
