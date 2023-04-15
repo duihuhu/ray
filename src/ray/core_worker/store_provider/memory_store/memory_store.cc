@@ -394,6 +394,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
+    RAY_LOG(DEBUG) << "hucc memory store while in " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
     if (check_signals_) {
       signal_status = check_signals_();
     }
