@@ -350,8 +350,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     }
 
     RAY_LOG(DEBUG) << "hucc memory store object_ids size remaining size " << object_ids.size() << " " << remaining_ids.size() <<"\n"; 
-
-    
   }
 
   // Only send block/unblock IPCs for non-actor tasks on the main thread.
@@ -364,6 +362,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   if (should_notify_raylet) {
     // hucc add time for NotifyDirectCallTaskBlocked
     // auto ts_ndctb = current_sys_time_us();
+    RAY_LOG(DEBUG) << "hucc memory store NotifyDirectCallTaskBlocked "; 
 
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
 
