@@ -360,13 +360,14 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     // auto ts_ndctb = current_sys_time_us();
     RAY_LOG(DEBUG) << "hucc memory store NotifyDirectCallTaskBlocked "; 
 
-    // RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
+    RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskBlocked(/*release_resources=*/true));
 
     // auto te_ndctb = current_sys_time_us();
     // RAY_LOG(INFO) << "hucc time for NotifyDirectCallTaskBlocked in local mem: " << te_ndctb - ts_ndctb << "\n";
   }
 
 
+  RAY_LOG(DEBUG) << "hucc memory store while before"; 
 
   bool done = false;
   bool timed_out = false;
@@ -402,7 +403,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << te_get_wobj - ts_get_wobj << " " << te_get_wobj << ", " << ts_get_wobj <<"\n"; 
 
   if (should_notify_raylet) {
-    // RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());
+    RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());
   }
 
   {
