@@ -43,6 +43,8 @@
 #include "ray/core_worker/transport/thread_pool.h"
 #include "ray/rpc/grpc_server.h"
 #include "ray/rpc/worker/core_worker_client.h"
+#include "ray/core_worker/store_provider/plasma_store_provider.h"
+
 
 namespace ray {
 namespace core {

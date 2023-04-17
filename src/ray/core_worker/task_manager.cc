@@ -259,7 +259,8 @@ size_t TaskManager::NumPendingTasks() const {
 bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
                                    const rpc::ReturnObject &return_object,
                                    const NodeID &worker_raylet_id,
-                                   bool store_in_plasma) {
+                                   bool store_in_plasma,
+                                   const std::string &worker_ip_address) {
   bool direct_return = false;
   reference_counter_->UpdateObjectSize(object_id, return_object.size());
   RAY_LOG(DEBUG) << "Task return object " << object_id << " has size "
@@ -271,6 +272,22 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
     // it as local in the in-memory store so that the data locality policy
     // will choose the right raylet for any queued dependent tasks.
     reference_counter_->UpdateObjectPinnedAtRaylet(object_id, worker_raylet_id);
+
+    ray::ObjectInfo objectinfo;
+    objectinfo.object_id = object_id;
+    objectinfo.data_size = return_object.data_size();
+    objectinfo.metadata_size = return_object.metadata_size();
+    /// Owner's raylet ID.
+    objectinfo.owner_raylet_id = NodeID::FromBinary(return_object.owner_raylet_id());
+    /// Owner's IP address.
+    objectinfo.owner_ip_address = return_object.owner_ip_address();
+    /// Owner's port.
+    objectinfo.owner_port = return_object.owner_port();
+    /// Owner's worker ID.
+    objectinfo.owner_worker_id = WorkerID::FromBinary(return_object.owner_worker_id());
+
+    (*plasma_node_virt_info_)[object_id] =  std::make_pair(std::make_pair(return_object.virt_address(), worker_ip_address), objectinfo);
+
     // Mark it as in plasma with a dummy object.
     RAY_CHECK(
         in_memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
@@ -357,7 +374,7 @@ void TaskManager::CompletePendingTask(const TaskID &task_id,
       if (!HandleTaskReturn(object_id,
                             return_object,
                             NodeID::FromBinary(worker_addr.raylet_id()),
-                            store_in_plasma_ids.count(object_id))) {
+                            store_in_plasma_ids.count(object_id), worker_addr.ip_address())) {
         if (first_execution) {
           dynamic_returns_in_plasma.push_back(object_id);
         }
@@ -370,7 +387,7 @@ void TaskManager::CompletePendingTask(const TaskID &task_id,
     if (HandleTaskReturn(object_id,
                          return_object,
                          NodeID::FromBinary(worker_addr.raylet_id()),
-                         store_in_plasma_ids.count(object_id))) {
+                         store_in_plasma_ids.count(object_id), worker_addr.ip_address())) {
       direct_return_ids.push_back(object_id);
     }
   }
