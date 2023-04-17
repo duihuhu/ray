@@ -416,7 +416,7 @@ CoreWorker::CoreWorker(const CoreWorkerOptions &options, const WorkerID &worker_
     direct_task_receiver_->Init(
         core_worker_client_pool_, rpc_address_, task_argument_waiter_);
   }
-
+  task_manager_->plasma_node_virt_info_ = &(future_resolver_->plasma_node_virt_info_);
   actor_manager_ = std::make_unique<ActorManager>(
       gcs_client_, direct_actor_submitter_, reference_counter_);
 
