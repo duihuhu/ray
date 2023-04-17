@@ -2786,7 +2786,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
     }
     reply->set_object_size(locality_data.value().object_size);
     RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size;
-    if(!obj->HasData()) {
+    if(obj->WasAccessed()) {
       unsigned long virt_address = 0 ;
       int64_t object_size = 0;
       int device_num = 0;
