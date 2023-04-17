@@ -281,6 +281,9 @@ absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectLifecycleMan
   return object_store_->GetPlasmaMeta();
 }
 
+void ObjectLifecycleManager::InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) {
+  object_store_->InsertObjectInfo(allocation, object_info);
+}
 
 // For test only.
 ObjectLifecycleManager::ObjectLifecycleManager(

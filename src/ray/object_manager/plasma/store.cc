@@ -232,7 +232,10 @@ void PlasmaStore::StopCommService(){
   comm_threads_.join();
 }
 
-void PlasmaStore::Stop() { acceptor_.close(); StopCommService();}
+void PlasmaStore::Stop() { 
+  acceptor_.close(); 
+  // StopCommService();
+}
 
 // If this client is not already using the object, add the client to the
 // object's list of clients, otherwise do nothing.
@@ -575,6 +578,19 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     // absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = GetPlasmaMeta();
     // RAY_RETURN_NOT_OK(SendPlasmaMetaReply(client, PlasmaError::OK));
 
+    RAY_RETURN_NOT_OK(ReadMetaRequest(input, input_size, &object_id));    
+    auto entry = object_lifecycle_mgr_.GetObject(object_id);
+    if (!entry) {
+      // Object already evicted or deleted.
+      // return false; 
+      // RAY_LOG(DEBUG) << "entry is null ";
+      return Status::OK();
+    }
+    auto allocation = entry->GetAllocation();
+    unsigned long address = (unsigned long) entry->GetAllocation().address;
+    auto object_info = entry->GetObjectInfo();
+    // RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id << " " << entry->GetAllocation().address << " " << entry->GetObjectInfo().object_id ;
+    RAY_RETURN_NOT_OK(SendMetaReply(client, address, allocation.size, allocation.device_num, object_info));
   } break;
   default:
     // This code should be unreachable.
@@ -682,5 +698,10 @@ std::string PlasmaStore::GetDebugDump() const {
   object_lifecycle_mgr_.GetDebugDump(buffer);
   return buffer.str();
 }
+
+void PlasmaStore::InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) {
+  object_lifecycle_mgr_.InsertObjectInfo(allocation, object_info);
+}
+
 
 }  // namespace plasma

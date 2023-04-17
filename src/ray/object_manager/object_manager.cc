@@ -856,4 +856,25 @@ void ObjectManager::Tick(const boost::system::error_code &e) {
   pull_retry_timer_.async_wait([this](const boost::system::error_code &e) { Tick(e); });
 }
 
+unsigned long ObjectManager::GetMetaAddress() {
+  return plasma::plasma_store_runner->GetMetaAddress();
+}
+int64_t ObjectManager::GetMetaSize() {
+  return plasma::plasma_store_runner->GetMetaSize();
+}
+absl::optional<plasma::Allocation> ObjectManager::AllocateObjectSizeRdma(size_t object_size) {
+  // HandleObjectAdded(object_info);
+  return plasma::plasma_store_runner->AllocateObjectSizeRdma(object_size);
+}
+void ObjectManager::InsertObjectInfo(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info) {
+  HandleObjectAdded(object_info);
+  return plasma::plasma_store_runner->InsertObjectInfo(allocation, object_info);
+}
+bool ObjectManager::CheckInsertObjectInfo(const ray::ObjectID &object_id) {
+  auto it = local_objects_.find(object_id);
+  if(it == local_objects_.end()) {
+    return false;
+  }
+  return true;
+}
 }  // namespace ray

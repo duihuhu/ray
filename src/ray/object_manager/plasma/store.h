@@ -113,6 +113,7 @@ class PlasmaStore {
     callback(available);
   }
 
+  void InsertObjectInfo(const absl::optional<Allocation>& allocation, const ray::ObjectInfo &object_info);
  private:
   /// Create a new object. The client must do a call to release_object to tell
   /// the store when it is done with the object.

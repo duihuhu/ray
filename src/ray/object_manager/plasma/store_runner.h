@@ -33,6 +33,11 @@ class PlasmaStoreRunner {
     main_service_.post([this, callback]() { store_->GetAvailableMemory(callback); },
                        "PlasmaStoreRunner.GetAvailableMemory");
   }
+  /// @brief get plasma start address and size 
+  unsigned long GetMetaAddress();
+  int64_t GetMetaSize();
+  absl::optional<Allocation> AllocateObjectSizeRdma(size_t size);
+  void InsertObjectInfo(const absl::optional<Allocation> &allocation, const ray::ObjectInfo &object_info);
 
  private:
   void Shutdown();

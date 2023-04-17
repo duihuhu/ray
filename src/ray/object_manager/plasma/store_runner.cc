@@ -148,6 +148,27 @@ int64_t PlasmaStoreRunner::GetFallbackAllocated() const {
   return allocator_ ? allocator_->FallbackAllocated() : 0;
 }
 
+unsigned long PlasmaStoreRunner::GetMetaAddress() {
+  return allocator_->StartAddress();
+}
+
+int64_t PlasmaStoreRunner::GetMetaSize() {
+  return allocator_->TotalPlasmaSize();
+}
+
+absl::optional<Allocation> PlasmaStoreRunner::AllocateObjectSizeRdma(size_t sizes) {
+  auto allocation = allocator_->Allocate(sizes);
+  // unsigned long address =  (unsigned long) allocation->address;
+  RAY_CHECK(allocation.has_value())
+      << "PlasmaAllocator AllocateObjectSizeRdma failed.";
+  // store_->InsertObjectInfo(allocation, object_info);
+  // return address;
+  return allocation;
+}
+
+void PlasmaStoreRunner::InsertObjectInfo(const absl::optional<Allocation> &allocation, const ray::ObjectInfo &object_info) {
+  store_->InsertObjectInfo(allocation, object_info);
+}
 std::unique_ptr<PlasmaStoreRunner> plasma_store_runner;
 
 }  // namespace plasma
