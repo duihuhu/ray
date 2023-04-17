@@ -2793,7 +2793,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
       ray::ObjectInfo object_info;
       auto ts_get_meta_from_plasma = current_sys_time_us();
 
-      RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma worker ";
+      RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma worker " << object_id;
 
       plasma_store_provider_->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
       auto te_get_meta_from_plasma = current_sys_time_us();
