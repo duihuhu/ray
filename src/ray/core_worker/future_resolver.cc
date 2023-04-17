@@ -25,6 +25,7 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
     return;
   }
   auto conn = owner_clients_->GetOrConnect(owner_address);
+  RAY_LOG(DEBUG) << "ResolveFutureAsync object_id " << object_id;
 
   rpc::GetObjectStatusRequest request;
   request.set_object_id(object_id.Binary());
