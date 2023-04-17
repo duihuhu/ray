@@ -39,17 +39,22 @@ void GcsNodeManager::HandleRegisterNode(const rpc::RegisterNodeRequest &request,
                                         rpc::RegisterNodeReply *reply,
                                         rpc::SendReplyCallback send_reply_callback) {
   NodeID node_id = NodeID::FromBinary(request.node_info().node_id());
+  int64_t cur = current_sys_time_us();
   RAY_LOG(INFO) << "Registering node info, node id = " << node_id
                 << ", address = " << request.node_info().node_manager_address()
-                << ", node name = " << request.node_info().node_name();
-  auto on_done = [this, node_id, request, reply, send_reply_callback](
+                << ", node name = " << request.node_info().node_name() << " time " << cur;
+  
+  rpc::RegisterNodeRequest request_wt;
+  request_wt.mutable_node_info()->CopyFrom(request.node_info());
+  request_wt.mutable_node_info()->set_register_time(cur);
+  auto on_done = [this, node_id, request_wt, reply, send_reply_callback](
                      const Status &status) {
     RAY_CHECK_OK(status);
     RAY_LOG(INFO) << "Finished registering node info, node id = " << node_id
-                  << ", address = " << request.node_info().node_manager_address()
-                  << ", node name = " << request.node_info().node_name();
-    RAY_CHECK_OK(gcs_publisher_->PublishNodeInfo(node_id, request.node_info(), nullptr));
-    AddNode(std::make_shared<rpc::GcsNodeInfo>(request.node_info()));
+                  << ", address = " << request_wt.node_info().node_manager_address()
+                  << ", node name = " << request_wt.node_info().node_name();
+    RAY_CHECK_OK(gcs_publisher_->PublishNodeInfo(node_id, request_wt.node_info(), nullptr));
+    AddNode(std::make_shared<rpc::GcsNodeInfo>(request_wt.node_info()));
     GCS_RPC_SEND_REPLY(send_reply_callback, reply, status);
   };
   RAY_CHECK_OK(

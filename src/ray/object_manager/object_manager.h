@@ -246,6 +246,8 @@ class ObjectManager : public ObjectManagerInterface,
   }
 
   bool PullManagerHasPullsQueued() const { return pull_manager_->HasPullsQueued(); }
+ 
+  ///GetMetaAddress
   unsigned long GetMetaAddress();
   int64_t GetMetaSize();
   absl::optional<plasma::Allocation> AllocateObjectSizeRdma(size_t object_size);
