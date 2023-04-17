@@ -22,6 +22,7 @@
 #include "ray/rpc/worker/core_worker_client.h"
 #include "ray/rpc/worker/core_worker_client_pool.h"
 #include "src/ray/protobuf/core_worker.pb.h"
+#include "ray/object_manager/common.h"
 
 namespace ray {
 namespace core {
@@ -65,6 +66,8 @@ class FutureResolver {
                              const Status &status,
                              const rpc::GetObjectStatusReply &object_status);
 
+  absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>>
+    plasma_node_virt_info_;
  private:
   /// Used to store values of resolved futures.
   std::shared_ptr<CoreWorkerMemoryStore> in_memory_store_;
