@@ -296,6 +296,7 @@ table PlasmaEvictReply {
 
 table PlasmaGetMetaRequest {
   // ID of the object to be get meta.
+  object_id: string;
 }
 
 
