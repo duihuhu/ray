@@ -681,6 +681,8 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
 Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
   std::unique_lock<std::recursive_mutex> guard(client_mutex_);
 
+  RAY_LOG(DEBUG) << "GetObjectMeta start ";
+
   RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
   std::vector<uint8_t> buffer;
 
@@ -691,6 +693,7 @@ Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned lon
   // int64_t object_size = 0;
   // int device_num = 0;
   RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), address, object_size, device_num, object_info));
+  RAY_LOG(DEBUG) << "GetObjectMeta end ";
 
   // RAY_LOG(DEBUG) << "ReadMetaReply GetObjectMeta " << object_id << " address " << *address << " object_size " << object_size << " device_num " <<  device_num;
 
