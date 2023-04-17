@@ -2786,7 +2786,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
     }
     reply->set_object_size(locality_data.value().object_size);
     RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size;
-    if(obj->WasAccessed()) {
+    if(!obj->HasData()) {
       unsigned long virt_address = 0 ;
       int64_t object_size = 0;
       int device_num = 0;
@@ -2795,24 +2795,24 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
 
       RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma worker " << object_id;
 
-      plasma_store_provider_->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
-      auto te_get_meta_from_plasma = current_sys_time_us();
+      // plasma_store_provider_->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
+      // auto te_get_meta_from_plasma = current_sys_time_us();
 
-      RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size << te_get_meta_from_plasma - ts_get_meta_from_plasma;
+      // RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size << te_get_meta_from_plasma - ts_get_meta_from_plasma;
       
-      reply->set_virt_address(virt_address);
-      reply->set_device_num(device_num);
-      // object info
-      reply->set_data_size(object_info.data_size);
-      reply->set_metadata_size(object_info.metadata_size);
-      /// Owner's raylet ID.
-      reply->set_owner_raylet_id(object_info.owner_raylet_id.Binary());
-      /// Owner's IP address.
-      reply->set_owner_ip_address(object_info.owner_ip_address);
-      /// Owner's port.
-      reply->set_owner_port(object_info.owner_port);
-      /// Owner's worker ID.
-      reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
+      // reply->set_virt_address(virt_address);
+      // reply->set_device_num(device_num);
+      // // object info
+      // reply->set_data_size(object_info.data_size);
+      // reply->set_metadata_size(object_info.metadata_size);
+      // /// Owner's raylet ID.
+      // reply->set_owner_raylet_id(object_info.owner_raylet_id.Binary());
+      // /// Owner's IP address.
+      // reply->set_owner_ip_address(object_info.owner_ip_address);
+      // /// Owner's port.
+      // reply->set_owner_port(object_info.owner_port);
+      // /// Owner's worker ID.
+      // reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
     }
   }
 }
