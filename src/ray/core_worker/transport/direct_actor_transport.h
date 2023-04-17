@@ -94,6 +94,8 @@ class CoreWorkerDirectTaskReceiver {
   bool CancelQueuedNormalTask(TaskID task_id);
 
   void Stop();
+  
+  std::shared_ptr<CoreWorkerPlasmaStoreProvider> plasma_store_provider_;
 
  private:
   /// Set up the configs for an actor.
