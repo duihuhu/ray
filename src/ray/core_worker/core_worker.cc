@@ -2735,7 +2735,6 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
     reply->set_status(rpc::GetObjectStatusReply::OUT_OF_SCOPE);
     send_reply_callback(Status::OK(), nullptr, nullptr);
   } else {
-    RAY_LOG(DEBUG) << "plasma_store_provider_ HandleGetObjectStatus " << object_id;
     RAY_CHECK(owner_address.worker_id() == request.owner_worker_id());
     bool is_freed = reference_counter_->IsPlasmaObjectFreed(object_id);
 
@@ -2785,9 +2784,11 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   if (locality_data.has_value()) {
     for (const auto &node_id : locality_data.value().nodes_containing_object) {
       reply->add_node_ids(node_id.Binary());
+      RAY_LOG(DEBUG) << " locality_data.value nodes_containing_object " << node_id.Binary();
+
     }
     reply->set_object_size(locality_data.value().object_size);
-    RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size;
+    RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size << " " << locality_data;
     if(!obj->HasData()) {
       unsigned long virt_address = 0 ;
       int64_t object_size = 0;
