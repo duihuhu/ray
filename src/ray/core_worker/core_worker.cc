@@ -2721,7 +2721,7 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   }
 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
-  RAY_LOG(DEBUG) << "Received GetObjectStatus " << object_id;
+  RAY_LOG(DEBUG) << "Received GetObjectStatus " << object_id << " " << request.owner_worker_id();
   // Acquire a reference to the object. This prevents the object from being
   // evicted out from under us while we check the object status and start the
   // Get.
@@ -2781,43 +2781,48 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   reply->set_status(rpc::GetObjectStatusReply::CREATED);
   // Set locality data.
   const auto &locality_data = reference_counter_->GetLocalityData(object_id);
+  bool object_exists = false;
+  NodeID current_node_id = NodeID::FromBinary(rpc_address_.raylet_id());
   if (locality_data.has_value()) {
     for (const auto &node_id : locality_data.value().nodes_containing_object) {
+      if(current_node_id == node_id) {
+        object_exists = true;
+      }
       reply->add_node_ids(node_id.Binary());
-      RAY_LOG(DEBUG) << " locality_data.value nodes_containing_object " << node_id << " " << NodeID::FromBinary(rpc_address_.raylet_id());
-
     }
     reply->set_object_size(locality_data.value().object_size);
     RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size;
     if(obj->IsInPlasmaError()) {
-      RAY_LOG(DEBUG) << " IsInPlasmaError " << obj->IsInPlasmaError();
+      if (object_exists) {
+        unsigned long virt_address = 0 ;
+        int64_t object_size = 0;
+        int device_num = 0;
+        ray::ObjectInfo object_info;
+        auto ts_get_meta_from_plasma = current_sys_time_us();
+        ///todo object not in current owner node, then resend to another node
+        RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma worker " << object_id;
 
-      unsigned long virt_address = 0 ;
-      int64_t object_size = 0;
-      int device_num = 0;
-      ray::ObjectInfo object_info;
-      auto ts_get_meta_from_plasma = current_sys_time_us();
-      ///todo object not in current owner node, then resend to another node
-      RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma worker " << object_id;
+        plasma_store_provider_->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
+        auto te_get_meta_from_plasma = current_sys_time_us();
 
-      plasma_store_provider_->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
-      auto te_get_meta_from_plasma = current_sys_time_us();
-
-      RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size << te_get_meta_from_plasma - ts_get_meta_from_plasma;
-      
-      reply->set_virt_address(virt_address);
-      reply->set_device_num(device_num);
-      // object info
-      reply->set_data_size(object_info.data_size);
-      reply->set_metadata_size(object_info.metadata_size);
-      /// Owner's raylet ID.
-      reply->set_owner_raylet_id(object_info.owner_raylet_id.Binary());
-      /// Owner's IP address.
-      reply->set_owner_ip_address(object_info.owner_ip_address);
-      /// Owner's port.
-      reply->set_owner_port(object_info.owner_port);
-      /// Owner's worker ID.
-      reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
+        RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size << te_get_meta_from_plasma - ts_get_meta_from_plasma;
+        
+        reply->set_virt_address(virt_address);
+        reply->set_device_num(device_num);
+        // object info
+        reply->set_data_size(object_info.data_size);
+        reply->set_metadata_size(object_info.metadata_size);
+        /// Owner's raylet ID.
+        reply->set_owner_raylet_id(object_info.owner_raylet_id.Binary());
+        /// Owner's IP address.
+        reply->set_owner_ip_address(object_info.owner_ip_address);
+        /// Owner's port.
+        reply->set_owner_port(object_info.owner_port);
+        /// Owner's worker ID.
+        reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
+      } else {
+        RAY_LOG(DEBUG) << " Plasma Object is not exists in this node ";
+      }
     }
   }
 }
