@@ -2783,10 +2783,13 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   const auto &locality_data = reference_counter_->GetLocalityData(object_id);
   bool object_exists = false;
   NodeID current_node_id = NodeID::FromBinary(rpc_address_.raylet_id());
+  NodeID remoto_node_id;
   if (locality_data.has_value()) {
     for (const auto &node_id : locality_data.value().nodes_containing_object) {
       if(current_node_id == node_id) {
         object_exists = true;
+      } else {
+          remoto_node_id = node_id;
       }
       reply->add_node_ids(node_id.Binary());
     }
@@ -2822,6 +2825,18 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
         reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
       } else {
         RAY_LOG(DEBUG) << " Plasma Object is not exists in this node ";
+        // local_raylet_client_->GetRemoteNodeManagerInfo()
+        // std::string ip_address = "192.172.200.1"
+        // rpc::Address address;
+        // int port=5000;
+        // address.set_raylet_id(remote_node_id.Binary());
+        // address.set_ip_address(ip_address);
+        // address.set_port(port);
+        // local_raylet_client_->GetObjectMetaFromRemoteNode();
+        if(*(task_manager_->plasma_node_virt_info_).find(object_id)):
+          RAY_LOG(DEBUG) << " Plasma Object is in in this node plasma_node_virt_info_";
+
+
       }
     }
   }
