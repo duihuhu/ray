@@ -2838,7 +2838,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
         // local_raylet_client_->GetObjectMetaFromRemoteNode();
         auto it = (task_manager_->plasma_node_virt_info_)->find(object_id);
         if(it!=task_manager_->plasma_node_virt_info_->end())
-          RAY_LOG(DEBUG) << " Plasma Object is in in this node plasma_node_virt_info_" << " virt address " << it.second().first.first << " worker_ip_address " << it.second().first.second;
+          RAY_LOG(DEBUG) << " Plasma Object is in in this node plasma_node_virt_info_" << " virt address " << it->second.first.first << " worker_ip_address " << it->second.first.second;
           // reply->set_virt_address(it.second.first.first);
           // reply->set_device_num(0);
           // // object info
