@@ -1355,6 +1355,8 @@ absl::optional<LocalityData> ReferenceCounter::GetLocalityData(
     return absl::nullopt;
   }
 
+  RAY_LOG(DEBUG) << "GetLocalityData object call_site " << it->second.call_site;
+
   // The locations of this object.
   // - If we own this object, this will contain the complete up-to-date set of object
   //   locations.
