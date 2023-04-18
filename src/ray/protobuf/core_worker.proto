@@ -207,6 +207,7 @@ message GetObjectStatusReply {
   int64 owner_port = 11;
   /// Owner's worker ID.
   bytes owner_worker_id = 12;
+  string worker_ip_address = 13;
 }
 
 

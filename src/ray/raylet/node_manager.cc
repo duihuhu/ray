@@ -1707,25 +1707,25 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     if (worker && !worker->GetAssignedTaskId().IsNil()) {
       // This will start a fetch for the objects that gets canceled once the
       // objects are local, or if the worker dies.
-      dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
+      // dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
 
-      // object_manager_rdma_.PrintRemoteRdmaInfo();
-      // object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
-      // dependency_manager_.InsertObjectLocal(object_info);
+      object_manager_rdma_.PrintRemoteRdmaInfo();
+      object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
+      dependency_manager_.InsertObjectLocal(object_info);
     }
   } else {
     // The values are needed. Add all requested objects to the list to
     // subscribe to in the task dependency manager. These objects will be
     // pulled from remote node managers. If an object's owner dies, an error
     // will be stored as the object's value.
-    RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects " << object_info[0].object_id;
+    // RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects " << object_info[0].object_id;
 
-    const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
-    AsyncResolveObjects(client,
-                        refs,
-                        task_id,
-                        /*ray_get=*/true,
-                        /*mark_worker_blocked*/ message->mark_worker_blocked());
+    // const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
+    // AsyncResolveObjects(client,
+    //                     refs,
+    //                     task_id,
+    //                     /*ray_get=*/true,
+    //                     /*mark_worker_blocked*/ message->mark_worker_blocked());
   }
 }
 
