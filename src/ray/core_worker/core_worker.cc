@@ -2721,7 +2721,7 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   }
 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
-  RAY_LOG(DEBUG) << "Received GetObjectStatus " << object_id << " " << request.owner_worker_id();
+  RAY_LOG(DEBUG) << "Received GetObjectStatus " << object_id << " " << WorkerID::FromBinary(request.owner_worker_id());
   // Acquire a reference to the object. This prevents the object from being
   // evicted out from under us while we check the object status and start the
   // Get.
