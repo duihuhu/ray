@@ -104,7 +104,7 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
 
         // plasma_node_virt_info_[object_id] =  std::make_pair(reply.virt_address(), objectinfo);
 
-        plasma_node_virt_info_[object_id] =  std::make_pair(std::make_pair(reply.virt_address(), owner_address.ip_address()), objectinfo);
+        plasma_node_virt_info_[object_id] =  std::make_pair(std::make_pair(reply.virt_address(), reply.worker_ip_address()), objectinfo);
 
       }
     }
