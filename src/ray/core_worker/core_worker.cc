@@ -2833,7 +2833,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
         // address.set_ip_address(ip_address);
         // address.set_port(port);
         // local_raylet_client_->GetObjectMetaFromRemoteNode();
-        if(*(task_manager_->plasma_node_virt_info_).find(object_id))
+        if((task_manager_->plasma_node_virt_info_)->find(object_id))
           RAY_LOG(DEBUG) << " Plasma Object is in in this node plasma_node_virt_info_";
 
 
