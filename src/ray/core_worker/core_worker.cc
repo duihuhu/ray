@@ -2784,7 +2784,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   if (locality_data.has_value()) {
     for (const auto &node_id : locality_data.value().nodes_containing_object) {
       reply->add_node_ids(node_id.Binary());
-      RAY_LOG(DEBUG) << " locality_data.value nodes_containing_object " << node_id;
+      RAY_LOG(DEBUG) << " locality_data.value nodes_containing_object " << node_id << " " << rpc_address_.raylet_id() ;
 
     }
     reply->set_object_size(locality_data.value().object_size);
