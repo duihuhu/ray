@@ -2766,6 +2766,8 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   // in_plasma indicator on the message, and the caller will
   // have to facilitate a Plasma object transfer to get the
   // object value.
+  RAY_LOG(DEBUG) << " PopulateObjectStatus ";
+
   auto *object = reply->mutable_object();
   if (obj->HasData()) {
     const auto &data = obj->GetData();
@@ -2790,12 +2792,14 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
     reply->set_object_size(locality_data.value().object_size);
     RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size;
     if(!obj->HasData()) {
+      RAY_LOG(DEBUG) << " IsInPlasmaError " << obj->IsInPlasmaError();
+
       unsigned long virt_address = 0 ;
       int64_t object_size = 0;
       int device_num = 0;
       ray::ObjectInfo object_info;
       auto ts_get_meta_from_plasma = current_sys_time_us();
-
+      ///todo object not in current owner node, then resend to another node
       RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma worker " << object_id;
 
       plasma_store_provider_->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
