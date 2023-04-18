@@ -2838,22 +2838,22 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
         // local_raylet_client_->GetObjectMetaFromRemoteNode();
         auto it = (task_manager_->plasma_node_virt_info_)->find(object_id);
         if(it!=task_manager_->plasma_node_virt_info_->end())
-          RAY_LOG(DEBUG) << " Plasma Object is in in this node plasma_node_virt_info_" << " virt address " << it.second.first.first << " worker_ip_address " << it.second.first.second;
-          reply->set_virt_address(it.second.first.first);
-          reply->set_device_num(0);
-          // object info
-          reply->set_data_size(it.second.second.data_size);
-          reply->set_metadata_size(it.second.second.metadata_size);
-          /// Owner's raylet ID.
-          reply->set_owner_raylet_id(it.second.second.owner_raylet_id.Binary());
-          /// Owner's IP address.
-          reply->set_owner_ip_address(it.second.second.owner_ip_address);
-          /// Owner's port.
-          reply->set_owner_port(it.second.second.owner_port);
-          /// Owner's worker ID.
-          reply->set_owner_worker_id(it.second.second.owner_worker_id.Binary());
+          RAY_LOG(DEBUG) << " Plasma Object is in in this node plasma_node_virt_info_" << " virt address " << it.second().first.first << " worker_ip_address " << it.second().first.second;
+          // reply->set_virt_address(it.second.first.first);
+          // reply->set_device_num(0);
+          // // object info
+          // reply->set_data_size(it.second.second.data_size);
+          // reply->set_metadata_size(it.second.second.metadata_size);
+          // /// Owner's raylet ID.
+          // reply->set_owner_raylet_id(it.second.second.owner_raylet_id.Binary());
+          // /// Owner's IP address.
+          // reply->set_owner_ip_address(it.second.second.owner_ip_address);
+          // /// Owner's port.
+          // reply->set_owner_port(it.second.second.owner_port);
+          // /// Owner's worker ID.
+          // reply->set_owner_worker_id(it.second.second.owner_worker_id.Binary());
 
-          reply->set_worker_ip_address(it.second.first.second);
+          // reply->set_worker_ip_address(it.second.first.second);
 
       }
     }
