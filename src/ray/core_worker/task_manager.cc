@@ -285,10 +285,8 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
     objectinfo.owner_port = return_object.owner_port();
     /// Owner's worker ID.
     objectinfo.owner_worker_id = WorkerID::FromBinary(return_object.owner_worker_id());
-    RAY_LOG(DEBUG) << "Task return object in plasma start 1";
 
     (*plasma_node_virt_info_)[object_id] =  std::make_pair(std::make_pair(return_object.virt_address(), worker_ip_address), objectinfo);
-    RAY_LOG(DEBUG) << "Task return object in plasma start 2";
 
     // Mark it as in plasma with a dummy object.
     RAY_CHECK(
