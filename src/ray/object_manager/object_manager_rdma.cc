@@ -458,6 +458,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       // PollCompletion(it->second.first.first);
       auto ctx =  it->second.first.first;
+
+	RAY_LOG(DEBUG) << " PostSend object to RDMA ";
+
       main_service_->post([this, ctx, allocation, obj_info]() { PollCompletion(ctx, allocation, obj_info); },
                     "ObjectManagerRdma.PollCompletion");
       // std::ofstream outfile;
