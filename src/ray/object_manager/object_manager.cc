@@ -194,7 +194,7 @@ void ObjectManager::HandleObjectAdded(const ObjectInfo &object_info) {
   const ObjectID &object_id = object_info.object_id;
   RAY_LOG(DEBUG) << "Object added " << object_id;
   if(CheckInsertObjectInfo(object_id)) {
-    continue;
+    return;
   }
   RAY_CHECK(local_objects_.count(object_id) == 0);
   local_objects_[object_id].object_info = object_info;
