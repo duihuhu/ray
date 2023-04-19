@@ -458,8 +458,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       // PollCompletion(it->second.first.first);
       auto ctx =  it->second.first.first;
-
-	RAY_LOG(DEBUG) << " PostSend object to RDMA ";
+	  
+	  RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 
       main_service_->post([this, ctx, allocation, obj_info]() { PollCompletion(ctx, allocation, obj_info); },
                     "ObjectManagerRdma.PollCompletion");
@@ -490,7 +490,8 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 }
 
 int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode) {
-  struct ibv_send_wr sr;
+	RAY_LOG(ERROR) << "PostSend start ";
+	struct ibv_send_wr sr;
 	struct ibv_send_wr *bad_wr;
 	struct ibv_sge sge;
 	int rc;
