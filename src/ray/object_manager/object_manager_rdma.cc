@@ -442,8 +442,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_
     if(it!=remote_dest_.end())
       // continue;
       QueryQp(it->second.first.first);
-      if(object_manager_.CheckInsertObjectInfo(object_info[i].object_id)) {
-        RAY_LOG(DEBUG) << " Object is alread in local_object " << object_info[i].object_id;
+      if(object_manager_.CheckInsertObjectInfo(object_info[i].object_id) || object_sizes[i]==0 ) {
+        RAY_LOG(DEBUG) << " Object is alread in local_object or object size is zero" << object_info[i].object_id;
         continue;
 	  }
 	
