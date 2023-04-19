@@ -459,7 +459,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
       // PollCompletion(it->second.first.first);
       auto ctx =  it->second.first.first;
 	  
-	  RAY_LOG(DEBUG) << " PostSend object to RDMA ";
+	//   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 
       main_service_->post([this, ctx, allocation, obj_info]() { PollCompletion(ctx, allocation, obj_info); },
                     "ObjectManagerRdma.PollCompletion");
@@ -498,6 +498,8 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	int flags;	
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
+	RAY_LOG(ERROR) << "PostSend median ";
+
   sge.addr = buf;
 	sge.length = msg_size;
 	sge.lkey = ctx->mr->lkey;
@@ -515,7 +517,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
 
 	if (rc)
-    RAY_LOG(ERROR) << "Failed to post sr " << rc;
+      RAY_LOG(ERROR) << "Failed to post sr " << rc;
 	// else
   //   RAY_LOG(DEBUG) << "RDMA read request was posted";
   	RAY_LOG(ERROR) << "PostSend end ";
