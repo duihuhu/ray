@@ -437,6 +437,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker ";
   for(uint64_t i = 0; i < object_address.size(); ++i) {
     std::string address = rem_ip_address[i];
+	std::string obj_address = object_address[i];
     const ray::ObjectInfo &obj_info = object_info[i];
     auto it = remote_dest_.find(address);
     if(it!=remote_dest_.end())
@@ -453,7 +454,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
 
       unsigned long local_address =(unsigned long) allocation->address;
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
-      RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i] << " " << address << " " << object_info[i].object_id;
+      RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i] << " " << address << " " << object_info[i].object_id << " " << obj_address;
       
       PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       // PollCompletion(it->second.first.first);
