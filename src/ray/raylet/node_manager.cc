@@ -1710,7 +1710,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       // dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
 
       object_manager_rdma_.PrintRemoteRdmaInfo();
-      object_manager_rdma_.FetchObjectFromRemotePlasma(worker->WorkerId(), object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
+      object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
       dependency_manager_.InsertObjectLocal(object_info);
     }
   } else {
@@ -1720,7 +1720,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     // will be stored as the object's value.
     RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects " << object_info[0].object_id;
     object_manager_rdma_.PrintRemoteRdmaInfo();
-    object_manager_rdma_.FetchObjectFromRemotePlasma(NULL, object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
+    object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
     dependency_manager_.InsertObjectLocal(object_info);
     // const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
     // AsyncResolveObjects(client,

@@ -432,9 +432,9 @@ void ObjectManagerRdma::PrintRemoteRdmaInfo() {
   }
 }
 
-void ObjectManagerRdma::FetchObjectFromRemotePlasma(const ray::WorkerID &worker_id, const std::vector<std::string> &object_address, const std::vector<unsigned long>  &object_virt_address, 
+void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::string> &object_address, const std::vector<unsigned long>  &object_virt_address, 
                                                   const std::vector<int>  &object_sizes, std::vector<ray::ObjectInfo> &object_info, const std::vector<std::string> &rem_ip_address) {
-  RAY_LOG(DEBUG) << "Starting get object through rdma for worker " << worker_id;
+  RAY_LOG(DEBUG) << "Starting get object through rdma for worker ";
   for(uint64_t i = 0; i < object_address.size(); ++i) {
     std::string address = rem_ip_address[i];
     const ray::ObjectInfo &obj_info = object_info[i];
