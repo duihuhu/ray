@@ -293,7 +293,7 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
         in_memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
     
     RAY_LOG(WARNING) << "Task return object in plasma " << object_id << " has size "
-            << return_object.size() << " " << worker_raylet_id;
+            << return_object.size() << " " << worker_raylet_id << " " << worker_ip_address << " " << return_object.owner_ip_address();
   } else {
     // NOTE(swang): If a direct object was promoted to plasma, then we do not
     // record the node ID that it was pinned at, which means that we will not
