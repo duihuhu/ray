@@ -2273,7 +2273,9 @@ void NodeManager::AsyncResolveObjects(
   // fetched and/or restarted as necessary, until the objects become local
   // or are unsubscribed.
   if (ray_get) {
+    RAY_LOG(DEBUG) << " AsyncResolveObjects StartOrUpdateGetRequest ";
     dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), required_object_refs);
+    
   } else {
     dependency_manager_.StartOrUpdateWaitRequest(worker->WorkerId(),
                                                  required_object_refs);
