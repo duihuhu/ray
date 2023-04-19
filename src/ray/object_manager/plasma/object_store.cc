@@ -106,6 +106,9 @@ absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectStore::GetPl
 
 void ObjectStore::InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) {
   auto source = plasma::flatbuf::ObjectSource::ReceivedFromRemoteRaylet;
+  auto it = object_table_.find(object_info.object_id);
+  if(it!=object_table_.end())
+    return;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
       << object_info.object_id << " already exists!";
   RAY_LOG(DEBUG) << "InsertObjectInfo " << object_info.object_id;
