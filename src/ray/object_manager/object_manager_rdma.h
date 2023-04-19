@@ -79,7 +79,8 @@ public:
       plasma_address_(start_address),
       plasma_size_(plasma_size), 
       gcs_client_(gcs_client),
-      object_manager_(object_manager)
+      object_manager_(object_manager),
+      local_ip_address_(object_manager_address)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
         InitRdmaConfig();
@@ -121,6 +122,7 @@ private:
   //remote ip , local ctx, local dest, remote dest
   absl::flat_hash_map<std::string, std::pair<std::pair<struct pingpong_context*, struct pingpong_dest*>, struct pingpong_dest*>> remote_dest_;
   ray::ObjectManager &object_manager_;
+  std::string local_ip_address_;
 };
 
 class Session
