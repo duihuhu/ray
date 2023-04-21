@@ -304,6 +304,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>> &plasma_node_virt_info_) {
   int64_t batch_size = RayConfig::instance().worker_fetch_request_size();
   //hucc time for get obj from local plasma
+  auto ts_get_obj = current_sys_time_us();
+
   auto ts_get_obj_local_plasma = current_sys_time_us();
   std::vector<ObjectID> batch_ids;
   std::vector<unsigned long> batch_virt_address;
@@ -509,6 +511,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     RAY_RETURN_NOT_OK(UnblockIfNeeded(raylet_client_, ctx));
     return Status::TimedOut("Get timed out: some object(s) not ready.");
   }
+  auto te_get_obj = current_sys_time_us();
+  RAY_LOG(DEBUG) << "get object once time "  << te_get_obj - ts_get_obj;
 
   // Notify unblocked because we blocked when calling FetchOrReconstruct with
   // fetch_only=false.
