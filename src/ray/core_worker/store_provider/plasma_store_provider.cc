@@ -450,6 +450,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
           /*release_resources_during_plasma_fetch=*/false));
     }
     auto t3 = current_sys_time_us();
+    RAY_LOG(DEBUG) << "CurrentTaskIsDirectCall " << t3 -t2 << ctx.CurrentTaskIsDirectCall() << " " << ctx.ShouldReleaseResourcesOnBlockingCalls();
 
     //hucc time for get obj from remote plasma
     auto ts_get_obj_remote_plasma = current_sys_time_us();
