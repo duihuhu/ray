@@ -2274,6 +2274,8 @@ void NodeManager::AsyncResolveObjects(
     bool ray_get,
     bool mark_worker_blocked) {
   std::shared_ptr<WorkerInterface> worker = worker_pool_.GetRegisteredWorker(client);
+  RAY_LOG(DEBUG) << " AsyncResolveObjects ray_get" << ray_get ;
+
   if (!worker) {
     // The client is a driver. Drivers do not hold resources, so we simply mark
     // the task as blocked.
@@ -2285,7 +2287,6 @@ void NodeManager::AsyncResolveObjects(
   // fetched and/or restarted as necessary, until the objects become local
   // or are unsubscribed.
   if (ray_get) {
-    RAY_LOG(DEBUG) << " AsyncResolveObjects StartOrUpdateGetRequest ";
     dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), required_object_refs);
     
   } else {

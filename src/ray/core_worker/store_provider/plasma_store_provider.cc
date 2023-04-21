@@ -450,7 +450,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
           /*release_resources_during_plasma_fetch=*/false));
     }
     auto t3 = current_sys_time_us();
-    RAY_LOG(DEBUG) << "CurrentTaskIsDirectCall " << t3 -t2 << ctx.CurrentTaskIsDirectCall() << " " << ctx.ShouldReleaseResourcesOnBlockingCalls();
+    RAY_LOG(DEBUG) << "CurrentTaskIsDirectCall " << t3 -t2 << " " << ctx.CurrentTaskIsDirectCall() << " " << ctx.ShouldReleaseResourcesOnBlockingCalls();
 
     //hucc time for get obj from remote plasma
     auto ts_get_obj_remote_plasma = current_sys_time_us();
@@ -480,7 +480,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
     //hucc time for get obj from remote plasma
     auto te_get_obj_remote_plasma = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time in while: " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma << " " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma_median << " empty: " << remaining.empty() << "\n";
+    RAY_LOG(DEBUG) << "hucc time for get obj from local plasma total time in while: " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma << " " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma_median << " empty: " << remaining.empty() << "\n";
 
     if (check_signals_) {
       Status status = check_signals_();
@@ -501,7 +501,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     //   std::this_thread::sleep_for(std::chrono::milliseconds(10));
     // }
     auto t5 = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for break while remain "  << t2-t1  << " , " << t3-t2  << " , " <<  t4-t3  << " , "  << t5-t4;
+    RAY_LOG(DEBUG) << "hucc time for break while remain "  << t2-t1  << " , " << t3-t2  << " , " <<  t4-t3  << " , "  << t5-t4;
 
   }
 
