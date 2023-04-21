@@ -180,6 +180,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
     const std::vector<std::string> &batch_rem_ip_address) {
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
+  auto t1 = current_sys_time_us();
 
   RAY_RETURN_NOT_OK(
       raylet_client_->FetchOrReconstruct(batch_ids,
@@ -197,17 +198,14 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
                                          batch_rem_ip_address));
 
   //hucc breakdown get_object
-  auto ts_store_get_object = current_sys_time_us();
+  auto t2 = current_sys_time_us();
 
   std::vector<plasma::ObjectBuffer> plasma_results;
   RAY_RETURN_NOT_OK(store_client_.Get(batch_ids,
                                       timeout_ms,
                                       &plasma_results,
                                       /*is_from_worker=*/true));
-  auto te_store_get_object = current_sys_time_us();
-
-  RAY_LOG(DEBUG) << "hucc store_get_object: " << te_store_get_object - ts_store_get_object << " " << batch_ids.size() << " " <<batch_ids[0] << " " << plasma_results.size() << " " << fetch_only;
-
+  auto t3 = current_sys_time_us();
 
   // Add successfully retrieved objects to the result map and remove them from
   // the set of IDs to get.
@@ -217,8 +215,6 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
       std::shared_ptr<TrackedBuffer> data = nullptr;
       std::shared_ptr<Buffer> metadata = nullptr;
       if (plasma_results[i].data && plasma_results[i].data->Size()) {
-        RAY_LOG(DEBUG) << "hucc store_get_object has size: " << te_store_get_object - ts_store_get_object << " " << i << " " << batch_ids[i] << " " << plasma_results.size() << " " << plasma_results[i].data << " " << plasma_results[i].data->Size() << " "<< fetch_only;
-
         // We track the set of active data buffers in active_buffers_. On destruction,
         // the buffer entry will be removed from the set via callback.
         data = std::make_shared<TrackedBuffer>(
@@ -238,6 +234,9 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
       }
     }
   }
+  auto t4 = current_sys_time_us();
+
+  RAY_LOG(DEBUG) << "FetchAndGetFromPlasmaStore: " << t4 - t3 << " " << t3 - t2 << " " << t2-t1 << " " <<batch_ids[0];
 
   return Status::OK();
 }
