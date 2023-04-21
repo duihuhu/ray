@@ -473,9 +473,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  batch_rem_ip_address));
     should_break = timed_out || *got_exception;
 
-    if ((previous_size - remaining.size()) < batch_ids.size()) {
-      WarnIfFetchHanging(fetch_start_time_ms, remaining);
-    }
+    // if ((previous_size - remaining.size()) < batch_ids.size()) {
+    //   WarnIfFetchHanging(fetch_start_time_ms, remaining);
+    // }
     //hucc time for get obj from remote plasma
     auto te_get_obj_remote_plasma = current_sys_time_us();
     RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time in while: " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma << " empty: " << remaining.empty() << "\n";
