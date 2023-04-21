@@ -439,15 +439,15 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
     std::string address = rem_ip_address[i];
 	std::string obj_address = object_address[i];
     const ray::ObjectInfo &obj_info = object_info[i];
+	if(object_manager_.CheckInsertObjectInfo(object_info[i].object_id) || object_sizes[i]==0 || (address == local_ip_address_)) {
+	  RAY_LOG(DEBUG) << " Object is alread in local_object or object size is zero " << object_info[i].object_id << " " << object_sizes[i];
+	  continue;
+	}
     auto it = remote_dest_.find(address);
-    if(it!=remote_dest_.end())
+    if(it!=remote_dest_.end()){
       // continue;
     //   QueryQp(it->second.first.first);
-      if(object_manager_.CheckInsertObjectInfo(object_info[i].object_id) || object_sizes[i]==0 || (address == local_ip_address_)) {
-        RAY_LOG(DEBUG) << " Object is alread in local_object or object size is zero " << object_info[i].object_id << " " << object_sizes[i];
-        continue;
-	  }
-	
+
 
       auto allocation = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
       RAY_LOG(DEBUG) << " Allocate space allocation->address " << allocation->address << " object_id " << object_info[i].object_id;
@@ -473,6 +473,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
       //   outfile<<buf[j];
       // }
       // outfile.close();
+	}
   }
 }
 
