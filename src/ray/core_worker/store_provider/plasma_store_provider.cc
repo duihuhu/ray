@@ -445,10 +445,10 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     size_t previous_size = remaining.size();
     // This is a separate IPC from the FetchAndGet in direct call mode.
-    // if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
-    //   RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
-    //       /*release_resources_during_plasma_fetch=*/false));
-    // }
+    if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
+      RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
+          /*release_resources_during_plasma_fetch=*/false));
+    }
     auto t3 = current_sys_time_us();
 
     //hucc time for get obj from remote plasma
@@ -473,9 +473,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  batch_rem_ip_address));
     should_break = timed_out || *got_exception;
 
-    // if ((previous_size - remaining.size()) < batch_ids.size()) {
-    //   WarnIfFetchHanging(fetch_start_time_ms, remaining);
-    // }
+    if ((previous_size - remaining.size()) < batch_ids.size()) {
+      WarnIfFetchHanging(fetch_start_time_ms, remaining);
+    }
     //hucc time for get obj from remote plasma
     auto te_get_obj_remote_plasma = current_sys_time_us();
     RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time in while: " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma << " empty: " << remaining.empty() << "\n";
