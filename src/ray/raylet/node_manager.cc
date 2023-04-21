@@ -1708,20 +1708,30 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       // This will start a fetch for the objects that gets canceled once the
       // objects are local, or if the worker dies.
       // dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
-
+    //hucc time for get obj from remote plasma
+      auto ts_get_obj_remote_rdma = current_sys_time_us();
       object_manager_rdma_.PrintRemoteRdmaInfo();
       object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
       dependency_manager_.InsertObjectLocal(object_info);
+      auto te_get_obj_remote_rdma = current_sys_time_us();
+
+      RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma;
+
     }
   } else {
     // The values are needed. Add all requested objects to the list to
     // subscribe to in the task dependency manager. These objects will be
     // pulled from remote node managers. If an object's owner dies, an error
     // will be stored as the object's value.
+    auto ts_get_obj_remote_rdma = current_sys_time_us();
     RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects " << object_info[0].object_id;
     object_manager_rdma_.PrintRemoteRdmaInfo();
     object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
     dependency_manager_.InsertObjectLocal(object_info);
+    auto te_get_obj_remote_rdma = current_sys_time_us();
+
+    RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma;
+
     // const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
     // AsyncResolveObjects(client,
     //                     refs,
