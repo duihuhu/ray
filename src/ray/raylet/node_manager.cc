@@ -1715,7 +1715,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       dependency_manager_.InsertObjectLocal(object_info);
       auto te_get_obj_remote_rdma = current_sys_time_us();
 
-      RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma;
+      RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
 
     }
   } else {
@@ -1730,7 +1730,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     dependency_manager_.InsertObjectLocal(object_info);
     auto te_get_obj_remote_rdma = current_sys_time_us();
 
-    RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma;
+    RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
 
     // const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
     // AsyncResolveObjects(client,
