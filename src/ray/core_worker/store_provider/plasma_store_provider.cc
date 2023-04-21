@@ -400,6 +400,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   if (remaining.empty() || *got_exception) {
     return UnblockIfNeeded(raylet_client_, ctx);
   }
+  auto t3_out = current_sys_time_us();
 
   // If not all objects were successfully fetched, repeatedly call FetchOrReconstruct
   // and Get from the local object store in batches. This loop will run indefinitely
@@ -512,8 +513,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     RAY_RETURN_NOT_OK(UnblockIfNeeded(raylet_client_, ctx));
     return Status::TimedOut("Get timed out: some object(s) not ready.");
   }
-  auto t3_out = current_sys_time_us();
-  RAY_LOG(DEBUG) << "get object once time "  << t3_out - t2_out << " " << t2_out - t1_out;
+  auto end_out = current_sys_time_us();
+  RAY_LOG(DEBUG) << "get object once time "  << end_out - t3_out << " " << t3_out - t2_out << " " << t2_out - t1_out;
 
   // Notify unblocked because we blocked when calling FetchOrReconstruct with
   // fetch_only=false.
