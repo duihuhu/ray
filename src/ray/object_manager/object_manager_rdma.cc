@@ -442,7 +442,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
     auto it = remote_dest_.find(address);
     if(it!=remote_dest_.end())
       // continue;
-      QueryQp(it->second.first.first);
+    //   QueryQp(it->second.first.first);
       if(object_manager_.CheckInsertObjectInfo(object_info[i].object_id) || object_sizes[i]==0 || (address == local_ip_address_)) {
         RAY_LOG(DEBUG) << " Object is alread in local_object or object size is zero " << object_info[i].object_id << " " << object_sizes[i];
         continue;
