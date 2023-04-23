@@ -167,7 +167,7 @@ private:
   void DoWrite(std::size_t length)
   {
     auto self(shared_from_this());
-    boost::asio::async_write(socket_, boost::asio::buffer(my_dest_, sizeof(struct pingpong_dest)),
+    boost::asio::async_write(socket_, boost::asio::buffer(my_dest_, sizeof(struct pingpong_dest) * num_qp_pair),
         [this, self](boost::system::error_code ec, std::size_t /*length*/)
         {
           if (!ec)
