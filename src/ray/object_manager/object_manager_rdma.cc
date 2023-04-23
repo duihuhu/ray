@@ -435,6 +435,7 @@ void ObjectManagerRdma::PrintRemoteRdmaInfo() {
 void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::string> &object_address, const std::vector<unsigned long>  &object_virt_address, 
                                                   const std::vector<int>  &object_sizes, std::vector<ray::ObjectInfo> &object_info, const std::vector<std::string> &rem_ip_address) {
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker ";
+  auto ts_fetch_object_rdma = current_sys_time_us();
   for(uint64_t i = 0; i < object_address.size(); ++i) {
     std::string address = rem_ip_address[i];
 	std::string obj_address = object_address[i];
@@ -475,6 +476,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
       // outfile.close();
 	}
   }
+  auto te_fetch_object_rdma = current_sys_time_us();
+	RAY_LOG(DEBUG) << "FetchObjectRdma time " << te_fetch_object_rdma - ts_fetch_object_rdma;
 }
 
 void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
