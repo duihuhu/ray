@@ -5,6 +5,7 @@
 // #include <string.h>
 #include "ray/util/util.h"
 #include <sys/socket.h>
+#include <random>
 
 void ObjectManagerRdma::DoAccept() {
   // RAY_LOG(DEBUG) << " ObjectManagerRdma::DoAccept()  ";
@@ -444,18 +445,23 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
   auto ts_fetch_object_rdma = current_sys_time_us();
   for(uint64_t i = 0; i < object_address.size(); ++i) {
     std::string address = rem_ip_address[i];
-	std::string obj_address = object_address[i];
+		std::string obj_address = object_address[i];
     const ray::ObjectInfo &obj_info = object_info[i];
-	if(object_manager_.CheckInsertObjectInfo(object_info[i].object_id) || object_sizes[i]==0 || (address == local_ip_address_)) {
-	  RAY_LOG(DEBUG) << " Object is alread in local_object or object size is zero " << object_info[i].object_id << " " << object_sizes[i];
-	  continue;
-	}
+
+		if(object_manager_.CheckInsertObjectInfo(object_info[i].object_id) || object_sizes[i]==0 || (address == local_ip_address_)) {
+			RAY_LOG(DEBUG) << " Object is alread in local_object or object size is zero " << object_info[i].object_id << " " << object_sizes[i];
+			continue;
+		}
     auto it = remote_dest_.find(address);
     if(it!=remote_dest_.end()){
       // continue;
     //   QueryQp(it->second.first.first);
 
-
+			std::random_device seed;//hardware to generate random seed
+			std::ranlux48 engine(seed());//use seed to generate 
+			std::uniform_int_distribution<> distrib(0, num_qp_pair);//set random min and max
+			int n_qp = distrib(engine);//n_qp
+			
       auto allocation = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
       RAY_LOG(DEBUG) << " Allocate space allocation->address " << allocation->address << " object_id " << object_info[i].object_id;
 
@@ -463,9 +469,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
       RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i] << " " << address << " " << object_info[i].object_id << " " << obj_address;
       
-      PostSend(it->second.first.first, it->second.second, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
+      PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       // PollCompletion(it->second.first.first);
-      auto ctx =  it->second.first.first;
+      auto ctx =  it->second.first.first + n_qp;
 	  
 	//   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 
