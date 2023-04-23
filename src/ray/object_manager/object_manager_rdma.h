@@ -22,7 +22,7 @@
 #include "ray/object_manager/object_manager.h"
 #include <fstream>
 #include <string>
-#define num_qp_pair 1
+#define num_qp_pair 2
 struct Config {
 	uint32_t	port;
 	char	*ib_devname;
