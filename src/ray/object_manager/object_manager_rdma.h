@@ -155,7 +155,7 @@ private:
           if (!ec)
           {
             for(int i =0; i <num_qp_pair; i++) {
-              RAY_LOG(DEBUG) << "do read remote info remote psn " << (rem_dest_+i)->psn << " remote rkey " << (rem_dest_+i)->rkey;
+              RAY_LOG(DEBUG) << "do read remote info remote psn server" << (rem_dest_+i)->psn << " remote rkey " << (rem_dest_+i)->rkey;
               CovRdmaStatus(ctx_+i, rem_dest_+i, my_dest_+i, cfg_);
             }
               

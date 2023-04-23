@@ -49,7 +49,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
         boost::asio::buffer(rem_dest, sizeof(struct pingpong_dest) * num_qp_pair));
     // remote_dest_.emplace(ip_address, rem_dest);
 		for(int i=0; i< num_qp_pair; ++i){
-			RAY_LOG(DEBUG) << "do read remote info remote psn " << (rem_dest+i)->psn << " remote rkey " << (rem_dest+i)->rkey;
+			RAY_LOG(DEBUG) << "do read remote info remote psn client" << (rem_dest+i)->psn << " remote rkey " << (rem_dest+i)->rkey;
     	CovRdmaStatus(ctx+i, rem_dest+i, my_dest+i);
 		}
 
