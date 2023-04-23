@@ -459,7 +459,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
 
 			std::random_device seed;//hardware to generate random seed
 			std::ranlux48 engine(seed());//use seed to generate 
-			std::uniform_int_distribution<> distrib(0, num_qp_pair);//set random min and max
+			std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
 			int n_qp = distrib(engine);//n_qp
 			
       auto allocation = object_manager_.AllocateObjectSizeRdma(object_sizes[i]);
