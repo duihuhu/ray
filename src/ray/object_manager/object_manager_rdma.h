@@ -24,7 +24,7 @@
 #include <string>
 #include <random>
 
-#define num_qp_pair 8
+#define num_qp_pair 1
 struct Config {
 	uint32_t	port;
 	char	*ib_devname;
