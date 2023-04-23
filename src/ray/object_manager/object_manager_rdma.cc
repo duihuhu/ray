@@ -46,11 +46,10 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 		}
     boost::asio::write(s, boost::asio::buffer(my_dest, sizeof(struct pingpong_dest) * num_qp_pair));
     struct pingpong_dest* rem_dest = new pingpong_dest[num_qp_pair];
-		RAY_LOG(DEBUG) << "ConnectAndEx client before read";
+
     size_t reply_length = boost::asio::read(s,
         boost::asio::buffer(rem_dest, sizeof(struct pingpong_dest) * num_qp_pair));
     // remote_dest_.emplace(ip_address, rem_dest);
-		RAY_LOG(DEBUG) << "ConnectAndEx client after read";
 
 		for(int i=0; i< num_qp_pair; ++i){
 			RAY_LOG(DEBUG) << "do read remote info remote psn client" << (rem_dest+i)->psn << " remote rkey " << (rem_dest+i)->rkey;
@@ -471,7 +470,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
 
       unsigned long local_address =(unsigned long) allocation->address;
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
-      RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i] << " " << address << " " << object_info[i].object_id << " " << obj_address;
+      RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i] << " " << address << " " << object_info[i].object_id << " " << obj_address << " " << n_qp;
       
       PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
       // PollCompletion(it->second.first.first);
