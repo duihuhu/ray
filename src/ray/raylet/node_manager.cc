@@ -1670,7 +1670,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     const std::shared_ptr<ClientConnection> &client, const uint8_t *message_data) {
 
   //hucc breakdown get object nodemanager
-  // auto ts_breakdown_get_object_node_manager = current_sys_time_us();
+  auto ts_fetch_or_restruct_message = current_sys_time_us();
   //end hucc
 
   std::vector<unsigned long> object_virt_address;
@@ -1696,8 +1696,6 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   //end hucc 
 
   if (message->fetch_only()) {
-    RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects fetch_only " << object_info[0].object_id;
-
     std::shared_ptr<WorkerInterface> worker = worker_pool_.GetRegisteredWorker(client);
     if (!worker) {
       worker = worker_pool_.GetRegisteredDriver(client);
@@ -1724,13 +1722,11 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     // pulled from remote node managers. If an object's owner dies, an error
     // will be stored as the object's value.
     auto ts_get_obj_remote_rdma = current_sys_time_us();
-    RAY_LOG(DEBUG) << "ProcessFetchOrReconstructMessage AsyncResolveObjects " << object_info[0].object_id;
     object_manager_rdma_.PrintRemoteRdmaInfo();
     object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
     dependency_manager_.InsertObjectLocal(object_info);
     auto te_get_obj_remote_rdma = current_sys_time_us();
-
-    RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
+    RAY_LOG(WARNING) << "hucc time for get obj from rdma in process fetch or reconstruct message time " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
 
     // const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
     // AsyncResolveObjects(client,
@@ -1739,6 +1735,9 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     //                     /*ray_get=*/true,
     //                     /*mark_worker_blocked*/ message->mark_worker_blocked());
   }
+  auto te_fetch_or_restruct_message = current_sys_time_us();
+  RAY_LOG(DEBUG) << "Process FetchOrReconstructMessage time  " << " start " << ts_fetch_or_restruct_message << " end " << te_fetch_or_restruct_message << " " <<te_fetch_or_restruct_message - ts_fetch_or_restruct_message;
+
 }
 
 void NodeManager::ProcessDirectCallTaskBlocked(

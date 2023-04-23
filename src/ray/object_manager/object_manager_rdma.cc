@@ -556,7 +556,7 @@ int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::
 		} 
 	}
   auto te_fetch_rdma = current_sys_time_us();
-  RAY_LOG(DEBUG) << "FetchObjectFromRemotePlasma: " << te_fetch_rdma - ts_fetch_rdma; 
+  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma; 
 	return rc;
 }
 
