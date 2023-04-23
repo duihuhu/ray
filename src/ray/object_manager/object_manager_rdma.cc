@@ -41,7 +41,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
     struct pingpong_dest *my_dest = new pingpong_dest[num_qp_pair];
     struct pingpong_context *ctx = new pingpong_context[num_qp_pair];
 		for(int i=0; i< num_qp_pair; ++i)
-			InitRdmaCtx(ctx, my_dest);
+			InitRdmaCtx(ctx+i, my_dest+i);
     boost::asio::write(s, boost::asio::buffer(my_dest, sizeof(struct pingpong_dest) * num_qp_pair));
     struct pingpong_dest* rem_dest = new pingpong_dest[num_qp_pair];
     size_t reply_length = boost::asio::read(s,
