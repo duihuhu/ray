@@ -88,8 +88,6 @@ public:
         InitRdmaConfig();
         DoAccept();
         // ExRdmaConfig();
-        engine(seed());//use seed to generate 
-        distrib(0, num_qp_pair-1);//set random min and max
     }
 
   void DoAccept();
@@ -127,10 +125,6 @@ private:
   absl::flat_hash_map<std::string, std::pair<std::pair<struct pingpong_context*, struct pingpong_dest*>, struct pingpong_dest*>> remote_dest_;
   ray::ObjectManager &object_manager_;
   std::string local_ip_address_;
-
-  std::random_device seed;//hardware to generate random seed
-  std::ranlux48 engine;//use seed to generate 
-  std::uniform_int_distribution<> distrib;//set random min and max
 };
 
 class Session
