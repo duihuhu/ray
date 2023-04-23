@@ -149,13 +149,14 @@ private:
   {
     auto self(shared_from_this());
     // socket_.async_read_some(boost::asio::buffer(rem_dest_, sizeof(pingpong_dest)),
-    async_read(socket_, boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest)),
+    async_read(socket_, boost::asio::buffer(rem_dest_, sizeof(struct pingpong_dest) * num_qp_pair),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
           if (!ec)
           {
             RAY_LOG(DEBUG) << "do read remote info remote psn " << rem_dest_->psn << " remote rkey " << rem_dest_->rkey;
-            CovRdmaStatus(ctx_, rem_dest_, my_dest_, cfg_);
+            for(int i =0; i <num_qp_pair; i++)
+              CovRdmaStatus(ctx_+i, rem_dest_+i, my_dest_+i, cfg_);
             DoWrite(length);
           }
         });

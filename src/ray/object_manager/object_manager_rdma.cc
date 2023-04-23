@@ -18,10 +18,11 @@ void ObjectManagerRdma::DoAccept() {
     {
       if (!ec)
       {
-        struct pingpong_dest *rem_dest = new pingpong_dest();
-        struct pingpong_dest *my_dest = new pingpong_dest();
-        struct pingpong_context *ctx = new pingpong_context();
-        InitRdmaCtx(ctx, my_dest);
+        struct pingpong_dest *rem_dest = new pingpong_dest[num_qp_pair];
+        struct pingpong_dest *my_dest = new pingpong_dest[num_qp_pair];
+        struct pingpong_context *ctx = new pingpong_context[num_qp_pair];
+				for(int i = 0; i < num_qp_pair; ++i)
+        	InitRdmaCtx(ctx+i, my_dest+i);
         // remote_dest_.emplace(socket.remote_endpoint().address().to_string(), rem_dest);
         remote_dest_.emplace(socket.remote_endpoint().address().to_string(), std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
 
@@ -37,17 +38,20 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
     boost::asio::ip::tcp::socket s(io_context);
     boost::asio::ip::tcp::resolver resolver(io_context);
     boost::asio::connect(s, resolver.resolve(ip_address, std::to_string(cfg_.port)));
-    struct pingpong_dest *my_dest = new pingpong_dest();
-    struct pingpong_context *ctx = new pingpong_context();
-    InitRdmaCtx(ctx, my_dest);
-    boost::asio::write(s, boost::asio::buffer(my_dest, sizeof(struct pingpong_dest)));
+    struct pingpong_dest *my_dest = new pingpong_dest[num_qp_pair];
+    struct pingpong_context *ctx = new pingpong_context[num_qp_pair];
+		for(int i=0; i< num_qp_pair; ++i)
+			InitRdmaCtx(ctx, my_dest);
+    boost::asio::write(s, boost::asio::buffer(my_dest, sizeof(struct pingpong_dest) * num_qp_pair));
     struct pingpong_dest* rem_dest = new pingpong_dest();
     size_t reply_length = boost::asio::read(s,
-        boost::asio::buffer(rem_dest, sizeof(struct pingpong_dest)));
+        boost::asio::buffer(rem_dest, sizeof(struct pingpong_dest) * num_qp_pair));
     // remote_dest_.emplace(ip_address, rem_dest);
-    RAY_LOG(DEBUG) << "do read remote info remote psn " << rem_dest->psn << " remote rkey " << rem_dest->rkey;
+		for(int i=0; i< num_qp_pair; ++i){
+			RAY_LOG(DEBUG) << "do read remote info remote psn " << (rem_dest+i)->psn << " remote rkey " << (rem_dest+i)->rkey;
+    	CovRdmaStatus(ctx+i, rem_dest+i, my_dest+i);
+		}
 
-    CovRdmaStatus(ctx, rem_dest, my_dest);
     // remote_dest_[socket.remote_endpoint().address().to_string()] = std::make_pair(std::make_pair(ctx, my_dest),rem_dest);
     remote_dest_.emplace(ip_address, std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
 }
@@ -410,14 +414,16 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
 
 
 void ObjectManagerRdma::FreeRdmaResource(struct pingpong_context *ctx) {
-    ibv_destroy_qp(ctx->qp);
-    ibv_destroy_cq(pp_cq(ctx));
-    ibv_dereg_mr(ctx->mr);
-    ibv_free_dm(ctx->dm);
-    ibv_dealloc_pd(ctx->pd);
-    ibv_destroy_comp_channel(ctx->channel);
-    ibv_close_device(ctx->context);
-    free(ctx);
+		for(int i=0; i<num_qp_pair; i++){
+			ibv_destroy_qp((ctx+i)->qp);
+			ibv_destroy_cq(pp_cq((ctx+i)));
+			ibv_dereg_mr((ctx+i)->mr);
+			ibv_free_dm((ctx+i)->dm);
+			ibv_dealloc_pd((ctx+i)->pd);
+			ibv_destroy_comp_channel((ctx+i)->channel);
+			ibv_close_device((ctx+i)->context);
+			free((ctx+i));
+		}
 }
 
 int ObjectManagerRdma::pp_get_port_info(struct ibv_context *context, int port,
