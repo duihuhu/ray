@@ -41,13 +41,17 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
     boost::asio::connect(s, resolver.resolve(ip_address, std::to_string(cfg_.port)));
     struct pingpong_dest *my_dest = new pingpong_dest[num_qp_pair];
     struct pingpong_context *ctx = new pingpong_context[num_qp_pair];
-		for(int i=0; i< num_qp_pair; ++i)
+		for(int i=0; i< num_qp_pair; ++i){
 			InitRdmaCtx(ctx+i, my_dest+i);
+		}
     boost::asio::write(s, boost::asio::buffer(my_dest, sizeof(struct pingpong_dest) * num_qp_pair));
     struct pingpong_dest* rem_dest = new pingpong_dest[num_qp_pair];
+		RAY_LOG(DEBUG) << "ConnectAndEx client before read";
     size_t reply_length = boost::asio::read(s,
         boost::asio::buffer(rem_dest, sizeof(struct pingpong_dest) * num_qp_pair));
     // remote_dest_.emplace(ip_address, rem_dest);
+		RAY_LOG(DEBUG) << "ConnectAndEx client after read";
+
 		for(int i=0; i< num_qp_pair; ++i){
 			RAY_LOG(DEBUG) << "do read remote info remote psn client" << (rem_dest+i)->psn << " remote rkey " << (rem_dest+i)->rkey;
     	CovRdmaStatus(ctx+i, rem_dest+i, my_dest+i);
