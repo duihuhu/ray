@@ -463,7 +463,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
 	  
 	//   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 
-      main_service_->post([this, ctx, allocation, obj_info]() { PollCompletion(ctx, allocation, obj_info); },
+      main_service_->post([this, ctx, allocation, obj_info, ts_fetch_object_rdma]() { PollCompletion(ctx, allocation, obj_info, ts_fetch_object_rdma); },
                     "ObjectManagerRdma.PollCompletion");
       // std::ofstream outfile;
       // std::string filename = "buffer.txt";
@@ -531,7 +531,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	return rc;
 }
 
-int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info){
+int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, int64_t start_time){
   // RAY_LOG(DEBUG) << "PollCompletion ";
   auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
@@ -559,7 +559,7 @@ int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::
 		} 
 	}
   auto te_fetch_rdma = current_sys_time_us();
-  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma; 
+  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time;  
 	return rc;
 }
 
