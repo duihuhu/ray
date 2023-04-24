@@ -82,7 +82,7 @@ public:
       plasma_size_(plasma_size), 
       gcs_client_(gcs_client),
       object_manager_(object_manager),
-      dependency_manager_(dependency_manager);
+      dependency_manager_(dependency_manager),
       local_ip_address_(object_manager_address)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
