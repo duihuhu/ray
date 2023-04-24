@@ -462,7 +462,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
-                                                 0,
+                                                 batch_timeout,
                                                  /*fetch_only=*/false,
                                                  ctx.CurrentTaskIsDirectCall(),
                                                  ctx.GetCurrentTaskID(),
