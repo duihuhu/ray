@@ -34,7 +34,9 @@ void GetRequest::AsyncWait(
     std::function<void(const boost::system::error_code &)> on_timeout) {
   RAY_CHECK(!is_removed_);
   // Set an expiry time relative to now.
-  timer_.expires_from_now(std::chrono::milliseconds(timeout_ms));
+  // timer_.expires_from_now(std::chrono::milliseconds(timeout_ms));
+  timer_.expires_from_now(std::chrono::microseconds(timeout_ms));
+
   timer_.async_wait(on_timeout);
 }
 
