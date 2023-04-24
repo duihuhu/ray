@@ -1112,7 +1112,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        const int64_t timeout_ms,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
-  // auto ts_get_obj_cw = current_sys_time_us();
+  auto ts_get_obj_cw = current_sys_time_us();
 
   results->resize(ids.size(), nullptr);
 
@@ -1192,8 +1192,8 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   if (timeout_ms < 0 && !will_throw_exception) {
     RAY_CHECK(!missing_result);
   }
-  // auto te_get_obj_cw = current_sys_time_us();
-  // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw <<"\n";
+  auto te_get_obj_cw = current_sys_time_us();
+  RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw <<"\n";
 
   return Status::OK();
 }
