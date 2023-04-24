@@ -126,7 +126,7 @@ private:
   absl::flat_hash_map<std::string, std::pair<std::pair<struct pingpong_context*, struct pingpong_dest*>, struct pingpong_dest*>> remote_dest_;
   ray::ObjectManager &object_manager_;
   std::string local_ip_address_;
-  ray::raylet::DependencyManager &dependency_manager;
+  ray::raylet::DependencyManager &dependency_manager_;
 };
 
 class Session
