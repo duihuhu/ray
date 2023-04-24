@@ -378,7 +378,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  batch_ids,
                                                  /*timeout_ms=*/0,
                                                  /*fetch_only=*/true,
-                                                 !ctx.CurrentTaskIsDirectCall(),
+                                                 ctx.CurrentTaskIsDirectCall(),
                                                  ctx.GetCurrentTaskID(),
                                                  results,
                                                  got_exception, 
@@ -449,10 +449,10 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     size_t previous_size = remaining.size();
     // This is a separate IPC from the FetchAndGet in direct call mode.
-    // if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
-    //   RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
-    //       /*release_resources_during_plasma_fetch=*/false));
-    // }
+    if (ctx.CurrentTaskIsDirectCall() && ctx.ShouldReleaseResourcesOnBlockingCalls()) {
+      RAY_RETURN_NOT_OK(raylet_client_->NotifyDirectCallTaskBlocked(
+          /*release_resources_during_plasma_fetch=*/false));
+    }
     auto t3 = current_sys_time_us();
     RAY_LOG(DEBUG) << "CurrentTaskIsDirectCall " << t3 -t2 << " " << ctx.CurrentTaskIsDirectCall() << " " << ctx.ShouldReleaseResourcesOnBlockingCalls();
 
@@ -464,7 +464,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  batch_ids,
                                                  0,
                                                  /*fetch_only=*/false,
-                                                 !ctx.CurrentTaskIsDirectCall(),
+                                                 ctx.CurrentTaskIsDirectCall(),
                                                  ctx.GetCurrentTaskID(),
                                                  results,
                                                  got_exception,
@@ -520,8 +520,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
   // Notify unblocked because we blocked when calling FetchOrReconstruct with
   // fetch_only=false.
+  Status status = UnblockIfNeeded(raylet_client_, ctx);
   // return UnblockIfNeeded(raylet_client_, ctx);
-  return Status::OK();  // We don't need to release resources.
+  return status;  // We don't need to release resources.
 
 }
 
