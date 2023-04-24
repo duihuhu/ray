@@ -329,7 +329,7 @@ NodeManager::NodeManager(instrumented_io_context &io_service,
       dependency_manager_(object_manager_),
           /// add object_manager_rdma_ init
       object_manager_rdma_(io_service, 7000, object_manager_config.object_manager_address, \
-      object_manager_.GetMetaAddress(), object_manager_.GetMetaSize(), gcs_client_, object_manager_),
+      object_manager_.GetMetaAddress(), object_manager_.GetMetaSize(), gcs_client_, object_manager_, dependency_manager_),
       wait_manager_(/*is_object_local*/
                     [this](const ObjectID &object_id) {
                       return dependency_manager_.CheckObjectLocal(object_id);

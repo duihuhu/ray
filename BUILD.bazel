@@ -2260,6 +2260,7 @@ cc_library(
     hdrs = glob([
         "src/ray/object_manager/*.h",
         "src/ray/object_manager/notification/*.h",
+        "src/ray/raylet/dependency_manager.h",
     ]),
     copts = COPTS,
     strip_include_prefix = "src",
