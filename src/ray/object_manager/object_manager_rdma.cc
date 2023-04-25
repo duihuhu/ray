@@ -564,6 +564,9 @@ int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::
 		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
     RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
     if ( wc.status == IBV_WC_SUCCESS) {
+			auto tc_fetch_rdma = current_sys_time_us();
+			RAY_LOG(ERROR) << "get object start time " << object_info.object_id << " " << tc_fetch_rdma;
+
       object_manager_.InsertObjectInfo(allocation, object_info);
 			dependency_manager->InsertObjectInfo(object_info);
     }
