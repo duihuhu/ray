@@ -1723,7 +1723,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     // will be stored as the object's value.
     auto ts_get_obj_remote_rdma = current_sys_time_us();
     object_manager_rdma_.PrintRemoteRdmaInfo();
-    object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address);
+    object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);
     // dependency_manager_.InsertObjectLocal(object_info);
     auto te_get_obj_remote_rdma = current_sys_time_us();
     RAY_LOG(WARNING) << "hucc time for get obj from rdma in process fetch or reconstruct message time " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
