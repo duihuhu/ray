@@ -1178,7 +1178,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                                                   &result_map,
                                                   &got_exception, future_resolver_->plasma_node_virt_info_));
     auto te_get_obj_plasma = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get object from plasma total time: " << te_get_obj_plasma << ", " << ts_get_obj_plasma <<"\n"; 
+    RAY_LOG(WARNING) << "hucc time for get object from plasma total time in coreworker: " << te_get_obj_plasma - ts_get_obj_plasma <<"\n"; 
     
   }
 
