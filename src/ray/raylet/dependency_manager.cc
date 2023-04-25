@@ -261,7 +261,7 @@ void DependencyManager::InsertObjectLocal(const std::vector<ray::ObjectInfo> &ob
   }
 }
 
-void DependencyManager::InsertObjectInfo(ray::ObjectInfo &object_info) {
+void DependencyManager::InsertObjectInfo(const ray::ObjectInfo &object_info) {
   local_objects_.insert(object_info.object_id);
 }
 
