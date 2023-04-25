@@ -545,7 +545,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	return rc;
 }
 
-int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, ray::ralet::DependencyManager &dependency_manager, int64_t start_time){
+int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, const ray::ralet::DependencyManager &dependency_manager, int64_t start_time){
   // RAY_LOG(DEBUG) << "PollCompletion ";
   auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
