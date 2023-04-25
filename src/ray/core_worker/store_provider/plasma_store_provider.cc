@@ -335,7 +335,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   
   std::vector<std::string> rem_ip_address_vector;
 
-  RAY_LOG(DEBUG) << " get object start time " << batch_ids[0] << " " << t1_out;
+  RAY_LOG(DEBUG) << " get object start time " << id_vector[0] << " " << t1_out;
   for (auto &entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     virt_address_vector.push_back(it->second.first.first);
