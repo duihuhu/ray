@@ -5,7 +5,7 @@
 // #include <string.h>
 #include "ray/util/util.h"
 #include <sys/socket.h>
-#include "src/ray/raylet/dependency_manager.h"
+
 void ObjectManagerRdma::DoAccept() {
   // RAY_LOG(DEBUG) << " ObjectManagerRdma::DoAccept()  ";
   // acceptor_.async_accept(
@@ -442,7 +442,7 @@ void ObjectManagerRdma::PrintRemoteRdmaInfo() {
 }
 
 void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::string> &object_address, const std::vector<unsigned long>  &object_virt_address, 
-                                                  const std::vector<int>  &object_sizes, std::vector<ray::ObjectInfo> &object_info, const std::vector<std::string> &rem_ip_address, ray::ralet::DependencyManager &dependency_manager) {
+                                                  const std::vector<int>  &object_sizes, std::vector<ray::ObjectInfo> &object_info, const std::vector<std::string> &rem_ip_address, ray::raylet::DependencyManager &dependency_manager) {
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker ";
   auto ts_fetch_object_rdma = current_sys_time_us();
   for(uint64_t i = 0; i < object_address.size(); ++i) {
