@@ -372,7 +372,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       batch_rem_ip_address.push_back(rem_ip_address_vector[start + i]);
 
     }
-    RAY_LOG(DEBUG) << " get object start time " << batch_ids[0] << " " << t1_out << " " << batch_size;
+    // RAY_LOG(DEBUG) << " get object start time " << batch_ids[0] << " " << t1_out << " " << batch_size;
 
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
