@@ -261,6 +261,10 @@ void DependencyManager::InsertObjectLocal(const std::vector<ray::ObjectInfo> &ob
   }
 }
 
+void DependencyManager::InsertObjectInfo(ray::ObjectInfo &object_info) {
+  local_objects_.insert(object_info.object_id);
+}
+
 std::vector<TaskID> DependencyManager::HandleObjectLocal(const ray::ObjectID &object_id) {
   // Add the object to the table of locally available objects.
   auto inserted = local_objects_.insert(object_id);

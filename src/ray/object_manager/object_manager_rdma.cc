@@ -5,7 +5,7 @@
 // #include <string.h>
 #include "ray/util/util.h"
 #include <sys/socket.h>
-
+#include "src/ray/raylet/dependency_manager.h"
 void ObjectManagerRdma::DoAccept() {
   // RAY_LOG(DEBUG) << " ObjectManagerRdma::DoAccept()  ";
   // acceptor_.async_accept(
@@ -442,7 +442,7 @@ void ObjectManagerRdma::PrintRemoteRdmaInfo() {
 }
 
 void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::string> &object_address, const std::vector<unsigned long>  &object_virt_address, 
-                                                  const std::vector<int>  &object_sizes, std::vector<ray::ObjectInfo> &object_info, const std::vector<std::string> &rem_ip_address) {
+                                                  const std::vector<int>  &object_sizes, std::vector<ray::ObjectInfo> &object_info, const std::vector<std::string> &rem_ip_address, ray::ralet::DependencyManager &dependency_manager) {
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker ";
   auto ts_fetch_object_rdma = current_sys_time_us();
   for(uint64_t i = 0; i < object_address.size(); ++i) {
@@ -477,7 +477,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
 	  
 	//   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 
-      main_service_->post([this, ctx, allocation, obj_info, ts_fetch_object_rdma]() { PollCompletion(ctx, allocation, obj_info, ts_fetch_object_rdma); },
+      main_service_->post([this, ctx, allocation, obj_info, dependency_manager, ts_fetch_object_rdma]() { PollCompletion(ctx, allocation, obj_info, dependency_manager, ts_fetch_object_rdma); },
                     "ObjectManagerRdma.PollCompletion");
       // std::ofstream outfile;
       // std::string filename = "buffer.txt";
@@ -545,7 +545,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	return rc;
 }
 
-int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, int64_t start_time){
+int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, int64_t start_time, ray::ralet::DependencyManager &dependency_manager){
   // RAY_LOG(DEBUG) << "PollCompletion ";
   auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
@@ -565,6 +565,7 @@ int ObjectManagerRdma::PollCompletion(struct pingpong_context *ctx, const absl::
     RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
     if ( wc.status == IBV_WC_SUCCESS) {
       object_manager_.InsertObjectInfo(allocation, object_info);
+			dependency_manager.InsertObjectInfo(object_info);
     }
 		if ( wc.status != IBV_WC_SUCCESS) {
 			// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);

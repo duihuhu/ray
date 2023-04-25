@@ -139,6 +139,7 @@ class DependencyManager : public TaskDependencyManagerInterface {
 
 
   void InsertObjectLocal(const std::vector<ray::ObjectInfo> &object_info);
+  void InsertObjectInfo(ray::ObjectInfo &object_info);
 
 
   /// Handle an object becoming locally available.
