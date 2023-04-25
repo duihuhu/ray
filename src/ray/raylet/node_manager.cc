@@ -340,7 +340,7 @@ NodeManager::NodeManager(instrumented_io_context &io_service,
                     }),
       node_manager_server_("NodeManager",
                            config.node_manager_port,
-                           config.node_manager_address == "127.0.0.1"
+                           config.node_manager_address == "127.0.0.1",
                            ),
       node_manager_service_(io_service, *this),
       agent_manager_service_handler_(
@@ -1669,7 +1669,8 @@ void NodeManager::ProcessDisconnectClientMessage(
 
 void NodeManager::ProcessFetchOrReconstructMessage(
     const std::shared_ptr<ClientConnection> &client, const uint8_t *message_data) {
-
+  std::thread::id tid = std::this_thread::get_id();
+	RAY_LOG(DEBUG) << "node manager id " << tid << endl;
   //hucc breakdown get object nodemanager
   auto ts_fetch_or_restruct_message = current_sys_time_us();
   //end hucc
