@@ -20,7 +20,7 @@ void ObjectManagerRdma::RunRdmaService() {
       lck.unlock();
     }
 		if(found) {
-			FetchObjectFromRemotePlasmaThreads(object_rdma_info)
+			FetchObjectFromRemotePlasmaThreads(object_rdma_info);
 		}
   }
 }
@@ -49,7 +49,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 
 		unsigned long local_address =(unsigned long) allocation->address;
 		RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
-		RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_rdma_info.object_virt_address << "  object_sizes " <<  object_rdma_info.object_sizes << " " << address << " " << object_rdma_info.object_info.object_id << " " << obj_address << " " << n_qp;
+		RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_rdma_info.object_virt_address << "  object_sizes " <<  object_rdma_info.object_sizes << " " << object_rdma_info.rem_ip_address << " " << object_rdma_info.object_info.object_id << " " << obj_address << " " << n_qp;
 		
 		PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_rdma_info.object_sizes, object_rdma_info.object_virt_address, IBV_WR_RDMA_READ);
 		// PollCompletion(it->second.first.first);
