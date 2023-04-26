@@ -91,33 +91,39 @@ void FlatbufferToObjectReferenceWithMeta(
     const flatbuffers::Vector<flatbuffers::Offset<ray::protocol::Address>>
       &owner_addresses,
     const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> &rem_ip_address,
-    std::vector<unsigned long> &object_meta_virt_address,
-    std::vector<int> &object_sizes,
-    std::vector<std::string> &object_address,
-    std::vector<std::string> &ip_address,
-    std::vector<ray::ObjectInfo>  &object_info) {
+    // std::vector<unsigned long> &object_meta_virt_address,
+    // std::vector<int> &object_sizes,
+    // std::vector<std::string> &object_address,
+    // std::vector<std::string> &ip_address,
+    // std::vector<ray::ObjectInfo>  &object_info,
+    std::vector<ObjectRdmaInfo> &object_rdma_info) {
 
   std::vector<std::string> owner_ip_address_str = string_vec_from_flatbuf(owner_ip_address);
   std::vector<std::string> ip_address_str = string_vec_from_flatbuf(rem_ip_address);
 
   RAY_CHECK(object_virt_address.size() == flat_object_sizes.size());
   for (int64_t i = 0; i < object_virt_address.size(); i++) {
-    ray::ObjectInfo obj_info;
-    object_meta_virt_address.emplace_back(object_virt_address.Get(i));
-    object_sizes.emplace_back(flat_object_sizes.Get(i) + flat_object_meta_data_sizes.Get(i));
+    ray::ObjectRdmaInfo obj_rdma_info;
+    // ray::ObjectInfo obj_info;
+
+    // object_meta_virt_address.emplace_back(object_virt_address.Get(i));
+    // object_sizes.emplace_back(flat_object_sizes.Get(i) + flat_object_meta_data_sizes.Get(i));
     const auto &addr = owner_addresses.Get(i);
-    object_address.emplace_back(addr->ip_address()->str());
-    
-    obj_info.object_id = ObjectID::FromBinary(object_ids.Get(i)->str());
-    obj_info.data_size = flat_object_sizes.Get(i);
-    obj_info.metadata_size = flat_object_meta_data_sizes.Get(i);
-    obj_info.owner_raylet_id = NodeID::FromBinary(owner_raylet_id.Get(i)->str());
-    obj_info.owner_ip_address = owner_ip_address_str[i];
-    obj_info.owner_port = owner_port[i];
-    obj_info.owner_worker_id = WorkerID::FromBinary(owner_worker_id.Get(i)->str());
-    object_info.emplace_back(obj_info);
-    ip_address.emplace_back(ip_address_str[i]);
-    
+    // object_address.emplace_back(addr->ip_address()->str());
+    obj_rdma_info.object_virt_address = object_virt_address.Get(i);
+    obj_rdma_info.object_sizes = flat_object_sizes.Get(i) + flat_object_meta_data_sizes.Get(i);
+    obj_rdma_info.object_address = addr->ip_address()->str();
+    obj_rdma_info.object_info.object_id = ObjectID::FromBinary(object_ids.Get(i)->str());
+    obj_rdma_info.object_info.data_size = flat_object_sizes.Get(i);
+    obj_rdma_info.object_info.metadata_size = flat_object_meta_data_sizes.Get(i);
+    obj_rdma_info.object_info.owner_raylet_id = NodeID::FromBinary(owner_raylet_id.Get(i)->str());
+    obj_rdma_info.object_info.owner_ip_address = owner_ip_address_str[i];
+    obj_rdma_info.object_info.owner_port = owner_port[i];
+    obj_rdma_info.object_info.owner_worker_id = WorkerID::FromBinary(owner_worker_id.Get(i)->str());
+    obj_rdma_info.rem_ip_address = ip_address_str[i];
+    // object_info.emplace_back(obj_info);
+    // ip_address.emplace_back(ip_address_str[i]);
+    object_rdma_info.emplace_back(obj_rdma_info);
   }
 }
 
@@ -329,7 +335,7 @@ NodeManager::NodeManager(instrumented_io_context &io_service,
       dependency_manager_(object_manager_),
           /// add object_manager_rdma_ init
       object_manager_rdma_(io_service, 7000, object_manager_config.object_manager_address, \
-      object_manager_.GetMetaAddress(), object_manager_.GetMetaSize(), gcs_client_, object_manager_, dependency_manager_),
+      object_manager_.GetMetaAddress(), object_manager_.GetMetaSize(), gcs_client_, object_manager_, &dependency_manager_, object_manager_config.rpc_service_threads_number),
       wait_manager_(/*is_object_local*/
                     [this](const ObjectID &object_id) {
                       return dependency_manager_.CheckObjectLocal(object_id);
@@ -1675,18 +1681,25 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   auto ts_fetch_or_restruct_message = current_sys_time_us();
   //end hucc
 
-  std::vector<unsigned long> object_virt_address;
-  std::vector<int>  object_sizes;
-  std::vector<ray::ObjectInfo> object_info;
-  std::vector<std::string> object_address;
-  std::vector<std::string> rem_ip_address;
+  // std::vector<unsigned long> object_virt_address;
+  // std::vector<int>  object_sizes;
+  // std::vector<ray::ObjectInfo> object_info;
+  // std::vector<std::string> object_address;
+  // std::vector<std::string> rem_ip_address;
+
+  std::vector<ObjectRdmaInfo> object_rdma_info;
 
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
+  // FlatbufferToObjectReferenceWithMeta(*message->object_ids(), *message->virt_address(), *message->object_sizes(), *message->object_meta_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
+  //                                     *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), *message->rem_ip_address(), object_virt_address, object_sizes, object_address, rem_ip_address, object_info, object_rdma_info);
+ 
   FlatbufferToObjectReferenceWithMeta(*message->object_ids(), *message->virt_address(), *message->object_sizes(), *message->object_meta_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
-                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), *message->rem_ip_address(), object_virt_address, object_sizes, object_address, rem_ip_address, object_info);
+                                      *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), *message->rem_ip_address(), object_rdma_info);
+  // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
+
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
   // non-direct call support.
 
@@ -1711,11 +1724,12 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     //hucc time for get obj from remote plasma
       auto ts_get_obj_remote_rdma = current_sys_time_us();
       object_manager_rdma_.PrintRemoteRdmaInfo();
-      object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);
+      object_manager_rdma_.InsertObjectInQueue(object_rdma_info)
+      // object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);
       // dependency_manager_.InsertObjectLocal(object_info);
       auto te_get_obj_remote_rdma = current_sys_time_us();
 
-      RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
+      // RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
 
     }
   } else {
@@ -1725,10 +1739,12 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     // will be stored as the object's value.
     auto ts_get_obj_remote_rdma = current_sys_time_us();
     object_manager_rdma_.PrintRemoteRdmaInfo();
-    object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);
+    object_manager_rdma_.InsertObjectInQueue(object_rdma_info)
+
+    // object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);
     // dependency_manager_.InsertObjectLocal(object_info);
     auto te_get_obj_remote_rdma = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get obj from rdma in process fetch or reconstruct message time " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
+    // RAY_LOG(WARNING) << "hucc time for get obj from rdma in process fetch or reconstruct message time " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
 
     // const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
     // AsyncResolveObjects(client,

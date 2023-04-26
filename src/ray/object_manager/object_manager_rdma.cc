@@ -6,6 +6,132 @@
 #include "ray/util/util.h"
 #include <sys/socket.h>
 
+
+
+void ObjectManagerRdm::RunRdmaService() {
+	std::unique_lock<std::mutex> lck(mtx_);
+  while(true) {
+    ObjectRdmaInfo object_rdma_info;
+    bool found = object_rdma_queue_.try_dequeue(object_rdma_info);
+    while (!found) {
+      // std::cout << "thread " << id << " " <<  a  << " " << found << '\n';
+      cv_.wait(lck);
+      found = object_rdma_queue_.try_dequeue(object_rdma_info);
+      lck.unlock();
+    }
+		if(found) {
+			FetchObjectFromRemotePlasmaThreads(object_rdma_info)
+		}
+  }
+}
+
+ObjectManagerRdma::~ObjectManagerRdma() { StopRdmaService(); }
+
+void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info) {
+  RAY_LOG(DEBUG) << "Starting get object through rdma for worker ";
+  auto ts_fetch_object_rdma = current_sys_time_us();
+  // for(uint64_t i = 0; i < object_address.size(); ++i) {
+  //   std::string address = rem_ip_address[i];
+	std::string obj_address = object_rdma_info.object_address;
+	const ray::ObjectInfo &obj_info = object_rdma_info.object_info;
+	auto it = remote_dest_.find(object_rdma_info.rem_ip_address);
+	if(it!=remote_dest_.end()){
+		// continue;
+	//   QueryQp(it->second.first.first);
+
+		std::random_device seed;//hardware to generate random seed
+		std::ranlux48 engine(seed());//use seed to generate 
+		std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
+		int n_qp = distrib(engine);//n_qp
+		
+		auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
+		RAY_LOG(DEBUG) << " Allocate space allocation->address " << allocation->address << " object_id " << object_rdma_info.object_info.object_id;
+
+		unsigned long local_address =(unsigned long) allocation->address;
+		RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
+		RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_rdma_info.object_virt_address << "  object_sizes " <<  object_rdma_info.object_sizes << " " << address << " " << object_rdma_info.object_info.object_id << " " << obj_address << " " << n_qp;
+		
+		PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_rdma_info.object_sizes, object_rdma_info.object_virt_address, IBV_WR_RDMA_READ);
+		// PollCompletion(it->second.first.first);
+		auto ctx =  it->second.first.first + n_qp;
+	
+//   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
+
+		main_service_->post([this, ctx, allocation, obj_info, ts_fetch_object_rdma]() { PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma); },
+									"ObjectManagerRdma.PollCompletion");
+
+	}
+  // }
+  auto te_fetch_object_rdma = current_sys_time_us();
+	RAY_LOG(DEBUG) << "FetchObjectRdma time " << te_fetch_object_rdma - ts_fetch_object_rdma;
+}
+
+
+int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, int64_t start_time){
+  // RAY_LOG(DEBUG) << "PollCompletion ";
+  auto ts_fetch_rdma = current_sys_time_us();
+  struct ibv_wc wc;
+	int poll_result;
+	int rc = 0;
+	do {
+		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
+	} while (poll_result==0);
+	if (poll_result < 0) {
+    RAY_LOG(ERROR) << "poll cq failed";
+		rc = 1;
+	} else if (poll_result == 0) {
+    RAY_LOG(ERROR) << "completion wasn't found in the cq after timeout";
+		rc = 1;
+	} else {
+		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
+    RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
+    if ( wc.status == IBV_WC_SUCCESS) {
+			auto tc_fetch_rdma = current_sys_time_us();
+			RAY_LOG(DEBUG) << " get object start time end in rdma " << object_info.object_id << " " << tc_fetch_rdma << " " << start_time;
+
+      object_manager_.InsertObjectInfo(allocation, object_info);
+			dependency_manager_->InsertObjectInfo(object_info);
+    }
+		if ( wc.status != IBV_WC_SUCCESS) {
+			// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);
+      RAY_LOG(ERROR) << "got bad completion with status " << wc.status << " verdor syndrome: " << wc.vendor_err;
+      rc = 1;
+		} 
+	}
+  auto te_fetch_rdma = current_sys_time_us();
+  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time;  
+	return rc;
+}
+
+void ObjectManagerRdm::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_rdma_info){
+	//todo 
+	// std::unique_lock<std::mutex> lck(mtx_);
+	for(int i =0; i < object_rdma_info.size(); ++i) {
+		if(object_manager_.CheckInsertObjectInfo(object_rdma_info[i].object_info.object_id) || object_rdma_info[i].object_sizes==0 || (object_rdma_info[i].address == local_ip_address_)) {
+			RAY_LOG(DEBUG) << " Object is alread in local_object or object size is zero " << object_rdma_info[i].object_info.object_id << " " << object_rdma_info[i].object_sizes;
+			continue;
+		}
+		else{
+			object_rdma_queue_.enqueue(object_rdma_info[i]);
+		}
+	}
+	cv_.notify_all();
+};
+
+void ObjectManagerRdm::StartRdmaService() {
+	rpc_threads_.resize(rpc_service_threads_number_);
+	for (int i = 0; i < rpc_service_threads_number_; i++) {
+		rpc_threads_[i] = std::thread(&ObjectManagerRdma::RunRdmaService, this);
+	}
+}
+
+
+void ObjectManagerRdm::StopRdmaService() {
+  for (int i = 0; i < rpc_service_threads_number_; i++) {
+    rpc_threads_[i].join();
+  }
+}
+
 void ObjectManagerRdma::DoAccept() {
   // RAY_LOG(DEBUG) << " ObjectManagerRdma::DoAccept()  ";
   // acceptor_.async_accept(
@@ -78,6 +204,7 @@ void ObjectManagerRdma::Stop() {
     }
     remote_dest_.clear();
   }
+	StopRdmaService();
 }
 
 void ObjectManagerRdma::InitRdmaBaseCfg() {

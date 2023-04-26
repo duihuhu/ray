@@ -24,7 +24,20 @@
 #include <string>
 #include <random>
 #include "src/ray/raylet/dependency_manager.h"
+
+#include <mutex>              // std::mutex, std::unique_lock
+#include <condition_variable> // std::condition_variable
+#include "ray/object_manager/concurrentqueue.h"
+
 #define num_qp_pair 8
+struct ObjectRdmaInfo {
+    std::string object_address;
+    ray::ObjectInfo object_info;
+    unsigned long object_virt_address;
+    int object_sizes;
+    std::string rem_ip_address;
+};
+
 struct Config {
 	uint32_t	port;
 	char	*ib_devname;
@@ -74,7 +87,7 @@ struct pingpong_context {
 class ObjectManagerRdma {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
-         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager &dependency_manager)
+         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager *dependency_manager,int rpc_service_threads_number)
     :  main_service_(&main_service),
       acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port)),
       socket_(main_service),
@@ -83,13 +96,16 @@ public:
       gcs_client_(gcs_client),
       object_manager_(object_manager),
       dependency_manager_(dependency_manager),
+      rpc_service_threads_number_(rpc_service_threads_number),
       local_ip_address_(object_manager_address)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
         InitRdmaConfig();
+        StartRdmaService();
         DoAccept();
         // ExRdmaConfig();
     }
+  ~ObjectManagerRdma();
 
   void DoAccept();
   void HandleAccept(const boost::system::error_code &error);
@@ -112,6 +128,15 @@ public:
   int PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode);
   int PollCompletion(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, ray::raylet::DependencyManager *dependency_manager, int64_t start_time);
 
+  void StartRdmaService();
+  void StopRdmaService();
+  void InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_rdma_info);
+
+  void RunRdmaService();
+  void FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info);
+  int PollCompletionThreads(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, int64_t start_time);
+
+
 private:
   instrumented_io_context *main_service_;
   boost::asio::ip::tcp::acceptor acceptor_;
@@ -126,7 +151,16 @@ private:
   absl::flat_hash_map<std::string, std::pair<std::pair<struct pingpong_context*, struct pingpong_dest*>, struct pingpong_dest*>> remote_dest_;
   ray::ObjectManager &object_manager_;
   std::string local_ip_address_;
-  ray::raylet::DependencyManager &dependency_manager_;
+  ray::raylet::DependencyManager *dependency_manager_;
+
+
+  /// The thread pool used for running `rmda_fetch`.
+  std::vector<std::thread> rpc_threads_;
+  int rpc_service_threads_number_;
+  std::mutex mtx_;
+  std::condition_variable cv_;
+  moodycamel::ConcurrentQueue<ObjectRdmaInfo> object_rdma_queue_;
+
 };
 
 class Session
