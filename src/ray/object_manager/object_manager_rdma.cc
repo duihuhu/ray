@@ -6,9 +6,9 @@
 #include "ray/util/util.h"
 #include <sys/socket.h>
 
+ObjectManagerRdma::~ObjectManagerRdma() { StopRdmaService(); }
 
-
-void ObjectManagerRdm::RunRdmaService() {
+void ObjectManagerRdma::RunRdmaService() {
 	std::unique_lock<std::mutex> lck(mtx_);
   while(true) {
     ObjectRdmaInfo object_rdma_info;
@@ -25,7 +25,7 @@ void ObjectManagerRdm::RunRdmaService() {
   }
 }
 
-ObjectManagerRdma::~ObjectManagerRdma() { StopRdmaService(); }
+
 
 void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info) {
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker ";
@@ -103,7 +103,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 	return rc;
 }
 
-void ObjectManagerRdm::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_rdma_info){
+void ObjectManagerRdma::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_rdma_info){
 	//todo 
 	// std::unique_lock<std::mutex> lck(mtx_);
 	for(int i =0; i < object_rdma_info.size(); ++i) {
@@ -118,7 +118,7 @@ void ObjectManagerRdm::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_r
 	cv_.notify_all();
 };
 
-void ObjectManagerRdm::StartRdmaService() {
+void ObjectManagerRdma::StartRdmaService() {
 	rpc_threads_.resize(rpc_service_threads_number_);
 	for (int i = 0; i < rpc_service_threads_number_; i++) {
 		rpc_threads_[i] = std::thread(&ObjectManagerRdma::RunRdmaService, this);
@@ -126,7 +126,7 @@ void ObjectManagerRdm::StartRdmaService() {
 }
 
 
-void ObjectManagerRdm::StopRdmaService() {
+void ObjectManagerRdma::StopRdmaService() {
   for (int i = 0; i < rpc_service_threads_number_; i++) {
     rpc_threads_[i].join();
   }

@@ -87,7 +87,7 @@ struct pingpong_context {
 class ObjectManagerRdma {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
-         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager *dependency_manager,int rpc_service_threads_number)
+         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager *dependency_manager, int rpc_service_threads_number)
     :  main_service_(&main_service),
       acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port)),
       socket_(main_service),
