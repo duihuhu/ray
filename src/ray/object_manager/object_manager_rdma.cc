@@ -10,20 +10,21 @@ ObjectManagerRdma::~ObjectManagerRdma() { StopRdmaService(); }
 
 void ObjectManagerRdma::RunRdmaService() {
 	RAY_LOG(DEBUG) << "RunRdmaService ";
-	std::unique_lock<std::mutex> lck(mtx_);
   while(true) {
     ObjectRdmaInfo object_rdma_info;
     bool found = object_rdma_queue_.try_dequeue(object_rdma_info);
-    while (!found) {
-      // std::cout << "thread " << id << " " <<  a  << " " << found << '\n';
-      cv_.wait(lck);
-      found = object_rdma_queue_.try_dequeue(object_rdma_info);
-      // lck.unlock();
-    }
+		{
+			std::unique_lock<std::mutex> lck(mtx_);
+			while (!found) {
+				// std::cout << "thread " << id << " " <<  a  << " " << found << '\n';
+				cv_.wait(lck);
+				found = object_rdma_queue_.try_dequeue(object_rdma_info);
+				// lck.unlock();
+			}
+		}
 		if(found) {
 			std::thread::id tid = std::this_thread::get_id();
-			RAY_LOG(DEBUG) << "RunRdmaService thread" << tid;
-
+			RAY_LOG(DEBUG) << "RunRdmaService thread " << tid;
 			FetchObjectFromRemotePlasmaThreads(object_rdma_info);
 		}
   }
@@ -60,9 +61,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto ctx =  it->second.first.first + n_qp;
 	
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
-
-		main_service_->post([this, ctx, allocation, obj_info, ts_fetch_object_rdma]() { PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma); },
-									"ObjectManagerRdma.PollCompletion");
+		PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
+		// main_service_->post([this, ctx, allocation, obj_info, ts_fetch_object_rdma]() { PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma); },
+		// 							"ObjectManagerRdma.PollCompletion");
 
 	}
   // }
