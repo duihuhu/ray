@@ -18,9 +18,11 @@ void ObjectManagerRdma::RunRdmaService() {
       // std::cout << "thread " << id << " " <<  a  << " " << found << '\n';
       cv_.wait(lck);
       found = object_rdma_queue_.try_dequeue(object_rdma_info);
-      lck.unlock();
+      // lck.unlock();
     }
 		if(found) {
+			std::thread::id tid = std::this_thread::get_id();
+			std::cout << "RunRdmaService thread " << tid << " "'\n';
 			FetchObjectFromRemotePlasmaThreads(object_rdma_info);
 		}
   }
