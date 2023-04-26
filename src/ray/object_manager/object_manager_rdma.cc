@@ -9,6 +9,7 @@
 ObjectManagerRdma::~ObjectManagerRdma() { StopRdmaService(); }
 
 void ObjectManagerRdma::RunRdmaService() {
+	RAY_LOG(DEBUG) << "RunRdmaService ";
 	std::unique_lock<std::mutex> lck(mtx_);
   while(true) {
     ObjectRdmaInfo object_rdma_info;
