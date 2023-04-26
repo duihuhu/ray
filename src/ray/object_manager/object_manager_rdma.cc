@@ -107,7 +107,7 @@ void ObjectManagerRdma::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_
 	//todo 
 	// std::unique_lock<std::mutex> lck(mtx_);
 	for(int i =0; i < object_rdma_info.size(); ++i) {
-		if(object_manager_.CheckInsertObjectInfo(object_rdma_info[i].object_info.object_id) || object_rdma_info[i].object_sizes==0 || (object_rdma_info[i].address == local_ip_address_)) {
+		if(object_manager_.CheckInsertObjectInfo(object_rdma_info[i].object_info.object_id) || object_rdma_info[i].object_sizes==0 || (object_rdma_info[i].rem_ip_address == local_ip_address_)) {
 			RAY_LOG(DEBUG) << " Object is alread in local_object or object size is zero " << object_rdma_info[i].object_info.object_id << " " << object_rdma_info[i].object_sizes;
 			continue;
 		}
