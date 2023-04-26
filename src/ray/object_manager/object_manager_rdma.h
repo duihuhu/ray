@@ -24,6 +24,7 @@
 #include <string>
 #include <random>
 #include "src/ray/raylet/dependency_manager.h"
+#include <thread>
 
 #include <mutex>              // std::mutex, std::unique_lock
 #include <condition_variable> // std::condition_variable
