@@ -48,7 +48,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
     ptr->create_time = std::time(nullptr);
     ptr->construct_duration = -1;
     ptr->source = source;
-    return ptr;
+    return ptr.get();
   }
   auto entry =
       object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
