@@ -48,7 +48,7 @@ class IEvictionPolicy {
   /// cache.
   ///
   /// \param object_id The object ID of the object that was created.
-  virtual void ObjectCreatedBySize(const ObjectID &object_id, int64_t object_size);
+  virtual void ObjectCreatedBySize(const ObjectID &object_id, int64_t object_size) = 0;
 
   virtual void ObjectCreated(const ObjectID &object_id) = 0;
 
