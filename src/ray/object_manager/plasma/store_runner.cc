@@ -180,9 +180,7 @@ std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStoreRunner::CreateO
   // // store_->InsertObjectInfo(allocation, object_info);
   // // return address;
   // return allocation;
-  RAY_LOG(DEBUG) << "before PlasmaStoreRunner CreateObjectRdma";
   auto pair = store_->CreateObjectRdma(object_info ,source, fallback_allocator, &result);
-  RAY_LOG(DEBUG) << "after PlasmaStoreRunner CreateObjectRdma";
   return pair;
 }
 
