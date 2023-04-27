@@ -312,7 +312,7 @@ std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStore::CreateObjectR
   auto entry = pair.first;
   auto error = pair.second;
   if (entry == nullptr) {
-    return error;
+    return pair;
   }
   entry->ToPlasmaObject(result, /* check sealed */ false);
 //   // Record that this client is using this object.
