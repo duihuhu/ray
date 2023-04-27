@@ -48,6 +48,8 @@ class IEvictionPolicy {
   /// cache.
   ///
   /// \param object_id The object ID of the object that was created.
+  virtual void ObjectCreatedBySize(const ObjectID &object_id, int64_t object_size);
+
   virtual void ObjectCreated(const ObjectID &object_id) = 0;
 
   /// This method will be called when the Plasma store needs more space, perhaps
@@ -160,6 +162,8 @@ class LRUCache {
 class EvictionPolicy : public IEvictionPolicy {
  public:
   EvictionPolicy(const IObjectStore &object_store, const IAllocator &allocator);
+
+  void ObjectCreatedBySize(const ObjectID &object_id, int64_t object_size) override;
 
   void ObjectCreated(const ObjectID &object_id) override;
 

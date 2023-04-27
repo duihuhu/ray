@@ -52,6 +52,26 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> ObjectLifecycleManager::Cre
   if (entry == nullptr) {
     return {nullptr, PlasmaError::OutOfMemory};
   }
+  eviction_policy_->ObjectCreatedBySize(object_info.object_id, object_info.data_size + object_info.metadata_size);
+  stats_collector_.OnObjectCreated(*entry);
+  return {entry, PlasmaError::OK};
+}
+
+
+std::pair<const LocalObject *, flatbuf::PlasmaError> ObjectLifecycleManager::CreateObject(
+    const ray::ObjectInfo &object_info,
+    plasma::flatbuf::ObjectSource source,
+    bool fallback_allocator) {
+  RAY_LOG(DEBUG) << "attempting to create object " << object_info.object_id << " size "
+                 << object_info.data_size;
+  if (object_store_->GetObject(object_info.object_id) != nullptr) {
+    return {nullptr, PlasmaError::ObjectExists};
+  }
+  auto entry = CreateObjectInternal(object_info, source, fallback_allocator);
+
+  if (entry == nullptr) {
+    return {nullptr, PlasmaError::OutOfMemory};
+  }
   eviction_policy_->ObjectCreated(object_info.object_id);
   stats_collector_.OnObjectCreated(*entry);
   return {entry, PlasmaError::OK};

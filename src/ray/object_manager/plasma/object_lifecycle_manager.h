@@ -41,6 +41,12 @@ class IObjectLifecycleManager {
   ///   - pointer to created object and PlasmaError::OK when succeeds.
   ///   - nullptr and error message, including ObjectExists/OutOfMemory
   /// TODO(scv119): use RAII instead of pointer for returned object.
+
+  virtual std::pair<const LocalObject *, flatbuf::PlasmaError> CreateObject(
+      const ray::ObjectInfo &object_info,
+      plasma::flatbuf::ObjectSource source,
+      bool fallback_allocator) = 0;
+
   virtual std::pair<const LocalObject *, flatbuf::PlasmaError> CreateObject(
       const ray::ObjectInfo &object_info,
       plasma::flatbuf::ObjectSource source,
@@ -112,7 +118,7 @@ class ObjectLifecycleManager : public IObjectLifecycleManager {
       const ray::ObjectInfo &object_info,
       plasma::flatbuf::ObjectSource source,
       bool fallback_allocator,
-      bool rdma = false) override;
+      bool rdma) override;
 
   const LocalObject *GetObject(const ObjectID &object_id) const override;
 
@@ -163,7 +169,7 @@ class ObjectLifecycleManager : public IObjectLifecycleManager {
 
   const LocalObject *CreateObjectInternal(const ray::ObjectInfo &object_info,
                                           plasma::flatbuf::ObjectSource source,
-                                          bool allow_fallback_allocation, bool rdma);
+                                          bool allow_fallback_allocation, bool rdma=false);
 
   // Evict objects returned by the eviction policy.
   //

@@ -111,6 +111,10 @@ int64_t EvictionPolicy::ChooseObjectsToEvict(int64_t num_bytes_required,
   return bytes_evicted;
 }
 
+void EvictionPolicy::ObjectCreatedBySize(const ObjectID &object_id, int64_t object_size) {
+  cache_.Add(object_id, object_size);
+}
+
 void EvictionPolicy::ObjectCreated(const ObjectID &object_id) {
   cache_.Add(object_id, GetObjectSize(object_id));
 }
