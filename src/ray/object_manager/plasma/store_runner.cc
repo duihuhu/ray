@@ -171,7 +171,7 @@ const Allocation& PlasmaStoreRunner::CreateObjectRdma(const ray::ObjectInfo &obj
   auto source = plasma::flatbuf::ObjectSource::ReceivedFromRemoteRaylet;
   bool fallback_allocator = true;
   PlasmaObject result = {};
-  auto allocation = store_->CreateObjectRdma(object_info, ,source, fallback_allocator, &result, client);
+  auto allocation = store_->CreateObjectRdma(object_info ,source, fallback_allocator, &result, client);
 
   // auto allocation = allocator_->Allocate(sizes);
   // // unsigned long address =  (unsigned long) allocation->address;
