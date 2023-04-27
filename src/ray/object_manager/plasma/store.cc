@@ -294,7 +294,7 @@ PlasmaError PlasmaStore::HandleCreateObjectRequest(const std::shared_ptr<Client>
 }
 
 
-const Allocation& PlasmaStore::CreateObjectRdma(const ray::ObjectInfo &object_info,
+std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStore::CreateObjectRdma(const ray::ObjectInfo &object_info,
                                       fb::ObjectSource source,
                                       bool fallback_allocator,
                                       PlasmaObject *result,
@@ -312,13 +312,13 @@ const Allocation& PlasmaStore::CreateObjectRdma(const ray::ObjectInfo &object_in
   auto entry = pair.first;
   auto error = pair.second;
   if (entry == nullptr) {
-    return nullptr;
+    return error;
   }
   entry->ToPlasmaObject(result, /* check sealed */ false);
 //   // Record that this client is using this object.
   AddToClientObjectIds(object_info.object_id, client);
 //   return PlasmaError::OK;
-  return entry->GetAllocation();
+  return pair;
 }
 
 

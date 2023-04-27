@@ -51,8 +51,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		
 		// auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
 
-		auto allocation = object_manager_.CreateObjectRdma(object_rdma_info.object_info);
+		auto pair = object_manager_.CreateObjectRdma(object_rdma_info.object_info);
 
+		auto allocation = pair.first->GetAllocation();
 
 		RAY_LOG(DEBUG) << " Allocate space allocation->address " << allocation->address << " object_id " << object_rdma_info.object_info.object_id;
 

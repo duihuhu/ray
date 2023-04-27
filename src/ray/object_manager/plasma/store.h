@@ -116,7 +116,7 @@ class PlasmaStore {
   void InsertObjectInfo(const absl::optional<Allocation>& allocation, const ray::ObjectInfo &object_info);
 
 
-  const Allocation& CreateObjectRdma(const ray::ObjectInfo &object_info,
+  std::pair<const LocalObject *, flatbuf::PlasmaError>& CreateObjectRdma(const ray::ObjectInfo &object_info,
                                     plasma::flatbuf::ObjectSource source,
                                     bool fallback_allocator,
                                     PlasmaObject *result,

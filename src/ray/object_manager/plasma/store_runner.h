@@ -37,7 +37,7 @@ class PlasmaStoreRunner {
   unsigned long GetMetaAddress();
   int64_t GetMetaSize();
   absl::optional<Allocation> AllocateObjectSizeRdma(size_t size);
-  const Allocation& CreateObjectRdma(const ray::ObjectInfo &object_info, const std::shared_ptr<Client> &client);
+  std::pair<const LocalObject *, flatbuf::PlasmaError>& CreateObjectRdma(const ray::ObjectInfo &object_info, const std::shared_ptr<Client> &client);
 
   void InsertObjectInfo(const absl::optional<Allocation> &allocation, const ray::ObjectInfo &object_info);
 
