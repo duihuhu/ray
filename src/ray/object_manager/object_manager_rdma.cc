@@ -55,9 +55,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 
 		auto allocation = pair.first->GetAllocation();
 
-		RAY_LOG(DEBUG) << " Allocate space allocation->address " << allocation->address << " object_id " << object_rdma_info.object_info.object_id;
+		RAY_LOG(DEBUG) << " Allocate space allocation->address " << allocation.address << " object_id " << object_rdma_info.object_info.object_id;
 
-		unsigned long local_address =(unsigned long) allocation->address;
+		unsigned long local_address =(unsigned long) allocation.address;
 		RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
 		RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_rdma_info.object_virt_address << "  object_sizes " <<  object_rdma_info.object_sizes << " " << object_rdma_info.rem_ip_address << " " << object_rdma_info.object_info.object_id << " " << obj_address << " " << n_qp;
 		
