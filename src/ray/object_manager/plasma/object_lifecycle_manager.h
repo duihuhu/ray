@@ -104,7 +104,7 @@ class ObjectLifecycleManager : public IObjectLifecycleManager {
   ObjectLifecycleManager(IAllocator &allocator,
                          ray::DeleteObjectCallback delete_object_callback);
 
-  std::pair<const LocalObject *, flatbuf::PlasmaError>  ObjectLifecycleManager::CreateObjectRdma(const ray::ObjectInfo &object_info,
+  std::pair<const LocalObject *, flatbuf::PlasmaError> CreateObjectRdma(const ray::ObjectInfo &object_info,
       plasma::flatbuf::ObjectSource source,
       bool fallback_allocator);
 
