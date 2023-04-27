@@ -97,7 +97,7 @@ public:
       gcs_client_(gcs_client),
       object_manager_(object_manager),
       dependency_manager_(dependency_manager),
-      rpc_service_threads_number_(rpc_service_threads_number),
+      rpc_service_threads_number_(1),
       local_ip_address_(object_manager_address)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
