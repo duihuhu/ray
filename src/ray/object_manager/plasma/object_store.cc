@@ -130,7 +130,7 @@ void ObjectStore::InsertObjectInfo(const absl::optional<Allocation>& allocation 
   entry->source = source;
 }
 
-void ObjectStore::InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
+void ObjectStore::InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
   auto it = object_table_.find(object_info.object_id);
   if(it!=object_table_.end())
     return;

@@ -96,7 +96,7 @@ class ObjectStore : public IObjectStore {
 
   void InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) override;
   
-  void InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) override;
+  void InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) override;
 
  private:
   friend struct ObjectStatsCollectorTest;

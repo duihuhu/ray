@@ -254,7 +254,7 @@ class ObjectManager : public ObjectManagerInterface,
   void InsertObjectInfo(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info);
   bool CheckInsertObjectInfo(const ray::ObjectID &object_id);
   std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& CreateObjectRdma(const ray::ObjectInfo &object_info);
-  void InsertObjectInfoThread(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair);
+  void InsertObjectInfoThread(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair);
 
  private:
   friend class TestObjectManager;

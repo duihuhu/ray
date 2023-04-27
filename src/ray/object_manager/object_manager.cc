@@ -882,7 +882,7 @@ void ObjectManager::InsertObjectInfo(const absl::optional<plasma::Allocation> &a
   return plasma::plasma_store_runner->InsertObjectInfo(allocation, object_info);
 }
 
-void ObjectManager::InsertObjectInfoThread(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
+void ObjectManager::InsertObjectInfoThread(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
   HandleObjectAdded(object_info);
   return plasma::plasma_store_runner->InsertObjectInfoThread(allocation, object_info, pair);
 }

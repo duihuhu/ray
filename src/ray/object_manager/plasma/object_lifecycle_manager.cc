@@ -293,7 +293,7 @@ void ObjectLifecycleManager::InsertObjectInfo(const absl::optional<Allocation>& 
   object_store_->InsertObjectInfo(allocation, object_info);
 }
 
-void ObjectLifecycleManager::InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
+void ObjectLifecycleManager::InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
   object_store_->InsertObjectInfoThread(allocation, object_info, pair);
 }
 // For test only.
