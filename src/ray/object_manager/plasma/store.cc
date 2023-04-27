@@ -297,8 +297,7 @@ PlasmaError PlasmaStore::HandleCreateObjectRequest(const std::shared_ptr<Client>
 std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStore::CreateObjectRdma(const ray::ObjectInfo &object_info,
                                       fb::ObjectSource source,
                                       bool fallback_allocator,
-                                      PlasmaObject *result,
-                                      const std::shared_ptr<Client> &client) {
+                                      PlasmaObject *result) {
 
   // auto req_id = create_request_queue_.AddRequest(object_id, client, handle_create, object_size);
   // RAY_LOG(DEBUG) << "Received create request for object " << object_id
@@ -316,7 +315,7 @@ std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStore::CreateObjectR
   }
   entry->ToPlasmaObject(result, /* check sealed */ false);
 //   // Record that this client is using this object.
-  AddToClientObjectIds(object_info.object_id, client);
+  // AddToClientObjectIds(object_info.object_id, client);
 //   return PlasmaError::OK;
   return pair;
 }

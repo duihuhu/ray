@@ -119,8 +119,7 @@ class PlasmaStore {
   std::pair<const LocalObject *, flatbuf::PlasmaError>& CreateObjectRdma(const ray::ObjectInfo &object_info,
                                     plasma::flatbuf::ObjectSource source,
                                     bool fallback_allocator,
-                                    PlasmaObject *result,
-                                    const std::shared_ptr<Client> &client);
+                                    PlasmaObject *result);
 
  private:
   /// Create a new object. The client must do a call to release_object to tell

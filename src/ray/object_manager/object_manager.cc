@@ -874,7 +874,7 @@ absl::optional<plasma::Allocation> ObjectManager::AllocateObjectSizeRdma(size_t 
 
 
 std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& ObjectManager::CreateObjectRdma(const ray::ObjectInfo &object_info) {
-  return plasma::plasma_store_runner->CreateObjectRdma(object_info, buffer_pool_store_client_);
+  return plasma::plasma_store_runner->CreateObjectRdma(object_info);
 }
 
 void ObjectManager::InsertObjectInfo(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info) {
