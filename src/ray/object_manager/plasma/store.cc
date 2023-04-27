@@ -307,16 +307,20 @@ std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStore::CreateObjectR
   // ReplyToCreateClient(client, object_id, req_id);
 
   absl::MutexLock lock(&mutex_);
-  RAY_LOG(DEBUG) << "before CreateObjectRdma ";
 
   auto pair = object_lifecycle_mgr_.CreateObjectRdma(object_info, source, fallback_allocator);
   auto entry = pair.first;
   auto error = pair.second;
   if (entry == nullptr) {
+    RAY_LOG(DEBUG) << "CreateObjectRdma entry is null";
+
     return pair;
   }
-  RAY_LOG(DEBUG) << "after CreateObjectRdma ";
+
+  RAY_LOG(DEBUG) << "before CreateObjectRdma ";
   entry->ToPlasmaObject(result, /* check sealed */ false);
+  RAY_LOG(DEBUG) << "after ToPlasmaObject ";
+
 //   // Record that this client is using this object.
   // AddToClientObjectIds(object_info.object_id, client);
 //   return PlasmaError::OK;

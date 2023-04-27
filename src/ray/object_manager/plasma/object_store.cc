@@ -28,8 +28,8 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
                                               
   RAY_LOG(DEBUG) << "attempting to create object " << object_info.object_id << " size "
                  << object_info.data_size;
-  RAY_LOG(WARNING) << "attempting to create object " << object_info.object_id << " size "
-                << object_info.data_size;
+  // RAY_LOG(WARNING) << "attempting to create object " << object_info.object_id << " size "
+  //               << object_info.data_size;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
       << object_info.object_id << " already exists!";
   auto object_size = object_info.GetObjectSize();
