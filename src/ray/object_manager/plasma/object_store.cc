@@ -130,25 +130,6 @@ void ObjectStore::InsertObjectInfo(const absl::optional<Allocation>& allocation 
   entry->source = source;
 }
 
-void ObjectStore::InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) {
-  auto source = plasma::flatbuf::ObjectSource::ReceivedFromRemoteRaylet;
-  auto it = object_table_.find(object_info.object_id);
-  if(it!=object_table_.end())
-    return;
-  RAY_CHECK(object_table_.count(object_info.object_id) == 0)
-      << object_info.object_id << " already exists!";
-  RAY_LOG(DEBUG) << "InsertObjectInfo " << object_info.object_id;
-  auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
-  auto entry =
-      object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
-  entry->object_info = object_info;
-  entry->state = ObjectState::PLASMA_SEALED;
-  entry->create_time = std::time(nullptr);
-  entry->construct_duration = -1;
-  entry->source = source;
-}
-
-
 void ObjectStore::InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
   auto it = object_table_.find(object_info.object_id);
   if(it!=object_table_.end())
