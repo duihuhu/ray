@@ -170,7 +170,7 @@ absl::optional<Allocation> PlasmaStoreRunner::AllocateObjectSizeRdma(size_t size
 std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStoreRunner::CreateObjectRdma(const ray::ObjectInfo &object_info) {
   auto source = plasma::flatbuf::ObjectSource::ReceivedFromRemoteRaylet;
   bool fallback_allocator = true;
-  PlasmaObject result = {};
+  PlasmaObject result;
   // auto allocation = store_->CreateObjectRdma(object_info ,source, fallback_allocator, &result, client);
 
   // auto allocation = allocator_->Allocate(sizes);
@@ -182,7 +182,7 @@ std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStoreRunner::CreateO
   // return allocation;
   RAY_LOG(DEBUG) << "before PlasmaStoreRunner CreateObjectRdma";
   auto pair = store_->CreateObjectRdma(object_info ,source, fallback_allocator, &result);
-  RAY_LOG(DEBUG) << "after PlasmaStoreRunner CreateObjectRdma"
+  RAY_LOG(DEBUG) << "after PlasmaStoreRunner CreateObjectRdma";
   return pair;
 }
 
