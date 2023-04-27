@@ -117,6 +117,11 @@ class ObjectLifecycleManager : public IObjectLifecycleManager {
   std::pair<const LocalObject *, flatbuf::PlasmaError> CreateObject(
       const ray::ObjectInfo &object_info,
       plasma::flatbuf::ObjectSource source,
+      bool fallback_allocator) override;
+
+  std::pair<const LocalObject *, flatbuf::PlasmaError> CreateObject(
+      const ray::ObjectInfo &object_info,
+      plasma::flatbuf::ObjectSource source,
       bool fallback_allocator,
       bool rdma) override;
 
