@@ -320,6 +320,15 @@ std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStore::CreateObjectR
   return pair;
 }
 
+void PlasmaStore::InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) {
+  object_lifecycle_mgr_.InsertObjectInfo(allocation, object_info);
+}
+
+
+void PlasmaStore::InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
+  object_lifecycle_mgr_.InsertObjectInfoThread(allocation, object_info, pair);
+  RAY_CHECK(object_lifecycle_mgr_.AddReference(object_info.object_id));
+}
 
 
 PlasmaError PlasmaStore::CreateObject(const ray::ObjectInfo &object_info,
@@ -729,10 +738,5 @@ std::string PlasmaStore::GetDebugDump() const {
   object_lifecycle_mgr_.GetDebugDump(buffer);
   return buffer.str();
 }
-
-void PlasmaStore::InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) {
-  object_lifecycle_mgr_.InsertObjectInfo(allocation, object_info);
-}
-
 
 }  // namespace plasma

@@ -71,6 +71,7 @@ class IObjectStore {
   virtual absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() = 0;
 
   virtual void InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) = 0;
+  virtual void InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) = 0;
 
 };
 
@@ -94,6 +95,8 @@ class ObjectStore : public IObjectStore {
   absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *GetPlasmaMeta() override;
 
   void InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) override;
+  
+  void InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) override;
 
  private:
   friend struct ObjectStatsCollectorTest;

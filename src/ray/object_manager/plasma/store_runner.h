@@ -40,6 +40,7 @@ class PlasmaStoreRunner {
   std::pair<const LocalObject *, flatbuf::PlasmaError>& CreateObjectRdma(const ray::ObjectInfo &object_info);
 
   void InsertObjectInfo(const absl::optional<Allocation> &allocation, const ray::ObjectInfo &object_info);
+  void InsertObjectInfoThread(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair);
 
  private:
   void Shutdown();

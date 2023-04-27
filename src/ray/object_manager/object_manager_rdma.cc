@@ -77,7 +77,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 }
 
 
-int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, int64_t start_time){
+int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time){
   // RAY_LOG(DEBUG) << "PollCompletion ";
   auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
@@ -99,7 +99,8 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			auto tc_fetch_rdma = current_sys_time_us();
 			RAY_LOG(DEBUG) << " get object start time end in rdma " << object_info.object_id << " " << tc_fetch_rdma << " " << start_time;
 
-      object_manager_.InsertObjectInfo(allocation, object_info);
+      // object_manager_.InsertObjectInfo(allocation, object_info);
+			object_manager_.InsertObjectInfoThread(allocation, object_info, pair);
 			dependency_manager_->InsertObjectInfo(object_info);
     }
 		if ( wc.status != IBV_WC_SUCCESS) {

@@ -189,6 +189,10 @@ void PlasmaStoreRunner::InsertObjectInfo(const absl::optional<Allocation> &alloc
   store_->InsertObjectInfo(allocation, object_info);
 }
 
+void PlasmaStoreRunner::InsertObjectInfoThread(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
+  store_->InsertObjectInfoThread(allocation, object_info, pair);
+}
+
 std::unique_ptr<PlasmaStoreRunner> plasma_store_runner;
 
 }  // namespace plasma
