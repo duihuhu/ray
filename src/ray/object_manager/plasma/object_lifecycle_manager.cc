@@ -31,16 +31,23 @@ ObjectLifecycleManager::ObjectLifecycleManager(
       earger_deletion_objects_(),
       stats_collector_() {}
 
+std::pair<const LocalObject *, flatbuf::PlasmaError>  ObjectLifecycleManager::CreateObjectRdma(const ray::ObjectInfo &object_info,
+    plasma::flatbuf::ObjectSource source,
+    bool fallback_allocator) {
+    bool rdma = true;
+    return CreateObject(object_info, source, fallback_allocator, rdma);
+}
+
 std::pair<const LocalObject *, flatbuf::PlasmaError> ObjectLifecycleManager::CreateObject(
     const ray::ObjectInfo &object_info,
     plasma::flatbuf::ObjectSource source,
-    bool fallback_allocator) {
+    bool fallback_allocator, bool rdma) {
   RAY_LOG(DEBUG) << "attempting to create object " << object_info.object_id << " size "
                  << object_info.data_size;
   if (object_store_->GetObject(object_info.object_id) != nullptr) {
     return {nullptr, PlasmaError::ObjectExists};
   }
-  auto entry = CreateObjectInternal(object_info, source, fallback_allocator);
+  auto entry = CreateObjectInternal(object_info, source, fallback_allocator, rdma);
 
   if (entry == nullptr) {
     return {nullptr, PlasmaError::OutOfMemory};
@@ -174,14 +181,15 @@ std::string ObjectLifecycleManager::EvictionPolicyDebugString() const {
 const LocalObject *ObjectLifecycleManager::CreateObjectInternal(
     const ray::ObjectInfo &object_info,
     plasma::flatbuf::ObjectSource source,
-    bool allow_fallback_allocation) {
+    bool allow_fallback_allocation,
+    bool rdma) {
   // Try to evict objects until there is enough space.
   // NOTE(ekl) if we can't achieve this after a number of retries, it's
   // because memory fragmentation in dlmalloc prevents us from allocating
   // even if our footprint tracker here still says we have free space.
   for (int num_tries = 0; num_tries <= 10; num_tries++) {
     auto result =
-        object_store_->CreateObject(object_info, source, /*fallback_allocate*/ false);
+        object_store_->CreateObject(object_info, source, /*fallback_allocate*/ false, rdma);
     if (result != nullptr) {
       return result;
     }
@@ -208,7 +216,7 @@ const LocalObject *ObjectLifecycleManager::CreateObjectInternal(
       << object_info.GetObjectSize();
 
   auto result =
-      object_store_->CreateObject(object_info, source, /*fallback_allocate*/ true);
+      object_store_->CreateObject(object_info, source, /*fallback_allocate*/ true, rdma);
 
   if (result == nullptr) {
     RAY_LOG(ERROR) << "Plasma fallback allocator failed, likely out of disk space.";

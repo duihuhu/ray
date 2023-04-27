@@ -244,6 +244,14 @@ class PlasmaStore {
   void StopCommService();
 
   void StartMetaCommClient();
+
+
+  const Allocation& CreateObjectRdma(const ray::ObjectInfo &object_info,
+                                    fb::ObjectSource source,
+                                    bool fallback_allocator,
+                                    PlasmaObject *result,
+                                    const std::shared_ptr<Client> &client);
+
  private:
   friend class GetRequestQueue;
 

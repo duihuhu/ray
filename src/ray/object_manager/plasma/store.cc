@@ -293,6 +293,36 @@ PlasmaError PlasmaStore::HandleCreateObjectRequest(const std::shared_ptr<Client>
   return error;
 }
 
+
+const Allocation& PlasmaStore::CreateObjectRdma(const ray::ObjectInfo &object_info,
+                                      fb::ObjectSource source,
+                                      bool fallback_allocator,
+                                      PlasmaObject *result,
+                                      const std::shared_ptr<Client> &client) {
+
+  // auto req_id = create_request_queue_.AddRequest(object_id, client, handle_create, object_size);
+  // RAY_LOG(DEBUG) << "Received create request for object " << object_id
+  //                 << " assigned request ID " << req_id << ", " << object_size
+  //                 << " bytes";
+  // ProcessCreateRequests();
+  // ReplyToCreateClient(client, object_id, req_id);
+
+  absl::MutexLock lock(&mutex_);
+  auto pair = object_lifecycle_mgr_.CreateObjectRdma(object_info, source, fallback_allocator);
+  auto entry = pair.first;
+  auto error = pair.second;
+  if (entry == nullptr) {
+    return error;
+  }
+  entry->ToPlasmaObject(result, /* check sealed */ false);
+//   // Record that this client is using this object.
+  AddToClientObjectIds(object_info.object_id, client);
+//   return PlasmaError::OK;
+  return entry->GetAllocation();
+}
+
+
+
 PlasmaError PlasmaStore::CreateObject(const ray::ObjectInfo &object_info,
                                       fb::ObjectSource source,
                                       const std::shared_ptr<Client> &client,

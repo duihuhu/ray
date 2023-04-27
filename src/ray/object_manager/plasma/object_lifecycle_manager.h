@@ -44,7 +44,8 @@ class IObjectLifecycleManager {
   virtual std::pair<const LocalObject *, flatbuf::PlasmaError> CreateObject(
       const ray::ObjectInfo &object_info,
       plasma::flatbuf::ObjectSource source,
-      bool fallback_allocator) = 0;
+      bool fallback_allocator,
+      bool rdma) = 0;
 
   /// Get object by id.
   /// \return
@@ -103,10 +104,15 @@ class ObjectLifecycleManager : public IObjectLifecycleManager {
   ObjectLifecycleManager(IAllocator &allocator,
                          ray::DeleteObjectCallback delete_object_callback);
 
+  std::pair<const LocalObject *, flatbuf::PlasmaError>  ObjectLifecycleManager::CreateObjectRdma(const ray::ObjectInfo &object_info,
+      plasma::flatbuf::ObjectSource source,
+      bool fallback_allocator);
+
   std::pair<const LocalObject *, flatbuf::PlasmaError> CreateObject(
       const ray::ObjectInfo &object_info,
       plasma::flatbuf::ObjectSource source,
-      bool fallback_allocator) override;
+      bool fallback_allocator,
+      bool rdma = false) override;
 
   const LocalObject *GetObject(const ObjectID &object_id) const override;
 
@@ -155,7 +161,7 @@ class ObjectLifecycleManager : public IObjectLifecycleManager {
 
   const LocalObject *CreateObjectInternal(const ray::ObjectInfo &object_info,
                                           plasma::flatbuf::ObjectSource source,
-                                          bool allow_fallback_allocation);
+                                          bool allow_fallback_allocation, bool rdma);
 
   // Evict objects returned by the eviction policy.
   //

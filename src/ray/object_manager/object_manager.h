@@ -253,6 +253,7 @@ class ObjectManager : public ObjectManagerInterface,
   absl::optional<plasma::Allocation> AllocateObjectSizeRdma(size_t object_size);
   void InsertObjectInfo(const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info);
   bool CheckInsertObjectInfo(const ray::ObjectID &object_id);
+  const Allocation& CreateObjectRdma(const ray::ObjectInfo &object_info);
 
  private:
   friend class TestObjectManager;

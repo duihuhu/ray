@@ -42,7 +42,7 @@ class IObjectStore {
   ///   - pointer to created object or nullptr when out of space.
   virtual const LocalObject *CreateObject(const ray::ObjectInfo &object_info,
                                           plasma::flatbuf::ObjectSource source,
-                                          bool fallback_allocate) = 0;
+                                          bool fallback_allocate, bool rdma) = 0;
 
   /// Get object by id.
   ///
@@ -82,7 +82,7 @@ class ObjectStore : public IObjectStore {
 
   const LocalObject *CreateObject(const ray::ObjectInfo &object_info,
                                   plasma::flatbuf::ObjectSource source,
-                                  bool fallback_allocate) override;
+                                  bool fallback_allocate, bool rdma) override;
 
   const LocalObject *GetObject(const ObjectID &object_id) const override;
 

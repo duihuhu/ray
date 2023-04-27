@@ -24,7 +24,7 @@ ObjectStore::ObjectStore(IAllocator &allocator)
 
 const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
                                              plasma::flatbuf::ObjectSource source,
-                                             bool fallback_allocate) {
+                                             bool fallback_allocate, bool rdma) {
                                               
   RAY_LOG(DEBUG) << "attempting to create object " << object_info.object_id << " size "
                  << object_info.data_size;
@@ -42,6 +42,14 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
     return nullptr;
   }
   auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
+  if (rdma == true) {
+    ptr->object_info = object_info;
+    ptr->state = ObjectState::PLASMA_CREATED;
+    ptr->create_time = std::time(nullptr);
+    ptr->construct_duration = -1;
+    ptr->source = source;
+    return ptr;
+  }
   auto entry =
       object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
   entry->object_info = object_info;

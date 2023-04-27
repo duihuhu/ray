@@ -88,7 +88,7 @@ struct pingpong_context {
 class ObjectManagerRdma {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
-         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager *dependency_manager, int rpc_service_threads_number)
+         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager *dependency_manager, int rpc_service_threads_number, std::shared_ptr<plasma::PlasmaClientInterface> store_client)
     :  main_service_(&main_service),
       acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port)),
       socket_(main_service),
@@ -98,6 +98,7 @@ public:
       object_manager_(object_manager),
       dependency_manager_(dependency_manager),
       rpc_service_threads_number_(1),
+      store_client_(store_client),
       local_ip_address_(object_manager_address)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
@@ -136,7 +137,7 @@ public:
   void RunRdmaService();
   void FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info);
   int PollCompletionThreads(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, int64_t start_time);
-
+  
 
 private:
   instrumented_io_context *main_service_;
@@ -161,7 +162,7 @@ private:
   std::mutex mtx_;
   std::condition_variable cv_;
   moodycamel::ConcurrentQueue<ObjectRdmaInfo> object_rdma_queue_;
-
+  std::shared_ptr<plasma::PlasmaClientInterface> store_client_,
 };
 
 class Session

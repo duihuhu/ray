@@ -49,7 +49,11 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
 		int n_qp = distrib(engine);//n_qp
 		
-		auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
+		// auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
+
+		auto allocation = object_manager_.CreateObjectRdma(object_rdma_info.object_info);
+
+
 		RAY_LOG(DEBUG) << " Allocate space allocation->address " << allocation->address << " object_id " << object_rdma_info.object_info.object_id;
 
 		unsigned long local_address =(unsigned long) allocation->address;
