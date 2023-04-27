@@ -873,7 +873,7 @@ absl::optional<plasma::Allocation> ObjectManager::AllocateObjectSizeRdma(size_t 
 }
 
 
-std::pair<const LocalObject *, flatbuf::PlasmaError>& ObjectManager::CreateObjectRdma(const ray::ObjectInfo &object_info) {
+std::pair<const plasma::LocalObject *, flatbuf::PlasmaError>& ObjectManager::CreateObjectRdma(const ray::ObjectInfo &object_info) {
   return plasma::plasma_store_runner->CreateObjectRdma(object_info, buffer_pool_store_client_);
 }
 
