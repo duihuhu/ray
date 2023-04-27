@@ -154,8 +154,9 @@ void ObjectStore::InsertObjectInfoThread(const absl::optional<Allocation>& alloc
   if(it!=object_table_.end())
     return;
   RAY_LOG(DEBUG) << "InsertObjectInfo " << object_info.object_id;
-  auto entry =
-      object_table_.emplace(object_info.object_id, std::move(pair.first)).first->second.get();
+  auto ptr = std::make_unique<LocalObject>(std::move(pair.first->GetAllocation().value()));
+  
+  object_table_.emplace(object_info.object_id, std::move(ptr));
 }
 
 }  // namespace plasma
