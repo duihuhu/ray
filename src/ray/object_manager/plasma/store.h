@@ -114,6 +114,14 @@ class PlasmaStore {
   }
 
   void InsertObjectInfo(const absl::optional<Allocation>& allocation, const ray::ObjectInfo &object_info);
+
+
+  const Allocation& CreateObjectRdma(const ray::ObjectInfo &object_info,
+                                    plasma::flatbuf::ObjectSource source,
+                                    bool fallback_allocator,
+                                    PlasmaObject *result,
+                                    const std::shared_ptr<Client> &client);
+
  private:
   /// Create a new object. The client must do a call to release_object to tell
   /// the store when it is done with the object.
@@ -244,13 +252,6 @@ class PlasmaStore {
   void StopCommService();
 
   void StartMetaCommClient();
-
-
-  const Allocation& CreateObjectRdma(const ray::ObjectInfo &object_info,
-                                    plasma::flatbuf::ObjectSource source,
-                                    bool fallback_allocator,
-                                    PlasmaObject *result,
-                                    const std::shared_ptr<Client> &client);
 
  private:
   friend class GetRequestQueue;
