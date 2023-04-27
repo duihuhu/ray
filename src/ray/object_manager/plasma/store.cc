@@ -312,7 +312,7 @@ const Allocation& PlasmaStore::CreateObjectRdma(const ray::ObjectInfo &object_in
   auto entry = pair.first;
   auto error = pair.second;
   if (entry == nullptr) {
-    return error;
+    return nullptr;
   }
   entry->ToPlasmaObject(result, /* check sealed */ false);
 //   // Record that this client is using this object.
