@@ -157,7 +157,6 @@ int64_t PlasmaStoreRunner::GetMetaSize() {
 }
 
 absl::optional<Allocation> PlasmaStoreRunner::AllocateObjectSizeRdma(size_t sizes) {
-  absl::MutexLock lock(&store_runner_mutex_);
   auto allocation = allocator_->Allocate(sizes);
   // unsigned long address =  (unsigned long) allocation->address;
   RAY_CHECK(allocation.has_value())
