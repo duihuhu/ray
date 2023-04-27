@@ -313,6 +313,7 @@ std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStore::CreateObjectR
   if (entry == nullptr) {
     return pair;
   }
+  RAY_LOG(DEBUG) << "CreateObjectRdma ";
   entry->ToPlasmaObject(result, /* check sealed */ false);
 //   // Record that this client is using this object.
   // AddToClientObjectIds(object_info.object_id, client);
