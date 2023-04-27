@@ -117,7 +117,7 @@ class PlasmaStore {
   void InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair);
 
 
-  std::pair<const LocalObject *, flatbuf::PlasmaError>& CreateObjectRdma(const ray::ObjectInfo &object_info,
+  std::pair<const LocalObject *, flatbuf::PlasmaError> CreateObjectRdma(const ray::ObjectInfo &object_info,
                                     plasma::flatbuf::ObjectSource source,
                                     bool fallback_allocator,
                                     PlasmaObject *result);

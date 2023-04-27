@@ -294,7 +294,7 @@ PlasmaError PlasmaStore::HandleCreateObjectRequest(const std::shared_ptr<Client>
 }
 
 
-std::pair<const LocalObject *, flatbuf::PlasmaError>& PlasmaStore::CreateObjectRdma(const ray::ObjectInfo &object_info,
+std::pair<const LocalObject *, flatbuf::PlasmaError> PlasmaStore::CreateObjectRdma(const ray::ObjectInfo &object_info,
                                       fb::ObjectSource source,
                                       bool fallback_allocator,
                                       PlasmaObject *result) {
