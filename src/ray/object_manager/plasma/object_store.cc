@@ -46,15 +46,14 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
     return nullptr;
   }
   if (rdma == true) {
-    auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
     LocalObject *ptr = new LocalObject(allocation.value())
-    RAY_LOG(DEBUG) << "create object " << object_info.object_id << " succeeded" << " address " << ptr.get()->GetAllocation().address ;
+    RAY_LOG(DEBUG) << "create object " << object_info.object_id << " succeeded" << " address " << ptr->GetAllocation().address ;
     ptr->object_info = object_info;
     ptr->state = ObjectState::PLASMA_CREATED;
     ptr->create_time = std::time(nullptr);
     ptr->construct_duration = -1;
     ptr->source = source;
-    return ptr.get();
+    return ptr;
   }
   auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
   auto entry =
