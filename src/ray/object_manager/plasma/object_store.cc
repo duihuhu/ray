@@ -32,6 +32,10 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   //               << object_info.data_size;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
       << object_info.object_id << " already exists!";
+
+  // if (object_table_rdma_.count(object_info.object_id) !=0 ){
+  //   return nullptr;
+  // }
   auto object_size = object_info.GetObjectSize();
   auto allocation = fallback_allocate ? allocator_.FallbackAllocate(object_size)
                                       : allocator_.Allocate(object_size);
@@ -41,8 +45,9 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   if (!allocation.has_value()) {
     return nullptr;
   }
-  auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
   if (rdma == true) {
+    auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
+    LocalObject *ptr = new LocalObject(allocation.value())
     RAY_LOG(DEBUG) << "create object " << object_info.object_id << " succeeded" << " address " << ptr.get()->GetAllocation().address ;
     ptr->object_info = object_info;
     ptr->state = ObjectState::PLASMA_CREATED;
@@ -51,6 +56,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
     ptr->source = source;
     return ptr.get();
   }
+  auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
   auto entry =
       object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
   entry->object_info = object_info;
