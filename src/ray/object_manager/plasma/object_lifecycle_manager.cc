@@ -209,9 +209,8 @@ const LocalObject *ObjectLifecycleManager::CreateObjectInternal(
   for (int num_tries = 0; num_tries <= 10; num_tries++) {
     auto result =
         object_store_->CreateObject(object_info, source, /*fallback_allocate*/ false, rdma);
-    RAY_LOG(DEBUG) << "CreateObjectInternal object info  " << object_info.object_id << " " << result->GetAllocation().address;
-
     if (result != nullptr) {
+      RAY_LOG(DEBUG) << "CreateObjectInternal object info  " << object_info.object_id << " " << result->GetAllocation().address;
       return result;
     }
     // Tell the eviction policy how much space we need to create this object.
