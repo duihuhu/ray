@@ -476,7 +476,7 @@ cc_library(
         "@strlcpy_lib//:strlcpy_lib",
         ":secure_channel_libs",
         # ":secure_channel_core_libs",
-
+        "@com_google_absl//absl/container:flat_hash_set",
     ],
 )
 
