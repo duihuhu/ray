@@ -33,9 +33,9 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
       << object_info.object_id << " already exists!";
 
-  // if (object_table_rdma_.count(object_info.object_id) !=0 ){
-  //   return nullptr;
-  // }
+  if (object_table_rdma_.find(object_info.object_id) == object_table_rdma_.end() ){
+    return nullptr;
+  }
   auto object_size = object_info.GetObjectSize();
   auto allocation = fallback_allocate ? allocator_.FallbackAllocate(object_size)
                                       : allocator_.Allocate(object_size);
@@ -53,6 +53,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
     ptr->create_time = std::time(nullptr);
     ptr->construct_duration = -1;
     ptr->source = source;
+    object_table_rdma_.insert(object_info.object_id);
     return ptr;
   }
   auto ptr = std::make_unique<LocalObject>(std::move(allocation.value()));
