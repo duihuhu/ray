@@ -29,8 +29,8 @@
 #include <mutex>              // std::mutex, std::unique_lock
 #include <condition_variable> // std::condition_variable
 #include "ray/object_manager/concurrentqueue.h"
-#include <stddef.h>
-
+// #include <stddef.h>
+#include <cstdlib>
 #define num_qp_pair 8
 struct ObjectRdmaInfo {
     std::string object_address;
