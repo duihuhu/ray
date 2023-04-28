@@ -1,6 +1,6 @@
 #pragma once
 // #include <stdio.h>
-#include <stdlib.h>
+// #include <stdlib.h>
 // #include <unistd.h>
 // #include <sys/types.h>
 // #include <sys/socket.h>
@@ -29,6 +29,7 @@
 #include <mutex>              // std::mutex, std::unique_lock
 #include <condition_variable> // std::condition_variable
 #include "ray/object_manager/concurrentqueue.h"
+#include <stddef.h>
 
 #define num_qp_pair 8
 struct ObjectRdmaInfo {
