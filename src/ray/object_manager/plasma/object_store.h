@@ -21,7 +21,7 @@
 #include "ray/object_manager/plasma/allocator.h"
 #include "ray/object_manager/plasma/common.h"
 #include "ray/object_manager/plasma/plasma.h"
-#include "absl/container/flat_hash_set.h"
+// #include "absl/container/flat_hash_set.h"
 #include <iostream>
 namespace plasma {
 
@@ -110,7 +110,7 @@ class ObjectStore : public IObjectStore {
   /// Mapping from ObjectIDs to information about the object.
   absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> object_table_;
 
-  absl::flat_hash_set<ObjectID> object_table_rdma_;
+  // absl::flat_hash_set<ObjectID> object_table_rdma_;
 
 };
 }  // namespace plasma
