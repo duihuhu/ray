@@ -174,6 +174,26 @@ bool ObjectLifecycleManager::AddReference(const ObjectID &object_id) {
   return true;
 }
 
+bool ObjectLifecycleManager::AddReferenceRdma(const ObjectID &object_id, LocalObject* entry) {
+  // auto entry = object_store_->GetObject(object_id);
+  if (!entry) {
+    RAY_LOG(ERROR) << object_id << " doesn't exist, add reference failed.";
+    return false;
+  }
+  // If there are no other clients using this object, notify the eviction policy
+  // that the object is being used.
+  if (entry->ref_count == 0) {
+    // Tell the eviction policy that this object is being used.
+    eviction_policy_->BeginObjectAccess(object_id);
+  }
+  // Increase reference count.
+  entry->ref_count++;
+  stats_collector_.OnObjectRefIncreased(*entry);
+  RAY_LOG(DEBUG) << "Object " << object_id << " reference has incremented"
+                 << ", num bytes in use is now " << GetNumBytesInUse();
+  return true;
+}
+
 bool ObjectLifecycleManager::RemoveReference(const ObjectID &object_id) {
   auto entry = object_store_->GetObject(object_id);
   if (!entry || entry->ref_count == 0) {

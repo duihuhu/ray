@@ -319,6 +319,8 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> PlasmaStore::CreateObjectRd
   entry->ToPlasmaObject(result, /* check sealed */ false);
 //   // Record that this client is using this object.
   // AddToClientObjectIds(object_info.object_id, client);
+  RAY_CHECK(object_lifecycle_mgr_.AddReferenceRdma(object_id, entry));
+
 //   return PlasmaError::OK;
   return pair;
 }
