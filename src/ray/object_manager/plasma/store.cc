@@ -319,7 +319,8 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> PlasmaStore::CreateObjectRd
   entry->ToPlasmaObject(result, /* check sealed */ false);
 //   // Record that this client is using this object.
   // AddToClientObjectIds(object_info.object_id, client);
-  RAY_CHECK(object_lifecycle_mgr_.AddReferenceRdma(object_info.object_id, entry));
+  //may be used
+  // RAY_CHECK(object_lifecycle_mgr_.AddReferenceRdma(object_info.object_id, entry));
 
 //   return PlasmaError::OK;
   return pair;
@@ -332,7 +333,7 @@ void PlasmaStore::InsertObjectInfo(const absl::optional<Allocation>& allocation 
 
 void PlasmaStore::InsertObjectInfoThread(const Allocation& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
   object_lifecycle_mgr_.InsertObjectInfoThread(allocation, object_info, pair);
-  // RAY_CHECK(object_lifecycle_mgr_.AddReference(object_info.object_id));
+  RAY_CHECK(object_lifecycle_mgr_.AddReferenceRdma(object_info.object_id, pair.first));
 }
 
 
