@@ -32,36 +32,10 @@
 // #include <stddef.h>
 // #include <cstdlib>
 
-#include <algorithm>
-#include <boost/asio.hpp>
-#include <boost/asio/error.hpp>
-#include <boost/bind/bind.hpp>
-#include <cstdint>
-#include <deque>
-#include <map>
-#include <memory>
-#include <mutex>
-#include <random>
-#include <thread>
-#include <iostream>
+// #include "ray/common/common_protocol.h"
+// #include "ray/stats/metric_defs.h"
+// #include "ray/util/util.h"
 
-#include "absl/container/flat_hash_map.h"
-#include "absl/container/flat_hash_set.h"
-#include "absl/time/clock.h"
-#include "ray/common/asio/instrumented_io_context.h"
-#include "ray/common/id.h"
-#include "ray/common/ray_config.h"
-#include "ray/common/status.h"
-#include "ray/object_manager/chunk_object_reader.h"
-#include "ray/object_manager/common.h"
-#include "ray/object_manager/object_buffer_pool.h"
-#include "ray/object_manager/object_directory.h"
-#include "ray/object_manager/ownership_based_object_directory.h"
-#include "ray/object_manager/plasma/store_runner.h"
-#include "ray/object_manager/pull_manager.h"
-#include "ray/object_manager/push_manager.h"
-#include "ray/rpc/object_manager/object_manager_client.h"
-#include "ray/rpc/object_manager/object_manager_server.h"
 
 #define num_qp_pair 8
 struct ObjectRdmaInfo {

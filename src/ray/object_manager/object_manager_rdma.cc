@@ -55,7 +55,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		RAY_LOG(DEBUG) << " Allocate pair ";
 		auto entry = pair.first;
 		if (entry == nullptr) {
-			continue;
+			// continue;
 		}
 		auto allocation = pair.first->GetAllocation();
 
