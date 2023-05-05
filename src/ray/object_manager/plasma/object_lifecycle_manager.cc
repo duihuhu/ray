@@ -51,7 +51,6 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> ObjectLifecycleManager::Cre
   if (object_store_->GetObject(object_info.object_id) != nullptr) {
     return {nullptr, PlasmaError::ObjectExists};
   }
-  RAY_LOG(DEBUG) << "in CreateObject Rdma" << object_info.object_id << " " << object_info.data_size;
 
   auto entry = CreateObjectInternal(object_info, source, fallback_allocator, rdma);
 
@@ -61,7 +60,6 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> ObjectLifecycleManager::Cre
   
   eviction_policy_->ObjectCreatedBySize(object_info.object_id, object_info.data_size + object_info.metadata_size);
   stats_collector_.OnObjectCreated(*entry);
-  RAY_LOG(DEBUG) << "after OnObjectCreated" << object_info.object_id << " " << object_info.data_size;
 
   return {entry, PlasmaError::OK};
 }

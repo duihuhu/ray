@@ -69,6 +69,8 @@ void GetRequestQueue::AddRequest(const std::shared_ptr<ClientInterface> &client,
     if (entry && entry->Sealed()) {
       // Update the get request to take into account the present object.
       entry->ToPlasmaObject(&get_request->objects[object_id], /* checksealed */ true);
+      RAY_LOG(DEBUG) << " get_requests_ object info " << get_request->objects[object_id]->store_fd <<" " << object->data_offset<<" "<<  object->data_size << " " << object->metadata_size; 
+
       get_request->num_unique_objects_satisfied += 1;
       object_satisfied_callback_(object_id, get_request);
     } else {
