@@ -21,7 +21,7 @@
 #include "ray/object_manager/plasma/allocator.h"
 #include "ray/object_manager/plasma/common.h"
 #include "ray/object_manager/plasma/plasma.h"
-// #include "absl/container/flat_hash_set.h"
+#include "absl/container/flat_hash_set.h"
 #include <iostream>
 namespace plasma {
 
