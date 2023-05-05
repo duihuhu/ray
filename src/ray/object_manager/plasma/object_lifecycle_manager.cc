@@ -174,7 +174,7 @@ bool ObjectLifecycleManager::AddReference(const ObjectID &object_id) {
   return true;
 }
 
-bool ObjectLifecycleManager::AddReferenceRdma(const ObjectID &object_id, LocalObject* entry) {
+bool ObjectLifecycleManager::AddReferenceRdma(const ObjectID &object_id, const LocalObject* entry) {
   // auto entry = object_store_->GetObject(object_id);
   if (!entry) {
     RAY_LOG(ERROR) << object_id << " doesn't exist, add reference failed.";
