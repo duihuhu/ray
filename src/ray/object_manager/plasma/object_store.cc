@@ -152,10 +152,12 @@ void ObjectStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table pair " << object_info.object_id << " " << pair.first->object_info.GetObjectSize();
   auto ptr = std::make_unique<LocalObject>(std::move(pair.first->GetAllocation()));
   
-  auto entry = object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
-  entry->state = ObjectState::PLASMA_SEALED;
-  entry->construct_duration = std::time(nullptr) - entry->create_time;
-  RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table " << entry->object_info.GetObjectSize() << object_table_[object_info.object_id]->object_info.GetObjectSize();
+  object_table_.emplace(object_info.object_id, std::move(ptr));
+  RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table " << " " << object_table_[object_info.object_id]->object_info.GetObjectSize();
+
+  // entry->state = ObjectState::PLASMA_SEALED;
+  // entry->construct_duration = std::time(nullptr) - entry->create_time;
+  // RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table " << entry->object_info.GetObjectSize() << " " << object_table_[object_info.object_id]->object_info.GetObjectSize();
 
 }
 
