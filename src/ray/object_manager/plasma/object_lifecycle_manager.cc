@@ -184,7 +184,7 @@ bool ObjectLifecycleManager::AddReferenceRdma(const ObjectID &object_id, const L
   // that the object is being used.
   if (entry->ref_count == 0) {
     // Tell the eviction policy that this object is being used.
-    eviction_policy_->BeginObjectAccessRdma(object_id, );
+    eviction_policy_->BeginObjectAccessRdma(object_id, entry->GetObjectInfo().data_size + entry->GetObjectInfo().metadata_size);
   }
   // Increase reference count.
   entry->ref_count++;
