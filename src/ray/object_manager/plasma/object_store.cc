@@ -79,7 +79,7 @@ const LocalObject *ObjectStore::GetObject(const ObjectID &object_id) const {
   return it->second.get();
 }
 
-bool LocalObject::GetObjectExist(const ObjectID &object_id) {
+bool ObjectStore::GetObjectExist(const ObjectID &object_id) {
   auto it = object_table_rdma_.find(object_id);
   if (it == object_table_rdma_.end())
     return true;
