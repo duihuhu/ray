@@ -209,6 +209,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
 
   // Add successfully retrieved objects to the result map and remove them from
   // the set of IDs to get.
+  RAY_LOG(DEBUG) << "store_client Get plasma_results size " <<  plasma_results.size();
   for (size_t i = 0; i < plasma_results.size(); i++) {
     if (plasma_results[i].data != nullptr || plasma_results[i].metadata != nullptr) {
       const auto &object_id = batch_ids[i];

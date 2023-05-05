@@ -100,7 +100,6 @@ class PlasmaStore {
                object_lifecycle_mgr_.GetNumObjectsUnsealed() == 0))
         << "Tracking for available memory in the plasma store has gone out of sync. "
            "Please file a GitHub issue.";
-    RAY_LOG(DEBUG) << " get num byte in use " << object_lifecycle_mgr_.GetNumBytesInUse() << " get num bytes unsealed " << object_lifecycle_mgr_.GetNumBytesUnsealed();
     RAY_CHECK(object_lifecycle_mgr_.GetNumBytesInUse() >=
               object_lifecycle_mgr_.GetNumBytesUnsealed());
     // We do not count unsealed objects as in use because these may have been
