@@ -51,7 +51,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		
 		// auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
 
-		auto pair = object_manager_.CreateObjectRdma(object_rdma_info.object_info);
+		std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError> pair = object_manager_.CreateObjectRdma(object_rdma_info.object_info);
 		RAY_LOG(DEBUG) << " Allocate pair ";
 		auto entry = pair.first;
 		// if (entry == nullptr) {
