@@ -83,13 +83,19 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 
 
 int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time){
-  RAY_LOG(DEBUG) << "PollCompletion Threads start";
+  RAY_LOG(DEBUG) << "PollCompletion Threads start " << object_info.object_id << " " << allocation.address;
+	if (ctx == NULL) {
+		RAY_LOG(DEBUG) << "PollCompletion Threads ctx is NULL ";
+	}
   auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
 	int poll_result;
 	int rc = 0;
 	do {
+		RAY_LOG(DEBUG) << "before ibv_poll_cq ";
 		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
+		RAY_LOG(DEBUG) << "after ibv_poll_cq ";
+
 	} while (poll_result==0);
 	if (poll_result < 0) {
     RAY_LOG(ERROR) << "poll cq failed";
