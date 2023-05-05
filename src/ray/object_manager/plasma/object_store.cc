@@ -154,6 +154,7 @@ void ObjectStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   
   auto entry = object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
   entry->state = ObjectState::PLASMA_SEALED;
+  RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table " << entry->object_info.GetObjectSize();
 }
 
 }  // namespace plasma
