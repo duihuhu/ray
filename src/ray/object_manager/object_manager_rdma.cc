@@ -33,7 +33,7 @@ void ObjectManagerRdma::RunRdmaService() {
 
 
 void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info) {
-  RAY_LOG(DEBUG) << "Starting get object through rdma for worker ";
+  RAY_LOG(DEBUG) << "Starting get object through rdma for worker " << object_rdma_info.object_info.object_id;
   auto ts_fetch_object_rdma = current_sys_time_us();
   // for(uint64_t i = 0; i < object_address.size(); ++i) {
   //   std::string address = rem_ip_address[i];
@@ -43,6 +43,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 	if(it!=remote_dest_.end()){
 		// continue;
 	//   QueryQp(it->second.first.first);
+  	RAY_LOG(DEBUG) << "in remote_dest ";
 
 		std::random_device seed;//hardware to generate random seed
 		std::ranlux48 engine(seed());//use seed to generate 
@@ -84,9 +85,6 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 
 int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time){
   RAY_LOG(DEBUG) << "PollCompletion Threads start " << object_info.object_id << " " << allocation.address;
-	if (ctx == NULL) {
-		RAY_LOG(DEBUG) << "PollCompletion Threads ctx is NULL ";
-	}
   auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
 	int poll_result;
