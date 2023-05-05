@@ -877,7 +877,7 @@ std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError> ObjectManag
   auto pair = plasma::plasma_store_runner->CreateObjectRdma(object_info);
   auto entry = pair.first;
   if (entry == nullptr) {
-  	continue;
+    return pair;
   }
   return pair;
 }
