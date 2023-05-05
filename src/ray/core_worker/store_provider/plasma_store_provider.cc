@@ -224,10 +224,12 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
       if (plasma_results[i].metadata && plasma_results[i].metadata->Size()) {
         metadata = plasma_results[i].metadata;
       }
-      RAY_LOG(DEBUG) << "store_client Get plasma_results size " << plasma_results[i].data->Size() << " " <<plasma_results[i].metadata->Size();
+      RAY_LOG(DEBUG) << "before store_client Get plasma_results size " << plasma_results[i].data->Size() << " " <<plasma_results[i].metadata->Size();
       const auto result_object = std::make_shared<RayObject>(
           data, metadata, std::vector<rpc::ObjectReference>());
       (*results)[object_id] = result_object;
+      RAY_LOG(DEBUG) << "after store_client Get plasma_results size " << plasma_results[i].data->Size() << " " <<plasma_results[i].metadata->Size();
+
       remaining.erase(object_id);
       if (result_object->IsException()) {
         RAY_CHECK(!result_object->IsInPlasmaError());
