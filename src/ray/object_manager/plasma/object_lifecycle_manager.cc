@@ -58,8 +58,15 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> ObjectLifecycleManager::Cre
   if (entry == nullptr) {
     return {nullptr, PlasmaError::OutOfMemory};
   }
+  
+  RAY_LOG(DEBUG) << "after rdma CreateObject" << object_info.object_id << " " << object_info.data_size;
+
   eviction_policy_->ObjectCreatedBySize(object_info.object_id, object_info.data_size + object_info.metadata_size);
+  RAY_LOG(DEBUG) << "after ObjectCreatedBySize" << object_info.object_id << " " << object_info.data_size;
+
   stats_collector_.OnObjectCreated(*entry);
+  RAY_LOG(DEBUG) << "after OnObjectCreated" << object_info.object_id << " " << object_info.data_size;
+
   return {entry, PlasmaError::OK};
 }
 
