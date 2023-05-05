@@ -149,12 +149,13 @@ void ObjectStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   auto it = object_table_.find(object_info.object_id);
   if(it!=object_table_.end())
     return;
-  RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table pair " << object_info.object_id << pair.first->GetObjectSize();
+  RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table pair " << object_info.object_id << " " << pair.first->object_info.GetObjectSize();
   auto ptr = std::make_unique<LocalObject>(std::move(pair.first->GetAllocation()));
   
   auto entry = object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
   entry->state = ObjectState::PLASMA_SEALED;
   RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table " << entry->object_info.GetObjectSize();
+
 }
 
 }  // namespace plasma
