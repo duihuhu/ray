@@ -51,6 +51,8 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> ObjectLifecycleManager::Cre
   if (object_store_->GetObject(object_info.object_id) != nullptr) {
     return {nullptr, PlasmaError::ObjectExists};
   }
+  RAY_LOG(DEBUG) << "in CreateObject Rdma" << object_info.object_id << " " << object_info.data_size;
+
   auto entry = CreateObjectInternal(object_info, source, fallback_allocator, rdma);
 
   if (entry == nullptr) {
