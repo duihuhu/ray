@@ -329,7 +329,7 @@ void PlasmaStore::InsertObjectInfo(const absl::optional<Allocation>& allocation 
 }
 
 
-void PlasmaStore::InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
+void PlasmaStore::InsertObjectInfoThread(const Allocation& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
   object_lifecycle_mgr_.InsertObjectInfoThread(allocation, object_info, pair);
   RAY_CHECK(object_lifecycle_mgr_.AddReference(object_info.object_id));
 }
