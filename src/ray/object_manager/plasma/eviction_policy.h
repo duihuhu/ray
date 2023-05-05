@@ -73,6 +73,8 @@ class IEvictionPolicy {
   /// \param object_id The ID of the object that is now being used.
   virtual void BeginObjectAccess(const ObjectID &object_id) = 0;
 
+  virtual void BeginObjectAccessRdma(const ObjectID &object_id, int64_t object_size) = 0;
+
   /// This method will be called whenever an object in the Plasma store that was
   /// being used is no longer being used. When this method is called, the
   /// eviction policy will assume that the objects chosen to be evicted will in
@@ -170,6 +172,8 @@ class EvictionPolicy : public IEvictionPolicy {
   int64_t RequireSpace(int64_t size, std::vector<ObjectID> &objects_to_evict) override;
 
   void BeginObjectAccess(const ObjectID &object_id) override;
+
+  void BeginObjectAccessRdma(const ObjectID &object_id, int64_t object_size) override;
 
   void EndObjectAccess(const ObjectID &object_id) override;
 

@@ -141,6 +141,14 @@ void EvictionPolicy::BeginObjectAccess(const ObjectID &object_id) {
   pinned_memory_bytes_ += GetObjectSize(object_id);
 }
 
+void EvictionPolicy::BeginObjectAccessRdma(const ObjectID &object_id, int64_t object_size) {
+  // If the object is in the LRU cache, remove it.
+  cache_.Remove(object_id);
+  pinned_memory_bytes_ += object_size;
+}
+
+
+
 void EvictionPolicy::EndObjectAccess(const ObjectID &object_id) {
   auto size = GetObjectSize(object_id);
   // Add the object to the LRU cache.
