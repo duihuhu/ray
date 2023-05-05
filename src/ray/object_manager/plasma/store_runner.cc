@@ -171,15 +171,6 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> PlasmaStoreRunner::CreateOb
   auto source = plasma::flatbuf::ObjectSource::ReceivedFromRemoteRaylet;
   bool fallback_allocator = true;
   PlasmaObject result;
-  // auto allocation = store_->CreateObjectRdma(object_info ,source, fallback_allocator, &result, client);
-
-  // auto allocation = allocator_->Allocate(sizes);
-  // // unsigned long address =  (unsigned long) allocation->address;
-  // RAY_CHECK(allocation.has_value())
-  //     << "PlasmaAllocator AllocateObjectSizeRdma failed.";
-  // // store_->InsertObjectInfo(allocation, object_info);
-  // // return address;
-  // return allocation;
   auto pair = store_->CreateObjectRdma(object_info ,source, fallback_allocator, &result);
   return pair;
 }

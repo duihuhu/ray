@@ -311,11 +311,10 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> PlasmaStore::CreateObjectRd
 
   auto pair = object_lifecycle_mgr_.CreateObjectRdma(object_info, source, fallback_allocator);
   auto entry = pair.first;
-  RAY_LOG(DEBUG) << "after CreateObjectRdma address " << entry->GetAllocation().address;
-  auto error = pair.second;
   if (entry == nullptr) {
     return pair;
   }
+  RAY_LOG(DEBUG) << "after CreateObjectRdma address " << entry->GetAllocation().address;
 
   entry->ToPlasmaObject(result, /* check sealed */ false);
 //   // Record that this client is using this object.

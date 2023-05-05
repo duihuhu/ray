@@ -57,6 +57,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto entry = pair.first;
 		if (entry == nullptr) {
 			// continue;
+			RAY_LOG(DEBUG) << " object space is already allocate";
 			return;
 		}
 		auto allocation = pair.first->GetAllocation();
