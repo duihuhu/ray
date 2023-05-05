@@ -30,7 +30,13 @@
 #include <condition_variable> // std::condition_variable
 #include "ray/object_manager/concurrentqueue.h"
 // #include <stddef.h>
-#include <cstdlib>
+// #include <cstdlib>
+
+#include "ray/common/common_protocol.h"
+#include "ray/stats/metric_defs.h"
+#include "ray/util/util.h"
+
+
 #define num_qp_pair 8
 struct ObjectRdmaInfo {
     std::string object_address;
