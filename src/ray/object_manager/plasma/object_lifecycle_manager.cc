@@ -35,6 +35,9 @@ std::pair<const LocalObject *, flatbuf::PlasmaError>  ObjectLifecycleManager::Cr
     plasma::flatbuf::ObjectSource source,
     bool fallback_allocator) {
     bool rdma = true;
+    if (object_store_->GetObjectExist(object_info.object_id)) {
+      return {nullptr, PlasmaError::ObjectExists};
+    }
     return CreateObject(object_info, source, fallback_allocator, rdma);
 }
 

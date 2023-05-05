@@ -73,6 +73,7 @@ class IObjectStore {
 
   virtual void InsertObjectInfo(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info) = 0;
   virtual void InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) = 0;
+  virtual bool GetObjectExist(const ObjectID &object_id) = 0;
 
 };
 
@@ -99,6 +100,8 @@ class ObjectStore : public IObjectStore {
   
   void InsertObjectInfoThread(const absl::optional<Allocation>& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) override;
 
+  bool GetObjectExist(const ObjectID &object_id) override;
+
  private:
   friend struct ObjectStatsCollectorTest;
 
@@ -110,7 +113,7 @@ class ObjectStore : public IObjectStore {
   /// Mapping from ObjectIDs to information about the object.
   absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> object_table_;
 
-  // absl::flat_hash_set<ObjectID> object_table_rdma_;
+  absl::flat_hash_set<ObjectID> object_table_rdma_;
 
 };
 }  // namespace plasma
