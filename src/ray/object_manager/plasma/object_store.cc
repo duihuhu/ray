@@ -82,8 +82,8 @@ const LocalObject *ObjectStore::GetObject(const ObjectID &object_id) const {
 bool ObjectStore::GetObjectExist(const ObjectID &object_id) {
   auto it = object_table_rdma_.find(object_id);
   if (it == object_table_rdma_.end())
-    return true;
-  return false;
+    return false;
+  return true;
 }
 
 const LocalObject *ObjectStore::SealObject(const ObjectID &object_id) {
