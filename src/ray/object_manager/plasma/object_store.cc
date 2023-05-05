@@ -154,7 +154,8 @@ void ObjectStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   
   auto entry = object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
   entry->state = ObjectState::PLASMA_SEALED;
-  RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table " << entry->object_info.GetObjectSize();
+  entry->construct_duration = std::time(nullptr) - entry->create_time;
+  RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table " << entry->object_info.GetObjectSize() << object_table_[object_info.object_id]->object_info.GetObjectSize();
 
 }
 
