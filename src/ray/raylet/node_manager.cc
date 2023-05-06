@@ -1724,7 +1724,6 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     //hucc time for get obj from remote plasma
       auto ts_get_obj_remote_rdma = current_sys_time_us();
       // object_manager_rdma_.PrintRemoteRdmaInfo();
-      RAY_LOG(DEBUG) << "get object id from queue start " << object_rdma_info.object_info.object_id << " " << ts_get_obj_remote_rdma;
       object_manager_rdma_.InsertObjectInQueue(object_rdma_info);
       // object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);
       // dependency_manager_.InsertObjectLocal(object_info);
@@ -1740,7 +1739,6 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     // will be stored as the object's value.
     auto ts_get_obj_remote_rdma = current_sys_time_us();
     // object_manager_rdma_.PrintRemoteRdmaInfo();
-    RAY_LOG(DEBUG) << "get object id from queue start " << object_rdma_info.object_info.object_id << " " << ts_get_obj_remote_rdma;
     object_manager_rdma_.InsertObjectInQueue(object_rdma_info);
 
     // object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);

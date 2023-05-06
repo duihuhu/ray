@@ -132,6 +132,8 @@ void ObjectManagerRdma::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_
 			continue;
 		}
 		else{
+			auto ts_get_obj_remote_rdma = current_sys_time_us();
+			RAY_LOG(DEBUG) << "get object id from queue start " << object_rdma_info[i].object_info.object_id << " " << ts_get_obj_remote_rdma;
 			object_rdma_queue_.enqueue(object_rdma_info[i]);
 		}
 	}
