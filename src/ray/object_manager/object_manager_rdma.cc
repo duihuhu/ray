@@ -75,12 +75,12 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_rdma_info.object_sizes, object_rdma_info.object_virt_address, IBV_WR_RDMA_READ);
 		// PollCompletion(it->second.first.first);
 		auto ctx =  it->second.first.first + n_qp;
+		auto te_fetch_object_post_send = current_sys_time_us();
 
-		PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma); 
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 		// PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
-		// main_service_->post([this, ctx, allocation, obj_info, pair, ts_fetch_object_rdma]() { PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma); },
-		// 							"ObjectManagerRdma.PollCompletion");
+		main_service_->post([this, ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send]() { PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send); },
+									"ObjectManagerRdma.PollCompletion");
 
 	}
   // }
@@ -89,7 +89,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 }
 
 
-int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time){
+int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send){
   RAY_LOG(DEBUG) << "PollCompletion Threads start " << object_info.object_id << " " << allocation.address;
   auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
@@ -122,7 +122,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		} 
 	}
   auto te_fetch_rdma = current_sys_time_us();
-  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time  << " " << ts_fetch_rdma -start_time << " " <<  object_info.object_id ;  
+  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time  << " " << ts_fetch_rdma-start_time << " " << ts_fetch_rdma - te_fetch_object_post_send << " " <<object_info.object_id ;  
 	return rc;
 }
 
