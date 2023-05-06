@@ -38,8 +38,6 @@ std::pair<const LocalObject *, flatbuf::PlasmaError>  ObjectLifecycleManager::Cr
     if (object_store_->GetObjectExist(object_info.object_id)) {
       return {nullptr, PlasmaError::ObjectExists};
     }
-    RAY_LOG(DEBUG) << "before CreateObjectRdma" << object_info.object_id << " " << object_info.data_size;
-
     return CreateObject(object_info, source, fallback_allocator, rdma);
 }
 
