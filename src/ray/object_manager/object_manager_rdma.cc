@@ -75,7 +75,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto ctx =  it->second.first.first + n_qp;
 
 		auto te_fetch_object_rdma_space = current_sys_time_us();
-		RAY_LOG(DEBUG) << "FetchObjectRdma time in create object space " << te_fetch_object_rdma_space - ts_fetch_object_rdma;
+		RAY_LOG(DEBUG) << "FetchObjectRdma time in create object space " << te_fetch_object_rdma_space - ts_fetch_object_rdma << " " << obj_info.object_id;
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 		// PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
 		main_service_->post([this, ctx, allocation, obj_info, pair, ts_fetch_object_rdma]() { PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma); },
@@ -121,7 +121,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		} 
 	}
   auto te_fetch_rdma = current_sys_time_us();
-  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time;  
+  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time  << " " <<  object_info.object_id ;  
 	return rc;
 }
 
