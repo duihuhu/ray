@@ -228,6 +228,9 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
           data, metadata, std::vector<rpc::ObjectReference>());
       (*results)[object_id] = result_object;
       remaining.erase(object_id);
+      auto te_fetch_object_end = current_sys_time_us();
+      RAY_LOG(DEBUG) << "plasma client fetch object id end: " << object_id << " " << te_fetch_object_end;
+
       if (result_object->IsException()) {
         RAY_CHECK(!result_object->IsInPlasmaError());
         *got_exception = true;

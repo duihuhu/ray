@@ -114,6 +114,9 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
       // object_manager_.InsertObjectInfo(allocation, object_info);
 			object_manager_.InsertObjectInfoThread(allocation, object_info, pair);
 			dependency_manager_->InsertObjectInfo(object_info);
+			auto ts_fetch_object_end = current_sys_time_us();
+			RAY_LOG(DEBUG) << "plasma client fetch object id start: " << object_info.object_id << " " << ts_fetch_object_end;
+
     }
 		if ( wc.status != IBV_WC_SUCCESS) {
 			// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);
