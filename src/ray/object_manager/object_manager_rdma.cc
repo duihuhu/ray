@@ -84,7 +84,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 	}
   // }
   auto te_fetch_object_rdma = current_sys_time_us();
-	RAY_LOG(DEBUG) << "FetchObjectRdma time " << te_fetch_object_rdma - te_fetch_object_rdma_space;
+	RAY_LOG(DEBUG) << "FetchObjectRdma time " << te_fetch_object_rdma - ts_fetch_object_rdma;
 }
 
 
