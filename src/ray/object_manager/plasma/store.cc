@@ -305,11 +305,11 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> PlasmaStore::CreateObjectRd
   //                 << " bytes";
   // ProcessCreateRequests();
   // ReplyToCreateClient(client, object_id, req_id);
-
+  {
   absl::MutexLock lock(&mutex_);
-  RAY_LOG(DEBUG) << "before CreateObjectRdma address ";
-
-  auto pair = object_lifecycle_mgr_.CreateObjectRdma(object_info, source, fallback_allocator);
+    RAY_LOG(DEBUG) << "before CreateObjectRdma address ";
+    auto pair = object_lifecycle_mgr_.CreateObjectRdma(object_info, source, fallback_allocator);
+  }
   auto entry = pair.first;
   if (entry == nullptr) {
     return pair;
