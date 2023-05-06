@@ -151,7 +151,7 @@ void ObjectStore::InsertObjectInfoThread(const Allocation& allocation , const ra
     return;
   RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table pair " << object_info.object_id << " " << pair.first->object_info.GetObjectSize();
   // auto ptr = std::make_unique<LocalObject>(pair.first);
-  unique_ptr<LocalObject> prt(pair.first);
+  std::unique_ptr<LocalObject> prt(pair.first);
   RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table ptr " << ptr->object_info.GetObjectSize();
 
   object_table_.emplace(object_info.object_id, std::move(ptr));
