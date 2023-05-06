@@ -855,7 +855,7 @@ void ObjectManager::Tick(const boost::system::error_code &e) {
   pull_manager_->Tick();
 
   auto interval = boost::posix_time::milliseconds(config_.timer_freq_ms);
-  pull_retry_timer_.expires_from_now(interval*2);
+  pull_retry_timer_.expires_from_now(interval);
   pull_retry_timer_.async_wait([this](const boost::system::error_code &e) { Tick(e); });
 }
 
