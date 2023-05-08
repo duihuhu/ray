@@ -529,7 +529,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
   // Notify unblocked because we blocked when calling FetchOrReconstruct with
   // fetch_only=false.
-  // Status status = UnblockIfNeeded(raylet_client_, ctx);
+  Status status = UnblockIfNeeded(raylet_client_, ctx);
   // return UnblockIfNeeded(raylet_client_, ctx);
   return status;  // We don't need to release resources.
 
