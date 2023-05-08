@@ -181,7 +181,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
   auto t1 = current_sys_time_us();
-
+  RAY_LOG(DEBUG) << " raylet client send " << t1 << " " << batch_ids[0];
   RAY_RETURN_NOT_OK(
       raylet_client_->FetchOrReconstruct(batch_ids,
                                          owner_addresses,
