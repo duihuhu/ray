@@ -406,7 +406,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     return UnblockIfNeeded(raylet_client_, ctx);
   }
   auto t3_out = current_sys_time_us();
-  RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << batch_ids[0] << " " << t3_out;
+  RAY_LOG(DEBUG) << " first fetch and get plasma 3 " << batch_ids[0] << " " << t3_out;
 
   // If not all objects were successfully fetched, repeatedly call FetchOrReconstruct
   // and Get from the local object store in batches. This loop will run indefinitely
