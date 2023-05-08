@@ -1159,8 +1159,9 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
       result_map.erase(current);
     }
   }
+  auto ts_get_obj_plasma = current_sys_time_us();
 
-  RAY_LOG(DEBUG) << "core worker get object plasma start " << ts_get_obj_cw << " " << ids[0];
+  RAY_LOG(DEBUG) << "core worker get object plasma start " << ts_get_obj_plasma << " " << ids[0];
 
   if (!got_exception) {
     // If any of the objects have been promoted to plasma, then we retry their
