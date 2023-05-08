@@ -1160,6 +1160,8 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     }
   }
 
+  RAY_LOG(DEBUG) << "core worker get object plasma start " << ts_get_obj_cw << " " << ids[0];
+
   if (!got_exception) {
     // If any of the objects have been promoted to plasma, then we retry their
     // gets at the provider plasma. Once we get the objects from plasma, we flip
