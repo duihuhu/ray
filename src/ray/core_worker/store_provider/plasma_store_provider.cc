@@ -483,6 +483,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  batch_owner_worker_id,
                                                  batch_rem_ip_address));
     should_break = timed_out || *got_exception;
+
+    RAY_LOG(DEBUG) << "FetchAndGetFromPlasmaStore CurrentTaskIsDirectCall fetch_only " << ctx.CurrentTaskIsDirectCall() << " " << ctx.ShouldReleaseResourcesOnBlockingCalls();
+
     auto ts_get_obj_remote_plasma_median = current_sys_time_us();
 
     if ((previous_size - remaining.size()) < batch_ids.size()) {
