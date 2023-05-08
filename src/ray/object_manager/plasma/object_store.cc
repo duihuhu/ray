@@ -70,10 +70,10 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
 }
 
 const LocalObject *ObjectStore::GetObject(const ObjectID &object_id) const {
-  RAY_LOG(DEBUG) << "ObjectStore GetObject " << object_id;
+  auto ts_get_object = current_sys_time_us();
+  RAY_LOG(DEBUG) << "object store get object start time " << object_id << " " << ts_get_object;
   auto it = object_table_.find(object_id);
   if (it == object_table_.end()) {
-    RAY_LOG(DEBUG) << "ObjectStore GetObject nullptr " << object_id ;
     return nullptr;
   }
   return it->second.get();
