@@ -376,7 +376,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     }
     auto ts_fetch_plasma = current_sys_time_us();
-    RAY_LOG(DEBUG) << " first fetch and get plasma 1 " << object_ids[0] << " " << ts_fetch_plasma;
+    RAY_LOG(DEBUG) << " first fetch and get plasma 1 " << id_vector[0] << " " << ts_fetch_plasma;
 
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
@@ -396,7 +396,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  batch_rem_ip_address));
   }
   auto t2_out = current_sys_time_us();
-  RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << object_ids[0] << " " << t2_out;
+  RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
 
   // auto te_get_obj_local_plasma = current_sys_time_us();
   // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
@@ -406,7 +406,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     return UnblockIfNeeded(raylet_client_, ctx);
   }
   auto t3_out = current_sys_time_us();
-  RAY_LOG(DEBUG) << " first fetch and get plasma 3 " << object_ids[0] << " " << t3_out;
+  RAY_LOG(DEBUG) << " first fetch and get plasma 3 " << id_vector[0] << " " << t3_out;
 
   // If not all objects were successfully fetched, repeatedly call FetchOrReconstruct
   // and Get from the local object store in batches. This loop will run indefinitely
