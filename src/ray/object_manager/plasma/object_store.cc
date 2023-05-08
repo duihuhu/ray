@@ -71,11 +71,12 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
 
 const LocalObject *ObjectStore::GetObject(const ObjectID &object_id) const {
   auto ts_get_object = current_sys_time_us();
-  RAY_LOG(DEBUG) << "object store get object start time " << object_id << " " << ts_get_object;
   auto it = object_table_.find(object_id);
   if (it == object_table_.end()) {
+    RAY_LOG(DEBUG) << "object store get object start time not found" << object_id << " " << ts_get_object;
     return nullptr;
   }
+  RAY_LOG(DEBUG) << "object store get object start time found" << object_id << " " << ts_get_object;
   return it->second.get();
 }
 
@@ -149,7 +150,6 @@ void ObjectStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   auto it = object_table_.find(object_info.object_id);
   if(it!=object_table_.end())
     return;
-  RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table pair " << object_info.object_id << " " << pair.first->object_info.GetObjectSize();
   auto ptr = std::make_unique<LocalObject>(std::move(pair.first->GetAllocation()));
   
   auto entry = object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
@@ -159,6 +159,8 @@ void ObjectStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   entry->construct_duration = std::time(nullptr) -  pair.first->create_time;
   entry->source = pair.first->GetSource();
   // RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table " << entry->object_info.GetObjectSize() << " " << object_table_[object_info.object_id]->object_info.GetObjectSize();
+  auto te_insert_table = current_sys_time_us();
+  RAY_LOG(DEBUG) << "insert object to object_table " << object_info.object_id << " " << te_insert_table;
 
 }
 
