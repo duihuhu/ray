@@ -56,7 +56,7 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> ObjectLifecycleManager::Cre
     return {nullptr, PlasmaError::OutOfMemory};
   }
   
-  eviction_policy_->ObjectCreatedBySize(object_info.object_id, object_info.data_size + object_info.metadata_size);
+  // eviction_policy_->ObjectCreatedBySize(object_info.object_id, object_info.data_size + object_info.metadata_size);
   stats_collector_.OnObjectCreated(*entry);
 
   return {entry, PlasmaError::OK};
