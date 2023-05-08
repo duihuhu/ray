@@ -73,10 +73,10 @@ const LocalObject *ObjectStore::GetObject(const ObjectID &object_id) const {
   auto ts_get_object = current_sys_time_us();
   auto it = object_table_.find(object_id);
   if (it == object_table_.end()) {
-    RAY_LOG(DEBUG) << "object store get object start time not found" << object_id << " " << ts_get_object;
+    RAY_LOG(DEBUG) << "object store get object start time not found " << object_id << " " << ts_get_object;
     return nullptr;
   }
-  RAY_LOG(DEBUG) << "object store get object start time found" << object_id << " " << ts_get_object;
+  RAY_LOG(DEBUG) << "object store get object start time found " << object_id << " " << ts_get_object;
   return it->second.get();
 }
 
