@@ -1690,6 +1690,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   std::vector<ObjectRdmaInfo> object_rdma_info;
 
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
+  auto ts_seri_object = current_sys_time_us();
   const auto refs =
       FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
@@ -1698,6 +1699,8 @@ void NodeManager::ProcessFetchOrReconstructMessage(
  
   FlatbufferToObjectReferenceWithMeta(*message->object_ids(), *message->virt_address(), *message->object_sizes(), *message->object_meta_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
                                       *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), *message->rem_ip_address(), object_rdma_info);
+  auto te_seri_object = current_sys_time_us();
+  RAY_LOG(DEBUG)<<" object seri cost " << te_seri_object - ts_seri_object << " " << te_seri_object << " " << object_rdma_info[0].object_info.object_id;
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
 
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
@@ -1722,12 +1725,12 @@ void NodeManager::ProcessFetchOrReconstructMessage(
       // objects are local, or if the worker dies.
       // dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
     //hucc time for get obj from remote plasma
-      auto ts_get_obj_remote_rdma = current_sys_time_us();
+      // auto ts_get_obj_remote_rdma = current_sys_time_us();
       // object_manager_rdma_.PrintRemoteRdmaInfo();
       object_manager_rdma_.InsertObjectInQueue(object_rdma_info);
       // object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);
       // dependency_manager_.InsertObjectLocal(object_info);
-      auto te_get_obj_remote_rdma = current_sys_time_us();
+      // auto te_get_obj_remote_rdma = current_sys_time_us();
 
       // RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
 
@@ -1737,13 +1740,13 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     // subscribe to in the task dependency manager. These objects will be
     // pulled from remote node managers. If an object's owner dies, an error
     // will be stored as the object's value.
-    auto ts_get_obj_remote_rdma = current_sys_time_us();
+    // auto ts_get_obj_remote_rdma = current_sys_time_us();
     // object_manager_rdma_.PrintRemoteRdmaInfo();
     object_manager_rdma_.InsertObjectInQueue(object_rdma_info);
 
     // object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);
     // dependency_manager_.InsertObjectLocal(object_info);
-    auto te_get_obj_remote_rdma = current_sys_time_us();
+    // auto te_get_obj_remote_rdma = current_sys_time_us();
     // RAY_LOG(WARNING) << "hucc time for get obj from rdma in process fetch or reconstruct message time " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
 
     // const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
