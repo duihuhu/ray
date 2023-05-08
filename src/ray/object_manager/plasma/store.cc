@@ -306,7 +306,7 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> PlasmaStore::CreateObjectRd
   // ProcessCreateRequests();
   // ReplyToCreateClient(client, object_id, req_id);
   
-  // absl::MutexLock lock(&mutex_);
+  absl::MutexLock lock(&mutex_);
   // RAY_LOG(DEBUG) << "before CreateObjectRdma address ";
 
   auto pair = object_lifecycle_mgr_.CreateObjectRdma(object_info, source, fallback_allocator);
@@ -320,7 +320,7 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> PlasmaStore::CreateObjectRd
 //   // Record that this client is using this object.
   // AddToClientObjectIds(object_info.object_id, client);
   //may be used
-  // RAY_CHECK(object_lifecycle_mgr_.AddReferenceRdma(object_info.object_id, entry));
+  RAY_CHECK(object_lifecycle_mgr_.AddReferenceRdma(object_info.object_id, entry));
 
 //   return PlasmaError::OK;
   return pair;
@@ -332,6 +332,7 @@ void PlasmaStore::InsertObjectInfo(const absl::optional<Allocation>& allocation 
 
 
 void PlasmaStore::InsertObjectInfoThread(const Allocation& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair) {
+  absl::MutexLock lock(&mutex_);
   object_lifecycle_mgr_.InsertObjectInfoThread(allocation, object_info, pair);
   RAY_CHECK(object_lifecycle_mgr_.AddReferenceRdma(object_info.object_id, pair.first));
 }

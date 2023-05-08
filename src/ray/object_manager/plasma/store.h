@@ -114,13 +114,13 @@ class PlasmaStore {
   }
 
   void InsertObjectInfo(const absl::optional<Allocation>& allocation, const ray::ObjectInfo &object_info);
-  void InsertObjectInfoThread(const Allocation& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair);
+  void InsertObjectInfoThread(const Allocation& allocation , const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair)EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
 
   std::pair<const LocalObject *, flatbuf::PlasmaError> CreateObjectRdma(const ray::ObjectInfo &object_info,
                                     plasma::flatbuf::ObjectSource source,
                                     bool fallback_allocator,
-                                    PlasmaObject *result);
+                                    PlasmaObject *result)EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
  private:
   /// Create a new object. The client must do a call to release_object to tell
