@@ -375,8 +375,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       batch_rem_ip_address.push_back(rem_ip_address_vector[start + i]);
 
     }
-    auto ts_fetch_plasma = current_sys_time_us();
-    RAY_LOG(DEBUG) << " first fetch and get plasma 1 " << id_vector[0] << " " << ts_fetch_plasma;
+    // auto ts_fetch_plasma = current_sys_time_us();
+    // RAY_LOG(DEBUG) << " first fetch and get plasma 1 " << batch_ids[0] << " " << ts_fetch_plasma;
 
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
@@ -396,7 +396,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  batch_rem_ip_address));
   }
   auto t2_out = current_sys_time_us();
-  RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
+  // RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
 
   // auto te_get_obj_local_plasma = current_sys_time_us();
   // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
