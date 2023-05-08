@@ -115,7 +115,8 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			object_manager_.InsertObjectInfoThread(allocation, object_info, pair);
 			dependency_manager_->InsertObjectInfo(object_info);
 			auto ts_fetch_object_end = current_sys_time_us();
-			RAY_LOG(DEBUG) << "plasma client fetch object id start: " << object_info.object_id << " " << ts_fetch_object_end;
+			// RAY_LOG(DEBUG) << "plasma client fetch object id start: " << object_info.object_id << " " << ts_fetch_object_end;
+			RAY_LOG(DEBUG) << "plasma client fetch object id start: " << object_info.object_id << " " << ts_fetch_object_end << " " << ts_fetch_rdma << " " << te_fetch_object_post_send << " " << start_time;
 
     }
 		if ( wc.status != IBV_WC_SUCCESS) {
