@@ -457,7 +457,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       }
       auto it = plasma_node_virt_info_.find(id);
       if (it == plasma_node_virt_info_.end()) {
-        RAY_LOG(ERROR) << " object info not found";
+        RAY_LOG(ERROR) << " object info not found " << id;
         waiting_info.insert(id);
         remaining.erase(id);
         continue;

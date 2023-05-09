@@ -84,7 +84,7 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
           const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(data.data())),
           data.size());
     } else {
-      RAY_LOG(DEBUG) << "Object not returned directly in GetObjectStatus reply, "
+      RAY_LOG(ERROR) << "Object not returned directly in GetObjectStatus reply, "
                      << object_id << " will have to be fetched from Plasma" << " reply object_size " << reply.object_size() << " virt_address " << reply.virt_address()
                      << " reply object info " << reply.metadata_size() << " " << owner_address.ip_address();
       auto it = plasma_node_virt_info_.find(object_id);
