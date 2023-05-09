@@ -499,10 +499,14 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     auto ts_get_obj_remote_plasma_median = current_sys_time_us();
 
-    for (auto it: waiting_info) {
-      remaining.insert(id);
+    if (!waiting_info.emtpy()) {
+      for (auto it: waiting_info) {
+        remaining.insert(id);
+      }
+      waiting_info.clear();
     }
-    waiting_info.clear();
+
+
     if ((previous_size - remaining.size()) < batch_ids.size()) {
       WarnIfFetchHanging(fetch_start_time_ms, remaining);
     }
