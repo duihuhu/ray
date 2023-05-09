@@ -322,7 +322,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<ray::WorkerID> batch_owner_worker_id;
   
   std::vector<std::string> batch_rem_ip_address;
-  RAY_LOG(ERROR) << " object get start 1 ";
 
   absl::flat_hash_set<ObjectID> remaining(object_ids.begin(), object_ids.end());
 
@@ -340,13 +339,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<ray::WorkerID> owner_worker_id_vector;
   
   std::vector<std::string> rem_ip_address_vector;
-  RAY_LOG(ERROR) << " object get start 2 ";
 
   for (auto &entry: id_vector) {
-    RAY_LOG(ERROR) << " object info time find ";
     auto it = plasma_node_virt_info_.find(entry);
-    RAY_LOG(ERROR) << " object info time after find ";
-
     virt_address_vector.push_back(it->second.first.first);
     object_size_vector.push_back(it->second.second.data_size);
     object_meta_size_vector.push_back(it->second.second.metadata_size);
@@ -357,6 +352,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     rem_ip_address_vector.push_back(it->second.first.second);
 
   }
+  RAY_LOG(ERROR) << " object info time after find ";
 
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
@@ -412,6 +408,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   if (remaining.empty() || *got_exception) {
     return UnblockIfNeeded(raylet_client_, ctx);
   }
+  RAY_LOG(ERROR) << " object info time after find 1";
+
   auto t3_out = current_sys_time_us();
   // RAY_LOG(DEBUG) << " first fetch and get plasma 3 " << id_vector[0] << " " << t3_out;
 
@@ -422,7 +420,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   bool timed_out = false;
   int64_t remaining_timeout = timeout_ms;
   auto fetch_start_time_ms = current_time_ms();
-  RAY_LOG(ERROR) << " object info time before while ";
+  RAY_LOG(ERROR) << " object info time after find 2";
 
   while (!remaining.empty() && !should_break) {
     auto t1 = current_sys_time_us();
@@ -435,19 +433,14 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     batch_owner_port.clear();
     batch_owner_worker_id.clear();
     batch_rem_ip_address.clear();
-    RAY_LOG(ERROR) << " object info time before plasma_node_virt_info_ ";
+    RAY_LOG(ERROR) << " object info time after find 3";
 
     for (const auto &id : remaining) {
       if (int64_t(batch_ids.size()) == batch_size) {
         break;
       }
-      batch_ids.push_back(id);
       auto it = plasma_node_virt_info_.find(id);
-      if (it == plasma_node_virt_info_.end())
-      {
-        continue;
-      }
-
+      batch_ids.push_back(id);
       batch_virt_address.push_back(it->second.first.first);
       batch_object_size.push_back(it->second.second.data_size);
       batch_object_meta_size.push_back(it->second.second.metadata_size);
@@ -458,7 +451,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       batch_rem_ip_address.push_back(it->second.first.second);
 
     }
-    RAY_LOG(ERROR) << " object info time after plasma_node_virt_info_ ";
+    RAY_LOG(ERROR) << " object info time after find 4";
 
     int64_t batch_timeout = std::max(RayConfig::instance().get_timeout_milliseconds(),
                                      int64_t(10 * batch_ids.size()));
