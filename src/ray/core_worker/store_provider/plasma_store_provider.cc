@@ -420,7 +420,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   int64_t remaining_timeout = timeout_ms;
   auto fetch_start_time_ms = current_time_ms();
   RAY_LOG(ERROR) << " object info time after find 2";
-
+  absl::flat_hash_set<ObjectID> waiting_info;
   while (!remaining.empty() && !should_break) {
     auto t1 = current_sys_time_us();
     batch_ids.clear();
@@ -440,7 +440,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       }
       auto it = plasma_node_virt_info_.find(id);
       if (it == plasma_node_virt_info_.end()) {
-        RAY_LOG(ERROR) << " object info time after not find";
+        waiting_info.insert(id);
+        remaining.earse(id);
+        continue;
       }
       batch_ids.push_back(id);
       batch_virt_address.push_back(it->second.first.first);
@@ -497,6 +499,10 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     auto ts_get_obj_remote_plasma_median = current_sys_time_us();
 
+    for (auto it: waiting_info) {
+      remaining.insert(id);
+    }
+    waiting_info.clear();
     if ((previous_size - remaining.size()) < batch_ids.size()) {
       WarnIfFetchHanging(fetch_start_time_ms, remaining);
     }
