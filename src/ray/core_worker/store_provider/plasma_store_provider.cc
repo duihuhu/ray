@@ -341,7 +341,10 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<std::string> rem_ip_address_vector;
 
   for (auto &entry: id_vector) {
+    RAY_LOG(ERROR) << " object info time find ";
     auto it = plasma_node_virt_info_.find(entry);
+    RAY_LOG(ERROR) << " object info time after find ";
+
     virt_address_vector.push_back(it->second.first.first);
     object_size_vector.push_back(it->second.second.data_size);
     object_meta_size_vector.push_back(it->second.second.metadata_size);
