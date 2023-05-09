@@ -181,7 +181,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
   auto t1 = current_sys_time_us();
-  RAY_LOG(ERROR) << " raylet client send " << t1 << " " << batch_ids[0];
+  RAY_LOG(DEBUG) << " raylet client send " << t1 << " " << batch_ids[0];
   RAY_RETURN_NOT_OK(
       raylet_client_->FetchOrReconstruct(batch_ids,
                                          owner_addresses,
@@ -239,7 +239,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
   }
   auto t4 = current_sys_time_us();
 
-  RAY_LOG(ERROR) << "FetchAndGetFromPlasmaStore: " << t4 - t3 << " " << t3 - t2 << " " << t2-t1 << " " <<batch_ids[0];
+  RAY_LOG(DEBUG) << "FetchAndGetFromPlasmaStore: " << t4 - t3 << " " << t3 - t2 << " " << t2-t1 << " " <<batch_ids[0];
 
   return Status::OK();
 }
