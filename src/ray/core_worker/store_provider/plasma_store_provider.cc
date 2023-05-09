@@ -349,7 +349,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       waiting_info.insert(entry);
       remaining.erase(entry);
       RAY_LOG(ERROR) << " object find 1 ";
-
       continue;
     }
     virt_address_vector.push_back(it->second.first.first);
@@ -430,6 +429,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   int64_t remaining_timeout = timeout_ms;
   auto fetch_start_time_ms = current_time_ms();
   // RAY_LOG(ERROR) << " object info time after find 2";
+  RAY_LOG(ERROR) << " object find 2";
 
   if (!waiting_info.empty()) {
     for (auto it: waiting_info) {
@@ -437,6 +437,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
     waiting_info.clear();
   }
+  RAY_LOG(ERROR) << " object find 3";
 
   while (!remaining.empty() && !should_break) {
     auto t1 = current_sys_time_us();
