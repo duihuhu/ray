@@ -345,10 +345,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   for (auto entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     if (it == plasma_node_virt_info_.end()) {
-      RAY_LOG(ERROR) << " object find ";
       waiting_info.insert(entry);
       remaining.erase(entry);
-      RAY_LOG(ERROR) << " object find 1 ";
       continue;
     }
     virt_address_vector.push_back(it->second.first.first);
@@ -412,7 +410,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   auto t2_out = current_sys_time_us();
   // RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
 
-  RAY_LOG(ERROR) << " object find 2";
 
   if (!waiting_info.empty()) {
     for (auto it: waiting_info) {
@@ -420,7 +417,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     }
     waiting_info.clear();
   }
-  RAY_LOG(ERROR) << " object find 3";
   // auto te_get_obj_local_plasma = current_sys_time_us();
   // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
   // If all objects were fetched already, return. Note that we always need to
@@ -477,7 +473,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     }
     // RAY_LOG(ERROR) << " object info time after find 4";
-
+    if (remaining.empty()){
+      continue;
+    }
     int64_t batch_timeout = std::max(RayConfig::instance().get_timeout_milliseconds(),
                                      int64_t(10 * batch_ids.size()));
     if (remaining_timeout >= 0) {
