@@ -306,6 +306,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>> &plasma_node_virt_info_) {
   int64_t batch_size = RayConfig::instance().worker_fetch_request_size();
   //hucc time for get obj from local plasma
+  RAY_LOG(ERROR) << " object get start ";
+
   auto t1_out = current_sys_time_us();
 
   // auto ts_get_obj_local_plasma = current_sys_time_us();
