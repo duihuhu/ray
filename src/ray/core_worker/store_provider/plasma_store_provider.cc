@@ -355,7 +355,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   RAY_LOG(ERROR) << " object info time after find ";
 
   for (int64_t start = 0; start < total_size; start += batch_size) {
-    RAY_LOG(ERROR) << " object info time after find 1";
     batch_ids.clear();
     batch_virt_address.clear();
     batch_object_size.clear();
@@ -365,7 +364,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     batch_owner_port.clear();
     batch_owner_worker_id.clear();
     batch_rem_ip_address.clear();
-    RAY_LOG(ERROR) << " object info time after find 11";
 
     for (int64_t i = start; i < batch_size && i < total_size; i++) {
       batch_ids.push_back(id_vector[start + i]);
@@ -441,6 +439,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
         break;
       }
       auto it = plasma_node_virt_info_.find(id);
+      if (it == plasma_node_virt_info_.end()) {
+        RAY_LOG(ERROR) << " object info time after not find";
+      }
       batch_ids.push_back(id);
       batch_virt_address.push_back(it->second.first.first);
       batch_object_size.push_back(it->second.second.data_size);
