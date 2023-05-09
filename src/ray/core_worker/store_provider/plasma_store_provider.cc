@@ -446,7 +446,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       batch_rem_ip_address.push_back(it->second.first.second);
 
     }
-    // RAY_LOG(ERROR) << " object info time after plasma_node_virt_info_ ";
+    RAY_LOG(ERROR) << " object info time after plasma_node_virt_info_ ";
 
     int64_t batch_timeout = std::max(RayConfig::instance().get_timeout_milliseconds(),
                                      int64_t(10 * batch_ids.size()));
