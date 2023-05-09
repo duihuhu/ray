@@ -78,7 +78,7 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
     const auto &data = reply.object().data();
     std::shared_ptr<LocalMemoryBuffer> data_buffer;
     if (data.size() > 0) {
-      RAY_LOG(DEBUG) << "Object returned directly in GetObjectStatus reply, putting "
+      RAY_LOG(ERROR) << "Object returned directly in GetObjectStatus reply, putting "
                      << object_id << " in memory store";
       data_buffer = std::make_shared<LocalMemoryBuffer>(
           const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(data.data())),
