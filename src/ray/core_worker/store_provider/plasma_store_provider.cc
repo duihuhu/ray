@@ -362,7 +362,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
   }
   // RAY_LOG(ERROR) << " object info time after find 1";
-  if (!remaining.emtpy()) {
+  if (!remaining.empty()) {
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
     batch_virt_address.clear();
