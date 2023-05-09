@@ -322,6 +322,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<ray::WorkerID> batch_owner_worker_id;
   
   std::vector<std::string> batch_rem_ip_address;
+  RAY_LOG(ERROR) << " object get start 1 ";
 
   absl::flat_hash_set<ObjectID> remaining(object_ids.begin(), object_ids.end());
 
@@ -339,6 +340,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<ray::WorkerID> owner_worker_id_vector;
   
   std::vector<std::string> rem_ip_address_vector;
+  RAY_LOG(ERROR) << " object get start 2 ";
 
   for (auto &entry: id_vector) {
     RAY_LOG(ERROR) << " object info time find ";
