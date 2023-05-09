@@ -339,7 +339,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<ray::WorkerID> owner_worker_id_vector;
   
   std::vector<std::string> rem_ip_address_vector;
-
+  RAY_LOG(ERROR) << " object info time after find ";
   for (auto &entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     virt_address_vector.push_back(it->second.first.first);
@@ -352,7 +352,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     rem_ip_address_vector.push_back(it->second.first.second);
 
   }
-  RAY_LOG(ERROR) << " object info time after find ";
+  RAY_LOG(ERROR) << " object info time after find 1";
 
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
@@ -420,7 +420,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   int64_t remaining_timeout = timeout_ms;
   auto fetch_start_time_ms = current_time_ms();
   RAY_LOG(ERROR) << " object info time after find 2";
-  absl::flat_hash_set<ObjectID> waiting_info;
+  // absl::flat_hash_set<ObjectID> waiting_info;
   while (!remaining.empty() && !should_break) {
     auto t1 = current_sys_time_us();
     batch_ids.clear();
@@ -439,11 +439,11 @@ Status CoreWorkerPlasmaStoreProvider::Get(
         break;
       }
       auto it = plasma_node_virt_info_.find(id);
-      if (it == plasma_node_virt_info_.end()) {
-        waiting_info.insert(id);
-        remaining.erase(id);
-        continue;
-      }
+      // if (it == plasma_node_virt_info_.end()) {
+      //   waiting_info.insert(id);
+      //   remaining.erase(id);
+      //   continue;
+      // }
       batch_ids.push_back(id);
       batch_virt_address.push_back(it->second.first.first);
       batch_object_size.push_back(it->second.second.data_size);
@@ -499,12 +499,12 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     auto ts_get_obj_remote_plasma_median = current_sys_time_us();
 
-    if (!waiting_info.empty()) {
-      for (auto it: waiting_info) {
-        remaining.insert(it);
-      }
-      waiting_info.clear();
-    }
+    // if (!waiting_info.empty()) {
+    //   for (auto it: waiting_info) {
+    //     remaining.insert(it);
+    //   }
+    //   waiting_info.clear();
+    // }
 
 
     if ((previous_size - remaining.size()) < batch_ids.size()) {
