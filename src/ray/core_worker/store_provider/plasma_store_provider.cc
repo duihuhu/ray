@@ -362,7 +362,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
   }
   // RAY_LOG(ERROR) << " object info time after find 1";
-
+  if (!remaining.emtpy()) {
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
     batch_virt_address.clear();
@@ -406,6 +406,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  batch_owner_port,
                                                  batch_owner_worker_id,
                                                  batch_rem_ip_address));
+  }
+  
   }
   auto t2_out = current_sys_time_us();
   // RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
