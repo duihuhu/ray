@@ -338,6 +338,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   
   std::vector<std::string> rem_ip_address_vector;
 
+  RAY_LOG(DEBUG) << " before plasma_node_virt_info_ ";
+
   for (auto &entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     virt_address_vector.push_back(it->second.first.first);
@@ -350,6 +352,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     rem_ip_address_vector.push_back(it->second.first.second);
 
   }
+  RAY_LOG(DEBUG) << " after plasma_node_virt_info_ ";
 
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
