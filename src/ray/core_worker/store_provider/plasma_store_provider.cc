@@ -420,6 +420,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
   while (!remaining.empty() && !should_break) {
     auto t1 = current_sys_time_us();
+    RAY_LOG(ERROR) << " object info time in while ";
+
     batch_ids.clear();
     batch_virt_address.clear();
     batch_object_size.clear();
@@ -429,6 +431,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     batch_owner_port.clear();
     batch_owner_worker_id.clear();
     batch_rem_ip_address.clear();
+    RAY_LOG(ERROR) << " object info time before plasma_node_virt_info_ ";
 
     for (const auto &id : remaining) {
       if (int64_t(batch_ids.size()) == batch_size) {
