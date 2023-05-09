@@ -501,7 +501,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     if (!waiting_info.emtpy()) {
       for (auto it: waiting_info) {
-        remaining.insert(id);
+        remaining.insert(it);
       }
       waiting_info.clear();
     }
