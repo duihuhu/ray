@@ -441,7 +441,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       auto it = plasma_node_virt_info_.find(id);
       if (it == plasma_node_virt_info_.end()) {
         waiting_info.insert(id);
-        remaining.earse(id);
+        remaining.erase(id);
         continue;
       }
       batch_ids.push_back(id);
@@ -499,7 +499,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
     auto ts_get_obj_remote_plasma_median = current_sys_time_us();
 
-    if (!waiting_info.emtpy()) {
+    if (!waiting_info.empty()) {
       for (auto it: waiting_info) {
         remaining.insert(it);
       }
