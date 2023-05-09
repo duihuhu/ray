@@ -355,6 +355,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   RAY_LOG(ERROR) << " object info time after find ";
 
   for (int64_t start = 0; start < total_size; start += batch_size) {
+    RAY_LOG(ERROR) << " object info time after find 1";
     batch_ids.clear();
     batch_virt_address.clear();
     batch_object_size.clear();
@@ -364,6 +365,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     batch_owner_port.clear();
     batch_owner_worker_id.clear();
     batch_rem_ip_address.clear();
+    RAY_LOG(ERROR) << " object info time after find 11";
 
     for (int64_t i = start; i < batch_size && i < total_size; i++) {
       batch_ids.push_back(id_vector[start + i]);
@@ -408,7 +410,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   if (remaining.empty() || *got_exception) {
     return UnblockIfNeeded(raylet_client_, ctx);
   }
-  RAY_LOG(ERROR) << " object info time after find 1";
 
   auto t3_out = current_sys_time_us();
   // RAY_LOG(DEBUG) << " first fetch and get plasma 3 " << id_vector[0] << " " << t3_out;
