@@ -337,6 +337,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<ray::WorkerID> owner_worker_id_vector;
   
   std::vector<std::string> rem_ip_address_vector;
+  RAY_LOG(WARNING) << " object info time before ";
 
   for (auto &entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
