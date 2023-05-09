@@ -345,8 +345,11 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   for (auto entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     if (it == plasma_node_virt_info_.end()) {
-      waiting_info.insert(*entry);
-      remaining.erase(*entry);
+      RAY_LOG(ERROR) << " object find ";
+      waiting_info.insert(entry);
+      remaining.erase(entry);
+      RAY_LOG(ERROR) << " object find 1 ";
+
       continue;
     }
     virt_address_vector.push_back(it->second.first.first);
