@@ -436,6 +436,11 @@ Status CoreWorkerPlasmaStoreProvider::Get(
       }
       batch_ids.push_back(id);
       auto it = plasma_node_virt_info_.find(id);
+      if (it == plasma_node_virt_info_.end())
+      {
+        continue;
+      }
+
       batch_virt_address.push_back(it->second.first.first);
       batch_object_size.push_back(it->second.second.data_size);
       batch_object_meta_size.push_back(it->second.second.metadata_size);
