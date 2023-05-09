@@ -412,6 +412,15 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   auto t2_out = current_sys_time_us();
   // RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
 
+  RAY_LOG(ERROR) << " object find 2";
+
+  if (!waiting_info.empty()) {
+    for (auto it: waiting_info) {
+      remaining.insert(it);
+    }
+    waiting_info.clear();
+  }
+  RAY_LOG(ERROR) << " object find 3";
   // auto te_get_obj_local_plasma = current_sys_time_us();
   // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
   // If all objects were fetched already, return. Note that we always need to
@@ -431,15 +440,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   int64_t remaining_timeout = timeout_ms;
   auto fetch_start_time_ms = current_time_ms();
   // RAY_LOG(ERROR) << " object info time after find 2";
-  RAY_LOG(ERROR) << " object find 2";
 
-  if (!waiting_info.empty()) {
-    for (auto it: waiting_info) {
-      remaining.insert(it);
-    }
-    waiting_info.clear();
-  }
-  RAY_LOG(ERROR) << " object find 3";
 
   while (!remaining.empty() && !should_break) {
     auto t1 = current_sys_time_us();
