@@ -2639,7 +2639,7 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
     RAY_RETURN_NOT_OK(
         memory_store_->Get(by_ref_ids, -1, worker_context_, &result_map, &got_exception));
   } else {
-    RAY_LOG(DEBUG) << " get and pin args for executor ";
+    RAY_LOG(ERROR) << " get and pin args for executor ";
     RAY_RETURN_NOT_OK(plasma_store_provider_->Get(
         by_ref_ids, -1, worker_context_, &result_map, &got_exception, future_resolver_->plasma_node_virt_info_));
   }
