@@ -1119,7 +1119,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
   auto ts_get_obj_cw = current_sys_time_us();
-  RAY_LOG(ERROR) << "core worker get object start " << ts_get_obj_cw << " " << ids[0];
+  RAY_LOG(DEBUG) << "core worker get object start " << ts_get_obj_cw << " " << ids[0];
 
   results->resize(ids.size(), nullptr);
 

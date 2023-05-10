@@ -78,13 +78,13 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
     const auto &data = reply.object().data();
     std::shared_ptr<LocalMemoryBuffer> data_buffer;
     if (data.size() > 0) {
-      RAY_LOG(ERROR) << "Object returned directly in GetObjectStatus reply, putting "
+      RAY_LOG(DEBUG) << "Object returned directly in GetObjectStatus reply, putting "
                      << object_id << " in memory store";
       data_buffer = std::make_shared<LocalMemoryBuffer>(
           const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(data.data())),
           data.size());
     } else {
-      RAY_LOG(ERROR) << "Object not returned directly in GetObjectStatus reply, "
+      RAY_LOG(DEBUG) << "Object not returned directly in GetObjectStatus reply, "
                      << object_id << " will have to be fetched from Plasma" << " reply object_size " << reply.object_size() << " virt_address " << reply.virt_address()
                      << " reply object info " << reply.metadata_size() << " " << owner_address.ip_address();
       auto it = plasma_node_virt_info_.find(object_id);
