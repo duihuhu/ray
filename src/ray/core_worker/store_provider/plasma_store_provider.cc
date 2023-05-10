@@ -306,7 +306,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>> &plasma_node_virt_info_) {
   int64_t batch_size = RayConfig::instance().worker_fetch_request_size();
   //hucc time for get obj from local plasma
-  // RAY_LOG(ERROR) << " object get start ";
 
   auto t1_out = current_sys_time_us();
 
@@ -327,6 +326,8 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
   // First, attempt to fetch all of the required objects once without reconstructing.
   std::vector<ObjectID> id_vector(object_ids.begin(), object_ids.end());
+  RAY_LOG(ERROR) << " object get start " << id_vector[0];
+
   int64_t total_size = static_cast<int64_t>(object_ids.size());
   
   std::vector<unsigned long> virt_address_vector;
