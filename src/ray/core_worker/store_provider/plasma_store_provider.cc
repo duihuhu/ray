@@ -549,10 +549,14 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
   // absl::flat_hash_set<ObjectID> waiting_info;
 
   // RAY_LOG(ERROR) << " object info time after find ";
+  absl::flat_hash_set<ObjectID> wait_info;
   for (auto entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     if (it == plasma_node_virt_info_.end()) {
       RAY_LOG(ERROR)<<"not found " << entry;
+      wait_info.insert(entry);
+      remaining.erase(entry);
+      continue;
     }
     virt_address_vector.push_back(it->second.first.first);
     object_size_vector.push_back(it->second.second.data_size);
@@ -565,6 +569,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
 
   }
   // RAY_LOG(ERROR) << " object info time after find 1";
+  if(!remaining.empty()) {
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
     batch_virt_address.clear();
@@ -609,10 +614,14 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
                                                  batch_owner_worker_id,
                                                  batch_rem_ip_address));
   }
-  
+  }
   auto t2_out = current_sys_time_us();
   // RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
 
+  for (auto entry: wait_info) {
+    remaining.insert(entry);
+  }
+  wait_info.clear();
   // auto te_get_obj_local_plasma = current_sys_time_us();
   // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
   // If all objects were fetched already, return. Note that we always need to
@@ -652,6 +661,12 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
         break;
       }
       auto it = plasma_node_virt_info_.find(id);
+      if (it == plasma_node_virt_info_.end()) {
+        RAY_LOG(ERROR)<<"not found " << id;
+        wait_info.insert(id);
+        remaining.erase(id);
+        continue;
+      }
       batch_ids.push_back(id);
       batch_virt_address.push_back(it->second.first.first);
       batch_object_size.push_back(it->second.second.data_size);
@@ -688,7 +703,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
     //hucc time for get obj from remote plasma
     auto ts_get_obj_remote_plasma = current_sys_time_us();
     // RAY_LOG(WARNING) << "CoreWorkerPlasmaStoreProvider Get remaining empty" << remaining.empty() << " should_break " << should_break;
-
+    if(!remaining.empty()) {
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStoreRDMA(remaining,
                                                  batch_ids,
                                                  10,
@@ -705,10 +720,15 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
                                                  batch_owner_port,
                                                  batch_owner_worker_id,
                                                  batch_rem_ip_address));
-    should_break = timed_out || *got_exception;
 
+    should_break = timed_out || *got_exception;
+    }
     auto ts_get_obj_remote_plasma_median = current_sys_time_us();
 
+    for (auto entry: wait_info) {
+      remaining.insert(entry);
+    }
+    wait_info.clear();
     if ((previous_size - remaining.size()) < batch_ids.size()) {
       WarnIfFetchHanging(fetch_start_time_ms, remaining);
     }
