@@ -1738,7 +1738,7 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
 
   std::vector<ObjectRdmaInfo> object_rdma_info;
 
-  auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
+  auto message = flatbuffers::GetRoot<protocol::FetchOrReconstructRDMA>(message_data);
   auto ts_seri_object = current_sys_time_us();
   // const auto refs =
   //     FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
