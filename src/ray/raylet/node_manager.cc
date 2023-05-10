@@ -1325,6 +1325,9 @@ void NodeManager::ProcessClientMessage(const std::shared_ptr<ClientConnection> &
   case protocol::MessageType::FetchOrReconstruct: {
     ProcessFetchOrReconstructMessage(client, message_data);
   } break;
+  case protocol::MessageType::FetchOrReconstructRDMA: {
+    ProcessFetchOrReconstructRDMAMessage(client, message_data);
+  } break;
   case protocol::MessageType::NotifyDirectCallTaskBlocked: {
     ProcessDirectCallTaskBlocked(client, message_data);
   } break;
@@ -1673,7 +1676,7 @@ void NodeManager::ProcessDisconnectClientMessage(
       client, disconnect_type, disconnect_detail, creation_task_exception.get());
 }
 
-void NodeManager::ProcessFetchOrReconstructMessage(
+void NodeManager::ProcessFetchOrReconstructRDMAMessage(
     const std::shared_ptr<ClientConnection> &client, const uint8_t *message_data) {
   std::thread::id tid = std::this_thread::get_id();
 	RAY_LOG(DEBUG) << "node manager id " << tid;
@@ -1691,8 +1694,8 @@ void NodeManager::ProcessFetchOrReconstructMessage(
 
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
   auto ts_seri_object = current_sys_time_us();
-  const auto refs =
-      FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
+  // const auto refs =
+  //     FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
   // FlatbufferToObjectReferenceWithMeta(*message->object_ids(), *message->virt_address(), *message->object_sizes(), *message->object_meta_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
   //                                     *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), *message->rem_ip_address(), object_virt_address, object_sizes, object_address, rem_ip_address, object_info, object_rdma_info);
