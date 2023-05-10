@@ -85,7 +85,7 @@ class ObjectStore : public IObjectStore {
 
   const LocalObject *CreateObject(const ray::ObjectInfo &object_info,
                                   plasma::flatbuf::ObjectSource source,
-                                  bool fallback_allocate, bool rdma) override;
+                                  bool fallback_allocate, bool rdma) EXCLUSIVE_LOCKS_REQUIRED(mutex_) override ;
 
   const LocalObject *GetObject(const ObjectID &object_id) const override;
 
@@ -107,8 +107,10 @@ class ObjectStore : public IObjectStore {
 
   LocalObject *GetMutableObject(const ObjectID &object_id);
 
+  mutable absl::Mutex mutex_;
   /// Allocator that allocates memory.
-  IAllocator &allocator_;
+  IAllocator &allocator_ GUARDED_BY(mutex_);;
+  
 
   /// Mapping from ObjectIDs to information about the object.
   absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> object_table_;
