@@ -1147,7 +1147,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   for (auto it = result_map.begin(); it != result_map.end();) {
     auto current = it++;
     if (current->second->IsInPlasmaError()) {
-      RAY_LOG(ERROR) << current->first << " in plasma, doing fetch-and-get";
+      RAY_LOG(DEBUG) << current->first << " in plasma, doing fetch-and-get";
       auto it_virt = future_resolver_->plasma_node_virt_info_.find(current->first);
       if (it_virt == future_resolver_->plasma_node_virt_info_.end()) {
         RAY_LOG(WARNING) << current->first << " has no information in  plasma_node_virt_info_";
@@ -2639,7 +2639,7 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
     RAY_RETURN_NOT_OK(
         memory_store_->Get(by_ref_ids, -1, worker_context_, &result_map, &got_exception));
   } else {
-    RAY_LOG(ERROR) << " get and pin args for executor ";
+    RAY_LOG(DEBUG) << " get and pin args for executor ";
     RAY_RETURN_NOT_OK(plasma_store_provider_->Get(
         by_ref_ids, -1, worker_context_, &result_map, &got_exception));
   }
