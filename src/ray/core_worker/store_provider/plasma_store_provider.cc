@@ -510,7 +510,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
     absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>> &plasma_node_virt_info_) {
   int64_t batch_size = RayConfig::instance().worker_fetch_request_size();
   //hucc time for get obj from local plasma
-  RAY_LOG(DEBUG) << " object get start ";
+  RAY_LOG(ERROR) << " object get start ";
 
   auto t1_out = current_sys_time_us();
 
@@ -549,6 +549,9 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
   // RAY_LOG(ERROR) << " object info time after find ";
   for (auto entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
+    if (it == plasma_node_virt_info_.end()) {
+      RAY_LOG(ERROR)<<"not found";
+    }
     virt_address_vector.push_back(it->second.first.first);
     object_size_vector.push_back(it->second.second.data_size);
     object_meta_size_vector.push_back(it->second.second.metadata_size);
