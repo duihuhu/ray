@@ -204,7 +204,7 @@ Status raylet::RayletClient::TaskDone() {
   return conn_->WriteMessage(MessageType::TaskDone);
 }
 
-Status raylet::RayletClient::FetchOrReconstruct(
+Status raylet::RayletClient::FetchOrReconstructRDMA(
     const std::vector<ObjectID> &object_ids,
     const std::vector<rpc::Address> &owner_addresses,
     bool fetch_only,

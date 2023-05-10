@@ -311,7 +311,7 @@ class RayletClient : public RayletClientInterface {
   /// \param mark_worker_blocked Set to false if current task is a direct call task.
   /// \param current_task_id The task that needs the objects.
   /// \return int 0 means correct, other numbers mean error.
-  ray::Status FetchOrReconstruct(const std::vector<ObjectID> &object_ids,
+  ray::Status FetchOrReconstructRDMA(const std::vector<ObjectID> &object_ids,
                                  const std::vector<rpc::Address> &owner_addresses,
                                  bool fetch_only,
                                  bool mark_worker_blocked,

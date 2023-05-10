@@ -169,6 +169,70 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
     bool in_direct_call,
     const TaskID &task_id,
     absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
+    bool *got_exception) {
+  const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
+  
+  //hucc breakdown get_object
+  // auto ts_breakdown_get_object = current_sys_time_us();
+  // for (size_t i = 0; i < batch_ids.size(); i++) {
+  //   const auto &object_id = batch_ids[i];
+  //   RAY_LOG(WARNING) << "hucc breakdown get_object raylet: " << ts_breakdown_get_object << " object_id: "<< object_id << " task_id: " << task_id <<"\n";
+  // }
+  //hucc end 
+
+  RAY_RETURN_NOT_OK(
+      raylet_client_->FetchOrReconstruct(batch_ids,
+                                         owner_addresses,
+                                         fetch_only,
+                                         /*mark_worker_blocked*/ !in_direct_call,
+                                         task_id));
+
+  std::vector<plasma::ObjectBuffer> plasma_results;
+  RAY_RETURN_NOT_OK(store_client_.Get(batch_ids,
+                                      timeout_ms,
+                                      &plasma_results,
+                                      /*is_from_worker=*/true));
+
+  // Add successfully retrieved objects to the result map and remove them from
+  // the set of IDs to get.
+  for (size_t i = 0; i < plasma_results.size(); i++) {
+    if (plasma_results[i].data != nullptr || plasma_results[i].metadata != nullptr) {
+      const auto &object_id = batch_ids[i];
+      std::shared_ptr<TrackedBuffer> data = nullptr;
+      std::shared_ptr<Buffer> metadata = nullptr;
+      if (plasma_results[i].data && plasma_results[i].data->Size()) {
+        // We track the set of active data buffers in active_buffers_. On destruction,
+        // the buffer entry will be removed from the set via callback.
+        data = std::make_shared<TrackedBuffer>(
+            plasma_results[i].data, buffer_tracker_, object_id);
+        buffer_tracker_->Record(object_id, data.get(), get_current_call_site_());
+      }
+      if (plasma_results[i].metadata && plasma_results[i].metadata->Size()) {
+        metadata = plasma_results[i].metadata;
+      }
+      const auto result_object = std::make_shared<RayObject>(
+          data, metadata, std::vector<rpc::ObjectReference>());
+      (*results)[object_id] = result_object;
+      remaining.erase(object_id);
+      if (result_object->IsException()) {
+        RAY_CHECK(!result_object->IsInPlasmaError());
+        *got_exception = true;
+      }
+    }
+  }
+
+  return Status::OK();
+}
+
+
+Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
+    absl::flat_hash_set<ObjectID> &remaining,
+    const std::vector<ObjectID> &batch_ids,
+    int64_t timeout_ms,
+    bool fetch_only,
+    bool in_direct_call,
+    const TaskID &task_id,
+    absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
     bool *got_exception,
     const std::vector<unsigned long> &batch_virt_address,
     const std::vector<int> &batch_object_size,
@@ -183,7 +247,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
   auto t1 = current_sys_time_us();
   RAY_LOG(DEBUG) << " raylet client send " << t1 << " " << batch_ids[0];
   RAY_RETURN_NOT_OK(
-      raylet_client_->FetchOrReconstruct(batch_ids,
+      raylet_client_->FetchOrReconstructRDMA(batch_ids,
                                          owner_addresses,
                                          fetch_only,
                                          /*mark_worker_blocked*/ !in_direct_call,
@@ -523,7 +587,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
     // auto ts_fetch_plasma = current_sys_time_us();
     // RAY_LOG(DEBUG) << " first fetch and get plasma 1 " << batch_ids[0] << " " << ts_fetch_plasma;
 
-    RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
+    RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStoreRDMA(remaining,
                                                  batch_ids,
                                                  /*timeout_ms=*/0,
                                                  /*fetch_only=*/true,
@@ -620,7 +684,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
     auto ts_get_obj_remote_plasma = current_sys_time_us();
     // RAY_LOG(WARNING) << "CoreWorkerPlasmaStoreProvider Get remaining empty" << remaining.empty() << " should_break " << should_break;
 
-    RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
+    RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStoreRDMA(remaining,
                                                  batch_ids,
                                                  10,
                                                  /*fetch_only=*/false,
