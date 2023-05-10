@@ -345,11 +345,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   // RAY_LOG(ERROR) << " object info time after find ";
   for (auto entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
-    // if (it == plasma_node_virt_info_.end()) {
-    //   waiting_info.insert(entry);
-    //   remaining.erase(entry);
-    //   continue;
-    // }
     virt_address_vector.push_back(it->second.first.first);
     object_size_vector.push_back(it->second.second.data_size);
     object_meta_size_vector.push_back(it->second.second.metadata_size);
@@ -361,7 +356,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
   }
   // RAY_LOG(ERROR) << " object info time after find 1";
-  // if (!remaining.empty()) {
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
     batch_virt_address.clear();
@@ -407,17 +401,9 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  batch_rem_ip_address));
   }
   
-  // }
   auto t2_out = current_sys_time_us();
   // RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
 
-
-  // if (!waiting_info.empty()) {
-  //   for (auto it: waiting_info) {
-  //     remaining.insert(it);
-  //   }
-  //   waiting_info.clear();
-  // }
   // auto te_get_obj_local_plasma = current_sys_time_us();
   // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
   // If all objects were fetched already, return. Note that we always need to
@@ -457,11 +443,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
         break;
       }
       auto it = plasma_node_virt_info_.find(id);
-      // if (it == plasma_node_virt_info_.end()) {
-      //   waiting_info.insert(id);
-      //   remaining.erase(id);
-      //   continue;
-      // }
       batch_ids.push_back(id);
       batch_virt_address.push_back(it->second.first.first);
       batch_object_size.push_back(it->second.second.data_size);
@@ -518,14 +499,6 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     should_break = timed_out || *got_exception;
 
     auto ts_get_obj_remote_plasma_median = current_sys_time_us();
-
-    // if (!waiting_info.empty()) {
-    //   for (auto it: waiting_info) {
-    //     remaining.insert(it);
-    //   }
-    //   waiting_info.clear();
-    // }
-
 
     if ((previous_size - remaining.size()) < batch_ids.size()) {
       WarnIfFetchHanging(fetch_start_time_ms, remaining);
