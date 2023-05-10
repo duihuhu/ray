@@ -378,7 +378,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
 
   // First, attempt to fetch all of the required objects once without reconstructing.
   std::vector<ObjectID> id_vector(object_ids.begin(), object_ids.end());
-  RAY_LOG(ERROR) << "ref object get start " << id_vector[0];
+  RAY_LOG(ERROR) << "ref object get start ";
 
   int64_t total_size = static_cast<int64_t>(object_ids.size());
   //hucc time for get obj from local plasma
