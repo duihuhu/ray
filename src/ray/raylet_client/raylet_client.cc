@@ -204,6 +204,26 @@ Status raylet::RayletClient::TaskDone() {
   return conn_->WriteMessage(MessageType::TaskDone);
 }
 
+Status raylet::RayletClient::FetchOrReconstruct(
+    const std::vector<ObjectID> &object_ids,
+    const std::vector<rpc::Address> &owner_addresses,
+    bool fetch_only,
+    bool mark_worker_blocked,
+    const TaskID &current_task_id) {
+  RAY_CHECK(object_ids.size() == owner_addresses.size());
+  flatbuffers::FlatBufferBuilder fbb;
+  auto object_ids_message = to_flatbuf(fbb, object_ids);
+  auto message =
+      protocol::CreateFetchOrReconstruct(fbb,
+                                         object_ids_message,
+                                         AddressesToFlatbuffer(fbb, owner_addresses),
+                                         fetch_only,
+                                         mark_worker_blocked,
+                                         to_flatbuf(fbb, current_task_id));
+  fbb.Finish(message);
+  return conn_->WriteMessage(MessageType::FetchOrReconstruct, &fbb);
+}
+
 Status raylet::RayletClient::FetchOrReconstructRDMA(
     const std::vector<ObjectID> &object_ids,
     const std::vector<rpc::Address> &owner_addresses,
@@ -219,23 +239,6 @@ Status raylet::RayletClient::FetchOrReconstructRDMA(
     const std::vector<ray::WorkerID> &batch_owner_worker_id,
     const std::vector<std::string> &batch_rem_ip_address) {
   RAY_CHECK(object_ids.size() == owner_addresses.size());
-  //hucc add for plasma
-  // std::unordered_map<std::string, int> stat_addr;
-  // for (auto &addr : owner_addresses) {
-  //   auto it = stat_addr.find(addr.ip_address());
-  //   if(it == stat_addr.end()) {
-  //     stat_addr.emplace(addr.ip_address(), 1);
-  //   } else {
-  //     it->second = it->second + 1;
-  //   }
-  // }
-  // for(auto &it : stat_addr) {
-  //   RAY_LOG(WARNING) << "hucc statical owner_address count: " << it.first << " count: " << it.second << "\n";
-  // }
-  // // for(const auto &addr : owner_addresses) {
-  //   RAY_LOG(WARNING) << "hucc statical owner_address count: " << addr.ip_address() << "\n";
-  // }
-
   flatbuffers::FlatBufferBuilder fbb;
   auto object_ids_message = to_flatbuf(fbb, object_ids);
   auto message =
@@ -254,7 +257,7 @@ Status raylet::RayletClient::FetchOrReconstructRDMA(
                                          to_flatbuf(fbb, batch_owner_worker_id),
                                          string_vec_to_flatbuf(fbb, batch_rem_ip_address));
   fbb.Finish(message);
-  return conn_->WriteMessage(MessageType::FetchOrReconstruct, &fbb);
+  return conn_->WriteMessage(MessageType::FetchOrReconstructRDMA, &fbb);
 }
 
 Status raylet::RayletClient::NotifyUnblocked(const TaskID &current_task_id) {

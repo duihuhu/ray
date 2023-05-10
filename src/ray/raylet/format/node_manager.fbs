@@ -44,6 +44,7 @@ enum MessageType:int {
   // Reconstruct or fetch possibly lost objects. This is sent from a worker to
   // a raylet.
   FetchOrReconstruct,
+  FetchOrReconstructRDMA,
   // For a worker that was blocked on some object(s), tell the raylet
   // that the worker is now unblocked. This is sent from a worker to a raylet.
   NotifyUnblocked,
@@ -163,7 +164,7 @@ table Address {
   worker_id: string;
 }
 
-table FetchOrReconstruct {
+table FetchOrReconstructRDMA {
   // List of object IDs of the objects that we want to reconstruct or fetch.
   object_ids: [string];
   // The RPC addresses of the workers that own the objects in object_ids.
