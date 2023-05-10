@@ -151,7 +151,7 @@ class CoreWorkerPlasmaStoreProvider {
              absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
              bool *got_exception);
 
-  Status CoreWorkerPlasmaStoreProvider::GetRDMA(
+  Status GetRDMA(
             const absl::flat_hash_set<ObjectID> &object_ids,
             int64_t timeout_ms,
             const WorkerContext &ctx,
@@ -210,7 +210,7 @@ class CoreWorkerPlasmaStoreProvider {
   /// \param[out] got_exception Set to true if any of the fetched objects contained an
   /// exception.
   /// \return Status.
-  Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
+  Status FetchAndGetFromPlasmaStore(
       absl::flat_hash_set<ObjectID> &remaining,
       const std::vector<ObjectID> &batch_ids,
       int64_t timeout_ms,
