@@ -1150,7 +1150,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
       RAY_LOG(DEBUG) << current->first << " in plasma, doing fetch-and-get";
       auto it_virt = future_resolver_->plasma_node_virt_info_.find(current->first);
       if (it_virt == future_resolver_->plasma_node_virt_info_.end()) {
-        RAY_LOG(ERROR) << current->first << " has no information in  plasma_node_virt_info_";
+        RAY_LOG(DEBUG) << current->first << " has no information in  plasma_node_virt_info_";
       } else {
         RAY_LOG(DEBUG) << current->first << " virtual address " << it_virt->second.first.first <<  " object size " << (it_virt->second.second.data_size+it_virt->second.second.metadata_size);
       }
