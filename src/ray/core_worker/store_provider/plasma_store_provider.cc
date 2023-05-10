@@ -550,7 +550,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
   for (auto entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     if (it == plasma_node_virt_info_.end()) {
-      RAY_LOG(ERROR)<<"not found";
+      RAY_LOG(ERROR)<<"not found " << entry;
     }
     virt_address_vector.push_back(it->second.first.first);
     object_size_vector.push_back(it->second.second.data_size);
