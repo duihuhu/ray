@@ -149,8 +149,15 @@ class CoreWorkerPlasmaStoreProvider {
              int64_t timeout_ms,
              const WorkerContext &ctx,
              absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
-             bool *got_exception,
-             absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>> &plasma_node_virt_info_);
+             bool *got_exception);
+
+  Status CoreWorkerPlasmaStoreProvider::GetRDMA(
+            const absl::flat_hash_set<ObjectID> &object_ids,
+            int64_t timeout_ms,
+            const WorkerContext &ctx,
+            absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
+            bool *got_exception, 
+            absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>> &plasma_node_virt_info_);
 
   /// Get objects directly from the local plasma store, without waiting for the
   /// objects to be fetched from another node. This should only be used

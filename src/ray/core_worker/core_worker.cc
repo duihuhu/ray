@@ -1176,7 +1176,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     
     //hucc add time for get object from plasma total time
     auto ts_get_obj_plasma = current_sys_time_us();
-    RAY_RETURN_NOT_OK(plasma_store_provider_->Get(plasma_object_ids,
+    RAY_RETURN_NOT_OK(plasma_store_provider_->GetRDMA(plasma_object_ids,
                                                   local_timeout_ms,
                                                   worker_context_,
                                                   &result_map,
@@ -2464,7 +2464,7 @@ bool CoreWorker::PinExistingReturnObject(const ObjectID &return_id,
   reference_counter_->AddBorrowedObject(return_id, ObjectID::Nil(), owner_address);
 
   auto status = plasma_store_provider_->Get(
-      {return_id}, 0, worker_context_, &result_map, &got_exception, future_resolver_->plasma_node_virt_info_);
+      {return_id}, 0, worker_context_, &result_map, &got_exception);
   // Remove the temporary ref.
   RemoveLocalReference(return_id);
 
@@ -2641,7 +2641,7 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
   } else {
     RAY_LOG(ERROR) << " get and pin args for executor ";
     RAY_RETURN_NOT_OK(plasma_store_provider_->Get(
-        by_ref_ids, -1, worker_context_, &result_map, &got_exception, future_resolver_->plasma_node_virt_info_));
+        by_ref_ids, -1, worker_context_, &result_map, &got_exception));
   }
   for (const auto &it : result_map) {
     for (size_t idx : by_ref_indices[it.first]) {
