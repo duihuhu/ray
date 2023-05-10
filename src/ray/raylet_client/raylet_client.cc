@@ -242,7 +242,7 @@ Status raylet::RayletClient::FetchOrReconstructRDMA(
   flatbuffers::FlatBufferBuilder fbb;
   auto object_ids_message = to_flatbuf(fbb, object_ids);
   auto message =
-      protocol::CreateFetchOrReconstruct(fbb,
+      protocol::CreateFetchOrReconstructRDMA(fbb,
                                          object_ids_message,
                                          AddressesToFlatbuffer(fbb, owner_addresses),
                                          fetch_only,
