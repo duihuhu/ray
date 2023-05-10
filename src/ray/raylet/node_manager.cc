@@ -1676,6 +1676,52 @@ void NodeManager::ProcessDisconnectClientMessage(
       client, disconnect_type, disconnect_detail, creation_task_exception.get());
 }
 
+void NodeManager::ProcessFetchOrReconstructMessage(
+    const std::shared_ptr<ClientConnection> &client, const uint8_t *message_data) {
+
+  //hucc breakdown get object nodemanager
+  // auto ts_breakdown_get_object_node_manager = current_sys_time_us();
+  //end hucc
+  
+  auto message = flatbuffers::GetRoot<protocol::FetchOrReconstruct>(message_data);
+  const auto refs =
+      FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
+  // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
+  // non-direct call support.
+
+  //hucc breakdown get object nodemanager
+  // for (const auto &ref : refs) {
+  //   const auto obj_id = ObjectRefToId(ref);
+  //   RAY_LOG(WARNING) << "hucc breakdown get object nodemanager: " << ts_breakdown_get_object_node_manager << " object_id: " << obj_id << "\n";
+  // }
+  //end hucc 
+
+  if (message->fetch_only()) {
+    std::shared_ptr<WorkerInterface> worker = worker_pool_.GetRegisteredWorker(client);
+    if (!worker) {
+      worker = worker_pool_.GetRegisteredDriver(client);
+    }
+    // Fetch requests can get re-ordered after the worker finishes, so make sure to
+    // check the worker is still assigned a task to avoid leaks.
+    if (worker && !worker->GetAssignedTaskId().IsNil()) {
+      // This will start a fetch for the objects that gets canceled once the
+      // objects are local, or if the worker dies.
+      dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
+    }
+  } else {
+    // The values are needed. Add all requested objects to the list to
+    // subscribe to in the task dependency manager. These objects will be
+    // pulled from remote node managers. If an object's owner dies, an error
+    // will be stored as the object's value.
+    const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
+    AsyncResolveObjects(client,
+                        refs,
+                        task_id,
+                        /*ray_get=*/true,
+                        /*mark_worker_blocked*/ message->mark_worker_blocked());
+  }
+}
+
 void NodeManager::ProcessFetchOrReconstructRDMAMessage(
     const std::shared_ptr<ClientConnection> &client, const uint8_t *message_data) {
   std::thread::id tid = std::this_thread::get_id();

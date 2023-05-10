@@ -487,7 +487,10 @@ class NodeManager : public rpc::NodeManagerServiceHandler,
   /// \param client The client that sent the message.
   /// \param message_data A pointer to the message data.
   /// \return Void.
-  void ProcessFetchOrReconstructMessage(const std::shared_ptr<ClientConnection> &client,
+  void ProcessFetchOrReconstructMessage(
+    const std::shared_ptr<ClientConnection> &client, const uint8_t *message_data);
+
+  void ProcessFetchOrReconstructRDMAMessage(const std::shared_ptr<ClientConnection> &client,
                                         const uint8_t *message_data);
 
   /// Process client message of WaitRequest
