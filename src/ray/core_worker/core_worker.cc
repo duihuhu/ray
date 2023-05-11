@@ -2813,6 +2813,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
     RAY_LOG(DEBUG) << " locality_data.value().object_size " << locality_data.value().object_size;
     if(obj->IsInPlasmaError()) {
       if (object_exists) {
+        RAY_LOG(DEBUG) << " Plasma Object is exists in this node " << object_id;
         unsigned long virt_address = 0 ;
         int64_t object_size = 0;
         int device_num = 0;
@@ -2843,10 +2844,8 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
         reply->set_worker_ip_address(object_info.owner_ip_address);
 
         RAY_LOG(WARNING) << "PopulateObjectStatus in reply exists " << object_id << " " << object_info.owner_ip_address;
-
-
       } else {
-        RAY_LOG(DEBUG) << " Plasma Object is not exists in this node ";
+        RAY_LOG(DEBUG) << " Plasma Object is not exists in this node " << object_id;
         // local_raylet_client_->GetRemoteNodeManagerInfo()
         // std::string ip_address = "192.172.200.1"
         // rpc::Address address;
@@ -2874,8 +2873,6 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
           reply->set_worker_ip_address(it->second.first.second);
 
           RAY_LOG(WARNING) << "PopulateObjectStatus in reply not exists " << object_id << " " << it->second.second.owner_ip_address << " " << it->second.first.second; 
-
-
       }
     }
   }
