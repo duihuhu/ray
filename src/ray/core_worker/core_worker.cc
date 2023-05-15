@@ -1161,7 +1161,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   }
   auto ts_get_obj_plasma = current_sys_time_us();
 
-  RAY_LOG(DEBUG) << "core worker get object plasma start " << ts_get_obj_plasma << " " << ids[0];
+  // RAY_LOG(DEBUG) << "core worker get object plasma start " << ts_get_obj_plasma << " " << ids[0];
 
   if (!got_exception) {
     // If any of the objects have been promoted to plasma, then we retry their
@@ -1212,7 +1212,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_CHECK(!missing_result);
   }
   auto te_get_obj_cw = current_sys_time_us();
-  RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0];
+  // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0];
 
   return Status::OK();
 }
