@@ -336,7 +336,7 @@ void PlasmaStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   object_lifecycle_mgr_.InsertObjectInfoThread(allocation, object_info, pair);
   RAY_CHECK(object_lifecycle_mgr_.AddReferenceRdma(object_info.object_id, pair.first));
   auto entry = object_lifecycle_mgr_.SealObject(object_info.object_id);
-  add_object_callback_(entry->GetObjectInfo());
+  // add_object_callback_(entry->GetObjectInfo());
 }
 
 
