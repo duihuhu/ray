@@ -79,8 +79,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 		// PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
-		main_service_->post([this, ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send]() { PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send); },
-									"ObjectManagerRdma.PollCompletion");
+		PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send);
+		// main_service_->post([this, ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send]() { PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send); },
+		// 							"ObjectManagerRdma.PollCompletion");
 
 	}
   // }
