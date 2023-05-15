@@ -154,7 +154,7 @@ void ObjectStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   
   auto entry = object_table_.emplace(object_info.object_id, std::move(ptr)).first->second.get();
   entry->object_info = pair.first->object_info;
-  entry->state = ObjectState::PLASMA_SEALED;
+  entry->state = ObjectState::PLASMA_CREATED;
   entry->create_time =  pair.first->create_time;
   entry->construct_duration = std::time(nullptr) -  pair.first->create_time;
   entry->source = pair.first->GetSource();
