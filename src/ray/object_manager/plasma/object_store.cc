@@ -26,7 +26,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
                                              plasma::flatbuf::ObjectSource source,
                                              bool fallback_allocate, bool rdma) {
   // absl::MutexLock lock(&mutex_);
-  RAY_LOG(ERROR) << "attempting to create object " << object_info.object_id << " size "
+  RAY_LOG(DEBUG) << "attempting to create object " << object_info.object_id << " size "
                  << object_info.data_size;
   // RAY_LOG(WARNING) << "attempting to create object " << object_info.object_id << " size "
   //               << object_info.data_size;
