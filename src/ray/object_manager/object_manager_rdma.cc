@@ -111,7 +111,6 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
     if ( wc.status == IBV_WC_SUCCESS) {
 			auto tc_fetch_rdma = current_sys_time_us();
 			RAY_LOG(DEBUG) << " get object start time end in rdma " << object_info.object_id << " " << tc_fetch_rdma << " " << start_time;
-			RAY_LOG(ERROR) << object_info.object_id << " " << allocation.address;
 
       // object_manager_.InsertObjectInfo(allocation, object_info);
 			object_manager_.InsertObjectInfoThread(allocation, object_info, pair);
