@@ -638,8 +638,7 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     auto allocation = entry->GetAllocation();
     unsigned long address = (unsigned long) entry->GetAllocation().address;
     auto object_info = entry->GetObjectInfo();
-    RAY_LOG(ERROR) << "object status " << object_info.object_id << " " << entry->Sealed();
-    
+        
     std::ofstream outfile1;
     outfile1.open("hutmp_" + std::string(object_info.object_id) + ".txt");
     for(int i=0; i<(object->data_size + object->metadata_size); ++i){
