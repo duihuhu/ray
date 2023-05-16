@@ -360,7 +360,7 @@ class SerializationContext:
                 # the object ref knows where it comes from.
                 print(object_ref)
                 print(metadata)
-                with open(str(object_ref)+".txt", 'a+') as fd:
+                with open(str(object_ref)+".txt", 'wb+') as fd:
                     fd.write(data.to_pybytes())
                 self._thread_local.object_ref_stack.append(object_ref)
                 obj = self._deserialize_object(data, metadata, object_ref)
