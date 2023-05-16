@@ -359,7 +359,7 @@ class SerializationContext:
                 # Push the object ref to the stack, so the object under
                 # the object ref knows where it comes from.
                 print(object_ref)
-                print(data)
+                print(data.to_pybytes())
                 print(metadata)
                 self._thread_local.object_ref_stack.append(object_ref)
                 obj = self._deserialize_object(data, metadata, object_ref)
