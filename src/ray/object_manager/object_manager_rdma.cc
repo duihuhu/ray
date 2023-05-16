@@ -118,16 +118,16 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			auto ts_fetch_object_end = current_sys_time_us();
 			// RAY_LOG(DEBUG) << "plasma client fetch object id start: " << object_info.object_id << " " << ts_fetch_object_end;
 			RAY_LOG(DEBUG) << "plasma client fetch object id start: " << object_info.object_id << " " << ts_fetch_object_end << " " << ts_fetch_rdma << " " << te_fetch_object_post_send << " " << start_time;
-			char *data = (char *) allocation.address;
-			// object info
-			int64_t data_size = allocation.size;
-			RAY_LOG(ERROR) << object_info.object_id <<  " " << object_info.object_id.Hash();
-			std::ofstream outfile1;
-			outfile1.open("hutmp_" + std::to_string(object_info.object_id.Hash()) + ".txt");
-			for(int i=0; i< data_size; ++i){
-			  outfile1<<*(data+i);
-			}
-			outfile1.close();
+			// char *data = (char *) allocation.address;
+			// // object info
+			// int64_t data_size = allocation.size;
+			// RAY_LOG(ERROR) << object_info.object_id <<  " " << object_info.object_id.Hash();
+			// std::ofstream outfile1;
+			// outfile1.open("hutmp_" + std::to_string(object_info.object_id.Hash()) + ".txt");
+			// for(int i=0; i< data_size; ++i){
+			//   outfile1<<*(data+i);
+			// }
+			// outfile1.close();
     }
 		if ( wc.status != IBV_WC_SUCCESS) {
 			// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);
