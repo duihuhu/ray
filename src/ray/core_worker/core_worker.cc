@@ -2769,7 +2769,7 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
                               int64_t data_size = reply->data_size();
                               int64_t metadata_size = reply->metadata_size();
                               std::ofstream outfile1;
-                              outfile1.open("hutmp_" + std::to_string(object_id) + ".txt");
+                              outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + ".txt");
                               for(int i=0; i<(data_size + metadata_size); ++i){
                                 outfile1<<*(data+i);
                               }
