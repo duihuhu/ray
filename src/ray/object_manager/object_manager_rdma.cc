@@ -118,7 +118,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			auto ts_fetch_object_end = current_sys_time_us();
 			// RAY_LOG(DEBUG) << "plasma client fetch object id start: " << object_info.object_id << " " << ts_fetch_object_end;
 			RAY_LOG(DEBUG) << "plasma client fetch object id start: " << object_info.object_id << " " << ts_fetch_object_end << " " << ts_fetch_rdma << " " << te_fetch_object_post_send << " " << start_time;
-			uint64_t *data = (uint64_t *) allocation.address;
+			char *data = (char *) allocation.address;
 			// object info
 			int64_t data_size = allocation.size;
 			RAY_LOG(ERROR) << object_info.object_id <<  " " << object_info.object_id.Hash();
