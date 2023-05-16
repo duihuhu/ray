@@ -2764,19 +2764,6 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
                                 PopulateObjectStatus(object_id, obj, reply);
                               }
                               send_reply_callback(Status::OK(), nullptr, nullptr);
-                              uint64_t *data = (uint64_t *) reply->virt_address();
-                              // object info
-                              int64_t data_size = reply->data_size();
-                              int64_t metadata_size = reply->metadata_size();
-                              RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash() << " " << reply->virt_address() << " " << data;
-                              std::ofstream outfile1;
-                              outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + ".txt");
-                              RAY_LOG(ERROR) << "hhh";
-                              for(int i=0; i<(data_size + metadata_size); ++i){
-                                RAY_LOG(ERROR) << "bbb";
-                                outfile1<<*(data+i);
-                              }
-                              outfile1.close();
                             });
   }
 
