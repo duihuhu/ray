@@ -638,13 +638,6 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     auto allocation = entry->GetAllocation();
     unsigned long address = (unsigned long) entry->GetAllocation().address;
     auto object_info = entry->GetObjectInfo();
-
-    std::ofstream outfile1;
-    outfile1.open("hutmp_" + object_info.object_id.to_string() + ".txt");
-    for(int i=0; i<(object->data_size + object->metadata_size); ++i){
-      outfile1<<*(entry->GetAllocation().address+i);
-    }
-    outfile1.close();
     // RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id << " " << entry->GetAllocation().address << " " << entry->GetObjectInfo().object_id ;
     RAY_RETURN_NOT_OK(SendMetaReply(client, address, allocation.size, allocation.device_num, object_info));
   } break;
