@@ -32,7 +32,8 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   //               << object_info.data_size;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
       << object_info.object_id << " already exists!";
-
+  RAY_CHECK(object_table_rdma_.count(object_info.object_id) == 0)
+      << object_info.object_id << " already exists!";
   // if (object_table_rdma_.find(object_info.object_id) == object_table_rdma_.end() ){
   //   return nullptr;
   // }
