@@ -644,7 +644,6 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     uint64_t *data = (uint64_t *) address;
     // object info
     int64_t data_size = allocation.size;
-    int64_t metadata_size = reply->metadata_size();
     RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash() << " " << data;
     std::ofstream outfile1;
     outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + ".txt");
