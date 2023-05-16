@@ -2764,6 +2764,7 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
                                 PopulateObjectStatus(object_id, obj, reply);
                               }
                               send_reply_callback(Status::OK(), nullptr, nullptr);
+                              RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash();
                               uint8_t *data = (uint8_t *) reply->virt_address();
                               // object info
                               int64_t data_size = reply->data_size();
