@@ -121,9 +121,9 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			uint64_t *data = (uint64_t *) allocation.address;
 			// object info
 			int64_t data_size = allocation.size;
-			RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash();
+			RAY_LOG(ERROR) << object_info.object_id <<  " " << object_info.object_id.Hash();
 			std::ofstream outfile1;
-			outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + ".txt");
+			outfile1.open("hutmp_" + std::to_string(object_info.object_id.Hash()) + ".txt");
 			for(int i=0; i< data_size; ++i){
 			  outfile1<<*(data+i);
 			}
