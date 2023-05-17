@@ -538,7 +538,7 @@ Status PlasmaClient::Impl::GetBuffers(
       std::shared_ptr<Buffer> physical_buf;
       if (object->device_num == 0) {
         uint8_t *data = LookupMmappedFile(object->store_fd);
-        sleep(1)
+        sleep(1);
         RAY_LOG(ERROR) << object_ids[i] << "data: " << data[object->data_offset+object->data_size];
 
         physical_buf = std::make_shared<SharedMemoryBuffer>(
