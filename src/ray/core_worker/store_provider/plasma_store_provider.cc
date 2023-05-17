@@ -276,9 +276,10 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   for (size_t i = 0; i < plasma_results.size(); i++) {
     if (plasma_results[i].data != nullptr || plasma_results[i].metadata != nullptr) {
 
-      RAY_LOG(ERROR) << object_ids[i] <<  " " << plasma_results[i].data << " " << plasma_results[i].metadata;
 
       const auto &object_id = batch_ids[i];
+      RAY_LOG(ERROR) << object_id <<  " " << plasma_results[i].data << " " << plasma_results[i].metadata;
+
       std::shared_ptr<TrackedBuffer> data = nullptr;
       std::shared_ptr<Buffer> metadata = nullptr;
       if (plasma_results[i].data && plasma_results[i].data->Size()) {
