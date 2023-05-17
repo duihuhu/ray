@@ -274,7 +274,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   // Add successfully retrieved objects to the result map and remove them from
   // the set of IDs to get.
   for (size_t i = 0; i < plasma_results.size(); i++) {
-    if (plasma_results[i].data != nullptr || plasma_results[i].metadata->Data() != nullptr) {
+    if (plasma_results[i].data != nullptr || plasma_results[i].metadata != nullptr) {
       const auto &object_id = batch_ids[i];
       std::shared_ptr<TrackedBuffer> data = nullptr;
       std::shared_ptr<Buffer> metadata = nullptr;
@@ -288,6 +288,9 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
       if (plasma_results[i].metadata && plasma_results[i].metadata->Size()) {
         metadata = plasma_results[i].metadata;
         			// object info
+        if(plasma_results[i].metadata->Data() == nullptr){
+          RAY_LOG(ERROR) << "plasma_results[i].metadata->Data() nullptr";
+        }
         RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash() << " " <<  plasma_results[i].metadata->Data();
         std::ofstream outfile1;
         outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + ".txt");
