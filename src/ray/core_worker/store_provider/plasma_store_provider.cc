@@ -291,6 +291,8 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
         RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash() << " " <<  metadata->Data();
         std::ofstream outfile1;
         outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + ".txt");
+        outfile1<<metadata->Size();
+        outfile1<<"\n";
         outfile1<<metadata->Data();
         // outfile1<<plasma_results[i].data->Size();
         // outfile1<<"\n";
