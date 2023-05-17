@@ -275,24 +275,10 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   // the set of IDs to get.
   for (size_t i = 0; i < plasma_results.size(); i++) {
     if (plasma_results[i].data != nullptr || plasma_results[i].metadata != nullptr) {
-
-
       const auto &object_id = batch_ids[i];
-      RAY_LOG(ERROR) << object_id <<  " " << plasma_results[i].data << " " << plasma_results[i].metadata;
-
       std::shared_ptr<TrackedBuffer> data = nullptr;
       std::shared_ptr<Buffer> metadata = nullptr;
       if (plasma_results[i].data && plasma_results[i].data->Size()) {
-
-        std::ofstream outfile1;
-        outfile1.open("hutmp_" + std::to_string(object_ids[i].Hash()) + ".txt");
-
-        for(int j=0; j<plasma_results[i].data->Size(); ++j){
-          outfile1<<*(plasma_results[i].data+j);    
-        }
-        
-        outfile1.close();
-
         // We track the set of active data buffers in active_buffers_. On destruction,
         // the buffer entry will be removed from the set via callback.
         data = std::make_shared<TrackedBuffer>(
@@ -305,7 +291,15 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
         // outfile<<"\n";
         // outfile<<plasma_results[i].data->Data();
         // outfile.close();
+                			// object info
+        RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash()<< " " << plasma_results[i].data.get()->Size();
+        std::ofstream outfile1;
+        outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + "data.txt");
 
+        for(int j=0; j<plasma_results[i].data.get()->Size(); ++j){
+          outfile1<<(data.get()->Data())[j];
+        }
+        outfile1.close();
       }
       if (plasma_results[i].metadata && plasma_results[i].metadata->Size()) {
         metadata = plasma_results[i].metadata;
