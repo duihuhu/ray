@@ -554,14 +554,14 @@ Status PlasmaClient::Impl::GetBuffers(
       // Finish filling out the return values.
       physical_buf = wrap_buffer(object_ids[i], physical_buf);
 
-      RAY_LOG(ERROR) << object_ids[i] <<  " " << object_ids[i].Hash() << " " << object->data_size + object->metadata_size;
-      std::ofstream outfile1;
-      outfile1.open("hutmp_" + std::to_string(object_ids[i].Hash()) + ".txt");
+      // RAY_LOG(ERROR) << object_ids[i] <<  " " << object_ids[i].Hash() << " " << object->data_size + object->metadata_size;
+      // std::ofstream outfile1;
+      // outfile1.open("hutmp_" + std::to_string(object_ids[i].Hash()) + ".txt");
 
-      for(int i=0; i<(object->data_size + object->metadata_size); ++i){
-        outfile1<<(physical_buf.get()->Data())[i];
-      }
-      outfile1.close();
+      // for(int i=0; i<(object->data_size + object->metadata_size); ++i){
+      //   outfile1<<(physical_buf.get()->Data())[i];
+      // }
+      // outfile1.close();
       
       object_buffers[i].data =
           SharedMemoryBuffer::Slice(physical_buf, 0, object->data_size);
