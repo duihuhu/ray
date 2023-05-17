@@ -274,7 +274,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   // Add successfully retrieved objects to the result map and remove them from
   // the set of IDs to get.
   for (size_t i = 0; i < plasma_results.size(); i++) {
-    if (plasma_results[i].data != nullptr || plasma_results[i].metadata != nullptr) {
+    if (plasma_results[i].data != nullptr || plasma_results[i].metadata->Data() != nullptr) {
       const auto &object_id = batch_ids[i];
       std::shared_ptr<TrackedBuffer> data = nullptr;
       std::shared_ptr<Buffer> metadata = nullptr;
