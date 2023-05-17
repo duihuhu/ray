@@ -262,6 +262,9 @@ uint8_t *PlasmaClient::Impl::GetStoreFdAndMmap(MEMFD_TYPE store_fd_val,
 // process before.
 uint8_t *PlasmaClient::Impl::LookupMmappedFile(MEMFD_TYPE store_fd_val) {
   auto entry = mmap_table_.find(store_fd_val);
+  if(entry==mmap_table_.end()){
+    RAY_LOG(ERROR) << " not found " << entry->second->pointer();
+  }
   RAY_CHECK(entry != mmap_table_.end());
   return entry->second->pointer();
 }
