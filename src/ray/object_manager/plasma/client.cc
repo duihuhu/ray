@@ -562,7 +562,7 @@ Status PlasmaClient::Impl::GetBuffers(
       //   outfile1<<(physical_buf.get()->Data())[i];
       // }
       // outfile1.close();
-      RAY_LOG(ERROR) << "physical_buf: " << (physical_buf.get()->Data())[object->data_size];
+      RAY_LOG(ERROR) << "physical_buf: " << (physical_buf.get()->Data())[object->data_size] << " " << (physical_buf.get()->Data())[object->data_size-1];
 
       object_buffers[i].data =
           SharedMemoryBuffer::Slice(physical_buf, 0, object->data_size);
