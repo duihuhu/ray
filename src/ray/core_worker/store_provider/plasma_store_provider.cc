@@ -295,7 +295,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
       if (plasma_results[i].metadata && plasma_results[i].metadata->Size()) {
         metadata = plasma_results[i].metadata;
 
-        // RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash() << " " <<  plasma_results[i].metadata->Data();
+        RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash() << " " <<  plasma_results[i].metadata->Data();
         // std::ofstream outfile1;
         // outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + "metadata.txt");
         // outfile1<<plasma_results[i].metadata->Size();
@@ -306,16 +306,16 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
         // // outfile1<<plasma_results[i].metadata->Size();
         // outfile1.close();
           // object info
-        if((metadata.get()->Data())[0]!='P') {
-          RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash()<< " " << plasma_results[i].data.get()->Size();
-          std::ofstream outfile1;
-          outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + "data.txt");
+        // if((metadata.get()->Data())[0]!='P') {
+        //   RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash()<< " " << plasma_results[i].data.get()->Size();
+        //   std::ofstream outfile1;
+        //   outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + "data.txt");
 
-          for(int j=0; j<plasma_results[i].data.get()->Size(); ++j){
-            outfile1<<(data.get()->Data())[j];
-          }
-          outfile1.close(); 
-        }
+        //   for(int j=0; j<plasma_results[i].data.get()->Size(); ++j){
+        //     outfile1<<(data.get()->Data())[j];
+        //   }
+        //   outfile1.close(); 
+        // }
 
       }
       }
