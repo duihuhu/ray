@@ -539,7 +539,7 @@ Status PlasmaClient::Impl::GetBuffers(
       if (object->device_num == 0) {
         uint8_t *data = LookupMmappedFile(object->store_fd);
         
-        RAY_LOG(ERROR) << object_ids[i] << "data: " << data[object->data_offset+object->data_size];
+        // RAY_LOG(ERROR) << object_ids[i] << "data: " << data[object->data_offset+object->data_size];
         // if (data[object->data_offset+object->data_size]!='P') {
         //   sleep(10);
         //   RAY_LOG(ERROR) << object_ids[i] << "data: " << data[object->data_offset+object->data_size];

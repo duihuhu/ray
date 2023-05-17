@@ -114,7 +114,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			RAY_LOG(ERROR) << "after " << object_info.object_id <<  " " << *(data+object_info.data_size);
 			if (data[object_info.data_size]!='P') {
 				sleep(10);
-				RAY_LOG(ERROR) << "after " << object_info.object_id <<  " " << *(data+object_info.data_size);
+				RAY_LOG(ERROR) << "no after " << object_info.object_id <<  " " << *(data+object_info.data_size);
 			}
 			RAY_LOG(DEBUG) << " get object start time end in rdma " << object_info.object_id << " " << tc_fetch_rdma << " " << start_time;
 
