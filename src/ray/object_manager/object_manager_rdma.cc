@@ -72,6 +72,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		
 		auto te_fetch_object_rdma_space = current_sys_time_us();
 		RAY_LOG(DEBUG) << "FetchObjectRdma time in create object space " << te_fetch_object_rdma_space - ts_fetch_object_rdma << " " << obj_info.object_id;
+		RAY_LOG(DEBUG) << " post send " << obj_info.object_id << " " << object_rdma_info.object_virt_address;
+
 		PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_rdma_info.object_sizes, object_rdma_info.object_virt_address, IBV_WR_RDMA_READ);
 		// PollCompletion(it->second.first.first);
 		auto ctx =  it->second.first.first + n_qp;
