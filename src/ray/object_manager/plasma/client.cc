@@ -262,9 +262,6 @@ uint8_t *PlasmaClient::Impl::GetStoreFdAndMmap(MEMFD_TYPE store_fd_val,
 // process before.
 uint8_t *PlasmaClient::Impl::LookupMmappedFile(MEMFD_TYPE store_fd_val) {
   auto entry = mmap_table_.find(store_fd_val);
-  if(entry==mmap_table_.end()){
-    RAY_LOG(ERROR) << " not found " << entry->second->pointer();
-  }
   RAY_CHECK(entry != mmap_table_.end());
   return entry->second->pointer();
 }
@@ -541,7 +538,8 @@ Status PlasmaClient::Impl::GetBuffers(
       std::shared_ptr<Buffer> physical_buf;
       if (object->device_num == 0) {
         uint8_t *data = LookupMmappedFile(object->store_fd);
-        RAY_LOG(ERROR) << "data: " << data[object->data_offset+object->data_size];
+        sleep(1)
+        RAY_LOG(ERROR) << object_ids[i] << "data: " << data[object->data_offset+object->data_size];
 
         physical_buf = std::make_shared<SharedMemoryBuffer>(
             data + object->data_offset, object->data_size + object->metadata_size);
