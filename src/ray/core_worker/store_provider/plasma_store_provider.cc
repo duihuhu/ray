@@ -287,8 +287,8 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
         std::ofstream outfile1;
         outfile1.open("hutmp_" + std::to_string(object_ids[i].Hash()) + ".txt");
 
-        for(int i=0; i<plasma_results[i].data->Size(); ++i){
-          outfile1<<*(plasma_results[i].data+i);    
+        for(int j=0; j<plasma_results[i].data->Size(); ++j){
+          outfile1<<*(plasma_results[i].data+j);    
         }
         
         outfile1.close();
