@@ -288,12 +288,12 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
       if (plasma_results[i].metadata && plasma_results[i].metadata->Size()) {
         metadata = plasma_results[i].metadata;
         			// object info
-        RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash() << " " <<  metadata->Data();
+        RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash() << " " <<  plasma_results[i].metadata->Data();
         std::ofstream outfile1;
         outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + ".txt");
-        outfile1<<metadata->Size();
+        outfile1<<plasma_results[i].metadata->Size();
         outfile1<<"\n";
-        outfile1<<metadata->Data();
+        outfile1<<plasma_results[i].metadata->Data();
         // outfile1<<plasma_results[i].data->Size();
         // outfile1<<"\n";
         // outfile1<<plasma_results[i].metadata->Size();
