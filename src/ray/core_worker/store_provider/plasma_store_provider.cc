@@ -283,6 +283,16 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
       std::shared_ptr<TrackedBuffer> data = nullptr;
       std::shared_ptr<Buffer> metadata = nullptr;
       if (plasma_results[i].data && plasma_results[i].data->Size()) {
+
+        std::ofstream outfile1;
+        outfile1.open("hutmp_" + std::to_string(object_ids[i].Hash()) + ".txt");
+
+        for(int i=0; i<plasma_results[i].data->Size(); ++i){
+          outfile1<<*(plasma_results[i].data+i);    
+        }
+        
+        outfile1.close();
+
         // We track the set of active data buffers in active_buffers_. On destruction,
         // the buffer entry will be removed from the set via callback.
         data = std::make_shared<TrackedBuffer>(
