@@ -538,10 +538,11 @@ Status PlasmaClient::Impl::GetBuffers(
       std::shared_ptr<Buffer> physical_buf;
       if (object->device_num == 0) {
         uint8_t *data = LookupMmappedFile(object->store_fd);
-        RAY_LOG(ERROR) << "physical_buf: " << data[object->data_size] << " " << data[object->data_size-1];
 
         physical_buf = std::make_shared<SharedMemoryBuffer>(
             data + object->data_offset, object->data_size + object->metadata_size);
+        RAY_LOG(ERROR) << "physical_buf: " << (physical_buf.get()->Data())[object->data_size] << " " << (physical_buf.get()->Data())[object->data_size-1];
+
       } else {
         RAY_LOG(FATAL) << "Arrow GPU library is not enabled.";
       }
