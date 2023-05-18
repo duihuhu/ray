@@ -586,7 +586,7 @@ int ObjectManagerRdma::CovRdmaStatus(struct pingpong_context *ctx, struct pingpo
     RAY_LOG(ERROR) << "Failed to modify QP to RTS";
 		return 1;
 	}
-  RAY_LOG(DEBUG) << "Accomplish modify QP to RTS";
+  RAY_LOG(ERROR) << "Accomplish modify QP to RTS";
 
 	return 0;
 }
