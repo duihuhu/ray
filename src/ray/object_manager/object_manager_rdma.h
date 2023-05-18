@@ -107,6 +107,7 @@ public:
       rpc_service_threads_number_(rpc_service_threads_number),
       local_ip_address_(object_manager_address)
        {
+        RAY_LOG(ERROR) << " rpc_service_threads_number_ " << rpc_service_threads_number_;
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
         InitRdmaConfig();
         StartRdmaService();
