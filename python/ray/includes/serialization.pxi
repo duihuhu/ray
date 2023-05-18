@@ -237,7 +237,7 @@ def unpack_pickle5_buffers(uint8_t[:] bufferview):
                          "Got negative instead. "
                          "Maybe the buffer has been corrupted.")
     protobuf_size = (<int64_t*>data)[1]
-    if protobuf_size > INT32_MAX or protobuf_size < 0:
+    if protobuf_size > INT64_MAX or protobuf_size < 0:
         print(protobuf_size)
         raise ValueError("Incorrect protobuf size. "
                          "Maybe the buffer has been corrupted.")
