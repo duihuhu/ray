@@ -113,11 +113,14 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
     if ( wc.status == IBV_WC_SUCCESS) {
 			auto tc_fetch_rdma = current_sys_time_us();
 			char *data = (char *) allocation.address;
-			RAY_LOG(ERROR) << "after " << object_info.object_id <<  " " << *(data+object_info.data_size);
-			if (data[object_info.data_size]!='P') {
-				sleep(10);
-				RAY_LOG(ERROR) << "no after " << object_info.object_id <<  " " << *(data+object_info.data_size);
+			// RAY_LOG(ERROR) << "after " << object_info.object_id <<  " " << *(data+object_info.data_size);
+			// if (data[object_info.data_size]!='P') {
+				// sleep(10);
+			while(data[object_info.data_size]!='P') {
+				std::this_thread::sleep_for(std::chrono::microseconds(5));
 			}
+				// RAY_LOG(ERROR) << "no after " << object_info.object_id <<  " " << *(data+object_info.data_size);
+			// }
 			RAY_LOG(DEBUG) << " get object start time end in rdma " << object_info.object_id << " " << tc_fetch_rdma << " " << start_time;
 
       // object_manager_.InsertObjectInfo(allocation, object_info);
