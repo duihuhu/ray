@@ -243,7 +243,7 @@ def unpack_pickle5_buffers(uint8_t[:] bufferview):
                          "Maybe the buffer has been corrupted.")
     inband_data = bufferview[inband_offset:inband_offset + inband_size]
     if not python_object.ParseFromArray(
-            data + inband_offset + inband_size, <int32_t>protobuf_size):
+            data + inband_offset + inband_size, <int64_t>protobuf_size):
         raise ValueError("Protobuf object is corrupted.")
     buffers_segment = aligned_address(
         <uint8_t*>data + inband_offset + inband_size + protobuf_size,
