@@ -8,7 +8,7 @@
 
 ObjectManagerRdma::~ObjectManagerRdma() { StopRdmaService(); }
 
-void ObjectManagerRdma::RunRdmaService() {
+void ObjectManagerRdma::RunRdmaService(int n_qp) {
 	RAY_LOG(DEBUG) << "RunRdmaService ";
   while(true) {
     ObjectRdmaInfo object_rdma_info;
@@ -27,14 +27,14 @@ void ObjectManagerRdma::RunRdmaService() {
 			RAY_LOG(DEBUG) << "get object id from queue end " << object_rdma_info.object_info.object_id << " " << te_get_object_info;
 			std::thread::id tid = std::this_thread::get_id();
 			RAY_LOG(DEBUG) << "RunRdmaService thread " << tid;
-			FetchObjectFromRemotePlasmaThreads(object_rdma_info);
+			FetchObjectFromRemotePlasmaThreads(object_rdma_info, n_qp);
 		}
   }
 }
 
 
 
-void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info) {
+void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info, int n_qp) {
   RAY_LOG(DEBUG) << "Starting get object through rdma for worker " << object_rdma_info.object_info.object_id;
   auto ts_fetch_object_rdma = current_sys_time_us();
   // for(uint64_t i = 0; i < object_address.size(); ++i) {
@@ -47,10 +47,10 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 	//   QueryQp(it->second.first.first);
   	RAY_LOG(DEBUG) << "in remote_dest ";
 
-		std::random_device seed;//hardware to generate random seed
-		std::ranlux48 engine(seed());//use seed to generate 
-		std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
-		int n_qp = distrib(engine);//n_qp
+		// std::random_device seed;//hardware to generate random seed
+		// std::ranlux48 engine(seed());//use seed to generate 
+		// std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
+		// int n_qp = distrib(engine);//n_qp
 		
 		// auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
 
@@ -171,7 +171,12 @@ void ObjectManagerRdma::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_
 void ObjectManagerRdma::StartRdmaService() {
 	rpc_threads_.resize(rpc_service_threads_number_);
 	for (int i = 0; i < rpc_service_threads_number_; i++) {
-		rpc_threads_[i] = std::thread(&ObjectManagerRdma::RunRdmaService, this);
+		// std::random_device seed;//hardware to generate random seed
+		// std::ranlux48 engine(seed());//use seed to generate 
+		// std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
+		// int n_qp = distrib(engine);//n_qp
+		int n_qp = i%(num_qp_pair-1);
+		rpc_threads_[i] = std::thread(&ObjectManagerRdma::RunRdmaService, this, n_qp);
 	}
 }
 
