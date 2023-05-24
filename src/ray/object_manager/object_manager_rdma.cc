@@ -47,11 +47,12 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 	//   QueryQp(it->second.first.first);
   	RAY_LOG(DEBUG) << "in remote_dest ";
 
-		std::random_device seed;//hardware to generate random seed
-		std::ranlux48 engine(seed());//use seed to generate 
-		std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
-		int n_qp = distrib(engine);//n_qp
+		// std::random_device seed;//hardware to generate random seed
+		// std::ranlux48 engine(seed());//use seed to generate 
+		// std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
+		// int n_qp = distrib(engine);//n_qp
 		
+		int n_qp = obj_info.object_id.Hash()%/(num_qp_pair-1);
 		// auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
 
 		auto pair = object_manager_.CreateObjectRdma(object_rdma_info.object_info);
