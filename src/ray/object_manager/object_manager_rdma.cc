@@ -52,7 +52,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		// std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
 		// int n_qp = distrib(engine);//n_qp
 		
-		int n_qp = obj_info.object_id.Hash()%/(num_qp_pair-1);
+		int n_qp = obj_info.object_id.Hash()%(num_qp_pair-1);
 		// auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
 
 		auto pair = object_manager_.CreateObjectRdma(object_rdma_info.object_info);
