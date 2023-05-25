@@ -230,7 +230,7 @@ def unpack_pickle5_buffers(uint64_t[:] bufferview):
         int64_t inband_size
         int64_t protobuf_size
         int32_t i
-        const uint8_t *buffers_segment
+        const uint64_t *buffers_segment
     inband_size = (<int64_t*>data)[0]
     if inband_size < 0:
         raise ValueError("The inband data size should be positive."
@@ -246,7 +246,7 @@ def unpack_pickle5_buffers(uint64_t[:] bufferview):
             data + inband_offset + inband_size, <int64_t>protobuf_size):
         raise ValueError("Protobuf object is corrupted.")
     buffers_segment = aligned_address(
-        <uint8_t*>data + inband_offset + inband_size + protobuf_size,
+        <uint64_t*>data + inband_offset + inband_size + protobuf_size,
         kMajorBufferAlign)
     pickled_buffers = []
     # Now read buffer meta
