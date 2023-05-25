@@ -66,9 +66,9 @@ cdef int64_t padded_length(int64_t offset, int64_t alignment):
     return ((offset + alignment - 1) // alignment) * alignment
 
 
-cdef uint8_t* aligned_address(uint8_t* addr, uint64_t alignment) nogil:
+cdef uint8_t* aligned_address(uint64_t* addr, uint64_t alignment) nogil:
     cdef uintptr_t u_addr = <uintptr_t>addr
-    return <uint8_t*>(((u_addr + alignment - 1) // alignment) * alignment)
+    return <uint64_t*>(((u_addr + alignment - 1) // alignment) * alignment)
 
 
 cdef class SubBuffer:
@@ -246,7 +246,7 @@ def unpack_pickle5_buffers(uint64_t[:] bufferview):
             data + inband_offset + inband_size, <int64_t>protobuf_size):
         raise ValueError("Protobuf object is corrupted.")
     buffers_segment = aligned_address(
-        <uint8_t*>data + inband_offset + inband_size + protobuf_size,
+        <uint64_t*>data + inband_offset + inband_size + protobuf_size,
         kMajorBufferAlign)
     pickled_buffers = []
     # Now read buffer meta
