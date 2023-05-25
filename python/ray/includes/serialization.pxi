@@ -66,7 +66,7 @@ cdef int64_t padded_length(int64_t offset, int64_t alignment):
     return ((offset + alignment - 1) // alignment) * alignment
 
 
-cdef uint8_t* aligned_address(uint64_t* addr, uint64_t alignment) nogil:
+cdef uint64_t* aligned_address(uint64_t* addr, uint64_t alignment) nogil:
     cdef uintptr_t u_addr = <uintptr_t>addr
     return <uint64_t*>(((u_addr + alignment - 1) // alignment) * alignment)
 
