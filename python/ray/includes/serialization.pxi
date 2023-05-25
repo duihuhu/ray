@@ -221,7 +221,7 @@ def split_buffer(Buffer buf):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def unpack_pickle5_buffers(uint8_t[:] bufferview):
+def unpack_pickle5_buffers(uint64_t[:] bufferview):
     cdef:
         const uint64_t *data = &bufferview[0]
         CPythonObject python_object
