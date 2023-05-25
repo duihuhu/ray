@@ -221,9 +221,9 @@ def split_buffer(Buffer buf):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def unpack_pickle5_buffers(uint64_t[:] bufferview):
+def unpack_pickle5_buffers(uint8_t[:] bufferview):
     cdef:
-        const uint64_t *data = &bufferview[0]
+        const uint8_t *data = &bufferview[0]
         CPythonObject python_object
         CPythonBuffer *buffer_meta
         int inband_offset = sizeof(int64_t) * 2
