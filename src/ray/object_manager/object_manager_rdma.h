@@ -104,7 +104,7 @@ public:
       gcs_client_(gcs_client),
       object_manager_(object_manager),
       dependency_manager_(dependency_manager),
-      rpc_service_threads_number_(16),
+      rpc_service_threads_number_(rpc_service_threads_number),
       local_ip_address_(object_manager_address)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
@@ -140,8 +140,8 @@ public:
   void StopRdmaService();
   void InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_rdma_info);
 
-  void RunRdmaService();
-  void FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info);
+  void RunRdmaService(int64_t index);
+  void FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info, int t_index);
   int PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send);
   
 
