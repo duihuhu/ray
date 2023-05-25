@@ -26,8 +26,8 @@ void ObjectManagerRdma::RunRdmaService(int64_t index) {
 		if(found) {
 			auto te_get_object_info = current_sys_time_us();
 			RAY_LOG(DEBUG) << "get object id from queue end " << object_rdma_info.object_info.object_id << " " << te_get_object_info;
-			std::thread::id tid = std::this_thread::get_id();
-			RAY_LOG(DEBUG) << "RunRdmaService thread " << tid;
+			// std::thread::id tid = std::this_thread::get_id();
+			// RAY_LOG(DEBUG) << "RunRdmaService thread " << tid;
 			FetchObjectFromRemotePlasmaThreads(object_rdma_info, t_index);
 			t_index = t_index + 1;
 		}
