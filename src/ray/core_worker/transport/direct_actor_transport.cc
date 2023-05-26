@@ -100,7 +100,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
   //hucc handle push normal task entry start
   auto ts_handle_push_task = current_sys_time_us();
   auto task_id = task_spec.TaskId();
-  RAY_LOG(WARNING) << "hucc task rpc handle push normal task: " << task_id << " " << ts_handle_push_task << "\n";
+  RAY_LOG(DEBUG) << "hucc task rpc handle push normal task: " << task_id << " " << ts_handle_push_task << "\n";
 
 
   // If GCS server is restarted after sending an actor creation task to this core worker,
@@ -163,7 +163,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
                                 reply->mutable_borrowed_refs(),
                                 &is_retryable_error);
     // auto te_exec_task = current_sys_time_us();
-    // RAY_LOG(WARNING) << "hucc time for exec task time: " << te_exec_task << ", " << ts_exec_task <<"\n"; 
+    // RAY_LOG(DEBUG) << "hucc time for exec task time: " << te_exec_task << ", " << ts_exec_task <<"\n"; 
 
     reply->set_is_retryable_error(is_retryable_error);
 
@@ -224,7 +224,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
 
       //hucc task rpc send normal scheduling queue
       auto ts_task_rpc = current_sys_time_us();
-      RAY_LOG(WARNING) << "hucc task callback rpc push normal task exit: " << task_spec.TaskId() << " " << ts_task_rpc << "\n";
+      RAY_LOG(DEBUG) << "hucc task callback rpc push normal task exit: " << task_spec.TaskId() << " " << ts_task_rpc << "\n";
       if (objects_valid) {
         // This happens when max_calls is hit. We still need to return the objects.
         send_reply_callback(Status::OK(), nullptr, nullptr);
@@ -234,7 +234,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
     } else {
       //hucc task rpc send normal scheduling queue
       auto ts_task_rpc = current_sys_time_us();
-      RAY_LOG(WARNING) << "hucc task callback rpc push normal task : " << task_spec.TaskId() << " " << ts_task_rpc << "\n";
+      RAY_LOG(DEBUG) << "hucc task callback rpc push normal task : " << task_spec.TaskId() << " " << ts_task_rpc << "\n";
       RAY_CHECK(objects_valid);
       send_reply_callback(status, nullptr, nullptr);
     }

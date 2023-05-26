@@ -118,11 +118,11 @@ LocalObject *ObjectStore::GetMutableObject(const ObjectID &object_id) {
 }
 
 absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>>  *ObjectStore::GetPlasmaMeta() {
-  // RAY_LOG(WARNING) << "hucc get plasma meta start: " << "\n";
+  // RAY_LOG(DEBUG) << "hucc get plasma meta start: " << "\n";
   // for (auto &entry : object_table_) {
   //   ObjectID object_id = entry.first;
   //   const Allocation &allocation = entry.second->GetAllocation();
-  //   RAY_LOG(WARNING) << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation.address << "endl";
+  //   RAY_LOG(DEBUG) << "hucc get plasma meta object id " << object_id << "allocation information: " << allocation.address << "endl";
   // }
   // std::cout<< "object_table_ address " << &object_table_ <<std::endl;
 

@@ -176,7 +176,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStore(
   // auto ts_breakdown_get_object = current_sys_time_us();
   // for (size_t i = 0; i < batch_ids.size(); i++) {
   //   const auto &object_id = batch_ids[i];
-  //   RAY_LOG(WARNING) << "hucc breakdown get_object raylet: " << ts_breakdown_get_object << " object_id: "<< object_id << " task_id: " << task_id <<"\n";
+  //   RAY_LOG(DEBUG) << "hucc breakdown get_object raylet: " << ts_breakdown_get_object << " object_id: "<< object_id << " task_id: " << task_id <<"\n";
   // }
   //hucc end 
 
@@ -430,7 +430,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   }
   auto t2_out = current_sys_time_us();
   // auto te_get_obj_local_plasma = current_sys_time_us();
-  // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
+  // RAY_LOG(DEBUG) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma << "," << ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
   // If all objects were fetched already, return. Note that we always need to
   // call UnblockIfNeeded() to cancel the get request.
   if (remaining.empty() || *got_exception) {
@@ -653,7 +653,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
   }
   wait_info.clear();
   // auto te_get_obj_local_plasma = current_sys_time_us();
-  // RAY_LOG(WARNING) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
+  // RAY_LOG(DEBUG) << "hucc time for get obj from local plasma total time: " << te_get_obj_local_plasma - ts_get_obj_local_plasma << " empty: " << remaining.empty() << "\n";
   // If all objects were fetched already, return. Note that we always need to
   // call UnblockIfNeeded() to cancel the get request.
   if (remaining.empty() || *got_exception) {

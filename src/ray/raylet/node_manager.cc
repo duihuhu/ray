@@ -1692,7 +1692,7 @@ void NodeManager::ProcessFetchOrReconstructMessage(
   //hucc breakdown get object nodemanager
   // for (const auto &ref : refs) {
   //   const auto obj_id = ObjectRefToId(ref);
-  //   RAY_LOG(WARNING) << "hucc breakdown get object nodemanager: " << ts_breakdown_get_object_node_manager << " object_id: " << obj_id << "\n";
+  //   RAY_LOG(DEBUG) << "hucc breakdown get object nodemanager: " << ts_breakdown_get_object_node_manager << " object_id: " << obj_id << "\n";
   // }
   //end hucc 
 
@@ -1758,7 +1758,7 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
   //hucc breakdown get object nodemanager
   // for (const auto &ref : refs) {
   //   const auto obj_id = ObjectRefToId(ref);
-  //   RAY_LOG(WARNING) << "hucc breakdown get object nodemanager: " << ts_breakdown_get_object_node_manager << " object_id: " << obj_id << "\n";
+  //   RAY_LOG(DEBUG) << "hucc breakdown get object nodemanager: " << ts_breakdown_get_object_node_manager << " object_id: " << obj_id << "\n";
   // }
   //end hucc 
 
@@ -1781,7 +1781,7 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
       // dependency_manager_.InsertObjectLocal(object_info);
       // auto te_get_obj_remote_rdma = current_sys_time_us();
 
-      // RAY_LOG(WARNING) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
+      // RAY_LOG(DEBUG) << "hucc time for get obj from rdma " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
 
     }
   } else {
@@ -1796,7 +1796,7 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
     // object_manager_rdma_.FetchObjectFromRemotePlasma(object_address, object_virt_address, object_sizes, object_info, rem_ip_address, dependency_manager_);
     // dependency_manager_.InsertObjectLocal(object_info);
     // auto te_get_obj_remote_rdma = current_sys_time_us();
-    // RAY_LOG(WARNING) << "hucc time for get obj from rdma in process fetch or reconstruct message time " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
+    // RAY_LOG(DEBUG) << "hucc time for get obj from rdma in process fetch or reconstruct message time " << te_get_obj_remote_rdma - ts_get_obj_remote_rdma << " " << object_info[0].object_id;
 
     // const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
     // AsyncResolveObjects(client,

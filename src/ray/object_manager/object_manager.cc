@@ -338,7 +338,7 @@ void ObjectManager::HandleSendFinished(const ObjectID &object_id,
   // std::cout << "HandleSendFinished on " << self_node_id_ << " to " << node_id
   //                << " of object " << object_id << " chunk " << chunk_index
   //                << ", status: " << status.ToString() << "start_time: " << str_start_time << " end_time: " << str_end_time << "\n";
-  RAY_LOG(WARNING) << "hucc HandleSendFinished on " << self_node_id_ << " to " << node_id
+  RAY_LOG(DEBUG) << "hucc HandleSendFinished on " << self_node_id_ << " to " << node_id
                  << " of object " << object_id << " chunk " << chunk_index
                  << ", status: " << status.ToString() << "start_time: " << str_start_time << " end_time: " << str_end_time << "\n";
   if (!status.ok()) {
@@ -576,14 +576,14 @@ void ObjectManager::SendObjectChunk(const UniqueID &push_id,
         double end_time = absl::GetCurrentTimeNanos() / 1e9;
         //hucc handle push request reply
         auto te_handle_push_request_reply = current_sys_time_us();
-        RAY_LOG(WARNING) << "hucc remote get object receive handle push reply object id " << object_id << " " << te_handle_push_request_reply  << " chunk_index: " << chunk_index << "\n";
+        RAY_LOG(DEBUG) << "hucc remote get object receive handle push reply object id " << object_id << " " << te_handle_push_request_reply  << " chunk_index: " << chunk_index << "\n";
         HandleSendFinished(object_id, node_id, chunk_index, start_time, end_time, status);
         on_complete(status);
       };
 
   //hucc send push request 
   auto ts_push_request = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc remote get object send push request object id :" << object_id << " " << ts_push_request << " chunk_index: " << chunk_index <<"\n";
+  RAY_LOG(DEBUG) << "hucc remote get object send push request object id :" << object_id << " " << ts_push_request << " chunk_index: " << chunk_index <<"\n";
   rpc_client->Push(push_request, callback);
 }
 
@@ -597,7 +597,7 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
   
   //hucc breakdown get object handle push
-  // RAY_LOG(WARNING) << "hucc breakdown get object handle push: " << object_id  << " " << ts_breakdown_handle_push << "\n";
+  // RAY_LOG(DEBUG) << "hucc breakdown get object handle push: " << object_id  << " " << ts_breakdown_handle_push << "\n";
   //end hucc 
 
   NodeID node_id = NodeID::FromBinary(request.node_id());
@@ -611,14 +611,14 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
 
   //hucc breakdown get object write to plasma
   auto ts_breakdown_write_plasma = current_sys_time_us();  
-  RAY_LOG(WARNING) << "hucc breakdown get object write to plasma start: " << object_id  << " " << ts_breakdown_write_plasma << " chunk_index: " << chunk_index << "\n";
+  RAY_LOG(DEBUG) << "hucc breakdown get object write to plasma start: " << object_id  << " " << ts_breakdown_write_plasma << " chunk_index: " << chunk_index << "\n";
   //end hucc 
   bool success = ReceiveObjectChunk(
       node_id, object_id, owner_address, data_size, metadata_size, chunk_index, data);
   
   //hucc breakdown get object write to plasma
   // auto te_breakdown_write_plasma = current_sys_time_us();  
-  // RAY_LOG(WARNING) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma << "\n";
+  // RAY_LOG(DEBUG) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma << "\n";
   //end hucc
   
   num_chunks_received_total_++;
@@ -632,7 +632,7 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   
   //hucc handle push request
   auto te_handle_push_request = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc remote get object receive handle push request object id " << object_id  << " " << te_handle_push_request << " chunk_index: " << chunk_index <<"\n";
+  RAY_LOG(DEBUG) << "hucc remote get object receive handle push request object id " << object_id  << " " << te_handle_push_request << " chunk_index: " << chunk_index <<"\n";
 
   send_reply_callback(Status::OK(), nullptr, nullptr);
 }
@@ -693,7 +693,7 @@ void ObjectManager::HandlePull(const rpc::PullRequest &request,
                  << object_id << "].";
   //hucc receive send pull request node1 to node2
   auto ts_handle_pull_request = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc remote get object receive handle pull request from " << node_id << " of object " << object_id << " " << ts_handle_pull_request << "\n";
+  RAY_LOG(DEBUG) << "hucc remote get object receive handle pull request from " << node_id << " of object " << object_id << " " << ts_handle_pull_request << "\n";
   main_service_->post([this, object_id, node_id, start_time]() { Push(object_id, node_id, start_time); },
                       "ObjectManager.HandlePull");
   send_reply_callback(Status::OK(), nullptr, nullptr);

@@ -34,7 +34,7 @@ Status CoreWorkerDirectTaskSubmitter::SubmitTask(TaskSpecification task_spec) {
     RAY_LOG(DEBUG) << "Task dependencies resolved " << task_spec.TaskId();
     // hucc resolve time for dependencies
     // auto te_resolve_task = current_sys_time_us();
-    // RAY_LOG(WARNING) << "hucc resolve time for task dependence: " << task_spec.TaskId() << "end time: " << te_resolve_task << "\n";
+    // RAY_LOG(DEBUG) << "hucc resolve time for task dependence: " << task_spec.TaskId() << "end time: " << te_resolve_task << "\n";
     if (task_spec.IsActorCreationTask()) {
       // If gcs actor management is enabled, the actor creation task will be sent to
       // gcs server directly after the in-memory dependent objects are resolved. For
@@ -557,7 +557,7 @@ void CoreWorkerDirectTaskSubmitter::PushNormalTask(
   task_finisher_->MarkTaskWaitingForExecution(task_id);
   //hucc push normal task start
   auto ts_push_task = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc task rpc push normal task: " << task_id << " " << ts_push_task << "\n";
+  RAY_LOG(DEBUG) << "hucc task rpc push normal task: " << task_id << " " << ts_push_task << "\n";
   client.PushNormalTask(
       std::move(request),
       [this,
@@ -571,8 +571,8 @@ void CoreWorkerDirectTaskSubmitter::PushNormalTask(
         {
           //hucc push normal task end
           auto te_push_task = current_sys_time_us();
-          RAY_LOG(WARNING) << "hucc push normal task id end: " << task_id << " push task time and exec: " << te_push_task << "\n";
-          RAY_LOG(WARNING) << "hucc task callback rpc handle push normal task: " << task_id << " " << te_push_task << "\n";
+          RAY_LOG(DEBUG) << "hucc push normal task id end: " << task_id << " push task time and exec: " << te_push_task << "\n";
+          RAY_LOG(DEBUG) << "hucc task callback rpc handle push normal task: " << task_id << " " << te_push_task << "\n";
 
           RAY_LOG(DEBUG) << "Task " << task_id << " finished from worker "
                          << addr.worker_id << " of raylet " << addr.raylet_id;
