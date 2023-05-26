@@ -56,7 +56,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		int n_qp = t_index%(num_qp_pair-1);
 		
 		// auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
-
+  
+		auto ts_create_object = current_sys_time_us();
 		auto pair = object_manager_.CreateObjectRdma(object_rdma_info.object_info);
 		RAY_LOG(DEBUG) << " Allocate pair ";
 		auto entry = pair.first;
@@ -65,6 +66,9 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 			RAY_LOG(DEBUG) << " object space is already allocate";
 			return;
 		}
+		auto te_create_object = current_sys_time_us();
+		RAY_LOG(ERROR) << " Allocate object size time " << te_create_object - ts_create_object;
+
 		auto allocation = pair.first->GetAllocation();
 
 		RAY_LOG(DEBUG) << " Allocate space allocation->address " << allocation.address << " object_id " << object_rdma_info.object_info.object_id;
