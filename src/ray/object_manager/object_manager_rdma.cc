@@ -67,7 +67,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 			return;
 		}
 		auto te_create_object = current_sys_time_us();
-		RAY_LOG(ERROR) << " Allocate object size time " << object_rdma_info.object_info.object_id << " " << te_create_object - ts_create_object << " " << object_rdma_info.object_info.object_sizes;
+		RAY_LOG(ERROR) << " Allocate object size time " << object_rdma_info.object_info.object_id << " " << te_create_object - ts_create_object << " " << object_rdma_info.object_sizes;
 
 		auto allocation = pair.first->GetAllocation();
 
