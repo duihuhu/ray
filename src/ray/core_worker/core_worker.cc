@@ -2805,7 +2805,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
       if(current_node_id == node_id) {
         object_exists = true;
       } else {
-          remoto_node_id = node_id;
+        remoto_node_id = node_id;
       }
       reply->add_node_ids(node_id.Binary());
     }
