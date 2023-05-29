@@ -2842,8 +2842,24 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
           reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
           
           reply->set_worker_ip_address(object_info.owner_ip_address);
+        } else {
+          reply->set_virt_address(0);
+          reply->set_device_num(0);
+          // object info
+          reply->set_data_size(0);
+          reply->set_metadata_size(0);
+          /// Owner's raylet ID.
+          reply->set_owner_raylet_id(node_id.Binary());
+          /// Owner's IP address.
+          reply->set_owner_ip_address(NULL);
+          /// Owner's port.
+          reply->set_owner_port(0);
+          /// Owner's worker ID.
+          reply->set_owner_worker_id(node_id.Binary());
+          
+          reply->set_worker_ip_address(NULL);
         }
-        RAY_LOG(WARNING) << "PopulateObjectStatus in reply exists " << object_id << " " << object_info.owner_ip_address;
+      RAY_LOG(WARNING) << "PopulateObjectStatus in reply exists " << object_id << " " << object_info.owner_ip_address;
       } else {
         RAY_LOG(DEBUG) << " Plasma Object is not exists in this node " << object_id;
         // local_raylet_client_->GetRemoteNodeManagerInfo()
