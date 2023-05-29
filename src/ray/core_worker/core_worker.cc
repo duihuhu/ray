@@ -2824,42 +2824,26 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
 
         plasma_store_provider_->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
         auto te_get_meta_from_plasma = current_sys_time_us();
-        if (object_size!=0) {
-          RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size << te_get_meta_from_plasma - ts_get_meta_from_plasma;
+  
+        RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size << te_get_meta_from_plasma - ts_get_meta_from_plasma;
+      
+        reply->set_virt_address(virt_address);
+        reply->set_device_num(device_num);
+        // object info
+        reply->set_data_size(object_info.data_size);
+        reply->set_metadata_size(object_info.metadata_size);
+        /// Owner's raylet ID.
+        reply->set_owner_raylet_id(object_info.owner_raylet_id.Binary());
+        /// Owner's IP address.
+        reply->set_owner_ip_address(object_info.owner_ip_address);
+        /// Owner's port.
+        reply->set_owner_port(object_info.owner_port);
+        /// Owner's worker ID.
+        reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
         
-          reply->set_virt_address(virt_address);
-          reply->set_device_num(device_num);
-          // object info
-          reply->set_data_size(object_info.data_size);
-          reply->set_metadata_size(object_info.metadata_size);
-          /// Owner's raylet ID.
-          reply->set_owner_raylet_id(object_info.owner_raylet_id.Binary());
-          /// Owner's IP address.
-          reply->set_owner_ip_address(object_info.owner_ip_address);
-          /// Owner's port.
-          reply->set_owner_port(object_info.owner_port);
-          /// Owner's worker ID.
-          reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
-          
-          reply->set_worker_ip_address(object_info.owner_ip_address);
-        } else {
-          reply->set_virt_address(0);
-          reply->set_device_num(0);
-          // object info
-          reply->set_data_size(0);
-          reply->set_metadata_size(0);
-          /// Owner's raylet ID.
-          reply->set_owner_raylet_id(node_id.Binary());
-          /// Owner's IP address.
-          reply->set_owner_ip_address(NULL);
-          /// Owner's port.
-          reply->set_owner_port(0);
-          /// Owner's worker ID.
-          reply->set_owner_worker_id(node_id.Binary());
-          
-          reply->set_worker_ip_address(NULL);
-        }
-      RAY_LOG(WARNING) << "PopulateObjectStatus in reply exists " << object_id << " " << object_info.owner_ip_address;
+        reply->set_worker_ip_address(object_info.owner_ip_address);
+        
+        RAY_LOG(WARNING) << "PopulateObjectStatus in reply exists " << object_id << " " << object_info.owner_ip_address;
       } else {
         RAY_LOG(DEBUG) << " Plasma Object is not exists in this node " << object_id;
         // local_raylet_client_->GetRemoteNodeManagerInfo()
