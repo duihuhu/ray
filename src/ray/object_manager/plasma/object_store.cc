@@ -103,6 +103,7 @@ bool ObjectStore::DeleteObject(const ObjectID &object_id) {
   if (entry == nullptr) {
     return false;
   }
+  RAY_LOG(DEBUG) << "DeleteObject DeleteObject";
   allocator_.Free(std::move(entry->allocation));
   object_table_.erase(object_id);
   object_table_rdma_.erase(object_id);
