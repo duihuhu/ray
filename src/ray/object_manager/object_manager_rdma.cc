@@ -155,7 +155,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		} 
 	}
   auto te_fetch_rdma = current_sys_time_us();
-  RAY_LOG(ERROR) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time  << " " << ts_fetch_rdma-start_time << " " << ts_fetch_rdma - te_fetch_object_post_send << " " <<object_info.object_id ;  
+  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time  << " " << ts_fetch_rdma-start_time << " " << ts_fetch_rdma - te_fetch_object_post_send << " " <<object_info.object_id ;  
 	return rc;
 }
 
@@ -168,9 +168,12 @@ void ObjectManagerRdma::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_
 			continue;
 		}
 		else{
-			auto ts_get_obj_remote_rdma = current_sys_time_us();
-			RAY_LOG(DEBUG) << "get object id from queue start " << object_rdma_info[i].object_info.object_id << " " << ts_get_obj_remote_rdma;
+			// auto ts_get_obj_remote_rdma = current_sys_time_us();
+			// RAY_LOG(DEBUG) << "get object id from queue start " << object_rdma_info[i].object_info.object_id << " " << ts_get_obj_remote_rdma;
 			object_rdma_queue_.enqueue(object_rdma_info[i]);
+			auto ts_get_obj_remote_rdma = current_sys_time_us();
+			RAY_LOG(ERROR) << "raylet client send 1 " << object_rdma_info[i].object_info.object_id << " " << ts_get_obj_remote_rdma;
+
 		}
 	}
 	cv_.notify_all();
