@@ -245,7 +245,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
   auto t1 = current_sys_time_us();
-  RAY_LOG(ERROR) << " raylet client send 0" << t1 << " " << batch_ids[0];
+  RAY_LOG(ERROR) << " raylet client send 0 " << t1 << " " << batch_ids[0];
   RAY_RETURN_NOT_OK(
       raylet_client_->FetchOrReconstructRDMA(batch_ids,
                                          owner_addresses,
