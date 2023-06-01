@@ -1213,6 +1213,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   }
   auto te_get_obj_cw = current_sys_time_us();
   // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0];
+  RAY_LOG(ERROR) << " raylet client send 4 " << te_get_obj_cw << " "  << ids[0];
 
   return Status::OK();
 }

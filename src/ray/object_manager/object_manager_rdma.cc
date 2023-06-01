@@ -25,7 +25,7 @@ void ObjectManagerRdma::RunRdmaService(int64_t index) {
 		}
 		if(found) {
 			auto te_get_object_info = current_sys_time_us();
-			RAY_LOG(DEBUG) << "get object id from queue end " << object_rdma_info.object_info.object_id << " " << te_get_object_info;
+			RAY_LOG(ERROR) << "raylet client send 2 " << te_get_object_info << " " << object_rdma_info.object_info.object_id  ;
 			// std::thread::id tid = std::this_thread::get_id();
 			// RAY_LOG(DEBUG) << "RunRdmaService thread " << tid;
 			FetchObjectFromRemotePlasmaThreads(object_rdma_info, t_index);
@@ -93,6 +93,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		// 							"ObjectManagerRdma.PollCompletion");
 		auto te_fetch_object_rdma = current_sys_time_us();
 		RAY_LOG(DEBUG) << "FetchObjectRdma time " << obj_info.object_id << " " <<te_fetch_object_rdma - ts_fetch_object_rdma;
+		RAY_LOG(ERROR) << "raylet client send 3 " << te_fetch_object_rdma << " " << obj_info.object_id;
+
 	}
   // }
   // auto te_fetch_object_rdma = current_sys_time_us();
@@ -153,7 +155,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		} 
 	}
   auto te_fetch_rdma = current_sys_time_us();
-  RAY_LOG(DEBUG) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time  << " " << ts_fetch_rdma-start_time << " " << ts_fetch_rdma - te_fetch_object_post_send << " " <<object_info.object_id ;  
+  RAY_LOG(ERROR) << "Poll Object in Rdma " << te_fetch_rdma - ts_fetch_rdma << " " << te_fetch_rdma - start_time  << " " << ts_fetch_rdma-start_time << " " << ts_fetch_rdma - te_fetch_object_post_send << " " <<object_info.object_id ;  
 	return rc;
 }
 

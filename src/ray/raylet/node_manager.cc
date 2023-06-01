@@ -1724,10 +1724,11 @@ void NodeManager::ProcessFetchOrReconstructMessage(
 
 void NodeManager::ProcessFetchOrReconstructRDMAMessage(
     const std::shared_ptr<ClientConnection> &client, const uint8_t *message_data) {
-  std::thread::id tid = std::this_thread::get_id();
-	RAY_LOG(DEBUG) << "node manager id " << tid;
+  // std::thread::id tid = std::this_thread::get_id();
+	// RAY_LOG(DEBUG) << "node manager id " << tid;
   //hucc breakdown get object nodemanager
   auto ts_fetch_or_restruct_message = current_sys_time_us();
+
   //end hucc
 
   // std::vector<unsigned long> object_virt_address;
@@ -1739,7 +1740,7 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
   std::vector<ObjectRdmaInfo> object_rdma_info;
 
   auto message = flatbuffers::GetRoot<protocol::FetchOrReconstructRDMA>(message_data);
-  auto ts_seri_object = current_sys_time_us();
+  // auto ts_seri_object = current_sys_time_us();
   // const auto refs =
   //     FlatbufferToObjectReference(*message->object_ids(), *message->owner_addresses());
   
@@ -1748,8 +1749,8 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
  
   FlatbufferToObjectReferenceWithMeta(*message->object_ids(), *message->virt_address(), *message->object_sizes(), *message->object_meta_sizes(), *message->owner_raylet_id(), *message->owner_ip_address(),
                                       *message->owner_port(), *message->owner_worker_id(), *message->owner_addresses(), *message->rem_ip_address(), object_rdma_info);
-  auto te_seri_object = current_sys_time_us();
-  RAY_LOG(DEBUG)<<" object seri cost " << te_seri_object - ts_seri_object << " " << te_seri_object << " " << object_rdma_info[0].object_info.object_id;
+  // auto te_seri_object = current_sys_time_us();
+  // RAY_LOG(DEBUG)<<" object seri cost " << te_seri_object - ts_seri_object << " " << te_seri_object << " " << object_rdma_info[0].object_info.object_id;
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
 
   // TODO(ekl) we should be able to remove the fetch only flag along with the legacy
@@ -1761,6 +1762,7 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
   //   RAY_LOG(DEBUG) << "hucc breakdown get object nodemanager: " << ts_breakdown_get_object_node_manager << " object_id: " << obj_id << "\n";
   // }
   //end hucc 
+  RAY_LOG(ERROR) << " raylet client send 1" << ts_fetch_or_restruct_message << " " << object_rdma_info[0].object_info.object_id;
 
   if (message->fetch_only()) {
     std::shared_ptr<WorkerInterface> worker = worker_pool_.GetRegisteredWorker(client);
