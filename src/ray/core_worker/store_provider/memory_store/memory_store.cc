@@ -290,7 +290,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
                                       bool remove_after_get,
                                       std::vector<std::shared_ptr<RayObject>> *results,
                                       bool abort_if_any_object_is_exception) {
-  auto ts_get_impl_object = current_sys_time_us();
+  auto t1 = current_sys_time_us();
   (*results).resize(object_ids.size(), nullptr);
 
   std::shared_ptr<GetRequest> get_request;
@@ -391,7 +391,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // hucc add time for Wait for get_request already
   // auto ts_get_wobj = current_sys_time_us();
   // RAY_LOG(DEBUG) << "hucc memory store while before " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
-
+  auto t2 = current_sys_time_us();
+  RAY_LOG(DEBUG) << "hucc memory store get impl object t2-t1" << t2 - t1; 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
     // RAY_LOG(DEBUG) << "hucc memory store while in " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
@@ -442,8 +443,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       }
     }
   }
-  auto te_get_impl_object = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc memory store get impl object " << te_get_impl_object - ts_get_impl_object; 
+  auto t3 = current_sys_time_us();
+  RAY_LOG(DEBUG) << "hucc memory store get impl object t3-t2" << t3 - t2; 
 
   if (!signal_status.ok()) {
     return signal_status;
