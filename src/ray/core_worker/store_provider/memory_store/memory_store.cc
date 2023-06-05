@@ -392,7 +392,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // auto ts_get_wobj = current_sys_time_us();
   // RAY_LOG(DEBUG) << "hucc memory store while before " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
   auto t2 = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc memory store get impl object t2-t1" << t2 - t1; 
+  RAY_LOG(DEBUG) << "hucc memory store get impl object t2-t1 " << t2 - t1; 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
     // RAY_LOG(DEBUG) << "hucc memory store while in " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
@@ -408,7 +408,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   }
   // auto te_get_wobj = current_sys_time_us();
   // RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << te_get_wobj - ts_get_wobj << " " << te_get_wobj << ", " << ts_get_wobj <<"\n"; 
-
+  auto t3 = current_sys_time_us();
+  RAY_LOG(DEBUG) << "hucc memory store get impl object t3-t2 " << t3 - t2; 
   if (should_notify_raylet) {
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());
   }
@@ -443,8 +444,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       }
     }
   }
-  auto t3 = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc memory store get impl object t3-t2" << t3 - t2; 
+  auto t4 = current_sys_time_us();
+  RAY_LOG(DEBUG) << "hucc memory store get impl object t4-t3 " << t4 - t3; 
 
   if (!signal_status.ok()) {
     return signal_status;
