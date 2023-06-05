@@ -393,7 +393,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // auto ts_get_wobj = current_sys_time_us();
   // RAY_LOG(DEBUG) << "hucc memory store while before " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
   auto t2 = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc memory store get impl object t2-t1 " << t2 - t1; 
+  RAY_LOG(DEBUG) << "hucc memory store get impl object t2-t1 " << t2 - t1 << " " << t2 << " " << object_ids[0] ; 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
     // RAY_LOG(DEBUG) << "hucc memory store while in " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
