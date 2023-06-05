@@ -290,6 +290,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
                                       bool remove_after_get,
                                       std::vector<std::shared_ptr<RayObject>> *results,
                                       bool abort_if_any_object_is_exception) {
+  auto ts_get_impl_object = current_sys_time_us();
   (*results).resize(object_ids.size(), nullptr);
 
   std::shared_ptr<GetRequest> get_request;
@@ -348,7 +349,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
                                                remove_after_get,
                                                abort_if_any_object_is_exception);
     for (const auto &object_id : get_request->ObjectIds()) {
-      RAY_LOG(DEBUG) << "object_get_requests_ push " << object_id; 
       object_get_requests_[object_id].push_back(get_request);
     }
     
@@ -390,11 +390,11 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
   // hucc add time for Wait for get_request already
   // auto ts_get_wobj = current_sys_time_us();
-  RAY_LOG(DEBUG) << "hucc memory store while before " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
+  // RAY_LOG(DEBUG) << "hucc memory store while before " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
-    RAY_LOG(DEBUG) << "hucc memory store while in " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
+    // RAY_LOG(DEBUG) << "hucc memory store while in " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
     if (check_signals_) {
       signal_status = check_signals_();
     }
@@ -442,6 +442,8 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       }
     }
   }
+  auto te_get_impl_object = current_sys_time_us();
+  RAY_LOG(DEBUG) << "hucc memory store get impl object " << te_get_impl_object - ts_get_impl_object; 
 
   if (!signal_status.ok()) {
     return signal_status;
