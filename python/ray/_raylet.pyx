@@ -683,8 +683,6 @@ cdef execute_task(
                     *arguments, **kwarguments)
 
             return function(actor, *arguments, **kwarguments)
-    t2 = time.time()
-    print("hucc time exec task t2: ", t2, extra_data)
     with core_worker.profile_event(b"task::" + name, extra_data=extra_data):
         try:
             task_exception = False
@@ -737,6 +735,8 @@ cdef execute_task(
                             ray.util.pdb.set_trace(
                                 breakpoint_uuid=debugger_breakpoint)
                         outputs = function_executor(*args, **kwargs)
+                        t2 = time.time()
+                        print("hucc time exec task t2: ", t2)
                         next_breakpoint = (
                             ray._private.worker.global_worker.debugger_breakpoint)
                         if next_breakpoint != b"":
