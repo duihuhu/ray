@@ -2731,7 +2731,8 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   } else {
     RAY_CHECK(owner_address.worker_id() == request.owner_worker_id());
     bool is_freed = reference_counter_->IsPlasmaObjectFreed(object_id);
-
+    auto t2 = current_sys_time_us();
+    RAY_LOG(DEBUG) << "hucc before memory_store_ GetAsync: "<< object_id << " "<< t2 <<"\n";
     // Send the reply once the value has become available. The value is
     // guaranteed to become available eventually because we own the object and
     // its ref count is > 0.
@@ -2743,8 +2744,8 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
                               } else {
                                 PopulateObjectStatus(object_id, obj, reply);
                               }
-                              auto t2 = current_sys_time_us();
-                              RAY_LOG(DEBUG) << " Return object  "<< object_id << " " << t2 << "\n";
+                              auto t3 = current_sys_time_us();
+                              RAY_LOG(DEBUG) << " Return object  "<< object_id << " " << t3 << "\n";
                               send_reply_callback(Status::OK(), nullptr, nullptr);
                             });
   }
