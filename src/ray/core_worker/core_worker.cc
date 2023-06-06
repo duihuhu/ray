@@ -2186,6 +2186,8 @@ Status CoreWorker::AllocateReturnObject(const ObjectID &object_id,
   bool object_already_exists = false;
   std::shared_ptr<Buffer> data_buffer;
   if (data_size > 0) {
+    auto t_process = current_sys_time_us();
+    RAY_LOG(DEBUG) << "hucc Creating return object " << object_id << " " << t_process;
     RAY_LOG(DEBUG) << "Creating return object " << object_id;
     // Mark this object as containing other object IDs. The ref counter will
     // keep the inner IDs in scope until the outer one is out of scope.
