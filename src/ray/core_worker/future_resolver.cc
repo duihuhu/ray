@@ -33,6 +33,7 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
       request,
       [this, object_id, owner_address](const Status &status,
                                        const rpc::GetObjectStatusReply &reply) {
+        RAY_LOG(DEBUG) << "Object returned directly in GetObjectStatus reply in ResolveFutureAsync";                 
         ProcessResolvedObject(object_id, owner_address, status, reply);
       });
 }
@@ -78,10 +79,11 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
     const auto &data = reply.object().data();
     std::shared_ptr<LocalMemoryBuffer> data_buffer;
     if (data.size() > 0) {
+      auto t_process = current_sys_time_us();
       RAY_LOG(DEBUG) << "Object returned directly in GetObjectStatus reply, putting "
-                     << object_id << " in memory store";
-      RAY_LOG(DEBUG) << "hucc ProcessResolvedObject Object returned directly in GetObjectStatus reply, putting "
-                     << object_id << " in memory store";
+                     << object_id << " in memory store " << t_process;
+      // RAY_LOG(DEBUG) << "hucc ProcessResolvedObject Object returned directly in GetObjectStatus reply, putting "
+      //                << object_id << " in memory store";
       data_buffer = std::make_shared<LocalMemoryBuffer>(
           const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(data.data())),
           data.size());
