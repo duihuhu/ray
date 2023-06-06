@@ -594,8 +594,7 @@ cdef execute_task(
 
     function_descriptor = CFunctionDescriptorToPython(
         ray_function.GetFunctionDescriptor())
-    t1 = time.time()
-    print("hucc time exec task t1: ", t1)
+
     if <int>task_type == <int>TASK_TYPE_ACTOR_CREATION_TASK:
         actor_class = manager.load_actor_class(job_id, function_descriptor)
         actor_id = core_worker.get_actor_id()
@@ -619,6 +618,8 @@ cdef execute_task(
                 c_defined_concurrency_groups)
 
     execution_info = execution_infos.get(function_descriptor)
+    t1 = time.time()
+    print("hucc time exec task t1: ", t1)
     if not execution_info:
         execution_info = manager.get_execution_info(
             job_id, function_descriptor)
