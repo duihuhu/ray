@@ -2137,7 +2137,7 @@ cdef class CoreWorker:
                            shared_ptr[CRayObject] *return_ptr):
         """Store a task return value in plasma or as an inlined object."""
         ts_get_obj_pcw = time.time()
-        print("hucc time allocate return object: ", ts_get_obj_pcw, return_id)
+        print("hucc time allocate return object: ", ts_get_obj_pcw)
         with nogil:
             check_status(
                 CCoreWorkerProcess.GetCoreWorker().AllocateReturnObject(
