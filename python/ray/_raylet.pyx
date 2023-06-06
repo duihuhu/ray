@@ -682,7 +682,7 @@ cdef execute_task(
 
             return function(actor, *arguments, **kwarguments)
     ts_exec_task = time.time()
-    print("hucc time exec task: ", ts_exec_task)
+    print("hucc time exec task: ", ts_exec_task, extra_data)
     with core_worker.profile_event(b"task::" + name, extra_data=extra_data):
         try:
             task_exception = False
