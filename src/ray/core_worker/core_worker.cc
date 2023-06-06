@@ -885,7 +885,6 @@ void CoreWorker::RegisterOwnershipInfoAndResolveFuture(
 
   if (object_status.has_object() && !reference_counter_->OwnedByUs(object_id)) {
     // We already have the inlined object status, process it immediately.
-    RAY_LOG(DEBUG) << "Object returned directly in GetObjectStatus reply in RegisterOwnershipInfoAndResolveFuture";                
     future_resolver_->ProcessResolvedObject(
         object_id, owner_address, Status::OK(), object_status);
   } else {
@@ -2743,6 +2742,8 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
                               } else {
                                 PopulateObjectStatus(object_id, obj, reply);
                               }
+                              auto t_process = current_sys_time_us();
+                              RAY_LOG(DEBUG) << " Return object  "<< object_id << " " << t_process << "\n";
                               send_reply_callback(Status::OK(), nullptr, nullptr);
                             });
   }
