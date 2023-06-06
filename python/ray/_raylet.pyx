@@ -579,8 +579,6 @@ cdef execute_task(
 
     # Automatically restrict the GPUs available to this task.
     ray._private.utils.set_cuda_visible_devices(ray.get_gpu_ids())
-    t1 = time.time()
-    print("hucc time exec task t1: ", t1)
     # Helper method used to exit current asyncio actor.
     # This is called when a KeyboardInterrupt is received by the main thread.
     # Upon receiving a KeyboardInterrupt signal, Ray will exit the current
@@ -596,7 +594,8 @@ cdef execute_task(
 
     function_descriptor = CFunctionDescriptorToPython(
         ray_function.GetFunctionDescriptor())
-
+    t1 = time.time()
+    print("hucc time exec task t1: ", t1)
     if <int>task_type == <int>TASK_TYPE_ACTOR_CREATION_TASK:
         actor_class = manager.load_actor_class(job_id, function_descriptor)
         actor_id = core_worker.get_actor_id()
