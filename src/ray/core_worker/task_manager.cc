@@ -283,8 +283,9 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
     // be able to reconstruct it if the plasma object copy is lost. However,
     // this is okay because the pinned copy is on the local node, so we will
     // fate-share with the object if the local node fails.
-    RAY_LOG(WARNING) << "Task return object in request" << object_id << " has size "
-        << return_object.size();
+    auto t_process = current_sys_time_us();
+    RAY_LOG(WARNING) << "Task return object in request " << object_id << " has size " 
+        << return_object.size() << " " << t_process;
     std::shared_ptr<LocalMemoryBuffer> data_buffer;
     if (return_object.data().size() > 0) {
       data_buffer = std::make_shared<LocalMemoryBuffer>(
