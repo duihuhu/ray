@@ -2718,7 +2718,8 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   // Acquire a reference to the object. This prevents the object from being
   // evicted out from under us while we check the object status and start the
   // Get.
-  RAY_LOG(DEBUG) << "hucc rayIDLE HandleGetObjectStatus: "<< "\n";
+  auto t1 = current_sys_time_us();
+  RAY_LOG(DEBUG) << "hucc rayIDLE HandleGetObjectStatus: "<< object_id << " "<< t1 <<"\n";
   AddLocalReference(object_id, "<temporary (get object status)>");
 
   rpc::Address owner_address;
@@ -2742,8 +2743,8 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
                               } else {
                                 PopulateObjectStatus(object_id, obj, reply);
                               }
-                              auto t_process = current_sys_time_us();
-                              RAY_LOG(DEBUG) << " Return object  "<< object_id << " " << t_process << "\n";
+                              auto t2 = current_sys_time_us();
+                              RAY_LOG(DEBUG) << " Return object  "<< object_id << " " << t2 << "\n";
                               send_reply_callback(Status::OK(), nullptr, nullptr);
                             });
   }
