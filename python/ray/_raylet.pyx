@@ -563,7 +563,8 @@ cdef execute_task(
         # the concurrency groups of this actor.
         const c_vector[CConcurrencyGroup] &c_defined_concurrency_groups,
         const c_string c_name_of_concurrency_group_to_execute):
-
+    t0 = time.time()
+    print("hucc time exec task t0: ", t0)
     is_retryable_error[0] = False
     worker = ray._private.worker.global_worker
     manager = worker.function_actor_manager
