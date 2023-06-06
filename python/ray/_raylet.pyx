@@ -631,7 +631,8 @@ cdef execute_task(
     name_of_concurrency_group_to_execute = \
         c_name_of_concurrency_group_to_execute.decode("ascii")
     title = f"ray::{task_name}"
-
+    t1 = time.time()
+    print("hucc time exec task t1: ", t1, extra_data)
     if <int>task_type == <int>TASK_TYPE_NORMAL_TASK:
         next_title = "ray::IDLE"
         function_executor = execution_info.function
@@ -681,8 +682,8 @@ cdef execute_task(
                     *arguments, **kwarguments)
 
             return function(actor, *arguments, **kwarguments)
-    ts_exec_task = time.time()
-    print("hucc time exec task: ", ts_exec_task, extra_data)
+    t2 = time.time()
+    print("hucc time exec task t2: ", t2, extra_data)
     with core_worker.profile_event(b"task::" + name, extra_data=extra_data):
         try:
             task_exception = False
