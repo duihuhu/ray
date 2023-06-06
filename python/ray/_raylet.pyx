@@ -565,8 +565,6 @@ cdef execute_task(
         const c_string c_name_of_concurrency_group_to_execute):
 
     is_retryable_error[0] = False
-    ts_exec_task = time.time()
-    print("hucc time exec task: ", ts_exec_task)
     worker = ray._private.worker.global_worker
     manager = worker.function_actor_manager
     actor = None
@@ -683,7 +681,8 @@ cdef execute_task(
                     *arguments, **kwarguments)
 
             return function(actor, *arguments, **kwarguments)
-
+    ts_exec_task = time.time()
+    print("hucc time exec task: ", ts_exec_task)
     with core_worker.profile_event(b"task::" + name, extra_data=extra_data):
         try:
             task_exception = False
