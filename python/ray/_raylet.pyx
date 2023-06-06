@@ -565,7 +565,8 @@ cdef execute_task(
         const c_string c_name_of_concurrency_group_to_execute):
 
     is_retryable_error[0] = False
-
+    ts_exec_task = time.time()
+    print("hucc time exec task: ", ts_exec_task)
     worker = ray._private.worker.global_worker
     manager = worker.function_actor_manager
     actor = None
@@ -808,7 +809,7 @@ cdef execute_task(
                 raise ValueError(
                     "Task returned {} objects, but num_returns={}.".format(
                         len(outputs), returns[0].size()))
-
+            
             # Store the outputs in the object store.
             with core_worker.profile_event(b"task:store_outputs"):
                 num_returns = returns[0].size()
@@ -2136,8 +2137,8 @@ cdef class CoreWorker:
                            int64_t *task_output_inlined_bytes,
                            shared_ptr[CRayObject] *return_ptr):
         """Store a task return value in plasma or as an inlined object."""
-        ts_get_obj_pcw = time.time()
-        print("hucc time allocate return object: ", ts_get_obj_pcw)
+        #ts_get_obj_pcw = time.time()
+        #print("hucc time allocate return object: ", ts_get_obj_pcw)
         with nogil:
             check_status(
                 CCoreWorkerProcess.GetCoreWorker().AllocateReturnObject(

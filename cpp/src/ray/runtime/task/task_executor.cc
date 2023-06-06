@@ -221,8 +221,6 @@ Status TaskExecutor::ExecuteTask(
           (uint8_t *)(&METADATA_STR_XLANG[0]), METADATA_STR_XLANG.size(), true);
     }
 
-    RAY_LOG(DEBUG) << "hucc AllocateReturnObject";
-
     size_t total = cross_lang ? (XLANG_HEADER_LEN + data_size) : data_size;
     RAY_CHECK_OK(CoreWorkerProcess::GetCoreWorker().AllocateReturnObject(
         result_id,
