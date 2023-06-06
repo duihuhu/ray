@@ -2336,7 +2336,7 @@ Status CoreWorker::ExecuteTask(
       name_of_concurrency_group_to_execute);
   
   auto te_exec_call_task = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc time for exec task callback to lanaguage time: " << te_exec_call_task << ", " << ts_exec_call_task <<"\n"; 
+  RAY_LOG(WARNING) << "hucc time for exec task callback to lanaguage time: " << task_spec.TaskId() << " " << te_exec_call_task << ", " << ts_exec_call_task <<"\n"; 
   // Get the reference counts for any IDs that we borrowed during this task,
   // remove the local reference for these IDs, and return the ref count info to
   // the caller. This will notify the caller of any IDs that we (or a nested
@@ -2345,12 +2345,10 @@ Status CoreWorker::ExecuteTask(
   // borrowing.
   std::vector<ObjectID> deleted;
   if (!borrowed_ids.empty()) {
-    RAY_LOG(DEBUG) << "hucc rayIDLE ExecuteTask PopAndClearLocalBorrowers " << "task_spec.TaskId(): "  << task_spec.TaskId()<<"\n";
     reference_counter_->PopAndClearLocalBorrowers(borrowed_ids, borrowed_refs, &deleted);
   }
   if (dynamic_return_objects != NULL) {
     for (const auto &dynamic_return : *dynamic_return_objects) {
-      RAY_LOG(DEBUG) << "hucc rayIDLE ExecuteTask PopAndClearLocalBorrowers dynamic_return_objects" << "task_spec.TaskId(): "  << task_spec.TaskId() <<"\n";
       reference_counter_->PopAndClearLocalBorrowers(
           {dynamic_return.first}, borrowed_refs, &deleted);
     }
