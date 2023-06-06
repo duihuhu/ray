@@ -33,7 +33,6 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
       request,
       [this, object_id, owner_address](const Status &status,
                                        const rpc::GetObjectStatusReply &reply) {
-        RAY_LOG(DEBUG) << "Object returned directly in GetObjectStatus reply in ResolveFutureAsync";                 
         ProcessResolvedObject(object_id, owner_address, status, reply);
       });
 }
