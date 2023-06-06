@@ -131,7 +131,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
     std::vector<std::pair<ObjectID, std::shared_ptr<RayObject>>> dynamic_return_objects;
     bool is_retryable_error = false;
 
-    hucc execute task_handler
+    // hucc execute task_handler
     auto ts_exec_task = current_sys_time_us();
     auto status = task_handler_(task_spec,
                                 resource_ids,
