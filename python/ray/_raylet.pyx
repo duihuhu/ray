@@ -618,13 +618,13 @@ cdef execute_task(
                 c_defined_concurrency_groups)
 
     execution_info = execution_infos.get(function_descriptor)
-    t1 = time.time()
-    print("hucc time exec task t1: ", t1)
+
     if not execution_info:
         execution_info = manager.get_execution_info(
             job_id, function_descriptor)
         execution_infos[function_descriptor] = execution_info
-
+    t1 = time.time()
+    print("hucc time exec task t1: ", t1)
     function_name = execution_info.function_name
     extra_data = (b'{"name": ' + function_name.encode("ascii") +
                   b' "task_id": ' + task_id.hex().encode("ascii") + b'}')
