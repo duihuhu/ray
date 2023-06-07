@@ -313,6 +313,7 @@ class FunctionActorManager:
         Returns:
             A FunctionExecutionInfo object.
         """
+        t1 = time.time()
         function_id = function_descriptor.function_id
         # If the function has already been loaded,
         # There's no need to load again
@@ -337,6 +338,7 @@ class FunctionActorManager:
         try:
             function_id = function_descriptor.function_id
             info = self._function_execution_info[function_id]
+            t2 = time.time()
         except KeyError as e:
             message = (
                 "Error occurs in get_execution_info: "
@@ -344,6 +346,8 @@ class FunctionActorManager:
                 % (job_id, function_descriptor, e)
             )
             raise KeyError(message)
+        t3 = time.time()
+        print("get_execution_info ", t3-t2, t2-t1)
         return info
 
     def _load_function_from_local(self, function_descriptor):
