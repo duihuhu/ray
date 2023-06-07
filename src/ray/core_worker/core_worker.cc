@@ -1130,7 +1130,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
         memory_object_ids, timeout_ms, worker_context_, &result_map, &got_exception));
 
     auto te_get_obj_tmem = current_sys_time_us();
-    RAY_LOG(WARNING) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem <<"\n";
+    RAY_LOG(WARNING) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem << " " << ids[0] << " " <<"\n" ;
   }
 
   // Erase any objects that were promoted to plasma from the results. These get
