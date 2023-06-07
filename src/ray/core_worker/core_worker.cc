@@ -1193,7 +1193,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_CHECK(!missing_result);
   }
   auto te_get_obj_cw = current_sys_time_us();
-  RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw <<"\n";
+  RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " " << te_get_obj_cw << " " <<ts_get_obj_cw << " " << "\n";
 
   return Status::OK();
 }
