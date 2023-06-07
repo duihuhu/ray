@@ -188,7 +188,10 @@ class SerializationContext:
 
     def _deserialize_pickle5_data(self, data):
         try:
+            t1 = time.time()
             in_band, buffers = unpack_pickle5_buffers(data)
+            t2 = time.time()
+            print("_deserialize_pickle5_data", t2-t1, t2, t1)
             if len(buffers) > 0:
                 obj = pickle.loads(in_band, buffers=buffers)
             else:
@@ -202,10 +205,8 @@ class SerializationContext:
         msgpack_data, pickle5_data = split_buffer(data)
 
         if metadata_fields[0] == ray_constants.OBJECT_METADATA_TYPE_PYTHON:
-            t1 = time.time()
             python_objects = self._deserialize_pickle5_data(pickle5_data)
-            t2 = time.time()
-            print("_deserialize_pickle5_data", t2-t1, t2, t1)
+
         else:
             python_objects = []
 
