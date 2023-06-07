@@ -190,12 +190,12 @@ class SerializationContext:
         try:
             t1 = time.time()
             in_band, buffers = unpack_pickle5_buffers(data)
-            t2 = time.time()
-            print("_deserialize_pickle5_data", t2-t1, t2, t1)
             if len(buffers) > 0:
                 obj = pickle.loads(in_band, buffers=buffers)
             else:
                 obj = pickle.loads(in_band)
+            t2 = time.time()
+            print("_deserialize_pickle5_data", t2-t1, t2, t1)
         # cloudpickle does not provide error types
         except pickle.pickle.PicklingError:
             raise DeserializationError()
