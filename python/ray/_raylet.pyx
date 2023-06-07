@@ -563,8 +563,8 @@ cdef execute_task(
         # the concurrency groups of this actor.
         const c_vector[CConcurrencyGroup] &c_defined_concurrency_groups,
         const c_string c_name_of_concurrency_group_to_execute):
-    #t0 = time.time()
-    #print("hucc time exec task t0: ", t0)
+    t0 = time.time()
+    print("hucc time exec task t0: ", t0)
     is_retryable_error[0] = False
     worker = ray._private.worker.global_worker
     manager = worker.function_actor_manager
@@ -623,8 +623,8 @@ cdef execute_task(
         execution_info = manager.get_execution_info(
             job_id, function_descriptor)
         execution_infos[function_descriptor] = execution_info
-    #t1 = time.time()
-    #print("hucc time exec task t1: ", t1)
+    t1 = time.time()
+    print("hucc time exec task t1: ", t1)
     function_name = execution_info.function_name
     extra_data = (b'{"name": ' + function_name.encode("ascii") +
                   b' "task_id": ' + task_id.hex().encode("ascii") + b'}')
@@ -735,8 +735,8 @@ cdef execute_task(
                             ray.util.pdb.set_trace(
                                 breakpoint_uuid=debugger_breakpoint)
                         outputs = function_executor(*args, **kwargs)
-                        #t2 = time.time()
-                        #print("hucc time exec task t2: ", t2)
+                        t2 = time.time()
+                        print("hucc time exec task t2: ", t2)
                         next_breakpoint = (
                             ray._private.worker.global_worker.debugger_breakpoint)
                         if next_breakpoint != b"":
