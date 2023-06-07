@@ -333,12 +333,12 @@ class FunctionActorManager:
         # we spend too long in this loop.
         # The driver function may not be found in sys.path. Try to load
         # the function from GCS.
+        t2 = time.time()
         with profiling.profile("wait_for_function"):
             self._wait_for_function(function_descriptor, job_id)
         try:
             function_id = function_descriptor.function_id
             info = self._function_execution_info[function_id]
-            t2 = time.time()
         except KeyError as e:
             message = (
                 "Error occurs in get_execution_info: "
