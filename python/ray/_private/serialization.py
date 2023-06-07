@@ -191,8 +191,10 @@ class SerializationContext:
             t1 = time.time()
             in_band, buffers = unpack_pickle5_buffers(data)
             if len(buffers) > 0:
+                print("a")
                 obj = pickle.loads(in_band, buffers=buffers)
             else:
+                print("b")
                 obj = pickle.loads(in_band)
             t2 = time.time()
             print("_deserialize_pickle5_data", t2-t1, t2, t1)
