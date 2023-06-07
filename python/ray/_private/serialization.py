@@ -190,8 +190,6 @@ class SerializationContext:
         try:
             in_band, buffers = unpack_pickle5_buffers(data)
             if len(buffers) > 0:
-                print(in_band)
-                print(len(buffers))
                 obj = pickle.loads(in_band, buffers=buffers)
             else:
                 obj = pickle.loads(in_band)
