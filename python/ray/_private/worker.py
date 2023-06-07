@@ -683,6 +683,8 @@ class Worker:
                     debugger_breakpoint = metadata_fields[1][
                         len(ray_constants.OBJECT_METADATA_DEBUG_PREFIX) :
                     ]
+        t1 = time.time()
+        print("return get object ", t1)
         return (
             self.deserialize_objects(data_metadata_pairs, object_refs),
             debugger_breakpoint,
