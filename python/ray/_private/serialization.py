@@ -188,15 +188,10 @@ class SerializationContext:
 
     def _deserialize_pickle5_data(self, data):
         try:
+            print(data)
             in_band, buffers = unpack_pickle5_buffers(data)
             if len(buffers) > 0:
-                t1 = time.time()
                 obj = pickle.loads(in_band, buffers=buffers)
-                t2 = time.time()
-                print(in_band)
-                print(buffers)
-                print(obj)
-                print("_deserialize_pickle5_data", t2-t1, t2, t1)
             else:
                 obj = pickle.loads(in_band)
 
