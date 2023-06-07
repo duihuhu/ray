@@ -1119,10 +1119,10 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
   auto ts_get_obj_cw = current_sys_time_us();
-  if(ids.size()>0) {
-    for (int i = 0;i< ids.size();++i)
-      // RAY_LOG(ERROR) << "raylet client send 0 " << ts_get_obj_cw << " " << ids[i];
-  }
+  // if(ids.size()>0) {
+  //   for (int i = 0;i< ids.size();++i)
+  //     RAY_LOG(ERROR) << "raylet client send 0 " << ts_get_obj_cw << " " << ids[i];
+  // }
   // RAY_LOG(ERROR) << "raylet client send 0 " << ts_get_obj_cw << " " << ids[i];
 
   results->resize(ids.size(), nullptr);
@@ -1217,10 +1217,10 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   }
   auto te_get_obj_cw = current_sys_time_us();
   // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0];
-  if(ids.size()>0) {
-    for (int i = 0;i< ids.size();++i)
-      // RAY_LOG(ERROR) << " raylet client send 4 " << te_get_obj_cw << " "  << ids[i];
-  }
+  // if(ids.size()>0) {
+  //   for (int i = 0;i< ids.size();++i)
+  //     RAY_LOG(ERROR) << " raylet client send 4 " << te_get_obj_cw << " "  << ids[i];
+  // }
   // RAY_LOG(ERROR) << " raylet client send 4 " << te_get_obj_cw << " "  << ids[0];
 
   return Status::OK();
