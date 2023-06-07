@@ -190,6 +190,7 @@ class CoreWorkerPlasmaStoreProvider {
   /// \return Output mapping of used object ids to (size, callsite).
   absl::flat_hash_map<ObjectID, std::pair<int64_t, std::string>> UsedObjectsList() const;
 
+  absl::flat_hash_set<ObjectID> object_resolve;
   std::string MemoryUsageString();
 
  private:

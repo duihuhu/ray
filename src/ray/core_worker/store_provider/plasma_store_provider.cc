@@ -246,8 +246,15 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   
   auto t1 = current_sys_time_us();
   // RAY_LOG(ERROR) << " raylet client send 0 " << t1 << " " << batch_ids[0];
+  std::vector<ObjectID> batch_ids_resolv;
+  for (int i = 0;i <batch_ids.size(); ++i) {
+    if(object_resolve.find(batch_ids[i])==object_resolve.end()) {
+      batch_ids_resolv.push_back(batch_ids[i]);
+    }
+  }
+  if (batch_ids_resolv.size()>0) {
   RAY_RETURN_NOT_OK(
-      raylet_client_->FetchOrReconstructRDMA(batch_ids,
+      raylet_client_->FetchOrReconstructRDMA(batch_ids_resolv,
                                          owner_addresses,
                                          fetch_only,
                                          /*mark_worker_blocked*/ !in_direct_call,
@@ -260,6 +267,11 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
                                          batch_owner_port,
                                          batch_owner_worker_id,
                                          batch_rem_ip_address));
+
+    for (int i = 0;i <batch_ids.size(); ++i) {
+      object_resolve.insert(batch_ids[i]);
+    }
+  }
 
   //hucc breakdown get_object
   auto t2 = current_sys_time_us();
@@ -323,6 +335,9 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
           data, metadata, std::vector<rpc::ObjectReference>());
       (*results)[object_id] = result_object;
       remaining.erase(object_id);
+
+      object_resolve.erase(object_id);
+
       auto te_fetch_object_end = current_sys_time_us();
       RAY_LOG(DEBUG) << "plasma client fetch object id end: " << object_id << " " << te_fetch_object_end;
       if (result_object->IsException()) {
