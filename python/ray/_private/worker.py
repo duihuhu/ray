@@ -683,8 +683,6 @@ class Worker:
                     debugger_breakpoint = metadata_fields[1][
                         len(ray_constants.OBJECT_METADATA_DEBUG_PREFIX) :
                     ]
-        t1 = time.time()
-        print("return get object ", t1)
         return (
             self.deserialize_objects(data_metadata_pairs, object_refs),
             debugger_breakpoint,
@@ -2278,8 +2276,6 @@ def get(
 
         # TODO(ujvl): Consider how to allow user to retrieve the ready objects.
         values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
-        t1 = time.time()
-        print("return get object end", t1)
         for i, value in enumerate(values):
             if isinstance(value, RayError):
                 if isinstance(value, ray.exceptions.ObjectLostError):
