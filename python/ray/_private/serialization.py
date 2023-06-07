@@ -188,7 +188,7 @@ class SerializationContext:
 
     def _deserialize_pickle5_data(self, data):
         try:
-            print(data)
+            print(data.tobytes())
             in_band, buffers = unpack_pickle5_buffers(data)
             if len(buffers) > 0:
                 obj = pickle.loads(in_band, buffers=buffers)
