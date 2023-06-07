@@ -35,8 +35,8 @@ std::pair<const LocalObject *, flatbuf::PlasmaError> ObjectLifecycleManager::Cre
     const ray::ObjectInfo &object_info,
     plasma::flatbuf::ObjectSource source,
     bool fallback_allocator) {
-  RAY_LOG(DEBUG) << "attempting to create object " << object_info.object_id << " size "
-                 << object_info.data_size;
+  // RAY_LOG(DEBUG) << "attempting to create object " << object_info.object_id << " size "
+  //                << object_info.data_size;
   if (object_store_->GetObject(object_info.object_id) != nullptr) {
     return {nullptr, PlasmaError::ObjectExists};
   }
