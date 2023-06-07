@@ -244,13 +244,15 @@ class SerializationContext:
         if metadata:
             metadata_fields = metadata.split(b",")
             t1 = time.time()
-            print("_deserialize_object ", t1)
             if metadata_fields[0] in [
                 ray_constants.OBJECT_METADATA_TYPE_CROSS_LANGUAGE,
                 ray_constants.OBJECT_METADATA_TYPE_PYTHON,
             ]:
                 return self._deserialize_msgpack_data(data, metadata_fields)
             # Check if the object should be returned as raw bytes.
+            t2 = time.time()
+            print("_deserialize_object ", t1, " ", t2)
+
             if metadata_fields[0] == ray_constants.OBJECT_METADATA_TYPE_RAW:
                 if data is None:
                     return b""
