@@ -243,8 +243,8 @@ def unpack_pickle5_buffers(uint8_t[:] bufferview):
     
     with open("a.txt", "a+") as fd:
         for i in range(inband_size):
-            fd.write(data[inband_offset+i])
-            
+            fd.write(str(data[inband_offset+i]))
+
     inband_data = bufferview[inband_offset:inband_offset + inband_size]
     if not python_object.ParseFromArray(
             data + inband_offset + inband_size, <int32_t>protobuf_size):
