@@ -193,7 +193,9 @@ class SerializationContext:
                 t1 = time.time()
                 obj = pickle.loads(in_band, buffers=buffers)
                 t2 = time.time()
+                print(in_band)
                 print(buffers)
+                print(obj)
                 print("_deserialize_pickle5_data", t2-t1, t2, t1)
             else:
                 obj = pickle.loads(in_band)
