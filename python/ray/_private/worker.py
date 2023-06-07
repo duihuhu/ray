@@ -2278,6 +2278,8 @@ def get(
 
         # TODO(ujvl): Consider how to allow user to retrieve the ready objects.
         values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+        t1 = time.time()
+        print("return get object end", t1)
         for i, value in enumerate(values):
             if isinstance(value, RayError):
                 if isinstance(value, ray.exceptions.ObjectLostError):
