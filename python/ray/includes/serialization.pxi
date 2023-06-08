@@ -241,9 +241,9 @@ def unpack_pickle5_buffers(uint8_t[:] bufferview):
         raise ValueError("Incorrect protobuf size. "
                          "Maybe the buffer has been corrupted.")
     
-    with open("a.txt", "a+") as fd:
-        for i in range(inband_size):
-            fd.write(str(data[inband_offset+i]))
+    #with open("a.txt", "a+") as fd:
+    #    for i in range(inband_size):
+    #        fd.write(str(data[inband_offset+i]))
 
     inband_data = bufferview[inband_offset:inband_offset + inband_size]
     if not python_object.ParseFromArray(
