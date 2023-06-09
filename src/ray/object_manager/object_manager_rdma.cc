@@ -179,6 +179,21 @@ void ObjectManagerRdma::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_
 	cv_.notify_all();
 };
 
+void ObjectManagerRdma::RunRpcService(int index) {
+  SetThreadName("rpc.obj.mgr.rdma." + std::to_string(index));
+  rpc_service_.run();
+}
+
+void ObjectManagerRdma::StartRpcService() {
+  rpc_threads_.resize(rpc_service_threads_number_)_;
+  for (int i = 0; i < rpc_service_threads_number_; i++) {
+    rpc_threads_[i] = std::thread(&ObjectManager::RunRpcService, this, i);
+  }
+  object_manager_rdma_server_.RegisterService(object_manager_rdma_service_);
+  object_manager_rdma_server_.Run();
+}
+
+
 void ObjectManagerRdma::StartRdmaService() {
 	rpc_threads_.resize(rpc_service_threads_number_);
 	for (int i = 0; i < rpc_service_threads_number_; i++) {

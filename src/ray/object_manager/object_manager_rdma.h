@@ -29,6 +29,10 @@
 #include <mutex>              // std::mutex, std::unique_lock
 #include <condition_variable> // std::condition_variable
 #include "ray/object_manager/concurrentqueue.h"
+#include "ray/rpc/object_manager/object_manager_rdma_client.h"
+#include "ray/rpc/object_manager/object_manager_rdma_server.h"
+
+
 // #include <stddef.h>
 // #include <cstdlib>
 
@@ -92,7 +96,7 @@ struct pingpong_context {
 	uint64_t		 completion_timestamp_mask;
 };
 
-class ObjectManagerRdma {
+class ObjectManagerRdma : public rpc::ObjectManagerServiceHandler {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
          std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager *dependency_manager, int rpc_service_threads_number)
@@ -105,13 +109,21 @@ public:
       object_manager_(object_manager),
       dependency_manager_(dependency_manager),
       rpc_service_threads_number_(rpc_service_threads_number),
-      local_ip_address_(object_manager_address)
+      local_ip_address_(object_manager_address),
+      object_manager_server_("ObjectManager",
+                             config_.object_manager_port,
+                             config_.object_manager_address == "127.0.0.1",
+                             rpc_service_threads_number),
+      rpc_work_(rpc_service_),
+      object_manager_service_(rpc_service_, *this),
+      client_call_manager_(main_service, rpc_service_threads_number),
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
         InitRdmaConfig();
         StartRdmaService();
         DoAccept();
         // ExRdmaConfig();
+        StartRpcService();
     }
   ~ObjectManagerRdma();
 
@@ -145,6 +157,13 @@ public:
   int PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send);
   
 
+  void HandleGetObject(const rpc::GetObjectRequest &request,
+                  rpc::GetObjectReply *reply,
+                  rpc::SendReplyCallback send_reply_callback) override;
+
+  /// Get the port of the object manager rpc server.
+  int GetServerPort() const { return object_manager_rdma_server_.GetPort(); }
+
 private:
   instrumented_io_context *main_service_;
   boost::asio::ip::tcp::acceptor acceptor_;
@@ -163,11 +182,27 @@ private:
 
 
   /// The thread pool used for running `rmda_fetch`.
-  std::vector<std::thread> rpc_threads_;
+  std::vector<std::thread> rpc_threads__;
   int rpc_service_threads_number_;
   std::mutex mtx_;
   std::condition_variable cv_;
+
+  /// Multi-thread asio service, deal with all outgoing and incoming RPC request.
+  instrumented_io_context rpc_service_;
+
+  /// Keep rpc service running when no task in rpc service.
+  boost::asio::io_service::work rpc_work_;
+
   moodycamel::ConcurrentQueue<ObjectRdmaInfo> object_rdma_queue_;
+
+  /// The gPRC server.
+  rpc::GrpcServer object_manager_rdma_server_;
+  /// The gRPC service.
+  rpc::ObjectManagerGrpcService object_manager_rdma_service_;
+
+  /// The client call manager used to deal with reply.
+  rpc::ClientCallManager client_call_manager_;
+
 };
 
 class Session
