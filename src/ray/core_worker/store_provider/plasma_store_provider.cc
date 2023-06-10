@@ -56,11 +56,13 @@ BufferTracker::UsedObjects() const {
 CoreWorkerPlasmaStoreProvider::CoreWorkerPlasmaStoreProvider(
     const std::string &store_socket,
     const std::shared_ptr<raylet::RayletClient> raylet_client,
+    const std::shared_ptr<rpc::ObjectManagerRdmaClient> rpc_client;
     const std::shared_ptr<ReferenceCounter> reference_counter,
     std::function<Status()> check_signals,
     bool warmup,
     std::function<std::string()> get_current_call_site)
     : raylet_client_(raylet_client),
+      rpc_client_(rpc_client),
       reference_counter_(reference_counter),
       check_signals_(check_signals) {
   if (get_current_call_site != nullptr) {
@@ -246,15 +248,15 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   
   auto t1 = current_sys_time_us();
   // RAY_LOG(ERROR) << " raylet client send 0 " << t1 << " " << batch_ids[0];
-  std::vector<ObjectID> batch_ids_resolv;
-  for (int i = 0;i <batch_ids.size(); ++i) {
-    if(object_resolve.find(batch_ids[i])==object_resolve.end()) {
-      batch_ids_resolv.push_back(batch_ids[i]);
-    }
-  }
-  if (batch_ids_resolv.size()>0) {
+  // std::vector<ObjectID> batch_ids_resolv;
+  // for (int i = 0;i <batch_ids.size(); ++i) {
+  //   if(object_resolve.find(batch_ids[i])==object_resolve.end()) {
+  //     batch_ids_resolv.push_back(batch_ids[i]);
+  //   }
+  // }
+  // if (batch_ids_resolv.size()>0) {
   RAY_RETURN_NOT_OK(
-      raylet_client_->FetchOrReconstructRDMA(batch_ids_resolv,
+      raylet_client_->FetchOrReconstructRDMA(batch_ids,
                                          owner_addresses,
                                          fetch_only,
                                          /*mark_worker_blocked*/ !in_direct_call,
@@ -268,10 +270,23 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
                                          batch_owner_worker_id,
                                          batch_rem_ip_address));
 
-    for (int i = 0;i <batch_ids.size(); ++i) {
-      object_resolve.insert(batch_ids[i]);
+    rpc::GetObjectRequest get_object_request;
+    for (const auto &e : batch_ids) {
+      free_objects_request.add_object_ids(e.Binary());
     }
-  }
+    rpc_client->GetObject(get_object_request,
+                            [](const Status &status, const rpc::GetObjectReply &reply) {
+                              if (!status.ok()) {
+                                RAY_LOG(WARNING)
+                                    << "Get objects request failed due to"
+                                    << status.message();
+                              }
+                            });
+
+  //   for (int i = 0;i <batch_ids.size(); ++i) {
+  //     object_resolve.insert(batch_ids[i]);
+  //   }
+  // }
 
   //hucc breakdown get_object
   auto t2 = current_sys_time_us();
@@ -336,7 +351,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
       (*results)[object_id] = result_object;
       remaining.erase(object_id);
 
-      object_resolve.erase(object_id);
+      // object_resolve.erase(object_id);
 
       auto te_fetch_object_end = current_sys_time_us();
       RAY_LOG(DEBUG) << "plasma client fetch object id end: " << object_id << " " << te_fetch_object_end;

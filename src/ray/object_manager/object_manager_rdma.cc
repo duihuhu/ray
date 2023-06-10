@@ -193,18 +193,33 @@ void ObjectManagerRdma::StartRpcService() {
   object_manager_rdma_server_.Run();
 }
 
+void ObjectManagerRdma::StopRpcService() {
+  rpc_service_.stop();
+  for (int i = 0; i < config_.rpc_service_threads_number; i++) {
+    rpc_threads_[i].join();
+  }
+  object_manager_rdma_server_.Shutdown();
+}
+
+void ObjectManagerRdma::HandleGetObject(const rpc::GetObjectRequest &request,
+								rpc::GetObjectReply *reply,
+								rpc::SendReplyCallback send_reply_callback) {
+	send_reply_callback(Status::OK(), nullptr, nullptr);
+}
+
+
 
 void ObjectManagerRdma::StartRdmaService() {
-	rpc_threads_.resize(rpc_service_threads_number_);
+	object_threads_.resize(rpc_service_threads_number_);
 	for (int i = 0; i < rpc_service_threads_number_; i++) {
-		rpc_threads_[i] = std::thread(&ObjectManagerRdma::RunRdmaService, this, i);
+		object_threads_[i] = std::thread(&ObjectManagerRdma::RunRdmaService, this, i);
 	}
 }
 
 
 void ObjectManagerRdma::StopRdmaService() {
   for (int i = 0; i < rpc_service_threads_number_; i++) {
-    rpc_threads_[i].join();
+    object_threads_[i].join();
   }
 }
 

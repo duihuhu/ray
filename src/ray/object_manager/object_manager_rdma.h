@@ -99,7 +99,7 @@ struct pingpong_context {
 class ObjectManagerRdma : public rpc::ObjectManagerServiceHandler {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
-         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager *dependency_manager, int rpc_service_threads_number)
+         std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager *dependency_manager, int rpc_service_threads_number, int object_manager_rdma_port, std::string object_manager_rdma_address)
     :  main_service_(&main_service),
       acceptor_(main_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(object_manager_address), port)),
       socket_(main_service),
@@ -110,12 +110,12 @@ public:
       dependency_manager_(dependency_manager),
       rpc_service_threads_number_(rpc_service_threads_number),
       local_ip_address_(object_manager_address),
-      object_manager_server_("ObjectManager",
-                             config_.object_manager_port,
-                             config_.object_manager_address == "127.0.0.1",
+      object_manager_rdma_server_("ObjectManagerRdma",
+                             object_manager_rdma_port,
+                             object_manager_rdma_address == "127.0.0.1",
                              rpc_service_threads_number),
       rpc_work_(rpc_service_),
-      object_manager_service_(rpc_service_, *this),
+      object_manager_rdma_service_(rpc_service_, *this),
       client_call_manager_(main_service, rpc_service_threads_number),
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
@@ -182,7 +182,9 @@ private:
 
 
   /// The thread pool used for running `rmda_fetch`.
-  std::vector<std::thread> rpc_threads__;
+  std::vector<std::thread> rpc_threads_;
+  std::vector<std::thread> object_threads_;
+  
   int rpc_service_threads_number_;
   std::mutex mtx_;
   std::condition_variable cv_;

@@ -90,6 +90,7 @@ class CoreWorkerPlasmaStoreProvider {
   CoreWorkerPlasmaStoreProvider(
       const std::string &store_socket,
       const std::shared_ptr<raylet::RayletClient> raylet_client,
+      const std::shared_ptr<rpc::ObjectManagerRdmaClient> rpc_client_;
       const std::shared_ptr<ReferenceCounter> reference_counter,
       std::function<Status()> check_signals,
       bool warmup,
@@ -190,7 +191,7 @@ class CoreWorkerPlasmaStoreProvider {
   /// \return Output mapping of used object ids to (size, callsite).
   absl::flat_hash_map<ObjectID, std::pair<int64_t, std::string>> UsedObjectsList() const;
 
-  absl::flat_hash_set<ObjectID> object_resolve;
+//   absl::flat_hash_set<ObjectID> object_resolve;
   std::string MemoryUsageString();
 
  private:
@@ -251,6 +252,9 @@ class CoreWorkerPlasmaStoreProvider {
   Status WarmupStore();
 
   const std::shared_ptr<raylet::RayletClient> raylet_client_;
+
+  const std::shared_ptr<rpc::ObjectManagerRdmaClient> rpc_client_;
+
   plasma::PlasmaClient store_client_;
   /// Used to look up a plasma object's owner.
   const std::shared_ptr<ReferenceCounter> reference_counter_;

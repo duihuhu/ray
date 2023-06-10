@@ -82,7 +82,8 @@ struct CoreWorkerOptions {
         serialized_job_config(""),
         metrics_agent_port(-1),
         connect_on_start(true),
-        runtime_env_hash(0) {}
+        runtime_env_hash(0),
+        object_manager_rdma_port(50052) {}
 
   /// Type of this worker (i.e., DRIVER or WORKER).
   WorkerType worker_type;
@@ -109,6 +110,8 @@ struct CoreWorkerOptions {
   std::string node_ip_address;
   /// Port of the local raylet.
   int node_manager_port;
+  /// Port of the local object manager rdma port
+  int object_manager_rdma_port;
   /// IP address of the raylet.
   std::string raylet_ip_address;
   /// The name of the driver.

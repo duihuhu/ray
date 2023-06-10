@@ -140,6 +140,31 @@ cc_library(
     ],
 )
 
+# Object manager rdma gRPC lib.
+cc_grpc_library(
+    name = "object_manager_rdma_cc_grpc",
+    srcs = ["//src/ray/protobuf:object_manager_rdma_proto"],
+    grpc_only = True,
+    deps = ["//src/ray/protobuf:object_manager_rdma_cc_proto"],
+)
+
+# Object manager rdma rpc server and client.
+cc_library(
+    name = "object_manager_rpc",
+    hdrs = glob([
+        "src/ray/rpc/object_manager_rdma/*.h",
+    ]),
+    copts = COPTS,
+    strip_include_prefix = "src",
+    deps = [
+        ":grpc_common_lib",
+        ":object_manager_rdma_cc_grpc",
+        ":ray_common",
+        "@boost//:asio",
+        "@com_github_grpc_grpc//:grpc++",
+    ],
+)
+
 # Worker gRPC lib.
 cc_grpc_library(
     name = "worker_cc_grpc",
@@ -2268,6 +2293,7 @@ cc_library(
         ":core_worker_lib",
         ":gcs",
         ":object_manager_rpc",
+        ":object_manager_rdma_rpc",
         ":plasma_store_server_lib",
         ":ray_common",
         ":ray_util",

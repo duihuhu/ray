@@ -118,6 +118,9 @@ CoreWorker::CoreWorker(const CoreWorkerOptions &options, const WorkerID &worker_
   auto grpc_client = rpc::NodeManagerWorkerClient::make(
       options_.raylet_ip_address, options_.node_manager_port, *client_call_manager_);
 
+  //add objectManagerRdmaClient
+  auto rpc_client_ = std::make_shared<rpc::ObjectManagerRdmaClient>(options_.raylet_ip_address, options_.object_manager_rdma_port , *client_call_manager_);
+  
   if (options_.worker_type != WorkerType::DRIVER) {
     periodical_runner_.RunFnPeriodically(
         [this] { ExitIfParentRayletDies(); },
@@ -249,6 +252,7 @@ CoreWorker::CoreWorker(const CoreWorkerOptions &options, const WorkerID &worker_
   plasma_store_provider_.reset(new CoreWorkerPlasmaStoreProvider(
       options_.store_socket,
       local_raylet_client_,
+      rpc_client_,
       reference_counter_,
       options_.check_signals,
       /*warmup=*/
