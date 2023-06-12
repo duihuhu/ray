@@ -30,7 +30,7 @@ class ObjectManagerRdmaGrpcService : public GrpcService {
     ///
     /// \param[in] port See `GrpcService`.
     /// \param[in] handler The service handler that actually handle the requests.
-    ObjectManagerRdmaService(instrumented_io_context &io_service,
+    ObjectManagerRdmaGrpcService(instrumented_io_context &io_service,
                             ObjectManagerRdmaServiceHandler &service_handler)
         : GprcService(io_serivce), service_handler_(service_handler){};
   
