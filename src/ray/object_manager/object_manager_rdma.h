@@ -200,7 +200,7 @@ private:
   /// The gPRC server.
   ray::rpc::GrpcServer object_manager_rdma_server_;
   /// The gRPC service.
-  ray::rpc::ObjectManagerGrpcService object_manager_rdma_service_;
+  ray::rpc::ObjectManagerRdmaGrpcService object_manager_rdma_service_;
 
   /// The client call manager used to deal with reply.
   ray::rpc::ClientCallManager client_call_manager_;
