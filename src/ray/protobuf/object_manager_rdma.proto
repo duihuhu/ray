@@ -29,5 +29,5 @@ message GetObjectReply {
 
 service ObjectManagerRdmaService {
   // Tell remote object manager rdma to get some objects
-  rcp GetObject(GetObjectRequest) returns (GetObjectReply);
+  rpc GetObject(GetObjectRequest) returns (GetObjectReply);
 }
