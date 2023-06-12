@@ -150,7 +150,7 @@ cc_grpc_library(
 
 # Object manager rdma rpc server and client.
 cc_library(
-    name = "object_manager_rpc",
+    name = "object_manager_rdma_rpc",
     hdrs = glob([
         "src/ray/rpc/object_manager_rdma/*.h",
     ]),
