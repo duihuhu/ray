@@ -198,12 +198,12 @@ private:
   moodycamel::ConcurrentQueue<ObjectRdmaInfo> object_rdma_queue_;
 
   /// The gPRC server.
-  rpc::GrpcServer object_manager_rdma_server_;
+  ray::rpc::GrpcServer object_manager_rdma_server_;
   /// The gRPC service.
-  rpc::ObjectManagerGrpcService object_manager_rdma_service_;
+  ray::rpc::ObjectManagerGrpcService object_manager_rdma_service_;
 
   /// The client call manager used to deal with reply.
-  rpc::ClientCallManager client_call_manager_;
+  ray::rpc::ClientCallManager client_call_manager_;
 
 };
 
