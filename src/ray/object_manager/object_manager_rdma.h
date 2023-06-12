@@ -96,7 +96,7 @@ struct pingpong_context {
 	uint64_t		 completion_timestamp_mask;
 };
 
-class ObjectManagerRdma : public ray::rpc::ObjectManagerServiceHandler {
+class ObjectManagerRdma : public ray::rpc::ObjectManagerRdmaServiceHandler {
 public:
   ObjectManagerRdma(instrumented_io_context &main_service, int port, std::string object_manager_address, unsigned long start_address, int64_t plasma_size,\
          std::shared_ptr<ray::gcs::GcsClient> gcs_client, ray::ObjectManager &object_manager, ray::raylet::DependencyManager *dependency_manager, int rpc_service_threads_number, int object_manager_rdma_port, std::string object_manager_rdma_address)
