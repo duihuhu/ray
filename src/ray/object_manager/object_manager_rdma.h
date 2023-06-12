@@ -150,6 +150,12 @@ public:
 
   void StartRdmaService();
   void StopRdmaService();
+
+
+  void RunRpcService(int index);
+  void StartRpcService();
+  void StopRpcService();
+
   void InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_rdma_info);
 
   void RunRdmaService(int64_t index);
