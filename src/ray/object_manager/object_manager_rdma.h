@@ -116,7 +116,7 @@ public:
                              rpc_service_threads_number),
       rpc_work_(rpc_service_),
       object_manager_rdma_service_(rpc_service_, *this),
-      client_call_manager_(main_service, rpc_service_threads_number),
+      client_call_manager_(main_service, rpc_service_threads_number)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
         InitRdmaConfig();
@@ -124,7 +124,7 @@ public:
         DoAccept();
         // ExRdmaConfig();
         StartRpcService();
-    }
+      }
   ~ObjectManagerRdma();
 
   void DoAccept();
