@@ -11,7 +11,7 @@
 namespace ray {
 namespace rpc {
 
-#define RAY_OBJECT_MANAGER_RDMA_RPC_HANDLERS
+#define RAY_OBJECT_MANAGER_RDMA_RPC_HANDLERS \
   RPC_SERVICE_HANDLER(ObjectManagerRdmaService, GetObject, -1)
 
 
