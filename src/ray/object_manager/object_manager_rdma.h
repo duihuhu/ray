@@ -29,8 +29,8 @@
 #include <mutex>              // std::mutex, std::unique_lock
 #include <condition_variable> // std::condition_variable
 #include "ray/object_manager/concurrentqueue.h"
-#include "ray/rpc/object_manager/object_manager_rdma_client.h"
-#include "ray/rpc/object_manager/object_manager_rdma_server.h"
+#include "ray/rpc/object_manager_rdma/object_manager_rdma_client.h"
+#include "ray/rpc/object_manager_rdma/object_manager_rdma_server.h"
 
 
 // #include <stddef.h>
@@ -184,7 +184,7 @@ private:
   /// The thread pool used for running `rmda_fetch`.
   std::vector<std::thread> rpc_threads_;
   std::vector<std::thread> object_threads_;
-  
+
   int rpc_service_threads_number_;
   std::mutex mtx_;
   std::condition_variable cv_;
