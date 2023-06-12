@@ -253,7 +253,7 @@ class CoreWorkerPlasmaStoreProvider {
 
   const std::shared_ptr<raylet::RayletClient> raylet_client_;
 
-  const std::shared_ptr<rpc::ObjectManagerRdmaClient> rpc_client_;
+  const std::shared_ptr<ray::rpc::ObjectManagerRdmaClient> rpc_client_;
 
   plasma::PlasmaClient store_client_;
   /// Used to look up a plasma object's owner.
