@@ -182,6 +182,19 @@ cc_proto_library(
     deps = [":object_manager_proto"],
 )
 
+
+proto_library(
+    name = "object_manager_rdma_proto",
+    srcs = ["object_manager_rdma.proto"],
+    deps = [":common_proto"],
+)
+
+cc_proto_library(
+    name = "object_manager_rdma_cc_proto",
+    deps = [":object_manager_rdma_proto"],
+)
+
+
 proto_library(
     name = "core_worker_proto",
     srcs = ["core_worker.proto"],
