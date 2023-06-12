@@ -185,7 +185,7 @@ void ObjectManagerRdma::RunRpcService(int index) {
 }
 
 void ObjectManagerRdma::StartRpcService() {
-  rpc_threads_.resize(rpc_service_threads_number_)_;
+  rpc_threads_.resize(rpc_service_threads_number_);
   for (int i = 0; i < rpc_service_threads_number_; i++) {
     rpc_threads_[i] = std::thread(&ObjectManager::RunRpcService, this, i);
   }
@@ -195,7 +195,7 @@ void ObjectManagerRdma::StartRpcService() {
 
 void ObjectManagerRdma::StopRpcService() {
   rpc_service_.stop();
-  for (int i = 0; i < config_.rpc_service_threads_number; i++) {
+  for (int i = 0; i < rpc_service_threads_number_; i++) {
     rpc_threads_[i].join();
   }
   object_manager_rdma_server_.Shutdown();
