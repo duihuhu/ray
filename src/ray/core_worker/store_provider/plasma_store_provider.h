@@ -24,6 +24,7 @@
 #include "ray/core_worker/reference_count.h"
 #include "ray/object_manager/plasma/client.h"
 #include "ray/raylet_client/raylet_client.h"
+#include "ray/rpc/object_manager_rdma/object_manager_rdma_client.h"
 
 namespace ray {
 namespace core {
