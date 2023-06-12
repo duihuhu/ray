@@ -201,10 +201,10 @@ void ObjectManagerRdma::StopRpcService() {
   object_manager_rdma_server_.Shutdown();
 }
 
-void ObjectManagerRdma::HandleGetObject(const rpc::GetObjectRequest &request,
-								rpc::GetObjectReply *reply,
-								rpc::SendReplyCallback send_reply_callback) {
-	send_reply_callback(Status::OK(), nullptr, nullptr);
+void ObjectManagerRdma::HandleGetObject(const ray::rpc::GetObjectRequest &request,
+								ray::rpc::GetObjectReply *reply,
+								ray::rpc::SendReplyCallback send_reply_callback) {
+	send_reply_callback(ray::Status::OK(), nullptr, nullptr);
 }
 
 

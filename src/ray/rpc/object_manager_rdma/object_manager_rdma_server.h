@@ -32,7 +32,7 @@ class ObjectManagerRdmaGrpcService : public GrpcService {
     /// \param[in] handler The service handler that actually handle the requests.
     ObjectManagerRdmaService(instrumented_io_context &io_service,
                             ObjectManagerRdmaServiceHandler &service_handler)
-        : GprcService(io_serivce), service_hander_(service_handler){};
+        : GprcService(io_serivce), service_handler_(service_handler){};
   
   protected:
     grpc::Service &GetGrpcService() override {return service_; }
@@ -47,7 +47,7 @@ class ObjectManagerRdmaGrpcService : public GrpcService {
     /// The grpc async service object.
     ObjectManagerRdmaService::AsyncService service_;
     /// The service handler that actually handle the requests.
-    ObjectManagerRdmaServiceHandler &service_hander_;
+    ObjectManagerRdmaServiceHandler &service_handler_;
 };
 
 

@@ -157,9 +157,9 @@ public:
   int PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send);
   
 
-  void HandleGetObject(const rpc::GetObjectRequest &request,
-                  rpc::GetObjectReply *reply,
-                  rpc::SendReplyCallback send_reply_callback) override;
+  void HandleGetObject(const ray::rpc::GetObjectRequest &request,
+                  ray::rpc::GetObjectReply *reply,
+                  ray::rpc::SendReplyCallback send_reply_callback) override;
 
   /// Get the port of the object manager rpc server.
   int GetServerPort() const { return object_manager_rdma_server_.GetPort(); }
