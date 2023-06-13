@@ -270,12 +270,12 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
                                          batch_owner_worker_id,
                                          batch_rem_ip_address));
 
-    rpc::GetObjectRequest get_object_request;
+    ray::rpc::GetObjectRequest get_object_request;
     for (const auto &e : batch_ids) {
-      free_objects_request.add_object_ids(e.Binary());
+      get_object_request.add_object_ids(e.Binary());
     }
-    rpc_client->GetObject(get_object_request,
-                            [](const Status &status, const rpc::GetObjectReply &reply) {
+    rpc_client_->GetObject(get_object_request,
+                            [](const ray::Status &status, const ray::rpc::GetObjectReply &reply) {
                               if (!status.ok()) {
                                 RAY_LOG(WARNING)
                                     << "Get objects request failed due to"
