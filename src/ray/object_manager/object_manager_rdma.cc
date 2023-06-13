@@ -187,7 +187,7 @@ void ObjectManagerRdma::RunRpcService(int index) {
 void ObjectManagerRdma::StartRpcService() {
   rpc_threads_.resize(rpc_service_threads_number_);
   for (int i = 0; i < rpc_service_threads_number_; i++) {
-    rpc_threads_[i] = std::thread(&ObjectManager::RunRpcService, this, i);
+    rpc_threads_[i] = std::thread(&ObjectManagerRdma::RunRpcService, this, i);
   }
   object_manager_rdma_server_.RegisterService(object_manager_rdma_service_);
   object_manager_rdma_server_.Run();
