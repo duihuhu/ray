@@ -277,8 +277,12 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
     rpc_client_->GetObject(get_object_request,
                             [](const ray::Status &status, const ray::rpc::GetObjectReply &reply) {
                               if (!status.ok()) {
-                                RAY_LOG(WARNING)
-                                    << "Get objects request failed due to"
+                                RAY_LOG(ERROR)
+                                    << "send get object rdma failed"
+                                    << status.message();
+                              }else {
+                                RAY_LOG(ERROR)
+                                    << "send get object rdma success"
                                     << status.message();
                               }
                             });
