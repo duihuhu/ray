@@ -276,7 +276,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
       get_object_request.add_virt_address(batch_virt_address[i]);
       get_object_request.add_object_size(batch_object_size[i]);
       get_object_request.add_meta_size(batch_object_meta_size[i]);
-      get_object_request.add_owner_raylet_ids(batch_owner_raylet_id[i].Binary());
+      get_object_request.add_owner_raylet_id(batch_owner_raylet_id[i].Binary());
       get_object_request.add_owner_ip_address(batch_owner_ip_address[i]);
       get_object_request.add_owner_port(batch_owner_port[i]);
       get_object_request.add_owner_worker_id(batch_owner_worker_id[i].Binary());
