@@ -204,6 +204,28 @@ void ObjectManagerRdma::StopRpcService() {
 void ObjectManagerRdma::HandleGetObject(const ray::rpc::GetObjectRequest &request,
 								ray::rpc::GetObjectReply *reply,
 								ray::rpc::SendReplyCallback send_reply_callback) {
+
+	std::vector<ObjectRdmaInfo> object_rdma_info;
+	for (int i = 0;i <request.object_ids().size()) {
+		ObjectRdmaInfo obj_rdma_info;
+		obj_rdma_info.object_virt_address = request.virt_address.Get(i);
+    obj_rdma_info.object_sizes = request.object_size.Get(i) + request.meta_size.Get(i);
+    obj_rdma_info.object_address = addr->ip_address()->str();
+    obj_rdma_info.object_info.object_id = ObjectID::FromBinary(request.object_ids.Get(i)->str());
+    obj_rdma_info.object_info.data_size = request.object_size.Get(i);
+    obj_rdma_info.object_info.metadata_size = request.meta_size.Get(i);
+    obj_rdma_info.object_info.owner_raylet_id = NodeID::FromBinary(request.owner_raylet_id.Get(i)->str());
+    obj_rdma_info.object_info.owner_ip_address = request.owner_ip_address.Get(i);
+    obj_rdma_info.object_info.owner_port = request.owner_port[i];
+    obj_rdma_info.object_info.owner_worker_id = WorkerID::FromBinary(request.owner_worker_id.Get(i)->str());
+    obj_rdma_info.rem_ip_address = request.rem_ip_address[i];
+
+    object_rdma_info.emplace_back(obj_rdma_info);
+	}
+	InsertObjectInQueue(object_rdma_info);
+  // for (const auto &e : request.object_ids()) {
+  //   object_ids.emplace_back(ObjectID::FromBinary(e));
+  // }
 	send_reply_callback(ray::Status::OK(), nullptr, nullptr);
 }
 

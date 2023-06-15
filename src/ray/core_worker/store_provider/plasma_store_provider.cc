@@ -270,32 +270,32 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
                                          batch_owner_worker_id,
                                          batch_rem_ip_address));
 
-    ray::rpc::GetObjectRequest get_object_request;
-    for (int i =0; i< batch_ids.size(); ++i) {
-      get_object_request.add_object_ids(batch_ids[i].Binary());
-      get_object_request.add_virt_address(batch_virt_address[i]);
-      get_object_request.add_object_size(batch_object_size[i]);
-      get_object_request.add_meta_size(batch_object_meta_size[i]);
-      get_object_request.add_owner_raylet_id(batch_owner_raylet_id[i].Binary());
-      get_object_request.add_owner_ip_address(batch_owner_ip_address[i]);
-      get_object_request.add_owner_port(batch_owner_port[i]);
-      get_object_request.add_owner_worker_id(batch_owner_worker_id[i].Binary());
-      get_object_request.add_rem_ip_address(batch_rem_ip_address[i]);
-    }
+  ray::rpc::GetObjectRequest get_object_request;
+  for (int i =0; i< batch_ids.size(); ++i) {
+    get_object_request.add_object_ids(batch_ids[i].Binary());
+    get_object_request.add_virt_address(batch_virt_address[i]);
+    get_object_request.add_object_size(batch_object_size[i]);
+    get_object_request.add_meta_size(batch_object_meta_size[i]);
+    get_object_request.add_owner_raylet_id(batch_owner_raylet_id[i].Binary());
+    get_object_request.add_owner_ip_address(batch_owner_ip_address[i]);
+    get_object_request.add_owner_port(batch_owner_port[i]);
+    get_object_request.add_owner_worker_id(batch_owner_worker_id[i].Binary());
+    get_object_request.add_rem_ip_address(batch_rem_ip_address[i]);
+  }
     // for (const auto &e : batch_ids) {
     // }
-    rpc_client_->GetObject(get_object_request,
-                            [](const ray::Status &status, const ray::rpc::GetObjectReply &reply) {
-                              if (!status.ok()) {
-                                RAY_LOG(ERROR)
-                                    << "send get object rdma failed"
-                                    << status.message();
-                              }else {
-                                RAY_LOG(ERROR)
-                                    << "send get object rdma success"
-                                    << status.message();
-                              }
-                            });
+  rpc_client_->GetObject(get_object_request,
+                          [](const ray::Status &status, const ray::rpc::GetObjectReply &reply) {
+                            if (!status.ok()) {
+                              RAY_LOG(ERROR)
+                                  << "send get object rdma failed"
+                                  << status.message();
+                            }else {
+                              RAY_LOG(ERROR)
+                                  << "send get object rdma success"
+                                  << status.message();
+                            }
+                          });
 
   //   for (int i = 0;i <batch_ids.size(); ++i) {
   //     object_resolve.insert(batch_ids[i]);
