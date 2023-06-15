@@ -296,6 +296,7 @@ void ObjectManagerRdma::Stop() {
     remote_dest_.clear();
   }
 	StopRdmaService();
+	StopRpcService();
 }
 
 void ObjectManagerRdma::InitRdmaBaseCfg() {

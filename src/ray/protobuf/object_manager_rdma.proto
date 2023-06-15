@@ -21,6 +21,15 @@ import "src/ray/protobuf/common.proto";
 
 message GetObjectRequest {
   repeated bytes object_ids = 1;
+
+  repeated unsigned long virt_address = 2;
+  repeated int32 object_size = 3;
+  repeated int32 meta_size = 4;
+  repeated bytes owner_raylet_id = 5;
+  repeated string owner_ip_address = 6;
+  repeated int32 owner_port = 7;
+  repeated bytes owner_worker_id = 8;
+  repeated string rem_ip_address = 9;
 }
 
 // Reply for request
