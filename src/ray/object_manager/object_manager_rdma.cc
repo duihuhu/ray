@@ -206,7 +206,7 @@ void ObjectManagerRdma::HandleGetObject(const ray::rpc::GetObjectRequest &reques
 								ray::rpc::SendReplyCallback send_reply_callback) {
 
 	std::vector<ObjectRdmaInfo> object_rdma_info;
-	for (int i = 0;i <request.object_ids().size()) {
+	for (int i = 0; i<request.object_ids().size(); ++i) {
 		ObjectRdmaInfo obj_rdma_info;
 		obj_rdma_info.object_virt_address = request.virt_address().Get(i);
     obj_rdma_info.object_sizes = request.object_size().Get(i) + request.meta_size().Get(i);
