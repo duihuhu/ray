@@ -255,20 +255,21 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   //   }
   // }
   // if (batch_ids_resolv.size()>0) {
-  RAY_RETURN_NOT_OK(
-      raylet_client_->FetchOrReconstructRDMA(batch_ids,
-                                         owner_addresses,
-                                         fetch_only,
-                                         /*mark_worker_blocked*/ !in_direct_call,
-                                         task_id,
-                                         batch_virt_address,
-                                         batch_object_size,
-                                         batch_object_meta_size,
-                                         batch_owner_raylet_id,
-                                         batch_owner_ip_address,
-                                         batch_owner_port,
-                                         batch_owner_worker_id,
-                                         batch_rem_ip_address));
+
+  // RAY_RETURN_NOT_OK(
+  //     raylet_client_->FetchOrReconstructRDMA(batch_ids,
+  //                                        owner_addresses,
+  //                                        fetch_only,
+  //                                        /*mark_worker_blocked*/ !in_direct_call,
+  //                                        task_id,
+  //                                        batch_virt_address,
+  //                                        batch_object_size,
+  //                                        batch_object_meta_size,
+  //                                        batch_owner_raylet_id,
+  //                                        batch_owner_ip_address,
+  //                                        batch_owner_port,
+  //                                        batch_owner_worker_id,
+  //                                        batch_rem_ip_address));
 
   ray::rpc::GetObjectRequest get_object_request;
   for (int i =0; i< batch_ids.size(); ++i) {
