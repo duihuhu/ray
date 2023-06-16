@@ -286,8 +286,6 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   }
     // for (const auto &e : batch_ids) {
     // }
-  RAY_LOG(ERROR) << " GetObject ";
-
   rpc_client_->GetObject(get_object_request,
                           [](const ray::Status &status, const ray::rpc::GetObjectReply &reply) {
                             if (!status.ok()) {
@@ -301,8 +299,6 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
                             //       << status.message();
                             // }
                           });
-  RAY_LOG(ERROR) << " after GetObject ";
-
   //   for (int i = 0;i <batch_ids.size(); ++i) {
   //     object_resolve.insert(batch_ids[i]);
   //   }
@@ -703,9 +699,6 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
   }
   auto t2_out = current_sys_time_us();
   // RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
-
-  RAY_LOG(ERROR) << " first fetch and get plasma 2 ";
-
   for (auto entry: wait_info) {
     remaining.insert(entry);
   }
