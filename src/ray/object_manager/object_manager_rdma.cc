@@ -210,7 +210,7 @@ void ObjectManagerRdma::HandleGetObject(const ray::rpc::GetObjectRequest &reques
 		ObjectRdmaInfo obj_rdma_info;
 		obj_rdma_info.object_virt_address = request.virt_address().Get(i);
     obj_rdma_info.object_sizes = request.object_size().Get(i) + request.meta_size().Get(i);
-    obj_rdma_info.object_address = request->ip_address()->str();
+    obj_rdma_info.object_address = request.owner_ip_address()->str();
     obj_rdma_info.object_info.object_id = ray::ObjectID::FromBinary(request.object_ids().Get(i)->str());
     obj_rdma_info.object_info.data_size = request.object_size().Get(i);
     obj_rdma_info.object_info.metadata_size = request.meta_size().Get(i);
