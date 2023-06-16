@@ -210,14 +210,14 @@ void ObjectManagerRdma::HandleGetObject(const ray::rpc::GetObjectRequest &reques
 		ObjectRdmaInfo obj_rdma_info;
 		obj_rdma_info.object_virt_address = request.virt_address().Get(i);
     obj_rdma_info.object_sizes = request.object_size().Get(i) + request.meta_size().Get(i);
-    obj_rdma_info.object_address = request.owner_ip_address()->str();
-    obj_rdma_info.object_info.object_id = ray::ObjectID::FromBinary(request.object_ids().Get(i)->str());
+    obj_rdma_info.object_address = request.owner_ip_address().Get(i);
+    obj_rdma_info.object_info.object_id = ray::ObjectID::FromBinary(request.object_ids().Get(i).str());
     obj_rdma_info.object_info.data_size = request.object_size().Get(i);
     obj_rdma_info.object_info.metadata_size = request.meta_size().Get(i);
-    obj_rdma_info.object_info.owner_raylet_id = ray::NodeID::FromBinary(request.owner_raylet_id().Get(i)->str());
+    obj_rdma_info.object_info.owner_raylet_id = ray::NodeID::FromBinary(request.owner_raylet_id().Get(i).str());
     obj_rdma_info.object_info.owner_ip_address = request.owner_ip_address().Get(i);
     obj_rdma_info.object_info.owner_port = request.owner_port().Get(i);
-    obj_rdma_info.object_info.owner_worker_id = ray::WorkerID::FromBinary(request.owner_worker_id().Get(i)->str());
+    obj_rdma_info.object_info.owner_worker_id = ray::WorkerID::FromBinary(request.owner_worker_id().Get(i).str());
     obj_rdma_info.rem_ip_address = request.rem_ip_address().Get(i);
 
     object_rdma_info.emplace_back(obj_rdma_info);
