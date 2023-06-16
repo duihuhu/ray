@@ -698,7 +698,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
                                                  batch_rem_ip_address));
   }
   // }
-  // auto t2_out = current_sys_time_us();
+  auto t2_out = current_sys_time_us();
   // RAY_LOG(DEBUG) << " first fetch and get plasma 2 " << id_vector[0] << " " << t2_out;
 
   RAY_LOG(ERROR) << " first fetch and get plasma 2 ";
