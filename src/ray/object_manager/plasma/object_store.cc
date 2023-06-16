@@ -20,7 +20,7 @@
 namespace plasma {
 
 ObjectStore::ObjectStore(IAllocator &allocator)
-    : allocator_(allocator), object_table_() {}
+    : allocator_(allocator), object_table_(), object_table_rdma_() {}
 
 const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
                                              plasma::flatbuf::ObjectSource source,
