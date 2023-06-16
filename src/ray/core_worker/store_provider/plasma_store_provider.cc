@@ -291,11 +291,12 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
                               RAY_LOG(ERROR)
                                   << "send get object rdma failed"
                                   << status.message();
-                            }else {
-                              RAY_LOG(ERROR)
-                                  << "send get object rdma success"
-                                  << status.message();
                             }
+                            // else {
+                            //   RAY_LOG(ERROR)
+                            //       << "send get object rdma success"
+                            //       << status.message();
+                            // }
                           });
 
   //   for (int i = 0;i <batch_ids.size(); ++i) {
