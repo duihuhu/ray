@@ -286,6 +286,8 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   }
     // for (const auto &e : batch_ids) {
     // }
+  RAY_LOG(ERROR) << " GetObject ";
+
   rpc_client_->GetObject(get_object_request,
                           [](const ray::Status &status, const ray::rpc::GetObjectReply &reply) {
                             if (!status.ok()) {
@@ -299,6 +301,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
                             //       << status.message();
                             // }
                           });
+  RAY_LOG(ERROR) << " after GetObject ";
 
   //   for (int i = 0;i <batch_ids.size(); ++i) {
   //     object_resolve.insert(batch_ids[i]);
