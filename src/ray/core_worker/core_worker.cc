@@ -1144,7 +1144,13 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
         memory_object_ids, timeout_ms, worker_context_, &result_map, &got_exception));
 
     auto te_get_obj_tmem = current_sys_time_us();
-    RAY_LOG(DEBUG) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem <<"\n";
+    // RAY_LOG(DEBUG) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem <<"\n";
+
+    if(ids.size()>0) {
+      for (int i = 0;i< ids.size();++i)
+        RAY_LOG(ERROR) << "memory out raylet client send 0 " << " " << te_get_obj_tmem << " " << ids[i];
+    }
+
   }
 
   RAY_LOG(DEBUG) << "hucc plasma object for from memory_store size " << result_map.size();
