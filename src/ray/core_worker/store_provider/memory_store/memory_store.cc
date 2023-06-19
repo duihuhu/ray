@@ -205,7 +205,7 @@ bool CoreWorkerMemoryStore::Put(const RayObject &object, const ObjectID &object_
   auto ts_object_put = current_sys_time_us();
   RAY_LOG(ERROR) << "Putting object into memory store. objectid is " << ts_object_put << " " << object_id;
 
-  RAY_LOG(ERROR) << "Putting object into memory store. objectid is " << object_id;
+  RAY_LOG(DEBUG) << "Putting object into memory store. objectid is " << object_id;
   std::shared_ptr<RayObject> object_entry = nullptr;
   // RAY_LOG(ERROR) << "hucc Putting object into memory store. objectid is " << object_id << " size: " << object.GetSize();
   if (object_allocator_ != nullptr) {
