@@ -434,6 +434,13 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());
   }
 
+  auto te_get_obj_tmem3 = current_sys_time_us();
+  if(object_ids.size()>0) {
+    for (int i = 0;i< object_ids.size();++i)
+      RAY_LOG(ERROR) << "in memory send 3" << " " << te_get_obj_tmem3 << " " << object_ids[i];
+  }
+
+
   {
     absl::MutexLock lock(&mu_);
     // Populate results.
