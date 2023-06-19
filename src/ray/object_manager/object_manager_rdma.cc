@@ -25,7 +25,7 @@ void ObjectManagerRdma::RunRdmaService(int64_t index) {
 		}
 		if(found) {
 			auto te_get_object_info = current_sys_time_us();
-			RAY_LOG(ERROR) << "raylet client send 2 " << te_get_object_info << " " << object_rdma_info.object_info.object_id  ;
+			// RAY_LOG(ERROR) << "raylet client send 2 " << te_get_object_info << " " << object_rdma_info.object_info.object_id  ;
 			// std::thread::id tid = std::this_thread::get_id();
 			// RAY_LOG(DEBUG) << "RunRdmaService thread " << tid;
 			FetchObjectFromRemotePlasmaThreads(object_rdma_info, t_index);
@@ -93,7 +93,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		// 							"ObjectManagerRdma.PollCompletion");
 		auto te_fetch_object_rdma = current_sys_time_us();
 		RAY_LOG(DEBUG) << "FetchObjectRdma time " << obj_info.object_id << " " <<te_fetch_object_rdma - ts_fetch_object_rdma;
-		RAY_LOG(ERROR) << "raylet client send 3 " << te_fetch_object_rdma << " " << obj_info.object_id;
+		// RAY_LOG(ERROR) << "raylet client send 3 " << te_fetch_object_rdma << " " << obj_info.object_id;
 
 	}
   // }
@@ -172,7 +172,7 @@ void ObjectManagerRdma::InsertObjectInQueue(std::vector<ObjectRdmaInfo> &object_
 			// RAY_LOG(DEBUG) << "get object id from queue start " << object_rdma_info[i].object_info.object_id << " " << ts_get_obj_remote_rdma;
 			object_rdma_queue_.enqueue(object_rdma_info[i]);
 			auto ts_get_obj_remote_rdma = current_sys_time_us();
-			RAY_LOG(ERROR) << "raylet client send 1 " << " " << ts_get_obj_remote_rdma << " " << object_rdma_info[i].object_info.object_id ;
+			// RAY_LOG(ERROR) << "raylet client send 1 " << " " << ts_get_obj_remote_rdma << " " << object_rdma_info[i].object_info.object_id ;
 
 		}
 	}

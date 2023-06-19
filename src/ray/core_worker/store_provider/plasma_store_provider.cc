@@ -666,11 +666,11 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
     // auto ts_fetch_plasma = current_sys_time_us();
     // RAY_LOG(DEBUG) << " first fetch and get plasma 1 " << batch_ids[0] << " " << ts_fetch_plasma;
 
-    auto ts_get_obj_cw = current_sys_time_us();
-    if(batch_ids.size()>0) {
-      for (int i = 0;i< batch_ids.size();++i)
-        RAY_LOG(ERROR) << "raylet client send 5 " << ts_get_obj_cw << " " << batch_ids[i];
-    }
+    // auto ts_get_obj_cw = current_sys_time_us();
+    // if(batch_ids.size()>0) {
+    //   for (int i = 0;i< batch_ids.size();++i)
+    //     RAY_LOG(ERROR) << "raylet client send 5 " << ts_get_obj_cw << " " << batch_ids[i];
+    // }
 
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStoreRDMA(remaining,
                                                  batch_ids,
