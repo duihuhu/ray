@@ -1762,8 +1762,6 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
   //   RAY_LOG(DEBUG) << "hucc breakdown get object nodemanager: " << ts_breakdown_get_object_node_manager << " object_id: " << obj_id << "\n";
   // }
   //end hucc 
-  // no use
-  // RAY_LOG(ERROR) << " raylet client send 1 " << ts_fetch_or_restruct_message << " " << object_rdma_info[0].object_info.object_id;
 
   if (message->fetch_only()) {
     std::shared_ptr<WorkerInterface> worker = worker_pool_.GetRegisteredWorker(client);

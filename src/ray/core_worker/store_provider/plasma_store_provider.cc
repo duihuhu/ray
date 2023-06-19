@@ -247,14 +247,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
   auto t1 = current_sys_time_us();
-  // no use
-  // RAY_LOG(ERROR) << " raylet client send 0 " << t1 << " " << batch_ids[0];
-  // std::vector<ObjectID> batch_ids_resolv;
-  // for (int i = 0;i <batch_ids.size(); ++i) {
-  //   if(object_resolve.find(batch_ids[i])==object_resolve.end()) {
-  //     batch_ids_resolv.push_back(batch_ids[i]);
-  //   }
-  // }
+
   // if (batch_ids_resolv.size()>0) {
 
   // RAY_RETURN_NOT_OK(
@@ -673,11 +666,11 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
     // auto ts_fetch_plasma = current_sys_time_us();
     // RAY_LOG(DEBUG) << " first fetch and get plasma 1 " << batch_ids[0] << " " << ts_fetch_plasma;
 
-    auto ts_get_obj_cw = current_sys_time_us();
-    if(batch_ids.size()>0) {
-      for (int i = 0;i< batch_ids.size();++i)
-        RAY_LOG(ERROR) << "raylet client send 5 " << ts_get_obj_cw << " " << batch_ids[i];
-    }
+    // auto ts_get_obj_cw = current_sys_time_us();
+    // if(batch_ids.size()>0) {
+    //   for (int i = 0;i< batch_ids.size();++i)
+    //     RAY_LOG(ERROR) << "raylet client send 5 " << ts_get_obj_cw << " " << batch_ids[i];
+    // }
 
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStoreRDMA(remaining,
                                                  batch_ids,

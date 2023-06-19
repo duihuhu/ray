@@ -363,7 +363,11 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   bool should_notify_raylet =
       (raylet_client_ != nullptr && ctx.ShouldReleaseResourcesOnBlockingCalls());
 
-
+  auto te_get_obj_tmem0 = current_sys_time_us();
+  if(object_ids.size()>0) {
+    for (int i = 0;i< object_ids.size();++i)
+      RAY_LOG(ERROR) << "in memory send 0 " << " " << te_get_obj_tmem0 << " " << object_ids[i];
+  }
   // Wait for remaining objects (or timeout).
   if (should_notify_raylet) {
     // hucc add time for NotifyDirectCallTaskBlocked
@@ -388,7 +392,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   }
 
 
-  RAY_LOG(DEBUG) << "hucc memory store while before " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
+  // RAY_LOG(DEBUG) << "hucc memory store while before " << timeout_ms << " " << signal_status.ok() << " " << !(done = get_request->Wait(iteration_timeout)); 
 
   // Repeatedly call Wait() on a shorter timeout so we can check for signals between
   // calls. If timeout_ms == -1, this should run forever until all objects are
@@ -397,6 +401,12 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
   // hucc add time for Wait for get_request already
   // auto ts_get_wobj = current_sys_time_us();
+
+  auto te_get_obj_tmem1 = current_sys_time_us();
+  if(object_ids.size()>0) {
+    for (int i = 0;i< object_ids.size();++i)
+      RAY_LOG(ERROR) << "in memory send 1" << " " << te_get_obj_tmem1 << " " << object_ids[i];
+  }
 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
@@ -410,6 +420,13 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
       timed_out = remaining_timeout <= 0;
     }
   }
+
+  auto te_get_obj_tmem2 = current_sys_time_us();
+  if(object_ids.size()>0) {
+    for (int i = 0;i< object_ids.size();++i)
+      RAY_LOG(ERROR) << "in memory send 2" << " " << te_get_obj_tmem2 << " " << object_ids[i];
+  }
+
   // auto te_get_wobj = current_sys_time_us();
   // RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << te_get_wobj - ts_get_wobj << " " << te_get_wobj << ", " << ts_get_wobj <<"\n"; 
 

@@ -1148,18 +1148,12 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
 
     if(ids.size()>0) {
       for (int i = 0;i< ids.size();++i)
-        RAY_LOG(ERROR) << "memory out raylet client send 0 " << " " << te_get_obj_tmem << " " << ids[i];
+        RAY_LOG(ERROR) << "out memory send 1 " << " " << te_get_obj_tmem << " " << ids[i];
     }
-
+    
   }
 
   RAY_LOG(DEBUG) << "hucc plasma object for from memory_store size " << result_map.size();
-  // no use
-  // if(ids.size()>0) {
-  //   for (int i = 0;i< ids.size();++i)
-  //     RAY_LOG(ERROR) << "raylet client send 0 " << ts_get_obj_cw << " " << ids[i];
-  // }
-
   // Erase any objects that were promoted to plasma from the results. These get
   // requests will be retried at the plasma store.
   for (auto it = result_map.begin(); it != result_map.end();) {
