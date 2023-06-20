@@ -2140,7 +2140,6 @@ cdef class CoreWorker:
         #ts_get_obj_pcw = time.time()
         #print("hucc time allocate return object: ", ts_get_obj_pcw)
         with nogil:
-            print("aaa")
             check_status(
                 CCoreWorkerProcess.GetCoreWorker().AllocateReturnObject(
                     return_id, data_size, metadata, contained_id,
@@ -2159,15 +2158,15 @@ cdef class CoreWorker:
                                    c_vector[CObjectReference]()),
                         c_vector[CObjectID](), return_id))
             else:
+                print("ccc")
                 with nogil:
-                    print("ccc")
                     check_status(
                         CCoreWorkerProcess.GetCoreWorker().SealReturnObject(
                             return_id, return_ptr[0], generator_id))
             return True
         else:
+            print("ddd")
             with nogil:
-                print("ddd")
                 success = (CCoreWorkerProcess.GetCoreWorker()
                            .PinExistingReturnObject(
                                    return_id, return_ptr, generator_id))
