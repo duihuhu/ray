@@ -2417,8 +2417,8 @@ Status CoreWorker::SealReturnObject(const ObjectID &return_id,
   RAY_CHECK(!options_.is_local_mode);
   std::unique_ptr<rpc::Address> caller_address =
       std::make_unique<rpc::Address>(worker_context_.GetCurrentTask()->CallerAddress());
-  RAY_LOG(ERROR) << "Sealing return object " << return_id << " " << return_object->GetData()->IsPlasmaBuffer();
   if (return_object->GetData() != nullptr && return_object->GetData()->IsPlasmaBuffer()) {
+    RAY_LOG(ERROR) << "Sealing return object " << return_id << " " << return_object->GetData()->IsPlasmaBuffer();
     status = SealExisting(
         return_id, /*pin_object=*/true, generator_id, std::move(caller_address));
     if (!status.ok()) {
