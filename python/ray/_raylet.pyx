@@ -2146,7 +2146,6 @@ cdef class CoreWorker:
                     task_output_inlined_bytes, return_ptr))
 
         if return_ptr.get() != NULL:
-            print("bbb")
             if return_ptr.get().HasData():
                 (<SerializedObject>serialized_object).write_to(
                     Buffer.make(return_ptr.get().GetData()))
@@ -2158,7 +2157,6 @@ cdef class CoreWorker:
                                    c_vector[CObjectReference]()),
                         c_vector[CObjectID](), return_id))
             else:
-                print("ccc")
                 with nogil:
                     check_status(
                         CCoreWorkerProcess.GetCoreWorker().SealReturnObject(
