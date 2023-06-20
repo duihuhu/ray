@@ -735,7 +735,6 @@ cdef execute_task(
                             ray.util.pdb.set_trace(
                                 breakpoint_uuid=debugger_breakpoint)
                         outputs = function_executor(*args, **kwargs)
-                        print(" outputs type ", type(outputs))
                         #t2 = time.time()
                         #print("hucc time exec task t2: ", t2)
                         next_breakpoint = (
@@ -2208,6 +2207,7 @@ cdef class CoreWorker:
         task_output_inlined_bytes = 0
         i = -1
         for i, output in enumerate(outputs):
+            print(" output type ", type(output), id(output), int(output))
             if num_returns >= 0 and i >= num_returns:
                 raise ValueError(
                     "Task returned more than num_returns={} objects.".format(
