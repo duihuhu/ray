@@ -1123,11 +1123,11 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
   auto ts_get_obj_cw = current_sys_time_us();
-  // if(ids.size()>0) {
-  //   for (int i = 0;i< ids.size();++i)
-  //     RAY_LOG(ERROR) << "raylet client send 0 " << " " << ts_get_obj_cw << " " << ids[i];
+  if(ids.size()>0) {
+    for (int i = 0;i< ids.size();++i)
+      RAY_LOG(ERROR) << "raylet client send 0 " << " " << ts_get_obj_cw << " " << ids[i];
 
-  // }
+  }
 
   results->resize(ids.size(), nullptr);
 
@@ -1149,7 +1149,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
 
     // if(ids.size()>0) {
     //   for (int i = 0;i< ids.size();++i)
-    //     RAY_LOG(ERROR) << "out memory send 1 " << " " << te_get_obj_tmem << " " << ids[i];
+    //     RAY_LOG(ERROR) << "in memory send 4 " << " " << te_get_obj_tmem << " " << ids[i];
     // }
     
   }
@@ -1226,10 +1226,10 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   }
   auto te_get_obj_cw = current_sys_time_us();
   // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0];
-  // if(ids.size()>0) {
-  //   for (int i = 0;i< ids.size();++i)
-  //     RAY_LOG(ERROR) << " raylet client send 4 " << " " << te_get_obj_cw << " "  << ids[i];
-  // }
+  if(ids.size()>0) {
+    for (int i = 0;i< ids.size();++i)
+      RAY_LOG(ERROR) << " raylet client send 4 " << " " << te_get_obj_cw << " "  << ids[i];
+  }
 
   return Status::OK();
 }
@@ -2753,7 +2753,9 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   }
 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
-  RAY_LOG(DEBUG) << "Received GetObjectStatus " << object_id;
+  auto ts_handle_get_status = current_sys_time_us();
+  RAY_LOG(ERROR) << " Received GetObjectStatus " << " " << ts_handle_get_status << " " << object_id;
+
   // Acquire a reference to the object. This prevents the object from being
   // evicted out from under us while we check the object status and start the
   // Get.
