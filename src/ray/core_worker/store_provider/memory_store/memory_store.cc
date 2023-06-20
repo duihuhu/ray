@@ -202,8 +202,8 @@ std::shared_ptr<RayObject> CoreWorkerMemoryStore::GetIfExists(const ObjectID &ob
 
 bool CoreWorkerMemoryStore::Put(const RayObject &object, const ObjectID &object_id) {
   std::vector<std::function<void(std::shared_ptr<RayObject>)>> async_callbacks;
-  auto ts_object_put = current_sys_time_us();
-  RAY_LOG(ERROR) << "Putting object into memory store. objectid is " << ts_object_put << " " << object_id;
+  // auto ts_object_put = current_sys_time_us();
+  // RAY_LOG(ERROR) << "Putting object into memory store. objectid is " << ts_object_put << " " << object_id;
 
   RAY_LOG(DEBUG) << "Putting object into memory store. objectid is " << object_id;
   std::shared_ptr<RayObject> object_entry = nullptr;
@@ -366,11 +366,11 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   bool should_notify_raylet =
       (raylet_client_ != nullptr && ctx.ShouldReleaseResourcesOnBlockingCalls());
 
-  auto te_get_obj_tmem0 = current_sys_time_us();
-  if(object_ids.size()>0) {
-    for (int i = 0;i< object_ids.size();++i)
-      RAY_LOG(ERROR) << "in memory send 0 " << " " << te_get_obj_tmem0 << " " << object_ids[i];
-  }
+  // auto te_get_obj_tmem0 = current_sys_time_us();
+  // if(object_ids.size()>0) {
+  //   for (int i = 0;i< object_ids.size();++i)
+  //     RAY_LOG(ERROR) << "in memory send 0 " << " " << te_get_obj_tmem0 << " " << object_ids[i];
+  // }
   // Wait for remaining objects (or timeout).
   if (should_notify_raylet) {
     // hucc add time for NotifyDirectCallTaskBlocked
@@ -405,11 +405,11 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
   // hucc add time for Wait for get_request already
   // auto ts_get_wobj = current_sys_time_us();
 
-  auto te_get_obj_tmem1 = current_sys_time_us();
-  if(object_ids.size()>0) {
-    for (int i = 0;i< object_ids.size();++i)
-      RAY_LOG(ERROR) << "in memory send 1" << " " << te_get_obj_tmem1 << " " << object_ids[i];
-  }
+  // auto te_get_obj_tmem1 = current_sys_time_us();
+  // if(object_ids.size()>0) {
+  //   for (int i = 0;i< object_ids.size();++i)
+  //     RAY_LOG(ERROR) << "in memory send 1" << " " << te_get_obj_tmem1 << " " << object_ids[i];
+  // }
 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
@@ -424,24 +424,24 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
     }
   }
 
-  auto te_get_obj_tmem2 = current_sys_time_us();
-  if(object_ids.size()>0) {
-    for (int i = 0;i< object_ids.size();++i)
-      RAY_LOG(ERROR) << "in memory send 2" << " " << te_get_obj_tmem2 << " " << object_ids[i];
-  }
+  // auto te_get_obj_tmem2 = current_sys_time_us();
+  // if(object_ids.size()>0) {
+  //   for (int i = 0;i< object_ids.size();++i)
+  //     RAY_LOG(ERROR) << "in memory send 2" << " " << te_get_obj_tmem2 << " " << object_ids[i];
+  // }
 
-  // auto te_get_wobj = current_sys_time_us();
+  // // auto te_get_wobj = current_sys_time_us();
   // RAY_LOG(INFO) << "hucc time for Wait for get_request already in local mem: " << te_get_wobj - ts_get_wobj << " " << te_get_wobj << ", " << ts_get_wobj <<"\n"; 
 
   if (should_notify_raylet) {
     RAY_CHECK_OK(raylet_client_->NotifyDirectCallTaskUnblocked());
   }
 
-  auto te_get_obj_tmem3 = current_sys_time_us();
-  if(object_ids.size()>0) {
-    for (int i = 0;i< object_ids.size();++i)
-      RAY_LOG(ERROR) << "in memory send 3" << " " << te_get_obj_tmem3 << " " << object_ids[i];
-  }
+  // auto te_get_obj_tmem3 = current_sys_time_us();
+  // if(object_ids.size()>0) {
+  //   for (int i = 0;i< object_ids.size();++i)
+  //     RAY_LOG(ERROR) << "in memory send 3" << " " << te_get_obj_tmem3 << " " << object_ids[i];
+  // }
 
 
   {
