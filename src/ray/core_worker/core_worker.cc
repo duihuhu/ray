@@ -1147,10 +1147,10 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     auto te_get_obj_tmem = current_sys_time_us();
     // RAY_LOG(DEBUG) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem <<"\n";
 
-    if(ids.size()>0) {
-      for (int i = 0;i< ids.size();++i)
-        RAY_LOG(ERROR) << "out memory send 1 " << " " << te_get_obj_tmem << " " << ids[i];
-    }
+    // if(ids.size()>0) {
+    //   for (int i = 0;i< ids.size();++i)
+    //     RAY_LOG(ERROR) << "out memory send 1 " << " " << te_get_obj_tmem << " " << ids[i];
+    // }
     
   }
 
