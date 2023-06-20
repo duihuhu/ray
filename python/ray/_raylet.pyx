@@ -2140,12 +2140,14 @@ cdef class CoreWorker:
         #ts_get_obj_pcw = time.time()
         #print("hucc time allocate return object: ", ts_get_obj_pcw)
         with nogil:
+            print("aaa")
             check_status(
                 CCoreWorkerProcess.GetCoreWorker().AllocateReturnObject(
                     return_id, data_size, metadata, contained_id,
                     task_output_inlined_bytes, return_ptr))
 
         if return_ptr.get() != NULL:
+            print("bbb")
             if return_ptr.get().HasData():
                 (<SerializedObject>serialized_object).write_to(
                     Buffer.make(return_ptr.get().GetData()))
@@ -2158,12 +2160,14 @@ cdef class CoreWorker:
                         c_vector[CObjectID](), return_id))
             else:
                 with nogil:
+                    print("ccc")
                     check_status(
                         CCoreWorkerProcess.GetCoreWorker().SealReturnObject(
                             return_id, return_ptr[0], generator_id))
             return True
         else:
             with nogil:
+                print("ddd")
                 success = (CCoreWorkerProcess.GetCoreWorker()
                            .PinExistingReturnObject(
                                    return_id, return_ptr, generator_id))
@@ -2207,7 +2211,6 @@ cdef class CoreWorker:
         task_output_inlined_bytes = 0
         i = -1
         for i, output in enumerate(outputs):
-            print(" output type ", type(output), id(output), int(output))
             if num_returns >= 0 and i >= num_returns:
                 raise ValueError(
                     "Task returned more than num_returns={} objects.".format(
