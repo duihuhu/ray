@@ -194,6 +194,8 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
       }
       for (size_t i = 0; i < return_objects.size(); i++) {
         const auto &return_object = return_objects[i];
+        auto ts_return_object = current_sys_time_us();
+        RAY_LOG(ERROR) << "before return object " << " " << ts_return_object << " " << return_object.first;
         auto return_object_proto = reply->add_return_objects();
         SerializeReturnObject(
             return_object.first, return_object.second, return_object_proto, plasma_store_provider_);
