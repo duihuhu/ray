@@ -155,15 +155,15 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
     bool is_retryable_error = false;
 
     // hucc execute task_handler
-    // auto ts_exec_task = current_sys_time_us();
+    auto ts_exec_task = current_sys_time_us();
     auto status = task_handler_(task_spec,
                                 resource_ids,
                                 &return_objects,
                                 &dynamic_return_objects,
                                 reply->mutable_borrowed_refs(),
                                 &is_retryable_error);
-    // auto te_exec_task = current_sys_time_us();
-    // RAY_LOG(DEBUG) << "hucc time for exec task time: " << te_exec_task << ", " << ts_exec_task <<"\n"; 
+    auto te_exec_task = current_sys_time_us();
+    // RAY_LOG(ERROR) << "hucc time for exec task time: " << te_exec_task << ", " << ts_exec_task <<"\n"; 
 
     reply->set_is_retryable_error(is_retryable_error);
 
@@ -195,7 +195,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
       for (size_t i = 0; i < return_objects.size(); i++) {
         const auto &return_object = return_objects[i];
         auto ts_return_object = current_sys_time_us();
-        RAY_LOG(ERROR) << "before return object " << " " << ts_return_object << " " << return_object.first;
+        RAY_LOG(ERROR) << "before return object " << " " << te_exec_task- ts_exec_task << " " <<  ts_return_object << " " << return_object.first;
         auto return_object_proto = reply->add_return_objects();
         SerializeReturnObject(
             return_object.first, return_object.second, return_object_proto, plasma_store_provider_);
