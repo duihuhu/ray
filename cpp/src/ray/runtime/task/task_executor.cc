@@ -222,6 +222,7 @@ Status TaskExecutor::ExecuteTask(
     }
 
     size_t total = cross_lang ? (XLANG_HEADER_LEN + data_size) : data_size;
+    RAY_LOG(ERROR) << " task executor";
     RAY_CHECK_OK(CoreWorkerProcess::GetCoreWorker().AllocateReturnObject(
         result_id,
         total,
