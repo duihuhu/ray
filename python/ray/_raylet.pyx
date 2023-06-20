@@ -735,6 +735,7 @@ cdef execute_task(
                             ray.util.pdb.set_trace(
                                 breakpoint_uuid=debugger_breakpoint)
                         outputs = function_executor(*args, **kwargs)
+                        print(" outputs type ", type(outputs))
                         #t2 = time.time()
                         #print("hucc time exec task t2: ", t2)
                         next_breakpoint = (
