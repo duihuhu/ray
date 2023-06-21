@@ -1201,7 +1201,11 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_CHECK(!missing_result);
   }
   auto te_get_obj_cw = current_sys_time_us();
-  RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw <<"\n";
+  // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw <<"\n";
+  if(ids.size()>0) {
+    for (int i = 0;i< ids.size();++i)
+      RAY_LOG(ERROR) << " raylet client send 4 " << " " << te_get_obj_cw << " "  << ids[i];
+  }
 
   return Status::OK();
 }
