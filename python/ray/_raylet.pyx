@@ -821,7 +821,7 @@ cdef execute_task(
                     if not inspect.isgenerator(outputs):
                         raise ValueError(
                                 "Functions with @ray.remote(num_returns=\"dynamic\" "
-                                "must return a generator"))
+                                "must return a generator")
                     core_worker.store_task_outputs(
                         worker, outputs,
                         dynamic_returns,
