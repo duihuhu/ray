@@ -1113,7 +1113,11 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
   auto ts_get_obj_cw = current_sys_time_us();
+  if(ids.size()>0) {
+    for (int i = 0;i< ids.size();++i)
+      RAY_LOG(ERROR) << "raylet client send 0 " << " " << ts_get_obj_cw << " " << ids[i];
 
+  }
   results->resize(ids.size(), nullptr);
 
   absl::flat_hash_set<ObjectID> plasma_object_ids;
