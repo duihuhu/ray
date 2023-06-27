@@ -10,6 +10,7 @@ ObjectManagerRdma::~ObjectManagerRdma() { StopRdmaService(); }
 
 void ObjectManagerRdma::RunRdmaService(int64_t index) {
 	RAY_LOG(DEBUG) << "RunRdmaService ";
+	SetThreadName("obj.queue.rdma." + std::to_string(index));
 	int64_t t_index = index;
   while(true) {
     ObjectRdmaInfo object_rdma_info;
