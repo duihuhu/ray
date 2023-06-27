@@ -108,6 +108,24 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
   struct ibv_wc wc;
 	int poll_result;
 	int rc = 0;
+	
+	if (cfg_.use_event == 1) {
+			struct ibv_cq *ev_cq;
+		void *ev_ctx;
+		if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
+			rc = 1;
+			return rc;
+		}
+		if (ev_cq != pp_cq(ctx)) {
+			rc = 1;
+			return rc;
+		}
+		if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
+			rc = 1;
+			return rc;
+		}
+	}
+
 	do {
 		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
 	} while (poll_result==0);
@@ -147,6 +165,8 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			//   outfile1<<*(data+i);
 			// }
 			// outfile1.close();
+			/* Ack the event */ 
+			ibv_ack_cq_events(pp_cq(ctx), 1);
     }
 		if ( wc.status != IBV_WC_SUCCESS) {
 			// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);
@@ -333,7 +353,7 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
     cfg_.gidx = 1;
     cfg_.num_threads = 1;
     cfg_.server_name = NULL;
-    cfg_.use_event = 0;
+    cfg_.use_event = 1;
 }
 
 void ObjectManagerRdma::InitRdmaConfig() {
