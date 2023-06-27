@@ -780,7 +780,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
     if(!remaining.empty()) {
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStoreRDMA(remaining,
                                                  batch_ids,
-                                                 10,
+                                                 100,
                                                  /*fetch_only=*/false,
                                                  ctx.CurrentTaskIsDirectCall(),
                                                  ctx.GetCurrentTaskID(),
