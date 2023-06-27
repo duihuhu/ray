@@ -814,7 +814,7 @@ cdef execute_task(
                         len(outputs), returns[0].size()))
 
             # Store the outputs in the object store.
-            ts_output_start = time.time()
+            #ts_output_start = time.time()
             with core_worker.profile_event(b"task:store_outputs"):
                 num_returns = returns[0].size()
                 if dynamic_returns != NULL:
@@ -838,8 +838,8 @@ cdef execute_task(
                 core_worker.store_task_outputs(
                     worker, outputs,
                     returns)
-            ts_output_end = time.time()
-            print("execute task and object ", execute_time, ts_output_end-ts_output_start)
+            #ts_output_end = time.time()
+            #print("execute task and object ", execute_time, ts_output_end-ts_output_start)
         except Exception as error:
             # If the debugger is enabled, drop into the remote pdb here.
             if "RAY_PDB" in os.environ:
