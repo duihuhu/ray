@@ -2752,8 +2752,8 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   }
 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
-  auto ts_handle_get_status = current_sys_time_us();
-  RAY_LOG(ERROR) << " Received GetObjectStatus " << " " << ts_handle_get_status << " " << object_id;
+  // auto ts_handle_get_status = current_sys_time_us();
+  // RAY_LOG(ERROR) << " Received GetObjectStatus " << " " << ts_handle_get_status << " " << object_id;
 
   // Acquire a reference to the object. This prevents the object from being
   // evicted out from under us while we check the object status and start the
@@ -2781,8 +2781,8 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
                               } else {
                                 PopulateObjectStatus(object_id, obj, reply);
                               }
-                              auto ts_handle_get_status = current_sys_time_us();
-                              RAY_LOG(ERROR) << " send GetObjectStatus " << " " << ts_handle_get_status << " " << object_id;
+                              // auto ts_handle_get_status = current_sys_time_us();
+                              // RAY_LOG(ERROR) << " send GetObjectStatus " << " " << ts_handle_get_status << " " << object_id;
                               send_reply_callback(Status::OK(), nullptr, nullptr);
                             });
   }
