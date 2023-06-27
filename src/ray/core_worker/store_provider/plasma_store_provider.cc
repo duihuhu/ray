@@ -780,7 +780,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
     if(!remaining.empty()) {
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStoreRDMA(remaining,
                                                  batch_ids,
-                                                 10,
+                                                 100,
                                                  /*fetch_only=*/false,
                                                  ctx.CurrentTaskIsDirectCall(),
                                                  ctx.GetCurrentTaskID(),
@@ -827,7 +827,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
       // requests to Release() buffers which only require holding the lock for brief
       // periods. See https://github.com/ray-project/ray/pull/16402 for more context.
       // std::this_thread::sleep_for(std::chrono::milliseconds(10));
-      std::this_thread::sleep_for(std::chrono::microseconds(100));
+      std::this_thread::sleep_for(std::chrono::microseconds(200));
 
     }
     auto t5 = current_sys_time_us();

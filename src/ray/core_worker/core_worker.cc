@@ -1143,7 +1143,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_RETURN_NOT_OK(memory_store_->Get(
         memory_object_ids, timeout_ms, worker_context_, &result_map, &got_exception));
 
-    auto te_get_obj_tmem = current_sys_time_us();
+    // auto te_get_obj_tmem = current_sys_time_us();
     // RAY_LOG(DEBUG) << "hucc time for get from memory total time: " << te_get_obj_tmem << ", " << ts_get_obj_tmem <<"\n";
 
     // if(ids.size()>0) {
