@@ -242,7 +242,7 @@ class SerializationContext:
 
     def _deserialize_object(self, data, metadata, object_ref):
         if metadata:
-            # print(metadata," ", object_ref)
+            print(ray_constants.OBJECT_METADATA_TYPE_CROSS_LANGUAGE," ", ray_constants.OBJECT_METADATA_TYPE_PYTHON, " " ,ray_constants.OBJECT_METADATA_TYPE_RAW)
             metadata_fields = metadata.split(b",")
             if metadata_fields[0] in [
                 ray_constants.OBJECT_METADATA_TYPE_CROSS_LANGUAGE,

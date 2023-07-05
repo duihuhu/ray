@@ -145,6 +145,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			// RAY_LOG(ERROR) << "after " << object_info.object_id <<  " " << *(data+object_info.data_size);
 
 			while(data[object_info.data_size]!='P') {
+				RAY_LOG(ERROR) << data[object_info.data_size];
 				std::this_thread::sleep_for(std::chrono::microseconds(5));
 			}
 
