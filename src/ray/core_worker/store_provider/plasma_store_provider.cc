@@ -243,7 +243,8 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
     const std::vector<std::string> &batch_owner_ip_address,
     const std::vector<int> &batch_owner_port,
     const std::vector<ray::WorkerID> &batch_owner_worker_id,
-    const std::vector<std::string> &batch_rem_ip_address) {
+    const std::vector<std::string> &batch_rem_ip_address,
+    absl::flat_hash_set<ObjectID> &worker_already_obj) {
   const auto owner_addresses = reference_counter_->GetOwnerAddresses(batch_ids);
   
   auto t1 = current_sys_time_us();
@@ -266,19 +267,26 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
   //                                        batch_rem_ip_address));
 
   ray::rpc::GetObjectRequest get_object_request;
+  //decide object to send
+  bool already = true;
   for (int i =0; i< batch_ids.size(); ++i) {
-    get_object_request.add_object_ids(batch_ids[i].Binary());
-    get_object_request.add_virt_address(batch_virt_address[i]);
-    get_object_request.add_object_size(batch_object_size[i]);
-    get_object_request.add_meta_size(batch_object_meta_size[i]);
-    get_object_request.add_owner_raylet_id(batch_owner_raylet_id[i].Binary());
-    get_object_request.add_owner_ip_address(batch_owner_ip_address[i]);
-    get_object_request.add_owner_port(batch_owner_port[i]);
-    get_object_request.add_owner_worker_id(batch_owner_worker_id[i].Binary());
-    get_object_request.add_rem_ip_address(batch_rem_ip_address[i]);
+    if (worker_already_obj.find(batch_ids[i]) == worker_already_obj.end()) {
+      get_object_request.add_object_ids(batch_ids[i].Binary());
+      get_object_request.add_virt_address(batch_virt_address[i]);
+      get_object_request.add_object_size(batch_object_size[i]);
+      get_object_request.add_meta_size(batch_object_meta_size[i]);
+      get_object_request.add_owner_raylet_id(batch_owner_raylet_id[i].Binary());
+      get_object_request.add_owner_ip_address(batch_owner_ip_address[i]);
+      get_object_request.add_owner_port(batch_owner_port[i]);
+      get_object_request.add_owner_worker_id(batch_owner_worker_id[i].Binary());
+      get_object_request.add_rem_ip_address(batch_rem_ip_address[i]);
+      worker_already_obj.insert(batch_ids[i]);
+      already = false;
+    }
   }
     // for (const auto &e : batch_ids) {
     // }
+  if (already == false) {
   rpc_client_->GetObject(get_object_request,
                           [](const ray::Status &status, const ray::rpc::GetObjectReply &reply) {
                             if (!status.ok()) {
@@ -292,6 +300,7 @@ Status CoreWorkerPlasmaStoreProvider::FetchAndGetFromPlasmaStoreRDMA(
                             //       << status.message();
                             // }
                           });
+  }
   //   for (int i = 0;i <batch_ids.size(); ++i) {
   //     object_resolve.insert(batch_ids[i]);
   //   }
@@ -578,7 +587,8 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
     const WorkerContext &ctx,
     absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> *results,
     bool *got_exception, 
-    absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>> &plasma_node_virt_info_) {
+    absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>> &plasma_node_virt_info_,
+    absl::flat_hash_set<ObjectID> &worker_already_obj) {
   int64_t batch_size = RayConfig::instance().worker_fetch_request_size();
   //hucc time for get obj from local plasma
 
@@ -687,7 +697,8 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
                                                  batch_owner_ip_address,
                                                  batch_owner_port,
                                                  batch_owner_worker_id,
-                                                 batch_rem_ip_address));
+                                                 batch_rem_ip_address,
+                                                 worker_already_obj));
   }
   }
   auto t2_out = current_sys_time_us();
@@ -793,7 +804,8 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
                                                  batch_owner_ip_address,
                                                  batch_owner_port,
                                                  batch_owner_worker_id,
-                                                 batch_rem_ip_address));
+                                                 batch_rem_ip_address,
+                                                 worker_already_obj));
 
     should_break = timed_out || *got_exception;
     }

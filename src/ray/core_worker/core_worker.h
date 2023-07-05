@@ -1178,6 +1178,7 @@ class CoreWorker : public rpc::CoreWorkerServiceHandler {
 
   std::unique_ptr<FutureResolver> future_resolver_;
 
+  absl::flat_hash_set<ObjectID> worker_already_obj_;
   ///
   /// Fields related to task submission.
   ///
