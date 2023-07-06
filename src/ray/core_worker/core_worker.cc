@@ -1140,7 +1140,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     //     RAY_LOG(ERROR) << "in memory send 4 " << " " << te_get_obj_tmem << " " << ids[i];
     // }
   }
-  auto ts_get_obj_tmem = current_sys_time_us();
+  auto ts_get_obj_plasma = current_sys_time_us();
 
   // Erase any objects that were promoted to plasma from the results. These get
   // requests will be retried at the plasma store.
