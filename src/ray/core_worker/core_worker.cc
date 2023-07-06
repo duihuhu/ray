@@ -1112,7 +1112,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        const int64_t timeout_ms,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
-  // auto ts_get_obj_cw = current_sys_time_us();
+  auto ts_get_obj_cw = current_sys_time_us();
   // if(ids.size()>0) {
   //   for (int i = 0;i< ids.size();++i)
   //     RAY_LOG(ERROR) << "raylet client send 0 " << " " << ts_get_obj_cw << " " << ids[i];
@@ -1125,11 +1125,11 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
 
   bool got_exception = false;
   absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> result_map;
-  auto start_time = current_time_ms();
+  // auto start_time = current_time_ms();
 
   if (!memory_object_ids.empty()) {
     // hucc time for get from memory total time
-    auto ts_get_obj_tmem = current_sys_time_us();
+    // auto ts_get_obj_tmem = current_sys_time_us();
     RAY_RETURN_NOT_OK(memory_store_->Get(
         memory_object_ids, timeout_ms, worker_context_, &result_map, &got_exception));
 
@@ -1140,6 +1140,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     //     RAY_LOG(ERROR) << "in memory send 4 " << " " << te_get_obj_tmem << " " << ids[i];
     // }
   }
+  auto ts_get_obj_tmem = current_sys_time_us();
 
   // Erase any objects that were promoted to plasma from the results. These get
   // requests will be retried at the plasma store.
@@ -1200,12 +1201,15 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   if (timeout_ms < 0 && !will_throw_exception) {
     RAY_CHECK(!missing_result);
   }
-  // auto te_get_obj_cw = current_sys_time_us();
+  auto te_get_obj_cw = current_sys_time_us();
   // // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw <<"\n";
   // if(ids.size()>0) {
   //   for (int i = 0;i< ids.size();++i)
   //     RAY_LOG(ERROR) << " raylet client send 4 " << " " << te_get_obj_cw << " "  << ids[i];
   // }
+
+  RAY_LOG(ERROR) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " get from plasma: " << \
+  te_get_obj_cw - ts_get_obj_plasma << " wait in mem: " << ts_get_obj_plasma - ts_get_obj_cw << " " << te_get_obj_cw << " " << ts_get_obj_cw << " " << ts_get_obj_plasma;
 
   return Status::OK();
 }
