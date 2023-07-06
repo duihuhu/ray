@@ -1128,11 +1128,6 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
 
   // }
 
-  if(ids.size()>0) {
-    for (int i = 0;i< ids.size();++i)
-      RAY_LOG(ERROR) << "raylet client send 0 " << " " << ids[i];
-
-  }
   results->resize(ids.size(), nullptr);
 
   absl::flat_hash_set<ObjectID> plasma_object_ids;
@@ -1164,13 +1159,13 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   for (auto it = result_map.begin(); it != result_map.end();) {
     auto current = it++;
     if (current->second->IsInPlasmaError()) {
-      RAY_LOG(DEBUG) << current->first << " in plasma, doing fetch-and-get";
-      auto it_virt = future_resolver_->plasma_node_virt_info_.find(current->first);
-      if (it_virt == future_resolver_->plasma_node_virt_info_.end()) {
-        RAY_LOG(DEBUG) << current->first << " has no information in  plasma_node_virt_info_";
-      } else {
-        RAY_LOG(DEBUG) << current->first << " virtual address " << it_virt->second.first.first <<  " object size " << (it_virt->second.second.data_size+it_virt->second.second.metadata_size);
-      }
+      // RAY_LOG(DEBUG) << current->first << " in plasma, doing fetch-and-get";
+      // auto it_virt = future_resolver_->plasma_node_virt_info_.find(current->first);
+      // if (it_virt == future_resolver_->plasma_node_virt_info_.end()) {
+      //   RAY_LOG(DEBUG) << current->first << " has no information in  plasma_node_virt_info_";
+      // } else {
+      //   RAY_LOG(DEBUG) << current->first << " virtual address " << it_virt->second.first.first <<  " object size " << (it_virt->second.second.data_size+it_virt->second.second.metadata_size);
+      // }
 
       plasma_object_ids.insert(current->first);
       result_map.erase(current);
@@ -1192,15 +1187,15 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_LOG(DEBUG) << "Plasma GET timeout " << local_timeout_ms;
     
     //hucc add time for get object from plasma total time
-    auto ts_get_obj_plasma = current_sys_time_us();
+    // auto ts_get_obj_plasma = current_sys_time_us();
     RAY_RETURN_NOT_OK(plasma_store_provider_->GetRDMA(plasma_object_ids,
                                                   local_timeout_ms,
                                                   worker_context_,
                                                   &result_map,
                                                   &got_exception, future_resolver_->plasma_node_virt_info_,
                                                   worker_already_obj_));
-    auto te_get_obj_plasma = current_sys_time_us();
-    RAY_LOG(DEBUG) << "hucc time for get object from plasma total time in coreworker: " << te_get_obj_plasma - ts_get_obj_plasma <<"\n"; 
+    // auto te_get_obj_plasma = current_sys_time_us();
+    // RAY_LOG(DEBUG) << "hucc time for get object from plasma total time in coreworker: " << te_get_obj_plasma - ts_get_obj_plasma <<"\n"; 
     
   }
 
