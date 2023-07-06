@@ -1121,7 +1121,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
                        const int64_t timeout_ms,
                        std::vector<std::shared_ptr<RayObject>> *results) {
   //hucc time for get_object in CoreWorker total time
-  // auto ts_get_obj_cw = current_sys_time_us();
+  auto ts_get_obj_cw = current_sys_time_us();
   // if(ids.size()>0) {
   //   for (int i = 0;i< ids.size();++i)
   //     RAY_LOG(ERROR) << "raylet client send 0 " << " " << ts_get_obj_cw << " " << ids[i];
@@ -1167,9 +1167,9 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
       RAY_LOG(DEBUG) << current->first << " in plasma, doing fetch-and-get";
       auto it_virt = future_resolver_->plasma_node_virt_info_.find(current->first);
       if (it_virt == future_resolver_->plasma_node_virt_info_.end()) {
-        RAY_LOG(ERROR) << current->first << " has no information in  plasma_node_virt_info_";
+        RAY_LOG(DEBUG) << current->first << " has no information in  plasma_node_virt_info_";
       } else {
-        RAY_LOG(ERROR) << current->first << " virtual address " << it_virt->second.first.first <<  " object size " << (it_virt->second.second.data_size+it_virt->second.second.metadata_size);
+        RAY_LOG(DEBUG) << current->first << " virtual address " << it_virt->second.first.first <<  " object size " << (it_virt->second.second.data_size+it_virt->second.second.metadata_size);
       }
 
       plasma_object_ids.insert(current->first);
@@ -1229,8 +1229,9 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   if (timeout_ms < 0 && !will_throw_exception) {
     RAY_CHECK(!missing_result);
   }
-  // auto te_get_obj_cw = current_sys_time_us();
-  // // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0];
+  auto te_get_obj_cw = current_sys_time_us();
+  RAY_LOG(ERROR) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " " << te_get_obj_cw - ts_get_obj_plasma;
+  // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0];
   // if(ids.size()>0) {
   //   for (int i = 0;i< ids.size();++i)
   //     RAY_LOG(ERROR) << " raylet client send 4 " << " " << te_get_obj_cw << " "  << ids[i];
