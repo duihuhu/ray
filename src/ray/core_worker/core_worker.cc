@@ -1159,13 +1159,13 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   for (auto it = result_map.begin(); it != result_map.end();) {
     auto current = it++;
     if (current->second->IsInPlasmaError()) {
-      RAY_LOG(DEBUG) << current->first << " in plasma, doing fetch-and-get";
-      auto it_virt = future_resolver_->plasma_node_virt_info_.find(current->first);
-      if (it_virt == future_resolver_->plasma_node_virt_info_.end()) {
-        RAY_LOG(DEBUG) << current->first << " has no information in  plasma_node_virt_info_";
-      } else {
-        RAY_LOG(DEBUG) << current->first << " virtual address " << it_virt->second.first.first <<  " object size " << (it_virt->second.second.data_size+it_virt->second.second.metadata_size);
-      }
+      // RAY_LOG(DEBUG) << current->first << " in plasma, doing fetch-and-get";
+      // auto it_virt = future_resolver_->plasma_node_virt_info_.find(current->first);
+      // if (it_virt == future_resolver_->plasma_node_virt_info_.end()) {
+      //   RAY_LOG(DEBUG) << current->first << " has no information in  plasma_node_virt_info_";
+      // } else {
+      //   RAY_LOG(DEBUG) << current->first << " virtual address " << it_virt->second.first.first <<  " object size " << (it_virt->second.second.data_size+it_virt->second.second.metadata_size);
+      // }
 
       plasma_object_ids.insert(current->first);
       result_map.erase(current);
@@ -1230,7 +1230,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   //   for (int i = 0;i< ids.size();++i)
   //     RAY_LOG(ERROR) << " raylet client send 4 " << " " << te_get_obj_cw << " "  << ids[i];
   // }
-
+  worker_already_obj_.clear();
   return Status::OK();
 }
 
