@@ -1125,7 +1125,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
 
   bool got_exception = false;
   absl::flat_hash_map<ObjectID, std::shared_ptr<RayObject>> result_map;
-  // auto start_time = current_time_ms();
+  auto start_time = current_time_ms();
 
   if (!memory_object_ids.empty()) {
     // hucc time for get from memory total time
