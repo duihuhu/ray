@@ -383,8 +383,8 @@ void TaskManager::CompletePendingTask(const TaskID &task_id,
       }
     }
   }
-  auto ts_handle_task_return = current_sys_time_us();
-  RAY_LOG(ERROR) << " HandleTaskReturn " << ts_handle_task_return;
+  // auto ts_handle_task_return = current_sys_time_us();
+  // RAY_LOG(ERROR) << " HandleTaskReturn " << ts_handle_task_return;
   for (const auto &return_object : reply.return_objects()) {
     const auto object_id = ObjectID::FromBinary(return_object.object_id());
     if (HandleTaskReturn(object_id,
@@ -394,8 +394,8 @@ void TaskManager::CompletePendingTask(const TaskID &task_id,
       direct_return_ids.push_back(object_id);
     }
   }
-  auto te_handle_task_return = current_sys_time_us();
-  RAY_LOG(ERROR) << " hucc HandleTaskReturn " << ts_handle_task_return << " " << te_handle_task_return;
+  // auto te_handle_task_return = current_sys_time_us();
+  // RAY_LOG(ERROR) << " hucc HandleTaskReturn " << ts_handle_task_return << " " << ts_handle_task_return;
 
   TaskSpecification spec;
   bool release_lineage = true;
