@@ -1639,8 +1639,8 @@ std::vector<rpc::ObjectReference> CoreWorker::SubmitTask(
                                              worker_context_.GetCurrentInternalTaskId(),
                                              next_task_index);
   //hucc push normal task start
-  auto ts_push_task = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc push normal task id start: " << task_id << " push task time and exec: " << ts_push_task << "\n";
+  // auto ts_push_task = current_sys_time_us();
+  // RAY_LOG(WARNING) << "hucc push normal task id start: " << task_id << " push task time and exec: " << ts_push_task << "\n";
   auto constrained_resources =
       AddPlacementGroupConstraint(task_options.resources, scheduling_strategy);
 
@@ -2275,10 +2275,10 @@ Status CoreWorker::ExecuteTask(
   // about any IDs that we are still borrowing by the time the task completes.
   std::vector<ObjectID> borrowed_ids;
   //hucc exec task getting args 
-  auto ts_exec_task_args = current_sys_time_us();
+  // auto ts_exec_task_args = current_sys_time_us();
   RAY_CHECK_OK(GetAndPinArgsForExecutor(task_spec, &args, &arg_refs, &borrowed_ids));
-  auto te_exec_task_args = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc time for exec task args: " << te_exec_task_args << ", " << ts_exec_task_args <<"\n"; 
+  // auto te_exec_task_args = current_sys_time_us();
+  // RAY_LOG(WARNING) << "hucc time for exec task args: " << te_exec_task_args << ", " << ts_exec_task_args <<"\n"; 
   for (size_t i = 0; i < task_spec.NumReturns(); i++) {
     return_objects->push_back(std::make_pair<>(task_spec.ReturnId(i), nullptr));
   }
@@ -2333,7 +2333,7 @@ Status CoreWorker::ExecuteTask(
   }
   
   //hucc exec task callback to lanaguage
-  auto ts_exec_call_task = current_sys_time_us();
+  // auto ts_exec_call_task = current_sys_time_us();
   status = options_.task_execution_callback(
       task_spec.CallerAddress(),
       task_type,
@@ -2351,8 +2351,8 @@ Status CoreWorker::ExecuteTask(
       defined_concurrency_groups,
       name_of_concurrency_group_to_execute);
   
-  auto te_exec_call_task = current_sys_time_us();
-  RAY_LOG(WARNING) << "hucc time for exec task callback to lanaguage time: " << te_exec_call_task << ", " << ts_exec_call_task <<"\n"; 
+  // auto te_exec_call_task = current_sys_time_us();
+  // RAY_LOG(WARNING) << "hucc time for exec task callback to lanaguage time: " << te_exec_call_task << ", " << ts_exec_call_task <<"\n"; 
   // Get the reference counts for any IDs that we borrowed during this task,
   // remove the local reference for these IDs, and return the ref count info to
   // the caller. This will notify the caller of any IDs that we (or a nested

@@ -290,7 +290,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   std::vector<ObjectID> id_vector(object_ids.begin(), object_ids.end());
   int64_t total_size = static_cast<int64_t>(object_ids.size());
   //hucc time for get obj from local plasma
-  auto ts_get_obj_local_plasma = current_sys_time_us();
+  // auto ts_get_obj_local_plasma = current_sys_time_us();
   
   for (int64_t start = 0; start < total_size; start += batch_size) {
     batch_ids.clear();
@@ -351,7 +351,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
     auto t3 = current_sys_time_us();
     RAY_LOG(DEBUG) << "CurrentTaskIsDirectCall " << t3 -t2 << " " << ctx.CurrentTaskIsDirectCall() << " " << ctx.ShouldReleaseResourcesOnBlockingCalls();
     //hucc time for get obj from remote plasma
-    auto ts_get_obj_remote_plasma = current_sys_time_us();
+    // auto ts_get_obj_remote_plasma = current_sys_time_us();
     RAY_RETURN_NOT_OK(FetchAndGetFromPlasmaStore(remaining,
                                                  batch_ids,
                                                  batch_timeout,
@@ -361,14 +361,14 @@ Status CoreWorkerPlasmaStoreProvider::Get(
                                                  results,
                                                  got_exception));
     should_break = timed_out || *got_exception;
-    auto ts_get_obj_remote_plasma_median = current_sys_time_us();
+    // auto ts_get_obj_remote_plasma_median = current_sys_time_us();
 
     if ((previous_size - remaining.size()) < batch_ids.size()) {
       WarnIfFetchHanging(fetch_start_time_ms, remaining);
     }
     //hucc time for get obj from remote plasma
-    auto te_get_obj_remote_plasma = current_sys_time_us();
-    RAY_LOG(DEBUG) << "hucc time for get obj from local plasma total time in while: " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma << " " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma_median << " empty: " << remaining.empty() << "\n";
+    // auto te_get_obj_remote_plasma = current_sys_time_us();
+    // RAY_LOG(DEBUG) << "hucc time for get obj from local plasma total time in while: " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma << " " << te_get_obj_remote_plasma - ts_get_obj_remote_plasma_median << " empty: " << remaining.empty() << "\n";
     if (check_signals_) {
       Status status = check_signals_();
       if (!status.ok()) {
