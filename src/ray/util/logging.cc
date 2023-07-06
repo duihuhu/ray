@@ -227,8 +227,8 @@ void RayLog::StartRayLog(const std::string &app_name,
     } else {
       RAY_LOG(WARNING) << "Unrecognized setting of RAY_BACKEND_LOG_LEVEL=" << var_value;
     }
-    // RAY_LOG(INFO) << "Set ray log level from environment variable RAY_BACKEND_LOG_LEVEL"
-    //               << " to " << static_cast<int>(severity_threshold);
+    RAY_LOG(INFO) << "Set ray log level from environment variable RAY_BACKEND_LOG_LEVEL"
+                  << " to " << static_cast<int>(severity_threshold);
   }
   severity_threshold_ = severity_threshold;
   app_name_ = app_name;
