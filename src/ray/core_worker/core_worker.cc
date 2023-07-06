@@ -1139,7 +1139,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
 
   if (!memory_object_ids.empty()) {
     // hucc time for get from memory total time
-    auto ts_get_obj_tmem = current_sys_time_us();
+    // auto ts_get_obj_tmem = current_sys_time_us();
     RAY_RETURN_NOT_OK(memory_store_->Get(
         memory_object_ids, timeout_ms, worker_context_, &result_map, &got_exception));
 
@@ -1152,6 +1152,8 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     // }
     
   }
+
+  auto ts_get_obj_plasma = current_sys_time_us();
 
   RAY_LOG(DEBUG) << "hucc plasma object for from memory_store size " << result_map.size();
   // Erase any objects that were promoted to plasma from the results. These get
@@ -1171,7 +1173,6 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
       result_map.erase(current);
     }
   }
-  auto ts_get_obj_plasma = current_sys_time_us();
 
   // RAY_LOG(DEBUG) << "core worker get object plasma start " << ts_get_obj_plasma << " " << ids[0];
 
@@ -1225,8 +1226,8 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_CHECK(!missing_result);
   }
   auto te_get_obj_cw = current_sys_time_us();
-  RAY_LOG(ERROR) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " " << te_get_obj_cw - ts_get_obj_plasma;
-  // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0];
+  RAY_LOG(ERROR) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " get from plasma: " << te_get_obj_cw - ts_get_obj_plasma << " wait in mem: " << ts_get_obj_plasma - ts_get_obj_cw;
+  // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0]; 
   // if(ids.size()>0) {
   //   for (int i = 0;i< ids.size();++i)
   //     RAY_LOG(ERROR) << " raylet client send 4 " << " " << te_get_obj_cw << " "  << ids[i];
