@@ -163,8 +163,8 @@ void ObjectStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   entry->construct_duration = std::time(nullptr) -  pair.first->create_time;
   entry->source = pair.first->GetSource();
   // RAY_LOG(DEBUG) << "InsertObjectInfoThread object_table " << entry->object_info.GetObjectSize() << " " << object_table_[object_info.object_id]->object_info.GetObjectSize();
-  auto te_insert_table = current_sys_time_us();
-  RAY_LOG(DEBUG) << "insert object to object_table " << object_info.object_id << " " << te_insert_table;
+  // auto te_insert_table = current_sys_time_us();
+  // RAY_LOG(DEBUG) << "insert object to object_table " << object_info.object_id << " " << te_insert_table;
 
 }
 

@@ -1727,7 +1727,7 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
   // std::thread::id tid = std::this_thread::get_id();
 	// RAY_LOG(DEBUG) << "node manager id " << tid;
   //hucc breakdown get object nodemanager
-  auto ts_fetch_or_restruct_message = current_sys_time_us();
+  // auto ts_fetch_or_restruct_message = current_sys_time_us();
 
   //end hucc
 
@@ -1806,8 +1806,8 @@ void NodeManager::ProcessFetchOrReconstructRDMAMessage(
     //                     /*ray_get=*/true,
     //                     /*mark_worker_blocked*/ message->mark_worker_blocked());
   }
-  auto te_fetch_or_restruct_message = current_sys_time_us();
-  RAY_LOG(DEBUG) << "Process FetchOrReconstructMessage time  " << " start " << ts_fetch_or_restruct_message << " end " << te_fetch_or_restruct_message << " " <<te_fetch_or_restruct_message - ts_fetch_or_restruct_message;
+  // auto te_fetch_or_restruct_message = current_sys_time_us();
+  // RAY_LOG(DEBUG) << "Process FetchOrReconstructMessage time  " << " start " << ts_fetch_or_restruct_message << " end " << te_fetch_or_restruct_message << " " <<te_fetch_or_restruct_message - ts_fetch_or_restruct_message;
 
 }
 
