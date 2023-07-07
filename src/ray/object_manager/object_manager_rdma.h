@@ -108,15 +108,15 @@ public:
       gcs_client_(gcs_client),
       object_manager_(object_manager),
       dependency_manager_(dependency_manager),
-      rpc_service_threads_number_(rpc_service_threads_number/2),
+      rpc_service_threads_number_(rpc_service_threads_number),
       local_ip_address_(object_manager_address),
       object_manager_rdma_server_("ObjectManagerRdma",
                              object_manager_rdma_port,
                              object_manager_rdma_address == "127.0.0.1",
-                             rpc_service_threads_number/2),
+                             rpc_service_threads_number),
       rpc_work_(rpc_service_),
       object_manager_rdma_service_(rpc_service_, *this),
-      client_call_manager_(main_service, rpc_service_threads_number/2)
+      client_call_manager_(main_service, rpc_service_threads_number)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
         InitRdmaConfig();
