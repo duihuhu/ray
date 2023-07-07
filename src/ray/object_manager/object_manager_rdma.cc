@@ -148,13 +148,8 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 				RAY_LOG(ERROR) << "object_id " << object_info.object_id << " data is:" << data[object_info.data_size];
 				std::this_thread::sleep_for(std::chrono::microseconds(10));
 				times = times +1;
-				if(times == 10) {
-					std::ofstream outfile1;
-					outfile1.open("hutmp_" + std::to_string(object_info.object_id.Hash()) + ".txt");
-					for(int i=0; i< object_info.data_size + object_info.metadata_size; ++i){
-						outfile1<<*(data+i);
-					}
-					outfile1.close();
+				if(times == 2) {
+					break;
 				}
 			}
 
