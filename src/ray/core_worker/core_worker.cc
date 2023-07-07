@@ -1226,8 +1226,8 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     RAY_CHECK(!missing_result);
   }
   auto te_get_obj_cw = current_sys_time_us();
-  RAY_LOG(ERROR) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " get from plasma: " << \
-    te_get_obj_cw - ts_get_obj_plasma << " wait in mem: " << ts_get_obj_plasma - ts_get_obj_cw << " " << te_get_obj_cw << " " << ts_get_obj_cw << " " << ts_get_obj_plasma;
+  // RAY_LOG(ERROR) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " get from plasma: " << \
+  //   te_get_obj_cw - ts_get_obj_plasma << " wait in mem: " << ts_get_obj_plasma - ts_get_obj_cw << " " << te_get_obj_cw << " " << ts_get_obj_cw << " " << ts_get_obj_plasma;
     
   // RAY_LOG(INFO) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " "  << ids[0]; 
   // if(ids.size()>0) {
