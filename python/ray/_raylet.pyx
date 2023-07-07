@@ -839,7 +839,7 @@ cdef execute_task(
                     worker, outputs,
                     returns)
             ts_output_end = time.time()
-            print("execute task and object ", execute_time, ts_output_end-ts_output_start)
+            print("execute task and object ", ts_output_end-ts_output_start)
         except Exception as error:
             # If the debugger is enabled, drop into the remote pdb here.
             if "RAY_PDB" in os.environ:
