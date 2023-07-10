@@ -1208,8 +1208,8 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   //     RAY_LOG(ERROR) << " raylet client send 4 " << " " << te_get_obj_cw << " "  << ids[i];
   // }
 
-  RAY_LOG(ERROR) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " get from plasma: " << \
-  te_get_obj_cw - ts_get_obj_plasma << " wait in mem: " << ts_get_obj_plasma - ts_get_obj_cw << " " << te_get_obj_cw << " " << ts_get_obj_cw << " " << ts_get_obj_plasma;
+  // RAY_LOG(ERROR) << "hucc time for add get object in coreworker total time: " << te_get_obj_cw - ts_get_obj_cw << " get from plasma: " << \
+  // te_get_obj_cw - ts_get_obj_plasma << " wait in mem: " << ts_get_obj_plasma - ts_get_obj_cw << " " << te_get_obj_cw << " " << ts_get_obj_cw << " " << ts_get_obj_plasma;
 
   return Status::OK();
 }
