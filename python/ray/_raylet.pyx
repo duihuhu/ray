@@ -737,6 +737,7 @@ cdef execute_task(
                                 breakpoint_uuid=debugger_breakpoint)
                         ts_execute_start = time.time()
                         outputs = function_executor(*args, **kwargs)
+                        print(type(outputs))
                         ts_execute_end = time.time()
                         execute_time = ts_execute_end - ts_execute_start
                         next_breakpoint = (
