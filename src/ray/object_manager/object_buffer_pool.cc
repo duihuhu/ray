@@ -154,11 +154,11 @@ void ObjectBufferPool::WriteChunk(const ObjectID &object_id,
       << "size mismatch!  data size: " << data.size()
       << " chunk size: " << chunk_info.buffer_length;
   std::memcpy(chunk_info.data, data.data(), chunk_info.buffer_length);
-  // std::ofstream outfile;
-  // std::string filename = std::to_string(object_id.Hash()) + "_" + std::to_string(chunk_index);
-  // outfile.open("hutmp_" + filename + ".txt");
-  // for(int i = 0;i < chunk_info.buffer_length; ++i)
-  //   outfile<<*(data.data()+i);
+  std::ofstream outfile;
+  std::string filename = std::to_string(object_id.Hash()) + "_" + std::to_string(chunk_index);
+  outfile.open("hutmp_" + filename + ".txt");
+  for(int i = 0;i < chunk_info.buffer_length; ++i)
+    outfile<<*(data.data()+i);
 
   it->second.chunk_state.at(chunk_index) = CreateChunkState::SEALED;
   it->second.num_seals_remaining--;
