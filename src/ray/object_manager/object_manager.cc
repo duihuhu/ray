@@ -579,8 +579,8 @@ void ObjectManager::SendObjectChunk(const UniqueID &push_id,
       };
 
   //hucc send push request 
-  // auto ts_push_request = current_sys_time_us();
-  // RAY_LOG(WARNING) << "hucc remote get object send push request object id :" << object_id << " " << ts_push_request << " chunk_index: " << chunk_index <<"\n";
+  auto ts_push_request = current_sys_time_us();
+  RAY_LOG(ERROR) << "hucc remote get object send push request object id :" << object_id << " " << ts_push_request << " chunk_index: " << chunk_index <<"\n";
   rpc_client->Push(push_request, callback);
 }
 
@@ -607,8 +607,8 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   const std::string &data = request.data();
 
   //hucc breakdown get object write to plasma
-  // auto ts_breakdown_write_plasma = current_sys_time_us();  
-  // RAY_LOG(WARNING) << "hucc breakdown get object write to plasma start: " << object_id  << " " << ts_breakdown_write_plasma << " chunk_index: " << chunk_index << "\n";
+  auto ts_breakdown_write_plasma = current_sys_time_us();  
+  RAY_LOG(ERROR) << "hucc breakdown get object write to plasma start: " << object_id  << " " << ts_breakdown_write_plasma << " chunk_index: " << chunk_index << "\n";
   //end hucc 
   bool success = ReceiveObjectChunk(
       node_id, object_id, owner_address, data_size, metadata_size, chunk_index, data);
