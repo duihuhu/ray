@@ -572,8 +572,8 @@ void ObjectManager::SendObjectChunk(const UniqueID &push_id,
         }
         double end_time = absl::GetCurrentTimeNanos() / 1e9;
         //hucc handle push request reply
-        // auto te_handle_push_request_reply = current_sys_time_us();
-        // RAY_LOG(WARNING) << "hucc remote get object receive handle push reply object id " << object_id << " " << te_handle_push_request_reply  << " chunk_index: " << chunk_index << "\n";
+        auto te_handle_push_request_reply = current_sys_time_us();
+        RAY_LOG(ERROR) << "hucc remote get object receive handle push reply object id " << object_id << " " << te_handle_push_request_reply  << " chunk_index: " << chunk_index << "\n";
         HandleSendFinished(object_id, node_id, chunk_index, start_time, end_time, status);
         on_complete(status);
       };
@@ -608,14 +608,14 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
 
   //hucc breakdown get object write to plasma
   auto ts_breakdown_write_plasma = current_sys_time_us();  
-  RAY_LOG(ERROR) << "hucc breakdown get object write to plasma start: " << object_id  << " " << ts_breakdown_write_plasma << " chunk_index: " << chunk_index << "\n";
+  // RAY_LOG(ERROR) << "hucc breakdown get object write to plasma start: " << object_id  << " " << ts_breakdown_write_plasma << " chunk_index: " << chunk_index << "\n";
   //end hucc 
   bool success = ReceiveObjectChunk(
       node_id, object_id, owner_address, data_size, metadata_size, chunk_index, data);
   
   //hucc breakdown get object write to plasma
-  // auto te_breakdown_write_plasma = current_sys_time_us();  
-  // RAY_LOG(WARNING) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma << "\n";
+  auto te_breakdown_write_plasma = current_sys_time_us();  
+  RAY_LOG(ERROR) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma - ts_breakdown_write_plasma<< "\n";
   //end hucc
   
   num_chunks_received_total_++;
