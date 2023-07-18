@@ -153,7 +153,12 @@ void ObjectBufferPool::WriteChunk(const ObjectID &object_id,
   RAY_CHECK(data.size() == chunk_info.buffer_length)
       << "size mismatch!  data size: " << data.size()
       << " chunk size: " << chunk_info.buffer_length;
+  auto ts_memcpy = current_sys_time_us();  
   std::memcpy(chunk_info.data, data.data(), chunk_info.buffer_length);
+  auto te_memcpy = current_sys_time_us();  
+
+  RAY_LOG(ERROR) << "hucc memcpy: " << object_id  << " " << te_memcpy - ts_memcpy <<"\n";
+
   // std::ofstream outfile;
   // std::string filename = std::to_string(object_id.Hash()) + "_" + std::to_string(chunk_index);
   // outfile.open("hutmp_" + filename + ".txt");
