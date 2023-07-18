@@ -617,7 +617,7 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   
   //hucc breakdown get object write to plasma
   auto te_breakdown_write_plasma = current_sys_time_us();  
-  RAY_LOG(ERROR) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma - ts_breakdown_write_plasma <<"\n";
+  RAY_LOG(ERROR) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma - ts_breakdown_write_plasma << " " << ts_breakdown_write_plasma -  ts_breakdown_handle_push<<"\n";
   //end hucc
   
   num_chunks_received_total_++;
