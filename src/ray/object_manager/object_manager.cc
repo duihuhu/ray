@@ -589,7 +589,7 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
                                rpc::PushReply *reply,
                                rpc::SendReplyCallback send_reply_callback) {
   //hucc breakdown get object handle push
-  // auto ts_breakdown_handle_push = current_sys_time_us();  
+  auto ts_breakdown_handle_push = current_sys_time_us();  
   //end hucc 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
   
@@ -615,7 +615,7 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   
   //hucc breakdown get object write to plasma
   auto te_breakdown_write_plasma = current_sys_time_us();  
-  RAY_LOG(ERROR) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma - ts_breakdown_write_plasma<< "\n";
+  RAY_LOG(ERROR) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma - ts_breakdown_write_plasma << " " << te_breakdown_write_plasma-ts_breakdown_handle_push<<"\n";
   //end hucc
   
   num_chunks_received_total_++;
