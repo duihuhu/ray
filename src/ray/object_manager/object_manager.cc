@@ -536,6 +536,8 @@ void ObjectManager::SendObjectChunk(const UniqueID &push_id,
   double start_time = absl::GetCurrentTimeNanos() / 1e9;
   rpc::PushRequest push_request;
   // Set request header
+  auto ts_derialize = current_sys_time_us();
+
   push_request.set_push_id(push_id.Binary());
   push_request.set_object_id(object_id.Binary());
   push_request.mutable_owner_address()->CopyFrom(
@@ -580,7 +582,7 @@ void ObjectManager::SendObjectChunk(const UniqueID &push_id,
 
   //hucc send push request 
   auto ts_push_request = current_sys_time_us();
-  RAY_LOG(ERROR) << "hucc remote get object send push request object id :" << object_id << " " << ts_push_request << " chunk_index: " << chunk_index <<"\n";
+  RAY_LOG(ERROR) << "hucc remote get object send push request object id :" << object_id << " " << ts_push_request << " chunk_index: " << chunk_index << " " << ts_push_request - ts_derialize <<"\n";
   rpc_client->Push(push_request, callback);
 }
 
@@ -615,7 +617,7 @@ void ObjectManager::HandlePush(const rpc::PushRequest &request,
   
   //hucc breakdown get object write to plasma
   auto te_breakdown_write_plasma = current_sys_time_us();  
-  RAY_LOG(ERROR) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma - ts_breakdown_write_plasma << " " << ts_breakdown_write_plasma-ts_breakdown_handle_push<<"\n";
+  RAY_LOG(ERROR) << "hucc breakdown get object write to plasma end: " << object_id  << " " << te_breakdown_write_plasma - ts_breakdown_write_plasma <<"\n";
   //end hucc
   
   num_chunks_received_total_++;
