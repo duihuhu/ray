@@ -145,7 +145,7 @@ public:
                                   const std::vector<int>  &object_sizes, std::vector<ray::ObjectInfo> &object_info, const std::vector<std::string> &rem_ip_address, ray::raylet::DependencyManager &dependency_manager);
   int CovRdmaStatus(struct pingpong_context *ctx, struct pingpong_dest *dest, struct pingpong_dest *my_dest);
   void QueryQp(struct pingpong_context *ctx);
-  int PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode);
+  int PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode,int64_t t_index);
   int PollCompletion(struct pingpong_context *ctx, const absl::optional<plasma::Allocation> &allocation, const ray::ObjectInfo &object_info, ray::raylet::DependencyManager *dependency_manager, int64_t start_time);
 
   void StartRdmaService();
@@ -160,7 +160,7 @@ public:
 
   void RunRdmaService(int64_t index);
   void FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info, int64_t t_index);
-  int PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send);
+  int PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send, int64_t t_index);
   
 
   void HandleGetObject(const ray::rpc::GetObjectRequest &request,

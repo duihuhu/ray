@@ -82,14 +82,14 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		// RAY_LOG(DEBUG) << "FetchObjectRdma time in create object space " << te_fetch_object_rdma_space - ts_fetch_object_rdma << " " << obj_info.object_id;
 		// RAY_LOG(ERROR) << " post send " << obj_info.object_id << " " << object_rdma_info.object_virt_address;
 
-		PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_rdma_info.object_sizes, object_rdma_info.object_virt_address, IBV_WR_RDMA_READ);
+		PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_rdma_info.object_sizes, object_rdma_info.object_virt_address, IBV_WR_RDMA_READ, t_index);
 		// PollCompletion(it->second.first.first);
 		auto ctx =  it->second.first.first + n_qp;
 		auto te_fetch_object_post_send = current_sys_time_us();
 
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 		// PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
-		PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send);
+		PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send, t_index);
 		// main_service_->post([this, ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send]() { PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send); },
 		// 							"ObjectManagerRdma.PollCompletion");
 		// auto te_fetch_object_rdma = current_sys_time_us();
@@ -103,7 +103,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 }
 
 
-int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send){
+int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send, int64_t t_index){
   RAY_LOG(DEBUG) << "PollCompletion Threads start " << object_info.object_id << " " << allocation.address;
   // auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
@@ -140,6 +140,9 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
     RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
     if ( wc.status == IBV_WC_SUCCESS) {
+			if (wc.wr_id != t_index) {
+					RAY_LOG(ERROR) << "wc wr_id is error ";
+			}
 			auto tc_fetch_rdma = current_sys_time_us();
 			char *data = (char *) allocation.address;
 			// RAY_LOG(ERROR) << "after " << object_info.object_id <<  " " << *(data+object_info.data_size);
@@ -738,7 +741,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasma(const std::vector<std::strin
       RAY_LOG(DEBUG) << " Allocate space for rdma object " << local_address;
       RAY_LOG(DEBUG) << " FetchObjectFromRemotePlasma " << local_address << " object_virt_address " << object_virt_address[i] << "  object_sizes " <<  object_sizes[i] << " " << address << " " << object_info[i].object_id << " " << obj_address << " " << n_qp;
       
-      PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ);
+      PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_sizes[i], object_virt_address[i], IBV_WR_RDMA_READ, 0);
       // PollCompletion(it->second.first.first);
       auto ctx =  it->second.first.first + n_qp;
 	  
@@ -775,7 +778,7 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 
 }
 
-int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode) {
+int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode, int64_t t_index) {
 	// RAY_LOG(ERROR) << "PostSend start ";
 	struct ibv_send_wr sr;
 	struct ibv_send_wr *bad_wr;
@@ -784,14 +787,14 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	int flags;	
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
-    sge.addr = buf;
+	sge.addr = buf;
 	sge.length = msg_size;
 	// RAY_LOG(DEBUG) << " PostSend local lkey " << ctx->mr->lkey << " remote rkey " << ctx->mr->rkey;
 	sge.lkey = ctx->mr->lkey;
 
 	memset(&sr, 0, sizeof(sr));
 	sr.next = NULL;
-	sr.wr_id = 0;
+	sr.wr_id = t_index;
 	sr.sg_list = &sge;
 	sr.num_sge = 1;
 	sr.opcode = IBV_WR_RDMA_READ;
