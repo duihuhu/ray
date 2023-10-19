@@ -30,7 +30,7 @@ void ObjectManagerRdma::RunRdmaService(int64_t index) {
 			// std::thread::id tid = std::this_thread::get_id();
 			// RAY_LOG(DEBUG) << "RunRdmaService thread " << tid;
 			FetchObjectFromRemotePlasmaThreads(object_rdma_info, t_index);
-			t_index = t_index + 1;
+			// t_index = t_index + 1;
 		}
   }
 }
@@ -54,7 +54,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		// std::ranlux48 engine(seed());//use seed to generate 
 		// std::uniform_int_distribution<> distrib(0, num_qp_pair-1);//set random min and max
 		// int n_qp = distrib(engine);//n_qp
-		int n_qp = t_index%(num_qp_pair-1);
+		// int n_qp = t_index%(num_qp_pair-1);
+		int n_qp = t_index;
 		
 		// auto allocation = object_manager_.AllocateObjectSizeRdma(object_rdma_info.object_sizes);
   
@@ -141,7 +142,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
     RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
     if ( wc.status == IBV_WC_SUCCESS) {
 			if (wc.wr_id != t_index) {
-					RAY_LOG(ERROR) << "wc wr_id is error ";
+					RAY_LOG(ERROR) << "wc wr_id is error " << wc.wr_id << " " << t_index;
 			}
 			auto tc_fetch_rdma = current_sys_time_us();
 			char *data = (char *) allocation.address;
