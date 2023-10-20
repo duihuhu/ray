@@ -1,3 +1,4 @@
+//has slove wr id problem, pay attention to the qp with thread
 #pragma once
 // #include <stdio.h>
 // #include <stdlib.h>
