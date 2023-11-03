@@ -574,15 +574,15 @@ void ObjectManager::SendObjectChunk(const UniqueID &push_id,
         }
         double end_time = absl::GetCurrentTimeNanos() / 1e9;
         //hucc handle push request reply
-        auto te_handle_push_request_reply = current_sys_time_us();
-        RAY_LOG(ERROR) << "hucc remote get object receive handle push reply object id " << object_id << " " << te_handle_push_request_reply  << " chunk_index: " << chunk_index << "\n";
+        // auto te_handle_push_request_reply = current_sys_time_us();
+        // RAY_LOG(ERROR) << "hucc remote get object receive handle push reply object id " << object_id << " " << te_handle_push_request_reply  << " chunk_index: " << chunk_index << "\n";
         HandleSendFinished(object_id, node_id, chunk_index, start_time, end_time, status);
         on_complete(status);
       };
 
   //hucc send push request 
-  auto ts_push_request = current_sys_time_us();
-  RAY_LOG(ERROR) << "hucc remote get object send push request object id :" << object_id << " " << ts_push_request << " chunk_index: " << chunk_index << " " << ts_push_request - ts_derialize <<"\n";
+  // auto ts_push_request = current_sys_time_us();
+  // RAY_LOG(ERROR) << "hucc remote get object send push request object id :" << object_id << " " << ts_push_request << " chunk_index: " << chunk_index << " " << ts_push_request - ts_derialize <<"\n";
   rpc_client->Push(push_request, callback);
 }
 
