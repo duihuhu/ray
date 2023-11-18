@@ -2806,6 +2806,8 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   // in_plasma indicator on the message, and the caller will
   // have to facilitate a Plasma object transfer to get the
   // object value.
+  RAY_LOG(ERROR) << "PopulateObjectStatus " << object_id;
+  
   auto *object = reply->mutable_object();
   if (obj->HasData()) {
     const auto &data = obj->GetData();
