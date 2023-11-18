@@ -133,7 +133,7 @@ void GetRequest::Set(const ObjectID &object_id, std::shared_ptr<RayObject> objec
   for (const auto& element : object_ids_) {
       std::cout << element << " ";
       const auto pair = objects_.find(element);
-      if (element == objects_.end()) {
+      if (pair == objects_.end()) {
           RAY_LOG(ERROR) << "lack Object id " << element;
       }
   }
