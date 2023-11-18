@@ -413,6 +413,7 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
+    RAY_LOG(ERROR)  << "waiting in memory send 2";
     if (check_signals_) {
       signal_status = check_signals_();
     }
