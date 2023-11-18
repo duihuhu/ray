@@ -261,6 +261,7 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
                                    const NodeID &worker_raylet_id,
                                    bool store_in_plasma,
                                    const std::string &worker_ip_address) {
+  RAY_LOG(ERROR) << "Task return object " << object_id;
   bool direct_return = false;
   reference_counter_->UpdateObjectSize(object_id, return_object.size());
   RAY_LOG(DEBUG) << "Task return object " << object_id << " has size "

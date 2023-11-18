@@ -29,7 +29,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   // auto ts_create_object = current_sys_time_us();
   // RAY_LOG(ERROR) << "attempting to create object " << ts_create_object << " " << object_info.object_id;
 
-  RAY_LOG(ERROR) << "Create object " << object_info.object_id;
+  // RAY_LOG(ERROR) << "Create object " << object_info.object_id;
 
   RAY_LOG(DEBUG) << "attempting to create object " << object_info.object_id << " size "
                  << object_info.data_size;
