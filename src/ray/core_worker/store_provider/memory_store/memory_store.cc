@@ -129,6 +129,7 @@ void GetRequest::Set(const ObjectID &object_id, std::shared_ptr<RayObject> objec
   }
   object->SetAccessed();
   objects_.emplace(object_id, object);
+   Ray_LOG(ERROR) << "Set " << objects_.size() << " " <<  num_objects_;
   // Ray_LOG(ERROR) << "hucc_small_object object_id: " << " size: " << object.GetSize() << "\n";
   if (objects_.size() == num_objects_ ||
       (abort_if_any_object_is_exception_ && object->IsException() &&
@@ -413,7 +414,6 @@ Status CoreWorkerMemoryStore::GetImpl(const std::vector<ObjectID> &object_ids,
 
   while (!timed_out && signal_status.ok() &&
          !(done = get_request->Wait(iteration_timeout))) {
-    RAY_LOG(ERROR)  << "waiting in memory send 2";
     if (check_signals_) {
       signal_status = check_signals_();
     }
