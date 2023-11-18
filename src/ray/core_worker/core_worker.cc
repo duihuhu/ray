@@ -2758,6 +2758,9 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
   }
 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
+
+  RAY_LOG(ERROR) << "HandleGetObjectStatus: "<< object_id << "\n";
+
   // auto ts_handle_get_status = current_sys_time_us();
   // RAY_LOG(ERROR) << " Received GetObjectStatus " << " " << ts_handle_get_status << " " << object_id;
 
@@ -2805,9 +2808,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   // is an indicator that the object is in Plasma, we set an
   // in_plasma indicator on the message, and the caller will
   // have to facilitate a Plasma object transfer to get the
-  // object value.
-  RAY_LOG(ERROR) << "PopulateObjectStatus " << object_id;
-  
+  // object value.  
   auto *object = reply->mutable_object();
   if (obj->HasData()) {
     const auto &data = obj->GetData();
