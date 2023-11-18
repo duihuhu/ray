@@ -175,6 +175,10 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
       }
     }
 
+    for (const auto &return_object : dynamic_return_objects) {
+      RAY_LOG(ERROR) << "dynamic_return object " << return_object.first; 
+    }
+
     if (objects_valid) {
       if (task_spec.ReturnsDynamic()) {
         size_t num_dynamic_returns_expected = task_spec.DynamicReturnIds().size();
