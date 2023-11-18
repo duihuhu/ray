@@ -169,14 +169,14 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
 
     bool objects_valid = return_objects.size() == num_returns;
     for (const auto &return_object : return_objects) {
-      RAY_LOG(ERROR) << "return object " << return_object.first; 
+      RAY_LOG(ERROR) << task_id << "return object " << return_object.first; 
       if (return_object.second == NULL) {
         objects_valid = false;
       }
     }
 
     for (const auto &return_object : dynamic_return_objects) {
-      RAY_LOG(ERROR) << "dynamic_return object " << return_object.first; 
+      RAY_LOG(ERROR) << task_id << "dynamic_return object " << return_object.first; 
     }
 
     if (objects_valid) {
