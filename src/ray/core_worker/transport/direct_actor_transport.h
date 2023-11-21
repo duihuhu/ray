@@ -43,6 +43,8 @@
 #include "ray/core_worker/transport/thread_pool.h"
 #include "ray/rpc/grpc_server.h"
 #include "ray/rpc/worker/core_worker_client.h"
+#include "ray/core_worker/store_provider/plasma_store_provider.h"
+
 
 namespace ray {
 namespace core {
@@ -92,6 +94,8 @@ class CoreWorkerDirectTaskReceiver {
   bool CancelQueuedNormalTask(TaskID task_id);
 
   void Stop();
+  
+  std::shared_ptr<CoreWorkerPlasmaStoreProvider> plasma_store_provider_;
 
  private:
   /// Set up the configs for an actor.
