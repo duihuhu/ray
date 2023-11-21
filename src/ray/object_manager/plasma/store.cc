@@ -633,13 +633,21 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
       // Object already evicted or deleted.
       // return false; 
       // RAY_LOG(DEBUG) << "entry is null ";
-      return Status::OK();
+      // RAY_LOG(ERROR) << "return_object object is null ";
+      unsigned long address = 0;
+      int64_t object_size = 0;
+      int device_num = 0;
+      ray::ObjectInfo object_info;
+      RAY_RETURN_NOT_OK(SendMetaReply(client, address, object_size, device_num, object_info));
+      // return Status::OK();
+    } else {
+      auto allocation = entry->GetAllocation();
+      unsigned long address = (unsigned long) entry->GetAllocation().address;
+      auto object_info = entry->GetObjectInfo();
+      // RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id << " " << entry->GetAllocation().address << " " << entry->GetObjectInfo().object_id ;
+      RAY_RETURN_NOT_OK(SendMetaReply(client, address, allocation.size, allocation.device_num, object_info));
+
     }
-    auto allocation = entry->GetAllocation();
-    unsigned long address = (unsigned long) entry->GetAllocation().address;
-    auto object_info = entry->GetObjectInfo();
-    // RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id << " " << entry->GetAllocation().address << " " << entry->GetObjectInfo().object_id ;
-    RAY_RETURN_NOT_OK(SendMetaReply(client, address, allocation.size, allocation.device_num, object_info));
 
     // uint64_t *data = (uint64_t *) address;
     // // object info
