@@ -28,6 +28,7 @@ namespace core {
 void SerializeReturnObject(const ObjectID &object_id,
                            const std::shared_ptr<RayObject> &return_object,
                            rpc::ReturnObject *return_object_proto, std::shared_ptr<CoreWorkerPlasmaStoreProvider> &plasma_store_provider) {
+  RAY_LOG(ERROR) << "SerializeReturnObject " <<  object_id;
   return_object_proto->set_object_id(object_id.Binary());
   RAY_LOG(DEBUG) << "SerializeReturnObject Infomation";
   if (!return_object) {
