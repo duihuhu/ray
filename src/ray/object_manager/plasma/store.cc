@@ -478,7 +478,11 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
       // return false; 
       // RAY_LOG(DEBUG) << "entry is null ";
       // RAY_LOG(ERROR) << "return_object object is null ";
-      RAY_RETURN_NOT_OK(SendMetaReply(client, 0, 0, 0, NULL));
+      unsigned long address = 0;
+      int64_t object_size = 0;
+      int device_num = 0;
+      ObjectInfo object_info = NULL;
+      RAY_RETURN_NOT_OK(SendMetaReply(client, address, object_size, device_num, object_info));
       // return Status::OK();
     } else {
       auto allocation = entry->GetAllocation();
