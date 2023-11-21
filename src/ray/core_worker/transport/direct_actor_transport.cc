@@ -49,7 +49,7 @@ void SerializeReturnObject(const ObjectID &object_id,
     plasma_store_provider->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
     // auto te_get_meta_from_plasma = current_sys_time_us();
 
-    // RAY_LOG(DEBUG) << "SerializeReturnObject plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size << te_get_meta_from_plasma - ts_get_meta_from_plasma;
+    RAY_LOG(ERROR) << "SerializeReturnObject plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size;
     return_object_proto->set_virt_address(virt_address);
     return_object_proto->set_device_num(device_num);
     // object info
