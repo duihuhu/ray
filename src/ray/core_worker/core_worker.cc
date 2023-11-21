@@ -2766,7 +2766,7 @@ void CoreWorker::HandleGetObjectStatus(const rpc::GetObjectStatusRequest &reques
 
   ObjectID object_id = ObjectID::FromBinary(request.object_id());
 
-  RAY_LOG(ERROR) << "HandleGetObjectStatus: "<< object_id << "\n";
+  // RAY_LOG(ERROR) << "HandleGetObjectStatus: "<< object_id << "\n";
 
   // auto ts_handle_get_status = current_sys_time_us();
   // RAY_LOG(ERROR) << " Received GetObjectStatus " << " " << ts_handle_get_status << " " << object_id;
