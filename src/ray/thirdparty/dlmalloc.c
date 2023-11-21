@@ -4051,7 +4051,6 @@ static void* sys_alloc(mstate m, size_t nb) {
   size_t asize; /* allocation size */
 
   ensure_initialization();
-
   /* Directly map large chunks, but only if already initialized */
   if (use_mmap(m) && nb >= mparams.mmap_threshold && m->topsize != 0) {
     void* mem = mmap_alloc(m, nb);
@@ -4552,6 +4551,7 @@ static void* tmalloc_small(mstate m, size_t nb) {
 #if !ONLY_MSPACES
 
 void* dlmalloc(size_t bytes) {
+
   /*
      Basic algorithm:
      If a small request (< 256 bytes minus per-chunk overhead):
@@ -4676,7 +4676,6 @@ void* dlmalloc(size_t bytes) {
       check_malloced_chunk(gm, mem, nb);
       goto postaction;
     }
-
     mem = sys_alloc(gm, nb);
 
   postaction:
