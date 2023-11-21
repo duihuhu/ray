@@ -63,6 +63,10 @@ enum MessageType:long {
   // Get debugging information from the store.
   PlasmaGetDebugStringRequest,
   PlasmaGetDebugStringReply,
+
+  // hucc Get objects meta information from the store
+  PlasmaGetMetaRequest,
+  PlasmaGetMetaReply,
 }
 
 enum PlasmaError:int {
@@ -288,4 +292,30 @@ table PlasmaEvictRequest {
 table PlasmaEvictReply {
   // Number of bytes that have been freed.
   num_bytes: ulong;
+}
+
+table PlasmaGetMetaRequest {
+  // ID of the object to be get meta.
+  object_id: string;
+}
+
+
+table PlasmaGetMetaReply {
+  address: ulong;
+  object_size: long;
+  device_num: int;
+
+  // Owner raylet ID of this object.
+  owner_raylet_id: string;
+  // Owner IP address of this object.
+  owner_ip_address: string;
+  // Owner port address of this object.
+  owner_port: int;
+  // Unique id for the owner worker.
+  owner_worker_id: string;
+  // The size of the object's data in bytes.
+  data_size: ulong;
+  // The size of the object's metadata in bytes.
+  metadata_size: ulong;
+
 }

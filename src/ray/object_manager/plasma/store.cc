@@ -466,6 +466,36 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     RAY_RETURN_NOT_OK(SendGetDebugStringReply(
         client, object_lifecycle_mgr_.EvictionPolicyDebugString()));
   } break;
+  case fb::MessageType::PlasmaGetMetaRequest: {
+    //hucc add PlasmaGetMetaRequest
+    // absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = GetPlasmaMeta();
+    // RAY_RETURN_NOT_OK(SendPlasmaMetaReply(client, PlasmaError::OK));
+
+    RAY_RETURN_NOT_OK(ReadMetaRequest(input, input_size, &object_id));    
+    auto entry = object_lifecycle_mgr_.GetObject(object_id);
+    if (!entry) {
+      // Object already evicted or deleted.
+      // return false; 
+      // RAY_LOG(DEBUG) << "entry is null ";
+      return Status::OK();
+    }
+    auto allocation = entry->GetAllocation();
+    unsigned long address = (unsigned long) entry->GetAllocation().address;
+    auto object_info = entry->GetObjectInfo();
+    // RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id << " " << entry->GetAllocation().address << " " << entry->GetObjectInfo().object_id ;
+    RAY_RETURN_NOT_OK(SendMetaReply(client, address, allocation.size, allocation.device_num, object_info));
+
+    // uint64_t *data = (uint64_t *) address;
+    // // object info
+    // int64_t data_size = allocation.size;
+    // RAY_LOG(ERROR) << object_id <<  " " << object_id.Hash() << " " << data;
+    // std::ofstream outfile1;
+    // outfile1.open("hutmp_" + std::to_string(object_id.Hash()) + ".txt");
+    // for(int i=0; i< data_size; ++i){
+    //   outfile1<<*(data+i);
+    // }
+    // outfile1.close();
+} break;
   default:
     // This code should be unreachable.
     RAY_CHECK(0);
