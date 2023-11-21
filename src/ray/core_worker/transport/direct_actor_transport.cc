@@ -41,10 +41,10 @@ void SerializeReturnObject(const ObjectID &object_id,
   return_object_proto->set_size(return_object->GetSize());
   if (return_object->GetData() != nullptr && return_object->GetData()->IsPlasmaBuffer()) {
     return_object_proto->set_in_plasma(true);
-    unsigned long virt_address = 0 ;
-    int64_t object_size = 0;
-    int device_num = 0;
-    ray::ObjectInfo object_info;
+    // unsigned long virt_address = 0 ;
+    // int64_t object_size = 0;
+    // int device_num = 0;
+    // ray::ObjectInfo object_info;
     // auto ts_get_meta_from_plasma = current_sys_time_us();
     // plasma_store_provider->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
     // // auto te_get_meta_from_plasma = current_sys_time_us();
