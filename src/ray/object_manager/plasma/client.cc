@@ -153,6 +153,9 @@ class PlasmaClient::Impl : public std::enable_shared_from_this<PlasmaClient::Imp
 
   Status Seal(const ObjectID &object_id);
 
+  Status GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info);
+
+
   Status Delete(const std::vector<ObjectID> &object_ids);
 
   Status Evict(int64_t num_bytes, int64_t &num_bytes_evicted);
@@ -652,6 +655,34 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
   return Release(object_id);
 }
 
+/// @brief get object meta through 
+/// @param object_id 
+/// @return Status
+Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
+  std::unique_lock<std::recursive_mutex> guard(client_mutex_);
+
+  RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
+  std::vector<uint8_t> buffer;
+
+  RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer));
+  RAY_DCHECK(buffer.size() > 0);
+  // RAY_LOG(DEBUG) << "buffer.size()  " << buffer.size() ;
+  // unsigned long address = 0;
+  // int64_t object_size = 0;
+  // int device_num = 0;
+  RAY_RETURN_NOT_OK(ReadMetaReply(buffer.data(), buffer.size(), address, object_size, device_num, object_info));
+
+  // RAY_LOG(DEBUG) << "ReadMetaReply GetObjectMeta " << object_id << " address " << *address << " object_size " << object_size << " device_num " <<  device_num;
+
+  // void *virt_address = (void*) (*address);
+  // printf("virt_address %p\n", virt_address);
+  // RAY_LOG(DEBUG) << "virt_address virt_address" << virt_address;
+
+
+  return Status::OK();
+}
+
+
 Status PlasmaClient::Impl::Abort(const ObjectID &object_id) {
   std::lock_guard<std::recursive_mutex> guard(client_mutex_);
   auto object_entry = objects_in_use_.find(object_id);
@@ -851,6 +882,10 @@ std::string PlasmaClient::DebugString() { return impl_->DebugString(); }
 
 bool PlasmaClient::IsInUse(const ObjectID &object_id) {
   return impl_->IsInUse(object_id);
+}
+
+Status PlasmaClient::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
+  return impl_->GetObjectMeta(object_id, address, object_size, device_num, object_info);
 }
 
 int64_t PlasmaClient::store_capacity() { return impl_->store_capacity(); }

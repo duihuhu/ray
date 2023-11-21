@@ -664,4 +664,62 @@ Status ReadGetReply(uint8_t *data,
   return Status::OK();
 }
 
+
+
+//Get meta request 
+Status SendMetaRequest(const std::shared_ptr<StoreConn> &store_conn, ObjectID object_id) {
+  flatbuffers::FlatBufferBuilder fbb;
+  auto message = fb::CreatePlasmaGetMetaRequest(
+      fbb, fbb.CreateString(object_id.Binary()));
+  return PlasmaSend(store_conn, MessageType::PlasmaGetMetaRequest, &fbb, message);
+}
+
+Status ReadMetaRequest(uint8_t *data, size_t size, ObjectID *object_id) {
+  RAY_DCHECK(data);
+  auto message = flatbuffers::GetRoot<fb::PlasmaGetMetaRequest>(data);
+  RAY_DCHECK(VerifyFlatbuffer(message, data, size));
+  *object_id = ObjectID::FromBinary(message->object_id()->str());
+  return Status::OK();
+}
+
+Status SendMetaReply(const std::shared_ptr<Client> &client, unsigned long &address, int64_t &object_size, int &device_num, ray::ObjectInfo &object_info) {
+  flatbuffers::FlatBufferBuilder fbb;
+  auto message = fb::CreatePlasmaGetMetaReply(fbb, 
+                                            address, object_size, device_num, 
+                                            fbb.CreateString(object_info.owner_raylet_id.Binary()),
+                                            fbb.CreateString(object_info.owner_ip_address),  
+                                            object_info.owner_port,
+                                            fbb.CreateString(object_info.owner_worker_id.Binary()),
+                                            object_info.data_size,
+                                            object_info.metadata_size);
+  return PlasmaSend(client, MessageType::PlasmaGetMetaReply, &fbb, message);
+}
+
+Status ReadMetaReply(uint8_t *data, size_t size, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
+  RAY_DCHECK(data);
+  auto message = flatbuffers::GetRoot<fb::PlasmaGetMetaReply>(data);
+  RAY_DCHECK(VerifyFlatbuffer(message, data, size));
+  RAY_LOG(DEBUG) << "message address " << message->address() << " " <<  message->object_size() << " " << message->device_num();
+  *address = message->address();
+  *object_size = message->object_size();
+  *device_num = message->device_num();
+
+  object_info->owner_raylet_id = NodeID::FromBinary(message->owner_raylet_id()->str());
+  object_info->owner_ip_address = message->owner_ip_address()->str();
+  object_info->owner_port = message->owner_port();
+  object_info->owner_worker_id = WorkerID::FromBinary(message->owner_worker_id()->str());
+  object_info->data_size = message->data_size();
+  object_info->metadata_size = message->metadata_size();
+  return Status::OK();
+}
+
+
+
+// Status SendPlasmaMetaReply(const std::shared_ptr<Client> &client, PlasmaError error) {
+//   flatbuffers::FlatBufferBuilder fbb;
+//   auto message =
+//       fb::CreatePlasmaGetMetaReply(fbb, error);
+//   return PlasmaSend(client, MessageType::PlasmaGetMetaReply, &fbb, message);
+// }
+
 }  // namespace plasma
