@@ -457,11 +457,11 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
   case fb::MessageType::PlasmaConnectRequest: {
     RAY_RETURN_NOT_OK(SendConnectReply(client, allocator_.GetFootprintLimit()));
   } break;
-  case fb::MessageType::PlasmaDisconnectClient:
+  case fb::MessageType::PlasmaDisconnectClient:{
     RAY_LOG(DEBUG) << "Disconnecting client on fd " << client;
     DisconnectClient(client);
     return Status::Disconnected("The Plasma Store client is disconnected.");
-    break;
+  } break;
   case fb::MessageType::PlasmaGetDebugStringRequest: {
     RAY_RETURN_NOT_OK(SendGetDebugStringReply(
         client, object_lifecycle_mgr_.EvictionPolicyDebugString()));
@@ -470,18 +470,22 @@ Status PlasmaStore::ProcessMessage(const std::shared_ptr<Client> &client,
     //hucc add PlasmaGetMetaRequest
     // absl::flat_hash_map<ObjectID, std::unique_ptr<LocalObject>> *plasma_meta = GetPlasmaMeta();
     // RAY_RETURN_NOT_OK(SendPlasmaMetaReply(client, PlasmaError::OK));
+    RAY_LOG(ERROR) << "return_object plasma object_id start read ";
 
-    RAY_RETURN_NOT_OK(ReadMetaRequest(input, input_size, &object_id));    
+    RAY_RETURN_NOT_OK(ReadMetaRequest(input, input_size, &object_id));
     auto entry = object_lifecycle_mgr_.GetObject(object_id);
+    RAY_LOG(ERROR) << "return_object plasma object_id start get " << object_id;
     if (!entry) {
       // Object already evicted or deleted.
       // return false; 
       // RAY_LOG(DEBUG) << "entry is null ";
+      RAY_LOG(ERROR) << "return_object object is null ";
       return Status::OK();
     }
     auto allocation = entry->GetAllocation();
     unsigned long address = (unsigned long) entry->GetAllocation().address;
     auto object_info = entry->GetObjectInfo();
+    RAY_LOG(ERROR) << "return_object plasma object_id start end " << object_id;
     // RAY_LOG(DEBUG) << "read meta infomation of object id " << object_id << " " << entry->GetAllocation().address << " " << entry->GetObjectInfo().object_id ;
     RAY_RETURN_NOT_OK(SendMetaReply(client, address, allocation.size, allocation.device_num, object_info));
 

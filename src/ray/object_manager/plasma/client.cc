@@ -661,13 +661,11 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
 Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
   RAY_LOG(ERROR) << "return_object object_id start " << object_id;
   std::unique_lock<std::recursive_mutex> guard(client_mutex_);
-  RAY_LOG(ERROR) << "return_object object_id median " << object_id;
-
   RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
   std::vector<uint8_t> buffer;
 
   RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer));
-  RAY_LOG(ERROR) << "return_object object_id recv " << object_id;
+  RAY_LOG(ERROR) << "return_object object_id end " << object_id;
   RAY_DCHECK(buffer.size() > 0);
   // RAY_LOG(DEBUG) << "buffer.size()  " << buffer.size() ;
   // unsigned long address = 0;
