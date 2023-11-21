@@ -48,22 +48,22 @@ void SerializeReturnObject(const ObjectID &object_id,
     // auto ts_get_meta_from_plasma = current_sys_time_us();
     plasma_store_provider->GetObjectMetaFromPlasma(object_id, &virt_address, &object_size, &device_num, &object_info);
     // auto te_get_meta_from_plasma = current_sys_time_us();
-
-    // RAY_LOG(ERROR) << "SerializeReturnObject plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size;
-    return_object_proto->set_virt_address(virt_address);
-    return_object_proto->set_device_num(device_num);
-    // object info
-    return_object_proto->set_data_size(object_info.data_size);
-    return_object_proto->set_metadata_size(object_info.metadata_size);
-    /// Owner's raylet ID.
-    return_object_proto->set_owner_raylet_id(object_info.owner_raylet_id.Binary());
-    /// Owner's IP address.
-    return_object_proto->set_owner_ip_address(object_info.owner_ip_address);
-    /// Owner's port.
-    return_object_proto->set_owner_port(object_info.owner_port);
-    /// Owner's worker ID.
-    return_object_proto->set_owner_worker_id(object_info.owner_worker_id.Binary());
-
+    if(virt_address!=0 && object_size!=0) {
+      // RAY_LOG(ERROR) << "SerializeReturnObject plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size;
+      return_object_proto->set_virt_address(virt_address);
+      return_object_proto->set_device_num(device_num);
+      // object info
+      return_object_proto->set_data_size(object_info.data_size);
+      return_object_proto->set_metadata_size(object_info.metadata_size);
+      /// Owner's raylet ID.
+      return_object_proto->set_owner_raylet_id(object_info.owner_raylet_id.Binary());
+      /// Owner's IP address.
+      return_object_proto->set_owner_ip_address(object_info.owner_ip_address);
+      /// Owner's port.
+      return_object_proto->set_owner_port(object_info.owner_port);
+      /// Owner's worker ID.
+      return_object_proto->set_owner_worker_id(object_info.owner_worker_id.Binary());
+    }
   } else {
     if (return_object->GetData() != nullptr) {
       return_object_proto->set_data(return_object->GetData()->Data(),
