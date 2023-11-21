@@ -28,7 +28,7 @@ namespace core {
 void SerializeReturnObject(const ObjectID &object_id,
                            const std::shared_ptr<RayObject> &return_object,
                            rpc::ReturnObject *return_object_proto, std::shared_ptr<CoreWorkerPlasmaStoreProvider> &plasma_store_provider) {
-  RAY_LOG(ERROR) << "SerializeReturnObject " <<  object_id;
+  // RAY_LOG(ERROR) << "SerializeReturnObject " <<  object_id;
   return_object_proto->set_object_id(object_id.Binary());
   RAY_LOG(DEBUG) << "SerializeReturnObject Infomation";
   if (!return_object) {
@@ -156,6 +156,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
     bool is_retryable_error = false;
 
     // hucc execute task_handler
+    RAY_LOG(ERROR) << "task debug start  " <<  task_spec.TaskId()<<"\n"; 
     // auto ts_exec_task = current_sys_time_us();
     auto status = task_handler_(task_spec,
                                 resource_ids,
@@ -163,6 +164,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
                                 &dynamic_return_objects,
                                 reply->mutable_borrowed_refs(),
                                 &is_retryable_error);
+    RAY_LOG(ERROR) << "task debug end  " <<  task_spec.TaskId()<<"\n"; 
     // auto te_exec_task = current_sys_time_us();
     // RAY_LOG(ERROR) << "hucc time for exec task time: " << te_exec_task << ", " << ts_exec_task <<"\n"; 
 
