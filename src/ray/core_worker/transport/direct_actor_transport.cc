@@ -156,7 +156,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
     bool is_retryable_error = false;
 
     // hucc execute task_handler
-    RAY_LOG(ERROR) << "task debug start  " <<  task_spec.TaskId()<<"\n"; 
+    // RAY_LOG(ERROR) << "task debug start  " <<  task_spec.TaskId()<<"\n"; 
     // auto ts_exec_task = current_sys_time_us();
     auto status = task_handler_(task_spec,
                                 resource_ids,
@@ -164,7 +164,7 @@ void CoreWorkerDirectTaskReceiver::HandleTask(
                                 &dynamic_return_objects,
                                 reply->mutable_borrowed_refs(),
                                 &is_retryable_error);
-    RAY_LOG(ERROR) << "task debug end  " <<  task_spec.TaskId()<<"\n"; 
+    // RAY_LOG(ERROR) << "task debug end  " <<  task_spec.TaskId()<<"\n"; 
     // auto te_exec_task = current_sys_time_us();
     // RAY_LOG(ERROR) << "hucc time for exec task time: " << te_exec_task << ", " << ts_exec_task <<"\n"; 
 

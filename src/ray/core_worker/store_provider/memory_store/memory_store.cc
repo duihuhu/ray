@@ -129,13 +129,14 @@ void GetRequest::Set(const ObjectID &object_id, std::shared_ptr<RayObject> objec
   }
   object->SetAccessed();
   objects_.emplace(object_id, object);
-  RAY_LOG(ERROR) << "Set " << objects_.size() << " " <<  num_objects_;
-  for (const auto& element : object_ids_) {
-      const auto pair = objects_.find(element);
-      if (pair == objects_.end()) {
-          RAY_LOG(ERROR) << "lack Object id " << element;
-      }
-  }
+  
+  // RAY_LOG(ERROR) << "Set " << objects_.size() << " " <<  num_objects_;
+  // for (const auto& element : object_ids_) {
+  //     const auto pair = objects_.find(element);
+  //     if (pair == objects_.end()) {
+  //         RAY_LOG(ERROR) << "lack Object id " << element;
+  //     }
+  // }
 
   // Ray_LOG(ERROR) << "hucc_small_object object_id: " << " size: " << object.GetSize() << "\n";
   if (objects_.size() == num_objects_ ||
