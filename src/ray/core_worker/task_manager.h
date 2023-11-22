@@ -297,7 +297,9 @@ class TaskManager : public TaskFinisherInterface, public TaskResubmissionInterfa
   bool HandleTaskReturn(const ObjectID &object_id,
                         const rpc::ReturnObject &return_object,
                         const NodeID &worker_raylet_id,
-                        bool store_in_plasma);
+                        bool store_in_plasma,
+                        const std::string &worker_ip_address);
+
   absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>> *plasma_node_virt_info_;
 
  private:
