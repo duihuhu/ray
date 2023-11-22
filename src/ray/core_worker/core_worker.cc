@@ -1152,6 +1152,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     // }
     
   }
+  RAY_LOG(ERROR) << "After memory ";
 
   auto ts_get_obj_plasma = current_sys_time_us();
 
@@ -1206,6 +1207,7 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     // RAY_LOG(DEBUG) << "hucc time for get object from plasma total time in coreworker: " << te_get_obj_plasma - ts_get_obj_plasma <<"\n"; 
     
   }
+  RAY_LOG(ERROR) << "After plasma ";
 
   // Loop through `ids` and fill each entry for the `results` vector,
   // this ensures that entries `results` have exactly the same order as
