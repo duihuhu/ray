@@ -672,6 +672,7 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
   auto object_entry = objects_in_use_.find(object_id);
 
   if (object_entry == objects_in_use_.end()) {
+    RAY_LOG(ERROR) << "not found object seal " << object_id;
     return Status::ObjectNotFound("Seal() called on an object without a reference to it");
   }
   if (object_entry->second->is_sealed) {
