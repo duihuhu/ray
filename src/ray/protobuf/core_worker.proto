@@ -85,19 +85,19 @@ message ReturnObject {
   int64 size = 6;
   
   // This object's virt_address in plasma
-  uint64 virt_address = 7;
-  int64 device_num = 8;
+  optional uint64 virt_address = 7;
+  optional int64 device_num = 8;
 
-  int64 data_size = 9;
-  int64 metadata_size = 10;
+  optional int64 data_size = 9;
+  optional int64 metadata_size = 10;
   /// Owner's raylet ID.
-  bytes owner_raylet_id = 11;
+  optional bytes owner_raylet_id = 11;
   /// Owner's IP address.
-  string owner_ip_address = 12;
+  optional string owner_ip_address = 12;
   /// Owner's port.
-  int64 owner_port = 13;
+  optional int64 owner_port = 13;
   /// Owner's worker ID.
-  bytes owner_worker_id = 14;
+  optional bytes owner_worker_id = 14;
 }
 
 message PushTaskRequest {
