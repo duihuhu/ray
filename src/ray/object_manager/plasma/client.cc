@@ -443,6 +443,7 @@ Status PlasmaClient::Impl::GetBuffers(
   bool all_present = true;
   for (int64_t i = 0; i < num_objects; ++i) {
     auto object_entry = objects_in_use_.find(object_ids[i]);
+    RAY_LOG(ERROR) << "get buffers object id " << object_entry;
     if (object_entry == objects_in_use_.end()) {
       // This object is not currently in use by this client, so we need to send
       // a request to the store.
