@@ -31,8 +31,8 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
 
   // RAY_LOG(ERROR) << "Create object " << object_info.object_id;
 
-  RAY_LOG(ERROR) << "attempting to create object " << object_info.object_id << " size "
-                 << object_info.data_size;
+  // RAY_LOG(WARNING) << "attempting to create object " << object_info.object_id << " size "
+  //                << object_info.data_size;
   // RAY_LOG(WARNING) << "attempting to create object " << object_info.object_id << " size "
   //               << object_info.data_size;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
@@ -53,7 +53,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   }
   if (rdma == true) {
     LocalObject *ptr = new LocalObject(allocation.value());
-    RAY_LOG(DEBUG) << "create object " << object_info.object_id << " succeeded" << " address " << ptr->GetAllocation().address ;
+    RAY_LOG(ERROR) << "create object rdma " << object_info.object_id << " succeeded" << " address " << ptr->GetAllocation().address ;
     ptr->object_info = object_info;
     ptr->state = ObjectState::PLASMA_CREATED;
     ptr->create_time = std::time(nullptr);
@@ -71,7 +71,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   entry->construct_duration = -1;
   entry->source = source;
 
-  RAY_LOG(DEBUG) << "create object " << object_info.object_id << " succeeded";
+  RAY_LOG(ERROR) << "create object " << object_info.object_id << " succeeded";
   return entry;
 }
 
