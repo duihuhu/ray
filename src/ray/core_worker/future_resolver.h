@@ -22,6 +22,7 @@
 #include "ray/rpc/worker/core_worker_client.h"
 #include "ray/rpc/worker/core_worker_client_pool.h"
 #include "src/ray/protobuf/core_worker.pb.h"
+#include "ray/object_manager/common.h"
 
 namespace ray {
 namespace core {
@@ -42,7 +43,8 @@ class FutureResolver {
         reference_counter_(ref_counter),
         report_locality_data_callback_(std::move(report_locality_data_callback)),
         owner_clients_(core_worker_client_pool),
-        rpc_address_(rpc_address) {}
+        rpc_address_(rpc_address),
+        plasma_node_virt_info_() {}
 
   /// Resolve the value for a future. This will periodically contact the given
   /// owner until the owner dies or the owner has finished creating the object.
@@ -65,6 +67,8 @@ class FutureResolver {
                              const Status &status,
                              const rpc::GetObjectStatusReply &object_status);
 
+  absl::flat_hash_map<ObjectID, std::pair<std::pair<unsigned long, std::string>, ray::ObjectInfo>>
+    plasma_node_virt_info_;
  private:
   /// Used to store values of resolved futures.
   std::shared_ptr<CoreWorkerMemoryStore> in_memory_store_;

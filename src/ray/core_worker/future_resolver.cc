@@ -85,7 +85,28 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
           data.size());
     } else {
       RAY_LOG(DEBUG) << "Object not returned directly in GetObjectStatus reply, "
-                     << object_id << " will have to be fetched from Plasma";
+                     << object_id << " will have to be fetched from Plasma" << " reply object_size " << reply.object_size() << " virt_address " << reply.virt_address()
+                     << " reply object info " << reply.metadata_size() << " " << owner_address.ip_address();
+      auto it = plasma_node_virt_info_.find(object_id);
+      if (it == plasma_node_virt_info_.end()) {
+        ray::ObjectInfo objectinfo;
+        objectinfo.object_id = object_id;
+        objectinfo.data_size = reply.data_size();
+        objectinfo.metadata_size = reply.metadata_size();
+        /// Owner's raylet ID.
+        objectinfo.owner_raylet_id = NodeID::FromBinary(reply.owner_raylet_id());
+        /// Owner's IP address.
+        objectinfo.owner_ip_address = reply.owner_ip_address();
+        /// Owner's port.
+        objectinfo.owner_port = reply.owner_port();
+        /// Owner's worker ID.
+        objectinfo.owner_worker_id = WorkerID::FromBinary(reply.owner_worker_id());
+
+        // plasma_node_virt_info_[object_id] =  std::make_pair(reply.virt_address(), objectinfo);
+
+        plasma_node_virt_info_[object_id] =  std::make_pair(std::make_pair(reply.virt_address(), reply.worker_ip_address()), objectinfo);
+
+      }
     }
     const auto &metadata = reply.object().metadata();
     std::shared_ptr<LocalMemoryBuffer> metadata_buffer;
