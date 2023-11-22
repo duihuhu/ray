@@ -1190,18 +1190,18 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
     //hucc add time for get object from plasma total time
     // auto ts_get_obj_plasma = current_sys_time_us();
     
-    // RAY_RETURN_NOT_OK(plasma_store_provider_->GetRDMA(plasma_object_ids,
-    //                                               local_timeout_ms,
-    //                                               worker_context_,
-    //                                               &result_map,
-    //                                               &got_exception, future_resolver_->plasma_node_virt_info_,
-    //                                               worker_already_obj_));
+    RAY_RETURN_NOT_OK(plasma_store_provider_->GetRDMA(plasma_object_ids,
+                                                  local_timeout_ms,
+                                                  worker_context_,
+                                                  &result_map,
+                                                  &got_exception, future_resolver_->plasma_node_virt_info_,
+                                                  worker_already_obj_));
 
-    RAY_RETURN_NOT_OK(plasma_store_provider_->Get(plasma_object_ids,
-                                              local_timeout_ms,
-                                              worker_context_,
-                                              &result_map,
-                                              &got_exception));
+    // RAY_RETURN_NOT_OK(plasma_store_provider_->Get(plasma_object_ids,
+    //                                           local_timeout_ms,
+    //                                           worker_context_,
+    //                                           &result_map,
+    //                                           &got_exception));
     // auto te_get_obj_plasma = current_sys_time_us();
     // RAY_LOG(DEBUG) << "hucc time for get object from plasma total time in coreworker: " << te_get_obj_plasma - ts_get_obj_plasma <<"\n"; 
     
