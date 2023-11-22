@@ -43,8 +43,7 @@ class FutureResolver {
         reference_counter_(ref_counter),
         report_locality_data_callback_(std::move(report_locality_data_callback)),
         owner_clients_(core_worker_client_pool),
-        rpc_address_(rpc_address),
-        plasma_node_virt_info_() {}
+        rpc_address_(rpc_address) {}
 
   /// Resolve the value for a future. This will periodically contact the given
   /// owner until the owner dies or the owner has finished creating the object.
