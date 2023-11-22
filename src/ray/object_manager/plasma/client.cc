@@ -281,7 +281,6 @@ void PlasmaClient::Impl::IncrementObjectCount(const ObjectID &object_id,
   auto elem = objects_in_use_.find(object_id);
   ObjectInUseEntry *object_entry;
   if (elem == objects_in_use_.end()) {
-    RAY_LOG(ERROR) << "insert object in use " << object_id;
     // Add this object ID to the hash table of object IDs in use. The
     // corresponding call to free happens in PlasmaClient::Release.
     objects_in_use_[object_id] = std::make_unique<ObjectInUseEntry>();
@@ -358,6 +357,7 @@ Status PlasmaClient::Impl::HandleCreateReply(const ObjectID &object_id,
   // buffer returned by PlasmaClient::Create goes out of scope, the object does
   // not get released before the call to PlasmaClient::Seal happens.
   IncrementObjectCount(object_id, &object, false);
+  Seal(object_id);
   return Status::OK();
 }
 
@@ -666,7 +666,6 @@ Status PlasmaClient::Impl::Contains(const ObjectID &object_id, bool *has_object)
 
 Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
   std::lock_guard<std::recursive_mutex> guard(client_mutex_);
-  RAY_LOG(ERROR) << "object seal " << object_id;
   // Make sure this client has a reference to the object before sending the
   // request to Plasma.
   auto object_entry = objects_in_use_.find(object_id);
