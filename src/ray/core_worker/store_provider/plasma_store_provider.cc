@@ -729,6 +729,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
 
 
   while (!remaining.empty() && !should_break) {
+    RAY_LOG(ERROR) << "remaining.empty() " << remaining.empty();
     auto t1 = current_sys_time_us();
     batch_ids.clear();
     batch_virt_address.clear();
