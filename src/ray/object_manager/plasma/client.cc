@@ -357,6 +357,7 @@ Status PlasmaClient::Impl::HandleCreateReply(const ObjectID &object_id,
   // buffer returned by PlasmaClient::Create goes out of scope, the object does
   // not get released before the call to PlasmaClient::Seal happens.
   IncrementObjectCount(object_id, &object, false);
+  // to seal, but it may not correct 
   Seal(object_id);
   return Status::OK();
 }
