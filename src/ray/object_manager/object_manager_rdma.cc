@@ -117,14 +117,17 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		struct ibv_cq *ev_cq;
 		void *ev_ctx;
 		if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
+			RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event " << object_info.object_id;
 			rc = 1;
 			return rc;
 		}
 		if (ev_cq != pp_cq(ctx)) {
+			RAY_LOG(ERROR) << "ev_cq != cq " << object_info.object_id;
 			rc = 1;
 			return rc;
 		}
 		if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
+			RAY_LOG(ERROR) << "ibv_req_notify_cq " << object_info.object_id;
 			rc = 1;
 			return rc;
 		}
