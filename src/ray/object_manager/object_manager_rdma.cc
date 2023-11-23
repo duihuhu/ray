@@ -132,7 +132,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 
 	do {
 		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
-		RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id;
+		RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << " " << poll_result;
 	} while (poll_result==0);
 	if (poll_result < 0) {
     RAY_LOG(ERROR) << "poll cq failed";
@@ -142,7 +142,6 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		rc = 1;
 	} else {
 		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
-		RAY_LOG(ERROR) << "poll send object id " << object_info.object_id;
 		RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
     if ( wc.status == IBV_WC_SUCCESS) {
 			if (wc.wr_id != t_index) {
@@ -162,7 +161,8 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			// }
 
 			RAY_LOG(DEBUG) << " get object start time end in rdma " << object_info.object_id << " " << tc_fetch_rdma << " " << start_time;
-
+		
+			RAY_LOG(ERROR) << "before insert object info to thread " << object_info.object_id;
       // object_manager_.InsertObjectInfo(allocation, object_info);
 			object_manager_.InsertObjectInfoThread(allocation, object_info, pair);
 			// dependency_manager_->InsertObjectInfo(object_info);
