@@ -24,11 +24,14 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
     // with a borrowed reference executes on the object's owning worker.
     return;
   }
+  RAY_LOG(ERROR) << "reolve future object " << rpc_address_.ip_address() << " " << owner_address.ip_address() << " " << object_id;
+
   auto conn = owner_clients_->GetOrConnect(owner_address);
 
   rpc::GetObjectStatusRequest request;
   request.set_object_id(object_id.Binary());
   request.set_owner_worker_id(owner_address.worker_id());
+  request.set_mine_rpc_address(rpc_address_.ip_address());
   conn->GetObjectStatus(
       request,
       [this, object_id, owner_address](const Status &status,

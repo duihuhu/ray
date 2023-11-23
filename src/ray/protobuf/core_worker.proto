@@ -167,6 +167,9 @@ message GetObjectStatusRequest {
   bytes owner_worker_id = 1;
   // Wait for this object's status.
   bytes object_id = 2;
+
+  /// Owner's IP address.
+  optional string mine_ip_address = 10;
 }
 
 message RayObject {
