@@ -2867,6 +2867,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   
         // RAY_LOG(DEBUG) << "plasma_store_provider_ GetObjectMetaFromPlasma" << (void*) virt_address << " " << object_size << " " << device_num << " " << object_info.data_size <<" " <<object_info.metadata_size << te_get_meta_from_plasma - ts_get_meta_from_plasma;
         if(virt_address!=0&&object_size!=0) {
+          plasma_store_provider_->Seal(object_id);
           reply->set_virt_address(virt_address);
           reply->set_device_num(device_num);
           // object info
