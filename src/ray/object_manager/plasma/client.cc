@@ -448,7 +448,6 @@ Status PlasmaClient::Impl::GetBuffers(
     if (object_entry == objects_in_use_.end()) {
       // This object is not currently in use by this client, so we need to send
       // a request to the store.
-      RAY_LOG(ERROR) << "get buffers object id not found " << object_ids[i];
       all_present = false;
     } else if (!object_entry->second->is_sealed) {
       // This client created the object but hasn't sealed it. If we call Get
@@ -491,6 +490,7 @@ Status PlasmaClient::Impl::GetBuffers(
   //hucc get remote plasma
 
 
+  RAY_LOG(ERROR) << "get buffers object id not found " << object_ids[0];
 
   auto t1 = current_sys_time_us();
   RAY_RETURN_NOT_OK(SendGetRequest(
