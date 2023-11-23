@@ -107,14 +107,14 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 
 
 int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send, int64_t t_index){
-  RAY_LOG(DEBUG) << "PollCompletion Threads start " << object_info.object_id << " " << allocation.address;
+  RAY_LOG(ERROR) << "PollCompletion Threads start " << object_info.object_id;
   // auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
 	int poll_result;
 	int rc = 0;
 	
 	if (cfg_.use_event == 1) {
-			struct ibv_cq *ev_cq;
+		struct ibv_cq *ev_cq;
 		void *ev_ctx;
 		if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
 			rc = 1;
@@ -129,10 +129,12 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			return rc;
 		}
 	}
+	RAY_LOG(ERROR) << "ibv poll cq starting " << object_info.object_id;
 
 	do {
 		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
-		RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << " " << poll_result;
+			RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id;
+
 	} while (poll_result==0);
 	if (poll_result < 0) {
     RAY_LOG(ERROR) << "poll cq failed";
