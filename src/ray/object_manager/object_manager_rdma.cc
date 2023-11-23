@@ -375,7 +375,7 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
     cfg_.gidx = 1;
     cfg_.num_threads = 1;
     cfg_.server_name = NULL;
-    cfg_.use_event = 0;
+    cfg_.use_event = 1;
 }
 
 void ObjectManagerRdma::InitRdmaConfig() {
@@ -801,8 +801,7 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	int flags;	
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
-	// sge.addr = buf;
-	sge.addr = 111;
+	sge.addr = buf;
 	sge.length = msg_size;
 	// RAY_LOG(DEBUG) << " PostSend local lkey " << ctx->mr->lkey << " remote rkey " << ctx->mr->rkey;
 	sge.lkey = ctx->mr->lkey;
@@ -818,6 +817,18 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	if (opcode != IBV_WR_SEND) {
 		sr.wr.rdma.remote_addr = remote_address;
 		sr.wr.rdma.rkey	= rem_dest->rkey;
+	}
+
+	struct ibv_qp_attr attr;
+	struct ibv_qp_init_attr init_attr;
+ 
+	if (ibv_query_qp(ctx->qp, &attr,
+				IBV_QP_STATE, &init_attr)) {
+		fprintf(stderr, "Failed to query QP state\n");
+		return -1;
+	}
+	if(attr.qp_state != IBV_QPS_RTS){
+		RAY_LOG(ERROR) << "QP state error";
 	}
 	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
 
