@@ -335,6 +335,7 @@ void PlasmaStore::InsertObjectInfoThread(const Allocation& allocation , const ra
   absl::MutexLock lock(&mutex_);
   object_lifecycle_mgr_.InsertObjectInfoThread(allocation, object_info, pair);
   RAY_CHECK(object_lifecycle_mgr_.AddReferenceRdma(object_info.object_id, pair.first));
+  RAY_LOG(ERROR) << "insert object info seal object " << object_info.object_id;
   auto entry = object_lifecycle_mgr_.SealObject(object_info.object_id);
   add_object_callback_(entry->GetObjectInfo());
 }
