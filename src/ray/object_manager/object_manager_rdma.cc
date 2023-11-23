@@ -65,7 +65,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto entry = pair.first;
 		if (entry == nullptr) {
 			// continue;
-			RAY_LOG(DEBUG) << " object space is already allocate";
+			RAY_LOG(ERROR) << "create rdma is null " << object_info.object_id;
 			return;
 		}
 		// auto te_create_object = current_sys_time_us();
