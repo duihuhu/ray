@@ -278,10 +278,10 @@ void PlasmaClient::Impl::IncrementObjectCount(const ObjectID &object_id,
                                               bool is_sealed) {
   // Increment the count of the object to track the fact that it is being used.
   // The corresponding decrement should happen in PlasmaClient::Release.
+  RAY_LOG(ERROR) << "increment object count " << object_id;
   auto elem = objects_in_use_.find(object_id);
   ObjectInUseEntry *object_entry;
   if (elem == objects_in_use_.end()) {
-    RAY_LOG(ERROR) << "increment object count " << object_id;
     // Add this object ID to the hash table of object IDs in use. The
     // corresponding call to free happens in PlasmaClient::Release.
     objects_in_use_[object_id] = std::make_unique<ObjectInUseEntry>();
@@ -620,7 +620,7 @@ Status PlasmaClient::Impl::MarkObjectUnused(const ObjectID &object_id) {
 Status PlasmaClient::Impl::Release(const ObjectID &object_id) {
   std::lock_guard<std::recursive_mutex> guard(client_mutex_);
   // If the client is already disconnected, ignore release requests.
-  RAY_LOG(ERROR) << "release object " << object_id;
+  // RAY_LOG(ERROR) << "release object " << object_id;
   if (!store_conn_) {
     return Status::OK();
   }
