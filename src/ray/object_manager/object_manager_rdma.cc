@@ -801,7 +801,8 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 	int flags;	
 	memset(&sge, 0, sizeof(sge));
 	// sge.addr = (uintptr_t)res->buf;
-	sge.addr = buf;
+	// sge.addr = buf;
+	sge.addr = 111;
 	sge.length = msg_size;
 	// RAY_LOG(DEBUG) << " PostSend local lkey " << ctx->mr->lkey << " remote rkey " << ctx->mr->rkey;
 	sge.lkey = ctx->mr->lkey;
