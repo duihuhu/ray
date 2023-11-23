@@ -114,10 +114,10 @@ public:
       object_manager_rdma_server_("ObjectManagerRdma",
                              object_manager_rdma_port,
                              object_manager_rdma_address == "127.0.0.1",
-                             rpc_service_threads_number),
+                             rpc_service_threads_number/2),
       rpc_work_(rpc_service_),
       object_manager_rdma_service_(rpc_service_, *this),
-      client_call_manager_(main_service, rpc_service_threads_number)
+      client_call_manager_(main_service, rpc_service_threads_number/2)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
         InitRdmaConfig();

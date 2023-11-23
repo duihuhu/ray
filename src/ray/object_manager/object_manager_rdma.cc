@@ -88,7 +88,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto ctx =  it->second.first.first + n_qp;
 		auto te_fetch_object_post_send = current_sys_time_us();
 		
-		RAY_LOG(ERROR) << "post send object id " << object_rdma_info.object_info.object_id;
+		RAY_LOG(ERROR) << "post send object id " << object_rdma_info.object_info.object_id << " " << local_address;
 
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 		// PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
