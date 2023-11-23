@@ -143,7 +143,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		rc = 1;
 	} else {
 		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
-		RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
+		RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status;
     if ( wc.status == IBV_WC_SUCCESS) {
 			if (wc.wr_id != t_index) {
 					RAY_LOG(ERROR) << "wc wr_id is error " << wc.wr_id << " " << t_index;
