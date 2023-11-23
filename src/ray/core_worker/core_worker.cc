@@ -1077,6 +1077,7 @@ Status CoreWorker::CreateExisting(const std::shared_ptr<Buffer> &metadata,
 Status CoreWorker::SealOwned(const ObjectID &object_id,
                              bool pin_object,
                              const std::unique_ptr<rpc::Address> &owner_address) {
+  RAY_LOG(DEBUG) << "Sealing SealOwned object " << return_id;
   auto status =
       SealExisting(object_id, pin_object, ObjectID::Nil(), std::move(owner_address));
   if (status.ok()) return status;
