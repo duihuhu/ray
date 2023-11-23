@@ -793,7 +793,7 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 
 int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode, int64_t t_index) {
 	// RAY_LOG(ERROR) << "PostSend start ";
-	RAY_LOG(ERROR) << "Post send ctx: " <<  ctx;
+	RAY_LOG(ERROR) << "Post send ctx: " <<  ctx <<"t_index " << t_index;
 	struct ibv_send_wr sr;
 	struct ibv_send_wr *bad_wr;
 	struct ibv_sge sge;

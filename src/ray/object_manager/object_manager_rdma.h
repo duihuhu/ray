@@ -42,7 +42,7 @@
 // #include "ray/util/util.h"
 
 
-#define num_qp_pair 4
+#define num_qp_pair 1
 struct ObjectRdmaInfo {
     std::string object_address;
     ray::ObjectInfo object_info;
