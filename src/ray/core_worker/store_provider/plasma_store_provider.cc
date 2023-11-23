@@ -749,7 +749,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
       }
       auto it = plasma_node_virt_info_.find(id);
       if (it == plasma_node_virt_info_.end()) {
-        // RAY_LOG(ERROR)<<"object not found in plasma_node_virt_info " << id;
+        RAY_LOG(ERROR)<<"object not found in plasma_node_virt_info " << id;
         wait_info.insert(id);
         remaining.erase(id);
         continue;
