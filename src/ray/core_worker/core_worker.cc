@@ -1093,6 +1093,7 @@ Status CoreWorker::SealExisting(const ObjectID &object_id,
                                 bool pin_object,
                                 const ObjectID &generator_id,
                                 const std::unique_ptr<rpc::Address> &owner_address) {
+  RAY_LOG(ERROR) << "seal existing object id " << object_id;
   RAY_RETURN_NOT_OK(plasma_store_provider_->Seal(object_id));
   if (pin_object) {
     // Tell the raylet to pin the object **after** it is created.
