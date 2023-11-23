@@ -114,6 +114,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 	int rc = 0;
 	
 	if (cfg_.use_event == 1) {
+		RAY_LOG(ERROR) << "11111 " << object_info.object_id;
 		struct ibv_cq *ev_cq;
 		void *ev_ctx;
 		if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
@@ -121,11 +122,14 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 			rc = 1;
 			return rc;
 		}
+		RAY_LOG(ERROR) << "22222 " << object_info.object_id;
+
 		if (ev_cq != pp_cq(ctx)) {
 			RAY_LOG(ERROR) << "ev_cq != cq " << object_info.object_id;
 			rc = 1;
 			return rc;
 		}
+		RAY_LOG(ERROR) << "33333 " << object_info.object_id;
 		if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
 			RAY_LOG(ERROR) << "ibv_req_notify_cq " << object_info.object_id;
 			rc = 1;
