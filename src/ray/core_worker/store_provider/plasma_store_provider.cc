@@ -633,7 +633,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
   for (auto entry: id_vector) {
     auto it = plasma_node_virt_info_.find(entry);
     if (it == plasma_node_virt_info_.end()) {
-      RAY_LOG(ERROR)<<"not found " << entry;
+      // RAY_LOG(ERROR)<<"not found " << entry;
       wait_info.insert(entry);
       remaining.erase(entry);
       continue;
@@ -730,7 +730,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
 
 
   while (!remaining.empty() && !should_break) {
-    // RAY_LOG(ERROR) << "remaining.empty() ";
+    RAY_LOG(ERROR) << "remaining.empty() ";
     auto t1 = current_sys_time_us();
     batch_ids.clear();
     batch_virt_address.clear();
