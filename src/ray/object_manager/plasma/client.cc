@@ -611,7 +611,6 @@ Status PlasmaClient::Impl::MarkObjectUnused(const ObjectID &object_id) {
   auto object_entry = objects_in_use_.find(object_id);
   RAY_CHECK(object_entry != objects_in_use_.end());
   RAY_CHECK(object_entry->second->count == 0);
-
   // Remove the entry from the hash table of objects currently in use.
   objects_in_use_.erase(object_id);
   return Status::OK();
@@ -620,9 +619,11 @@ Status PlasmaClient::Impl::MarkObjectUnused(const ObjectID &object_id) {
 Status PlasmaClient::Impl::Release(const ObjectID &object_id) {
   std::lock_guard<std::recursive_mutex> guard(client_mutex_);
   // If the client is already disconnected, ignore release requests.
+  RAY_LOG(ERROR) << "release object " << object_id;
   if (!store_conn_) {
     return Status::OK();
   }
+  RAY_LOG(ERROR) << "release object after store_conn_ " << object_id;
   auto object_entry = objects_in_use_.find(object_id);
   RAY_CHECK(object_entry != objects_in_use_.end());
 
@@ -724,6 +725,7 @@ Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned lon
 
 
 Status PlasmaClient::Impl::Abort(const ObjectID &object_id) {
+  RAY_LOG(ERROR) << "abort object " << object_id; 
   std::lock_guard<std::recursive_mutex> guard(client_mutex_);
   auto object_entry = objects_in_use_.find(object_id);
   RAY_CHECK(object_entry != objects_in_use_.end())
