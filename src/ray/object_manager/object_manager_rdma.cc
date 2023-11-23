@@ -88,7 +88,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto ctx =  it->second.first.first + n_qp;
 		auto te_fetch_object_post_send = current_sys_time_us();
 		
-		RAY_LOG(ERROR) << "post send object id " << object_rdma_info.object_info.object_id << " " << local_address;
+		RAY_LOG(ERROR) << "post send object id " << object_rdma_info.object_info.object_id << " " << local_address << t_index;
 
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 		// PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
@@ -107,35 +107,35 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 
 
 int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send, int64_t t_index){
-  RAY_LOG(ERROR) << "PollCompletion Threads start " << object_info.object_id;
+  RAY_LOG(ERROR) << "PollCompletion Threads start " << object_info.object_id << " " << t_index;
   // auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
 	int poll_result;
 	int rc = 0;
 	
-	if (cfg_.use_event == 1) {
-		RAY_LOG(ERROR) << "11111 " << object_info.object_id;
-		struct ibv_cq *ev_cq;
-		void *ev_ctx;
-		if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
-			RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event " << object_info.object_id;
-			rc = 1;
-			return rc;
-		}
-		RAY_LOG(ERROR) << "22222 " << object_info.object_id;
+	// if (cfg_.use_event == 1) {
+	// 	RAY_LOG(ERROR) << "11111 " << object_info.object_id << " " << t_index;
+	// 	struct ibv_cq *ev_cq;
+	// 	void *ev_ctx;
+	// 	if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
+	// 		RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event " << object_info.object_id;
+	// 		rc = 1;
+	// 		return rc;
+	// 	}
+	// 	RAY_LOG(ERROR) << "22222 " << object_info.object_id;
 
-		if (ev_cq != pp_cq(ctx)) {
-			RAY_LOG(ERROR) << "ev_cq != cq " << object_info.object_id;
-			rc = 1;
-			return rc;
-		}
-		RAY_LOG(ERROR) << "33333 " << object_info.object_id;
-		if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
-			RAY_LOG(ERROR) << "ibv_req_notify_cq " << object_info.object_id;
-			rc = 1;
-			return rc;
-		}
-	}
+	// 	if (ev_cq != pp_cq(ctx)) {
+	// 		RAY_LOG(ERROR) << "ev_cq != cq " << object_info.object_id;
+	// 		rc = 1;
+	// 		return rc;
+	// 	}
+	// 	RAY_LOG(ERROR) << "33333 " << object_info.object_id;
+	// 	if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
+	// 		RAY_LOG(ERROR) << "ibv_req_notify_cq " << object_info.object_id;
+	// 		rc = 1;
+	// 		return rc;
+	// 	}
+	// }
 	RAY_LOG(ERROR) << "ibv poll cq starting " << object_info.object_id;
 
 	do {
