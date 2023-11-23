@@ -730,7 +730,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
 
 
   while (!remaining.empty() && !should_break) {
-    RAY_LOG(ERROR) << "remaining.empty() ";
+    // RAY_LOG(ERROR) << "remaining.empty() ";
     auto t1 = current_sys_time_us();
     batch_ids.clear();
     batch_virt_address.clear();
@@ -749,13 +749,14 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
       }
       auto it = plasma_node_virt_info_.find(id);
       if (it == plasma_node_virt_info_.end()) {
-        RAY_LOG(ERROR)<<"object not found in plasma_node_virt_info " << id;
+        // RAY_LOG(ERROR)<<"object not found in plasma_node_virt_info " << id;
         wait_info.insert(id);
         remaining.erase(id);
         continue;
-      } else{
-        RAY_LOG(ERROR)<<"batch remain info " << it->second.first.first << " " << it->second.second.owner_ip_address << " " << id;
       }
+      //  else{
+      //   // RAY_LOG(ERROR)<<"batch remain info " << it->second.first.first << " " << it->second.second.owner_ip_address << " " << id;
+      // }
       batch_ids.push_back(id);
       batch_virt_address.push_back(it->second.first.first);
       batch_object_size.push_back(it->second.second.data_size);
