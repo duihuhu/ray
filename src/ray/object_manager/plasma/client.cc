@@ -624,7 +624,7 @@ Status PlasmaClient::Impl::Release(const ObjectID &object_id) {
   if (!store_conn_) {
     return Status::OK();
   }
-  RAY_LOG(ERROR) << "release object after store_conn_ " << object_id;
+  // RAY_LOG(ERROR) << "release object after store_conn_ " << object_id;
   auto object_entry = objects_in_use_.find(object_id);
   RAY_CHECK(object_entry != objects_in_use_.end());
 
