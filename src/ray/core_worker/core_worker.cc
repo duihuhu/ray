@@ -1077,7 +1077,7 @@ Status CoreWorker::CreateExisting(const std::shared_ptr<Buffer> &metadata,
 Status CoreWorker::SealOwned(const ObjectID &object_id,
                              bool pin_object,
                              const std::unique_ptr<rpc::Address> &owner_address) {
-  RAY_LOG(ERROR) << "seal owned object id " << object_id;
+  // RAY_LOG(ERROR) << "seal owned object id " << object_id;
   auto status =
       SealExisting(object_id, pin_object, ObjectID::Nil(), std::move(owner_address));
   if (status.ok()) return status;
@@ -1094,7 +1094,7 @@ Status CoreWorker::SealExisting(const ObjectID &object_id,
                                 bool pin_object,
                                 const ObjectID &generator_id,
                                 const std::unique_ptr<rpc::Address> &owner_address) {
-  RAY_LOG(ERROR) << "seal existing object id " << object_id;
+  // RAY_LOG(ERROR) << "seal existing object id " << object_id;
   RAY_RETURN_NOT_OK(plasma_store_provider_->Seal(object_id));
   if (pin_object) {
     // Tell the raylet to pin the object **after** it is created.
