@@ -24,7 +24,6 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
     // with a borrowed reference executes on the object's owning worker.
     return;
   }
-  RAY_LOG(ERROR) << "reolve future object " << rpc_address_.ip_address() << " " << owner_address.ip_address() << " " << object_id;
 
   auto conn = owner_clients_->GetOrConnect(owner_address);
 
