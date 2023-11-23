@@ -113,34 +113,34 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 	int poll_result;
 	int rc = 0;
 	
-	// if (cfg_.use_event == 1) {
-	// 	RAY_LOG(ERROR) << "11111 " << object_info.object_id << " " << t_index;
-	// 	struct ibv_cq *ev_cq;
-	// 	void *ev_ctx;
-	// 	if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
-	// 		RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event " << object_info.object_id;
-	// 		rc = 1;
-	// 		return rc;
-	// 	}
-	// 	RAY_LOG(ERROR) << "22222 " << object_info.object_id;
+	if (cfg_.use_event == 1) {
+		RAY_LOG(ERROR) << "11111 " << object_info.object_id << " " << t_index << "ctx: " << ctx;
+		struct ibv_cq *ev_cq;
+		void *ev_ctx;
+		if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
+			RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event " << object_info.object_id;
+			rc = 1;
+			return rc;
+		}
+		RAY_LOG(ERROR) << "22222 " << object_info.object_id  << "ctx: " << ctx;
 
-	// 	if (ev_cq != pp_cq(ctx)) {
-	// 		RAY_LOG(ERROR) << "ev_cq != cq " << object_info.object_id;
-	// 		rc = 1;
-	// 		return rc;
-	// 	}
-	// 	RAY_LOG(ERROR) << "33333 " << object_info.object_id;
-	// 	if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
-	// 		RAY_LOG(ERROR) << "ibv_req_notify_cq " << object_info.object_id;
-	// 		rc = 1;
-	// 		return rc;
-	// 	}
-	// }
+		if (ev_cq != pp_cq(ctx)) {
+			RAY_LOG(ERROR) << "ev_cq != cq " << object_info.object_id;
+			rc = 1;
+			return rc;
+		}
+		RAY_LOG(ERROR) << "33333 " << object_info.object_id;
+		if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
+			RAY_LOG(ERROR) << "ibv_req_notify_cq " << object_info.object_id;
+			rc = 1;
+			return rc;
+		}
+	}
 	RAY_LOG(ERROR) << "ibv poll cq starting " << object_info.object_id;
 
 	do {
 		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
-		RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << poll_result;
+		// RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << poll_result;
 	} while (poll_result==0);
 	if (poll_result < 0) {
     RAY_LOG(ERROR) << "poll cq failed";
@@ -150,7 +150,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		rc = 1;
 	} else {
 		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
-		RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << object_info.object_id;
+		RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << object_info.object_id << " ctx: " << ctx;
     if ( wc.status == IBV_WC_SUCCESS) {
 			if (wc.wr_id != t_index) {
 					RAY_LOG(ERROR) << "wc wr_id is error " << wc.wr_id << " " << t_index;
@@ -793,6 +793,7 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 
 int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode, int64_t t_index) {
 	// RAY_LOG(ERROR) << "PostSend start ";
+	RAY_LOG(ERROR) << "Post send ctx: " <<  ctx;
 	struct ibv_send_wr sr;
 	struct ibv_send_wr *bad_wr;
 	struct ibv_sge sge;
