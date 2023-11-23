@@ -53,7 +53,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   }
   if (rdma == true) {
     LocalObject *ptr = new LocalObject(allocation.value());
-    RAY_LOG(ERROR) << "create object rdma " << object_info.object_id << " succeeded" << " address " << ptr->GetAllocation().address ;
+    RAY_LOG(ERROR) << "create object rdma " << object_info.object_id << " succeeded" << " address " << ptr->GetAllocation().address << " " << object_size;
     ptr->object_info = object_info;
     ptr->state = ObjectState::PLASMA_CREATED;
     ptr->create_time = std::time(nullptr);
