@@ -132,6 +132,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 
 	do {
 		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
+		RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id;
 	} while (poll_result==0);
 	if (poll_result < 0) {
     RAY_LOG(ERROR) << "poll cq failed";
