@@ -100,6 +100,7 @@ Status CoreWorkerPlasmaStoreProvider::Put(const RayObject &object,
     if (object.HasData()) {
       memcpy(data->Data(), object.GetData()->Data(), object.GetData()->Size());
     }
+    RAY_LOG(ERROR) << "send seal object in put " << object_id;
     RAY_RETURN_NOT_OK(Seal(object_id));
     if (object_exists) {
       *object_exists = false;

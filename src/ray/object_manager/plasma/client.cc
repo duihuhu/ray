@@ -671,11 +671,6 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
   auto object_entry = objects_in_use_.find(object_id);
 
   if (object_entry == objects_in_use_.end()) {
-    RAY_RETURN_NOT_OK(SendSealRequest(store_conn_, object_id));
-    std::vector<uint8_t> buffer;
-    RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaSealReply, &buffer));
-    ObjectID sealed_id;
-    RAY_RETURN_NOT_OK(ReadSealReply(buffer.data(), buffer.size(), &sealed_id));
     return Status::ObjectNotFound("Seal() called on an object without a reference to it");
   }
   if (object_entry->second->is_sealed) {
