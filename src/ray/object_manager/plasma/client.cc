@@ -278,7 +278,7 @@ void PlasmaClient::Impl::IncrementObjectCount(const ObjectID &object_id,
                                               bool is_sealed) {
   // Increment the count of the object to track the fact that it is being used.
   // The corresponding decrement should happen in PlasmaClient::Release.
-  RAY_LOG(ERROR) << "increment object count " << object_id;
+  // RAY_LOG(ERROR) << "increment object count " << object_id;
   auto elem = objects_in_use_.find(object_id);
   ObjectInUseEntry *object_entry;
   if (elem == objects_in_use_.end()) {
@@ -490,7 +490,7 @@ Status PlasmaClient::Impl::GetBuffers(
   //hucc get remote plasma
 
 
-  RAY_LOG(ERROR) << "get buffers object id not found " << object_ids[0];
+  // RAY_LOG(ERROR) << "get buffers object id not found " << object_ids[0];
 
   auto t1 = current_sys_time_us();
   RAY_RETURN_NOT_OK(SendGetRequest(
@@ -700,13 +700,13 @@ Status PlasmaClient::Impl::Seal(const ObjectID &object_id) {
 /// @return Status
 Status PlasmaClient::Impl::GetObjectMeta(const ObjectID &object_id, unsigned long *address, int64_t *object_size, int *device_num, ray::ObjectInfo *object_info) {
   std::unique_lock<std::recursive_mutex> guard(client_mutex_);
-  RAY_LOG(ERROR) << "return_object object_id start " << object_id;
+  // RAY_LOG(ERROR) << "return_object object_id start " << object_id;
 
   RAY_RETURN_NOT_OK(SendMetaRequest(store_conn_, object_id));
   std::vector<uint8_t> buffer;
 
   RAY_RETURN_NOT_OK(PlasmaReceive(store_conn_, MessageType::PlasmaGetMetaReply, &buffer));
-  RAY_LOG(ERROR) << "return_object object_id end " << object_id;
+  // RAY_LOG(ERROR) << "return_object object_id end " << object_id;
   RAY_DCHECK(buffer.size() > 0);
   // RAY_LOG(DEBUG) << "buffer.size()  " << buffer.size() ;
   // unsigned long address = 0;
