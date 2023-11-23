@@ -65,7 +65,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto entry = pair.first;
 		if (entry == nullptr) {
 			// continue;
-			RAY_LOG(ERROR) << "create rdma is null " << object_info.object_id;
+			RAY_LOG(ERROR) << "create rdma is null " << object_rdma_info.object_info.object_id;
 			return;
 		}
 		// auto te_create_object = current_sys_time_us();
@@ -87,6 +87,8 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		// PollCompletion(it->second.first.first);
 		auto ctx =  it->second.first.first + n_qp;
 		auto te_fetch_object_post_send = current_sys_time_us();
+		
+		RAY_LOG(ERROR) << "post send object id " << object_rdma_info.object_info.object_id;
 
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 		// PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
@@ -139,7 +141,8 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		rc = 1;
 	} else {
 		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
-    RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
+		RAY_LOG(ERROR) << "poll send object id " << object_info.object_id;
+		RAY_LOG(DEBUG) << "completion was found in cq with status " << wc.status;
     if ( wc.status == IBV_WC_SUCCESS) {
 			if (wc.wr_id != t_index) {
 					RAY_LOG(ERROR) << "wc wr_id is error " << wc.wr_id << " " << t_index;
