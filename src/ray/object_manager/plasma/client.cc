@@ -281,6 +281,7 @@ void PlasmaClient::Impl::IncrementObjectCount(const ObjectID &object_id,
   auto elem = objects_in_use_.find(object_id);
   ObjectInUseEntry *object_entry;
   if (elem == objects_in_use_.end()) {
+    RAY_LOG(ERROR) << "increment object count " << object_id;
     // Add this object ID to the hash table of object IDs in use. The
     // corresponding call to free happens in PlasmaClient::Release.
     objects_in_use_[object_id] = std::make_unique<ObjectInUseEntry>();
