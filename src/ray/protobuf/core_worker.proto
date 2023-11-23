@@ -169,7 +169,7 @@ message GetObjectStatusRequest {
   bytes object_id = 2;
 
   /// Owner's IP address.
-  optional string mine_ip_address = 10;
+  optional string mine_ip_address = 3;
 }
 
 message RayObject {

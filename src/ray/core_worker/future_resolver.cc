@@ -31,7 +31,7 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
   rpc::GetObjectStatusRequest request;
   request.set_object_id(object_id.Binary());
   request.set_owner_worker_id(owner_address.worker_id());
-  request.set_mine_rpc_address(rpc_address_.ip_address());
+  request.set_mine_ip_address(rpc_address_.ip_address());
   conn->GetObjectStatus(
       request,
       [this, object_id, owner_address](const Status &status,
