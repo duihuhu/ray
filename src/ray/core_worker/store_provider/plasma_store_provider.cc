@@ -305,6 +305,7 @@ Status CoreWorkerPlasmaStoreProvider::Get(
   int64_t remaining_timeout = timeout_ms;
   auto fetch_start_time_ms = current_time_ms();
   while (!remaining.empty() && !should_break) {
+    RAY_LOG(ERROR) << "remaining.empty() " << " "  << batch_ids[0];
     batch_ids.clear();
     for (const auto &id : remaining) {
       if (int64_t(batch_ids.size()) == batch_size) {
