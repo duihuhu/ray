@@ -553,7 +553,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 	// 	return;
 
 	// ctx->size       = plasma_size_;
-	ctx->size = 1794;
+	ctx->size = 10;
 	ctx->send_flags = IBV_SEND_SIGNALED;
 	ctx->rx_depth   = rx_depth;
 
