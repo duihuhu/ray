@@ -121,7 +121,7 @@ public:
       client_call_manager_(main_service, num_qp_pair)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
-        buf_size_ = 1794;
+        buf_size_ = 200;
         InitRdmaConfig();
         StartRdmaService();
         DoAccept();
