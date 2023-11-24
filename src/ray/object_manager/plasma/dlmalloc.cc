@@ -68,7 +68,7 @@ int fake_munmap(void *, int64_t);
 #undef MUNMAP
 #undef DIRECT_MMAP
 #undef DIRECT_MUNMAP
-// #undef USE_DL_PREFIX
+#undef USE_DL_PREFIX
 #undef HAVE_MORECORE
 #undef DEFAULT_GRANULARITY
 
