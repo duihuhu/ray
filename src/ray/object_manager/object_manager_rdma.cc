@@ -344,7 +344,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 		int rc = 0;
 		
 		if (cfg_.use_event == 1) {
-			RAY_LOG(ERROR) << "11111 "  << "ctx: " << ctx[0];
+			RAY_LOG(ERROR) << "11111 "  << "ctx: ";
 			struct ibv_cq *ev_cq;
 			void *ev_ctx;
 			if (ibv_get_cq_event(ctx[0]->channel, &ev_cq, &ev_ctx)) {
@@ -352,7 +352,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 				rc = 1;
 				return rc;
 			}
-			RAY_LOG(ERROR) << "22222 " << "ctx: " << ctx[0];
+			RAY_LOG(ERROR) << "22222 " << "ctx: ";
 
 			if (ev_cq != pp_cq(ctx[0])) {
 				RAY_LOG(ERROR) << "ev_cq != cq ";
@@ -380,7 +380,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 			rc = 1;
 		} else {
 			// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
-			RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << " ctx: " << ctx[0];
+			RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << " ctx: ";
 			if ( wc.status == IBV_WC_SUCCESS) {
 				ibv_ack_cq_events(pp_cq(ctx[0]), 1);
 			}
