@@ -121,12 +121,12 @@ public:
       client_call_manager_(main_service, num_qp_pair)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
+        buf_size_ = 1794;
         InitRdmaConfig();
         StartRdmaService();
         DoAccept();
         // ExRdmaConfig();
         StartRpcService();
-        buf_size_ = 1794;
         if (object_manager_address == "192.172.200.2") {
           buffer_[0] = '1';
         } else {
