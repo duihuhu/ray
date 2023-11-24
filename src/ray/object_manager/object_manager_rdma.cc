@@ -368,7 +368,7 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
     cfg_.ib_devname = "mlx5_1";
     cfg_.ib_port = 1;
     cfg_.size = 4096;
-    cfg_.mtu = IBV_MTU_4096;
+    cfg_.mtu = IBV_MTU_1024;
     cfg_.rx_depth = 1000;
     cfg_.iters = 1;
     cfg_.sl = 0;
