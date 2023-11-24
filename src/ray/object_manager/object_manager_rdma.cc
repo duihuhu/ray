@@ -88,7 +88,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto ctx =  it->second.first.first + n_qp;
 		auto te_fetch_object_post_send = current_sys_time_us();
 		
-		RAY_LOG(ERROR) << "post send object id " << object_rdma_info.object_info.object_id << " " << local_address << t_index;
+		RAY_LOG(ERROR) << "post send object id " << object_rdma_info.object_info.object_id << " " << local_address << " virt address " << object_rdma_info.object_virt_address << " " << t_index << "  object_sizes " <<  object_rdma_info.object_sizes;
 
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 		// PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
@@ -368,7 +368,7 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
     cfg_.ib_devname = "mlx5_1";
     cfg_.ib_port = 1;
     cfg_.size = 4096;
-    cfg_.mtu = IBV_MTU_1024;
+    cfg_.mtu = IBV_MTU_4096;
     cfg_.rx_depth = 1000;
     cfg_.iters = 1;
     cfg_.sl = 0;
