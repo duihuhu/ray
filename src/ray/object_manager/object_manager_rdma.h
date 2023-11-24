@@ -121,7 +121,7 @@ public:
       client_call_manager_(main_service, num_qp_pair)
        {
         RAY_LOG(DEBUG) << "Init ObjectManagerRdma Start Address " << start_address << " Plasma Size " << plasma_size;
-        buf_size_ = 1400;
+        buf_size_ = 1794;
         InitRdmaConfig();
         StartRdmaService();
         DoAccept();
@@ -178,7 +178,7 @@ public:
   /// Get the port of the object manager rpc server.
   int GetServerPort() const { return object_manager_rdma_server_.GetPort(); }
   int buf_size_;
-  char buffer_[1400] = {'0'};
+  char buffer_[1794] = {'0'};
 private:
   instrumented_io_context *main_service_;
   boost::asio::ip::tcp::acceptor acceptor_;
