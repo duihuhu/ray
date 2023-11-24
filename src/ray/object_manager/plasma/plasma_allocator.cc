@@ -116,7 +116,7 @@ absl::optional<Allocation> PlasmaAllocator::FallbackAllocate(size_t bytes) {
 void PlasmaAllocator::Free(Allocation allocation) {
   RAY_CHECK(allocation.address != nullptr) << "Cannot free the nullptr";
   RAY_LOG(DEBUG) << "deallocating " << allocation.size << " at " << allocation.address;
-  dlfree(allocation.address);
+  // dlfree(allocation.address);
   allocated_ -= allocation.size;
   if (internal::IsOutsideInitialAllocation(allocation.address)) {
     fallback_allocated_ -= allocation.size;
