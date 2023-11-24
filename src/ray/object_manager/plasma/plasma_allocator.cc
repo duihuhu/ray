@@ -78,7 +78,7 @@ PlasmaAllocator::PlasmaAllocator(const std::string &plasma_directory,
       << " It's likely we don't have enought space in " << plasma_directory;
   // This will unmap the file, but the next one created will be as large
   // as this one (this is an implementation detail of dlmalloc).
-  // Free(std::move(allocation.value()));
+  Free(std::move(allocation.value()));
 }
 
 absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
@@ -88,7 +88,7 @@ absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
   if (!mem) {
     return absl::nullopt;
   }
-  // allocated_ += bytes;
+  allocated_ += bytes;
   return BuildAllocation(mem, bytes);
 }
 
