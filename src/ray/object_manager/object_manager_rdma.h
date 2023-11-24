@@ -126,7 +126,7 @@ public:
         DoAccept();
         // ExRdmaConfig();
         StartRpcService();
-        buf_size_ = 1025;
+        buf_size_ = 1100;
         if (object_manager_address == "192.172.200.2") {
           buffer_[0] = '1';
         } else {
