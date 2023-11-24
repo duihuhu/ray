@@ -335,6 +335,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 			RAY_LOG(DEBUG) << "do read remote info remote psn client" << (rem_dest+i)->psn << " remote rkey " << (rem_dest+i)->rkey;
     	CovRdmaStatus(ctx+i, rem_dest+i, my_dest+i);
 		}
+		RAY_LOG(ERROR) << "before read " << buffer_;
 
 		unsigned long buf = (unsigned long) buffer_;
 		RAY_LOG(ERROR) << "my buf " << buf << " dest " <<  rem_dest->buf;
@@ -379,6 +380,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 			// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
 			RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << " ctx: ";
 			if ( wc.status == IBV_WC_SUCCESS) {
+				RAY_LOG(ERROR) << "after read " << buffer_;
 				ibv_ack_cq_events(pp_cq(ctx), 1);
 			}
 			if ( wc.status != IBV_WC_SUCCESS) {
