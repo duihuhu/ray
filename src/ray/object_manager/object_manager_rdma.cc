@@ -348,20 +348,17 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 			if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
 				RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event ";
 				rc = 1;
-				return rc;
 			}
 			RAY_LOG(ERROR) << "22222 " << "ctx: ";
 
 			if (ev_cq != pp_cq(ctx)) {
 				RAY_LOG(ERROR) << "ev_cq != cq ";
 				rc = 1;
-				return rc;
 			}
 			RAY_LOG(ERROR) << "33333 ";
 			if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
 				RAY_LOG(ERROR) << "ibv_req_notify_cq ";
 				rc = 1;
-				return rc;
 			}
 		}
 		RAY_LOG(ERROR) << "ibv poll cq starting ";
