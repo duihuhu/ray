@@ -335,6 +335,65 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 			RAY_LOG(DEBUG) << "do read remote info remote psn client" << (rem_dest+i)->psn << " remote rkey " << (rem_dest+i)->rkey;
     	CovRdmaStatus(ctx+i, rem_dest+i, my_dest+i);
 		}
+		unsigned long buf = (unsigned long) buffer_;
+		PostSend(ctx[0], my_dest[0], buf, 10, my_dest[0]->buf, IBV_WR_RDMA_READ, 0)
+  // auto ts_fetch_rdma = current_sys_time_us();
+		struct ibv_wc wc;
+		int poll_result;
+		int rc = 0;
+		
+		if (cfg_.use_event == 1) {
+			RAY_LOG(ERROR) << "11111 "  << "ctx: " << ctx[0];
+			struct ibv_cq *ev_cq;
+			void *ev_ctx;
+			if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
+				RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event ";
+				rc = 1;
+				return rc;
+			}
+			RAY_LOG(ERROR) << "22222 " << "ctx: " << ctx;
+
+			if (ev_cq != pp_cq(ctx)) {
+				RAY_LOG(ERROR) << "ev_cq != cq ";
+				rc = 1;
+				return rc;
+			}
+			RAY_LOG(ERROR) << "33333 ";
+			if (ibv_req_notify_cq(pp_cq(ctx[0]), 0)) {
+				RAY_LOG(ERROR) << "ibv_req_notify_cq ";
+				rc = 1;
+				return rc;
+			}
+		}
+		RAY_LOG(ERROR) << "ibv poll cq starting ";
+
+		do {
+			poll_result = ibv_poll_cq(pp_cq(ctx[0]), 1, &wc);
+			// RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << poll_result;
+		} while (poll_result==0);
+		if (poll_result < 0) {
+			RAY_LOG(ERROR) << "poll cq failed";
+			rc = 1;
+		} else if (poll_result == 0) {
+			RAY_LOG(ERROR) << "completion wasn't found in the cq after timeout";
+			rc = 1;
+		} else {
+			// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
+			RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << " ctx: " << ctx;
+			if ( wc.status == IBV_WC_SUCCESS) {
+				if (wc.wr_id != t_index) {
+						RAY_LOG(ERROR) << "wc wr_id is error " << wc.wr_id;
+				}
+				
+				ibv_ack_cq_events(pp_cq(ctx[0]), 1);
+			}
+			if ( wc.status != IBV_WC_SUCCESS) {
+				// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);
+				RAY_LOG(ERROR) << "got bad completion with status " << wc.status << " verdor syndrome: " << wc.vendor_err;
+				rc = 1;
+			} 
+		}
+		
 
     // remote_dest_[socket.remote_endpoint().address().to_string()] = std::make_pair(std::make_pair(ctx, my_dest),rem_dest);
     remote_dest_.emplace(ip_address, std::make_pair(std::make_pair(ctx, my_dest),rem_dest));
@@ -474,7 +533,7 @@ void ObjectManagerRdma::InitRdmaCtx(struct pingpong_context *ctx, struct pingpon
 	// printf("  local address:  LID 0x%04x, QPN 0x%06x, PSN 0x%06x, GID %s\n",
 	//        my_dest_.lid, my_dest_.qpn, my_dest_.psn, gid);
   my_dest->rkey = ctx->mr->rkey;
-  
+  my_dest->buf = (unsigned long) buffer_;
   RAY_LOG(DEBUG) << "  local address:  LID " << my_dest->lid << " QPN " <<  my_dest->qpn \
   <<" PSN " << my_dest->psn << " GID " << gid << " local lkey " << ctx->mr->lkey << " remote rkey " << ctx->mr->rkey;
   return;
@@ -497,12 +556,13 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 	// if (!ctx)
 	// 	return;
 
-	ctx->size       = plasma_size_;
+	// ctx->size       = plasma_size_;
+	ctx->size = 10;
 	ctx->send_flags = IBV_SEND_SIGNALED;
 	ctx->rx_depth   = rx_depth;
 
-	ctx->buf = (void *) plasma_address_;
-
+	// ctx->buf = (void *) plasma_address_;
+	ctx->buf = (void *) buffer_;
 	// if (!ctx_->buf) {
 	// 	fprintf(stderr, "Couldn't allocate work buf.\n");
 	// 	goto clean_ctx;
@@ -536,7 +596,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 	}
 
 
-  ctx->mr = ibv_reg_mr(ctx->pd, ctx->buf, plasma_size_, access_flags);
+  ctx->mr = ibv_reg_mr(ctx->pd, ctx->buf, 10, access_flags);
 	if (!ctx->mr) {
     RAY_LOG(ERROR) << "Couldn't register MR";
 		// goto clean_dm;
