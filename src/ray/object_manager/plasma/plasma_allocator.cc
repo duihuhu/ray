@@ -88,7 +88,7 @@ absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
   if (!mem) {
     return absl::nullopt;
   }
-  allocated_ += bytes;
+  // allocated_ += bytes;
   return BuildAllocation(mem, bytes);
 }
 
