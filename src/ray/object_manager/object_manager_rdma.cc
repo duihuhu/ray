@@ -339,7 +339,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 
 		unsigned long buf = (unsigned long) buffer_;
 		RAY_LOG(ERROR) << "my buf " << buf << " dest " <<  rem_dest->buf;
-		PostSend(ctx, rem_dest, buf, 1794, rem_dest->buf, IBV_WR_RDMA_READ, 0);
+		PostSend(ctx, rem_dest, buf, 10, rem_dest->buf, IBV_WR_RDMA_READ, 0);
   // auto ts_fetch_rdma = current_sys_time_us();
 		int rc = 0;
 		
