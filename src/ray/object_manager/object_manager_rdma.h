@@ -126,7 +126,7 @@ public:
         DoAccept();
         // ExRdmaConfig();
         StartRpcService();
-        buf_size_ = 1100;
+        buf_size_ = 1794;
         if (object_manager_address == "192.172.200.2") {
           buffer_[0] = '1';
         } else {
@@ -178,7 +178,7 @@ public:
   /// Get the port of the object manager rpc server.
   int GetServerPort() const { return object_manager_rdma_server_.GetPort(); }
   int buf_size_;
-  char buffer_[1100] = {'0'};
+  char buffer_[1794] = {'0'};
 private:
   instrumented_io_context *main_service_;
   boost::asio::ip::tcp::acceptor acceptor_;
