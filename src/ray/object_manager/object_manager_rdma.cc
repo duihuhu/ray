@@ -337,39 +337,38 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 		}
 
 		unsigned long buf = (unsigned long) buffer_;
-		PostSend(ctx[0], my_dest[0], buf, 10, my_dest[0]->buf, IBV_WR_RDMA_READ, 0)
+		PostSend(ctx, my_dest, buf, 10, my_dest->buf, IBV_WR_RDMA_READ, 0)
   // auto ts_fetch_rdma = current_sys_time_us();
-		struct ibv_wc wc;
-		int poll_result;
 		int rc = 0;
 		
 		if (cfg_.use_event == 1) {
 			RAY_LOG(ERROR) << "11111 "  << "ctx: ";
 			struct ibv_cq *ev_cq;
 			void *ev_ctx;
-			if (ibv_get_cq_event(ctx[0]->channel, &ev_cq, &ev_ctx)) {
+			if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
 				RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event ";
 				rc = 1;
 				return rc;
 			}
 			RAY_LOG(ERROR) << "22222 " << "ctx: ";
 
-			if (ev_cq != pp_cq(ctx[0])) {
+			if (ev_cq != pp_cq(ctx)) {
 				RAY_LOG(ERROR) << "ev_cq != cq ";
 				rc = 1;
 				return rc;
 			}
 			RAY_LOG(ERROR) << "33333 ";
-			if (ibv_req_notify_cq(pp_cq(ctx[0]), 0)) {
+			if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
 				RAY_LOG(ERROR) << "ibv_req_notify_cq ";
 				rc = 1;
 				return rc;
 			}
 		}
 		RAY_LOG(ERROR) << "ibv poll cq starting ";
-
+		struct ibv_wc wc;
+		int poll_result;
 		do {
-			poll_result = ibv_poll_cq(pp_cq(ctx[0]), 1, &wc);
+			poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
 			// RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << poll_result;
 		} while (poll_result==0);
 		if (poll_result < 0) {
@@ -382,7 +381,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 			// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
 			RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << " ctx: ";
 			if ( wc.status == IBV_WC_SUCCESS) {
-				ibv_ack_cq_events(pp_cq(ctx[0]), 1);
+				ibv_ack_cq_events(pp_cq(ctx), 1);
 			}
 			if ( wc.status != IBV_WC_SUCCESS) {
 				// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);
