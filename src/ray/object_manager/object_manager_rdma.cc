@@ -339,7 +339,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 
 		unsigned long buf = (unsigned long) buffer_;
 		RAY_LOG(ERROR) << "my buf " << buf << " dest " <<  rem_dest->buf;
-		PostSend(ctx, rem_dest, buf, 1794, rem_dest->buf, IBV_WR_RDMA_READ, 0);
+		PostSend(ctx, rem_dest, buf, buf_size_, rem_dest->buf, IBV_WR_RDMA_READ, 0);
   // auto ts_fetch_rdma = current_sys_time_us();
 		int rc = 0;
 		
@@ -553,7 +553,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 	// 	return;
 
 	// ctx->size       = plasma_size_;
-	ctx->size = 1794;
+	ctx->size = buf_size_;
 	ctx->send_flags = IBV_SEND_SIGNALED;
 	ctx->rx_depth   = rx_depth;
 
@@ -592,7 +592,7 @@ void ObjectManagerRdma::pp_init_ctx(struct pingpong_context *ctx, struct ibv_dev
 	}
 
 
-  ctx->mr = ibv_reg_mr(ctx->pd, ctx->buf, 1794, access_flags);
+  ctx->mr = ibv_reg_mr(ctx->pd, ctx->buf, buf_size_, access_flags);
 	if (!ctx->mr) {
     RAY_LOG(ERROR) << "Couldn't register MR";
 		// goto clean_dm;
