@@ -335,6 +335,7 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 			RAY_LOG(DEBUG) << "do read remote info remote psn client" << (rem_dest+i)->psn << " remote rkey " << (rem_dest+i)->rkey;
     	CovRdmaStatus(ctx+i, rem_dest+i, my_dest+i);
 		}
+
 		unsigned long buf = (unsigned long) buffer_;
 		PostSend(ctx[0], my_dest[0], buf, 10, my_dest[0]->buf, IBV_WR_RDMA_READ, 0)
   // auto ts_fetch_rdma = current_sys_time_us();
@@ -346,14 +347,14 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 			RAY_LOG(ERROR) << "11111 "  << "ctx: " << ctx[0];
 			struct ibv_cq *ev_cq;
 			void *ev_ctx;
-			if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
+			if (ibv_get_cq_event(ctx[0]->channel, &ev_cq, &ev_ctx)) {
 				RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event ";
 				rc = 1;
 				return rc;
 			}
-			RAY_LOG(ERROR) << "22222 " << "ctx: " << ctx;
+			RAY_LOG(ERROR) << "22222 " << "ctx: " << ctx[0];
 
-			if (ev_cq != pp_cq(ctx)) {
+			if (ev_cq != pp_cq(ctx[0])) {
 				RAY_LOG(ERROR) << "ev_cq != cq ";
 				rc = 1;
 				return rc;
@@ -379,12 +380,8 @@ void ObjectManagerRdma::ConnectAndEx(std::string ip_address) {
 			rc = 1;
 		} else {
 			// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
-			RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << " ctx: " << ctx;
+			RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << " ctx: " << ctx[0];
 			if ( wc.status == IBV_WC_SUCCESS) {
-				if (wc.wr_id != t_index) {
-						RAY_LOG(ERROR) << "wc wr_id is error " << wc.wr_id;
-				}
-				
 				ibv_ack_cq_events(pp_cq(ctx[0]), 1);
 			}
 			if ( wc.status != IBV_WC_SUCCESS) {
