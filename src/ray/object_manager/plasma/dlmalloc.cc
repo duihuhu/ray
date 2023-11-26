@@ -57,7 +57,6 @@ int fake_munmap(void *, int64_t);
 #define HAVE_MORECORE 0
 #define DEFAULT_MMAP_THRESHOLD MAX_SIZE_T
 #define DEFAULT_GRANULARITY ((size_t)128U * 1024U)
-#define HAVE_MMAP
 // Copied from plasma_allocator.cc variable kAllocationAlignment,
 // make sure to keep in sync. This for reduce memory fragmentation.
 // See https://github.com/ray-project/ray/issues/21310 for details.
