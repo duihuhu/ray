@@ -97,7 +97,7 @@ absl::optional<Allocation> PlasmaAllocator::FallbackAllocate(size_t bytes) {
   RAY_CHECK(dlmallopt(M_MMAP_THRESHOLD, 0));
   RAY_LOG(DEBUG) << "fallback allocating " << bytes;
   void *mem = dlmemalign(kAlignment, bytes);
-  RAY_LOG(DEBUG) << "allocated " << bytes << " at " << mem;
+  RAY_LOG(ERROR) << "fallback allocated " << bytes << " at " << mem;
   // Reset to the default value.
   RAY_CHECK(dlmallopt(M_MMAP_THRESHOLD, MAX_SIZE_T));
 
