@@ -369,7 +369,7 @@ Status PlasmaClient::Impl::CreateAndSpillIfNeeded(const ObjectID &object_id,
   uint64_t retry_with_request_id = 0;
 
   RAY_LOG(DEBUG) << "called plasma_create on conn " << store_conn_ << " with size "
-                 << data_size << " and metadata size " << metadata_size;
+                 << data_size << " and metadata size " << metadata_size << " object id " << object_id ;
   RAY_RETURN_NOT_OK(SendCreateRequest(store_conn_,
                                       object_id,
                                       owner_address,
