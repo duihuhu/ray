@@ -41,11 +41,11 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
                                            const rpc::Address &owner_address,
                                            const Status &status,
                                            const rpc::GetObjectStatusReply &reply) {
+  RAY_LOG(ERROR) << " process resolved object " << object_id;
   if (!status.ok()) {
     RAY_LOG(WARNING) << "Error retrieving the value of object ID " << object_id
                      << " that was deserialized: " << status.ToString();
   }
-
   if (!status.ok()) {
     // The owner is unreachable. Store an error so that an exception will be
     // thrown immediately when the worker tries to get the value.
