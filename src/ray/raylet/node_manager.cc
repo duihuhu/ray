@@ -1599,6 +1599,10 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     if (worker && !worker->GetAssignedTaskId().IsNil()) {
       // This will start a fetch for the objects that gets canceled once the
       // objects are local, or if the worker dies.
+      for (const auto &ref : refs) {
+        const auto obj_id = ObjectRefToId(ref);
+        RAY_LOG(DEBUG) << " only start or update get request " << obj_id;
+      }
       dependency_manager_.StartOrUpdateGetRequest(worker->WorkerId(), refs);
     }
   } else {
