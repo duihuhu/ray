@@ -1607,6 +1607,10 @@ void NodeManager::ProcessFetchOrReconstructMessage(
     // pulled from remote node managers. If an object's owner dies, an error
     // will be stored as the object's value.
     const TaskID task_id = from_flatbuf<TaskID>(*message->task_id());
+    for (const auto &ref : refs) {
+      const auto obj_id = ObjectRefToId(ref);
+      RAY_LOG(DEBUG) << "async resolve object  " << obj_id;
+    }
     AsyncResolveObjects(client,
                         refs,
                         task_id,
