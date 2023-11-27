@@ -940,7 +940,6 @@ Status CoreWorker::PutInLocalPlasmaStore(const RayObject &object,
       RAY_RETURN_NOT_OK(plasma_store_provider_->Release(object_id));
     }
   }
-  RAY_LOG(ERROR) << " put in local plasma store " << object_id;
   RAY_CHECK(memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
   return Status::OK();
 }
@@ -1036,7 +1035,6 @@ Status CoreWorker::CreateOwnedAndIncrementLocalRef(
     } else if (*data == nullptr) {
       // Object already exists in plasma. Store the in-memory value so that the
       // client will check the plasma store.
-      RAY_LOG(ERROR) << " create owned and increament local ref " << object_id;
       RAY_CHECK(
           memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), *object_id));
     }
@@ -1063,6 +1061,7 @@ Status CoreWorker::CreateExisting(const std::shared_ptr<Buffer> &metadata,
 Status CoreWorker::SealOwned(const ObjectID &object_id,
                              bool pin_object,
                              const std::unique_ptr<rpc::Address> &owner_address) {
+  RAY_LOG(ERROR) << " seal owned " << object_id << " pin object " << pin_object;
   auto status =
       SealExisting(object_id, pin_object, ObjectID::Nil(), std::move(owner_address));
   if (status.ok()) return status;
@@ -1099,7 +1098,7 @@ Status CoreWorker::SealExisting(const ObjectID &object_id,
     RAY_RETURN_NOT_OK(plasma_store_provider_->Release(object_id));
     reference_counter_->FreePlasmaObjects({object_id});
   }
-  RAY_LOG(ERROR) << " seal existing " << object_id;
+  RAY_LOG(ERROR) << " seal existing " << object_id << " pin_object " << pin_object;
   RAY_CHECK(memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
   return Status::OK();
 }
@@ -2519,7 +2518,6 @@ Status CoreWorker::GetAndPinArgsForExecutor(const TaskSpecification &task,
       // We need to put an OBJECT_IN_PLASMA error here so the subsequent call to Get()
       // properly redirects to the plasma store.
       if (!options_.is_local_mode) {
-        RAY_LOG(ERROR) << " get and pin args for executor " << task.ArgId(i);
         RAY_UNUSED(memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA),
                                       task.ArgId(i)));
       }
@@ -3311,7 +3309,6 @@ void CoreWorker::HandleAssignObjectOwner(const rpc::AssignObjectOwnerRequest &re
       /*add_local_ref=*/false,
       /*pinned_at_raylet_id=*/NodeID::FromBinary(borrower_address.raylet_id()));
   reference_counter_->AddBorrowerAddress(object_id, borrower_address);
-  RAY_LOG(ERROR) << " handle assign object owner " << object_id;
   RAY_CHECK(memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
   send_reply_callback(Status::OK(), nullptr, nullptr);
 }
