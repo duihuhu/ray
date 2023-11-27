@@ -147,7 +147,7 @@ RAY_CONFIG(int64_t, max_lineage_bytes, 1024 * 1024 * 1024)
 /// at runtime (SIGBUS errors creating new objects), however it will use more memory
 /// upfront and can slow down Ray startup.
 /// See also: https://github.com/ray-project/ray/issues/14182
-RAY_CONFIG(bool, preallocate_plasma_memory, false)
+RAY_CONFIG(bool, preallocate_plasma_memory, true)
 
 // If true, we place a soft cap on the numer of scheduling classes, see
 // `worker_cap_initial_backoff_delay_ms`.
