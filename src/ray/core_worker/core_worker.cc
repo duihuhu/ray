@@ -1126,6 +1126,8 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
       RAY_LOG(ERROR) << current->first << " in plasma, doing fetch-and-get";
       plasma_object_ids.insert(current->first);
       result_map.erase(current);
+    } else {
+      RAY_LOG(ERROR) << current->first << " not in plasma, doing fetch-and-get";
     }
   }
 
