@@ -273,6 +273,7 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
     // will choose the right raylet for any queued dependent tasks.
     reference_counter_->UpdateObjectPinnedAtRaylet(object_id, worker_raylet_id);
     // Mark it as in plasma with a dummy object.
+    RAY_LOG(ERROR) << "Task return object " << object_id;
     RAY_CHECK(
         in_memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
   } else {
