@@ -143,9 +143,9 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		// RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << poll_result;
 		char *data = (char *) allocation.address;
 		if (data[0]!='1') {
-			RAY_LOG(ERROR) << "address in allocation.address is change: " << (unsigned long)allocation.address; 
+			RAY_LOG(ERROR) << "address in allocation.address is change: " << (unsigned long)allocation.address << " " << object_info.object_id; 
 		} else {
-			RAY_LOG(ERROR) << "address in allocation.address is not change: " << (unsigned long)allocation.address; 
+			RAY_LOG(ERROR) << "address in allocation.address is not change: " << (unsigned long)allocation.address << " " << object_info.object_id; 
 		}
 	} while (poll_result==0);
 	if (poll_result < 0) {
