@@ -114,33 +114,39 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 	int rc = 0;
 	
 	if (cfg_.use_event == 1) {
-		RAY_LOG(ERROR) << "11111 " << object_info.object_id << " " << t_index << "ctx: " << ctx;
+		// RAY_LOG(ERROR) << "11111 " << object_info.object_id << " " << t_index << "ctx: " << ctx;
 		struct ibv_cq *ev_cq;
 		void *ev_ctx;
 		if (ibv_get_cq_event(ctx->channel, &ev_cq, &ev_ctx)) {
-			RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event " << object_info.object_id;
+			// RAY_LOG(ERROR) << "ibv poll cq ibv_get_cq_event " << object_info.object_id;
 			rc = 1;
 			return rc;
 		}
-		RAY_LOG(ERROR) << "22222 " << object_info.object_id  << "ctx: " << ctx;
+		// RAY_LOG(ERROR) << "22222 " << object_info.object_id  << "ctx: " << ctx;
 
 		if (ev_cq != pp_cq(ctx)) {
-			RAY_LOG(ERROR) << "ev_cq != cq " << object_info.object_id;
+			// RAY_LOG(ERROR) << "ev_cq != cq " << object_info.object_id;
 			rc = 1;
 			return rc;
 		}
-		RAY_LOG(ERROR) << "33333 " << object_info.object_id;
+		// RAY_LOG(ERROR) << "33333 " << object_info.object_id;
 		if (ibv_req_notify_cq(pp_cq(ctx), 0)) {
-			RAY_LOG(ERROR) << "ibv_req_notify_cq " << object_info.object_id;
+			// RAY_LOG(ERROR) << "ibv_req_notify_cq " << object_info.object_id;
 			rc = 1;
 			return rc;
 		}
 	}
-	RAY_LOG(ERROR) << "ibv poll cq starting " << object_info.object_id;
+	// RAY_LOG(ERROR) << "ibv poll cq starting " << object_info.object_id;
 
 	do {
 		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
 		// RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << poll_result;
+		char *data = (char *) allocation.address;
+		if (data[object_info.data_size]!='0') {
+			RAY_LOG(ERROR) << "address in allocation.address is change: " << (unsigned long)allocation.address; 
+		} else {
+			RAY_LOG(ERROR) << "address in allocation.address is not change: " << (unsigned long)allocation.address; 
+		}
 	} while (poll_result==0);
 	if (poll_result < 0) {
     RAY_LOG(ERROR) << "poll cq failed";
@@ -430,7 +436,7 @@ void ObjectManagerRdma::InitRdmaBaseCfg() {
     cfg_.gidx = 1;
     cfg_.num_threads = 1;
     cfg_.server_name = NULL;
-    cfg_.use_event = 1;
+    cfg_.use_event = 0;
 }
 
 void ObjectManagerRdma::InitRdmaConfig() {
