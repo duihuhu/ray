@@ -82,7 +82,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto te_fetch_object_rdma_space = current_sys_time_us();
 		// RAY_LOG(DEBUG) << "FetchObjectRdma time in create object space " << te_fetch_object_rdma_space - ts_fetch_object_rdma << " " << obj_info.object_id;
 		// RAY_LOG(ERROR) << " post send " << obj_info.object_id << " " << object_rdma_info.object_virt_address;
-
+		memset(allocation.address,'1', object_rdma_info.object_sizes);
 		PostSend(it->second.first.first + n_qp, it->second.second + n_qp, local_address, object_rdma_info.object_sizes, object_rdma_info.object_virt_address, IBV_WR_RDMA_READ, t_index);
 		// PollCompletion(it->second.first.first);
 		auto ctx =  it->second.first.first + n_qp;
@@ -142,7 +142,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		poll_result = ibv_poll_cq(pp_cq(ctx), 1, &wc);
 		// RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << poll_result;
 		char *data = (char *) allocation.address;
-		if (data[object_info.data_size]!='0') {
+		if (data[0]!='1') {
 			RAY_LOG(ERROR) << "address in allocation.address is change: " << (unsigned long)allocation.address; 
 		} else {
 			RAY_LOG(ERROR) << "address in allocation.address is not change: " << (unsigned long)allocation.address; 
