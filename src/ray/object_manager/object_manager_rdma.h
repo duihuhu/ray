@@ -168,7 +168,7 @@ public:
 
   void RunRdmaService(int64_t index);
   void FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &object_rdma_info, int64_t t_index);
-  int PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send, int64_t t_index);
+  int PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send, int64_t t_index, unsigned long object_virt_address);
   
 
   void HandleGetObject(const ray::rpc::GetObjectRequest &request,

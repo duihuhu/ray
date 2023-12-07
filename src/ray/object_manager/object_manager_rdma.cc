@@ -92,7 +92,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 
 //   RAY_LOG(DEBUG) << " PostSend object to RDMA ";
 		// PollCompletionThreads(ctx, allocation, obj_info, ts_fetch_object_rdma);
-		PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send, t_index);
+		PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send, t_index, object_rdma_info.object_virt_address);
 		// main_service_->post([this, ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send]() { PollCompletionThreads(ctx, allocation, obj_info, pair, ts_fetch_object_rdma, te_fetch_object_rdma_space, te_fetch_object_post_send); },
 		// 							"ObjectManagerRdma.PollCompletion");
 		// auto te_fetch_object_rdma = current_sys_time_us();
@@ -106,7 +106,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 }
 
 
-int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send, int64_t t_index){
+int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send, int64_t t_index, unsigned long object_virt_address){
   RAY_LOG(ERROR) << "PollCompletion Threads start " << object_info.object_id << " " << t_index;
   // auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
@@ -143,9 +143,9 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		// RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << poll_result;
 		char *data = (char *) allocation.address;
 		if (data[0]!='1') {
-			RAY_LOG(ERROR) << "address in allocation.address is change: " << (unsigned long)allocation.address << " " << object_info.object_id; 
+			RAY_LOG(ERROR) << "address in allocation.address is change: " << (unsigned long)allocation.address << " remote address "<< object_virt_address << " " << object_info.object_id; 
 		} else {
-			RAY_LOG(ERROR) << "address in allocation.address is not change: " << (unsigned long)allocation.address << " " << object_info.object_id; 
+			RAY_LOG(ERROR) << "address in allocation.address is not change: " << (unsigned long)allocation.address << " remote address "<< object_virt_address << " " << object_info.object_id; 
 		}
 	} while (poll_result==0);
 	if (poll_result < 0) {
