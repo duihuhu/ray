@@ -755,7 +755,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
         continue;
       }
       else{
-        RAY_LOG(ERROR)<<"batch remain info " << it->second.first.first << " " << it->second.second.owner_ip_address << " " << id << " is actorid " << ray::IsActorID(id) ;
+        RAY_LOG(ERROR)<<"batch remain info " << it->second.first.first << " " << it->second.second.owner_ip_address << " " << id << " is actorid " << ray::Object::IsActorID(id) ;
       }
       batch_ids.push_back(id);
       batch_virt_address.push_back(it->second.first.first);
