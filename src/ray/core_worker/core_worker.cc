@@ -2922,6 +2922,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
       }
     }
   }
+  RAY_LOG(ERROR) << " end populate object status " << object_id << " " << obj->HasData() << " " << obj->HasMetadata();
 }
 
 void CoreWorker::HandleWaitForActorOutOfScope(
