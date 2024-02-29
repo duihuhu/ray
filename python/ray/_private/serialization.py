@@ -60,7 +60,7 @@ def _object_ref_deserializer(binary, call_site, owner_address, object_status):
     # that the ref count for the ObjectRef is greater than 0 by the
     # time the core worker resolves the value of the object.
     obj_ref = ray.ObjectRef(binary, owner_address, call_site)
-
+    print(" _object_ref_deserializer ", obj_ref)
     # TODO(edoakes): we should be able to just capture a reference
     # to 'self' here instead, but this function is itself pickled
     # somewhere, which causes an error.
