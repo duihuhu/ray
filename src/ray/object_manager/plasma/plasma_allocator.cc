@@ -82,9 +82,9 @@ PlasmaAllocator::PlasmaAllocator(const std::string &plasma_directory,
 }
 
 absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
-  RAY_LOG(DEBUG) << "allocating " << bytes;
+  // RAY_LOG(DEBUG) << "allocating " << bytes;
   void *mem = dlmemalign(kAlignment, bytes);
-  RAY_LOG(ERROR) << "allocated " << bytes << " at " << mem;
+  // RAY_LOG(ERROR) << "allocated " << bytes << " at " << mem;
   if (!mem) {
     return absl::nullopt;
   }
@@ -95,9 +95,9 @@ absl::optional<Allocation> PlasmaAllocator::Allocate(size_t bytes) {
 absl::optional<Allocation> PlasmaAllocator::FallbackAllocate(size_t bytes) {
   // Forces allocation as a separate file.
   RAY_CHECK(dlmallopt(M_MMAP_THRESHOLD, 0));
-  RAY_LOG(DEBUG) << "fallback allocating " << bytes;
+  // RAY_LOG(DEBUG) << "fallback allocating " << bytes;
   void *mem = dlmemalign(kAlignment, bytes);
-  RAY_LOG(DEBUG) << "fallback allocated " << bytes << " at " << mem;
+  // RAY_LOG(DEBUG) << "fallback allocated " << bytes << " at " << mem;
   // Reset to the default value.
   RAY_CHECK(dlmallopt(M_MMAP_THRESHOLD, MAX_SIZE_T));
 

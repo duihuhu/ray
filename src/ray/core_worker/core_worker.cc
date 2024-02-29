@@ -1098,7 +1098,7 @@ Status CoreWorker::SealExisting(const ObjectID &object_id,
     RAY_RETURN_NOT_OK(plasma_store_provider_->Release(object_id));
     reference_counter_->FreePlasmaObjects({object_id});
   }
-  RAY_LOG(ERROR) << " seal existing " << object_id << " pin_object " << pin_object;
+  // RAY_LOG(ERROR) << " seal existing " << object_id << " pin_object " << pin_object;
   RAY_CHECK(memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
   return Status::OK();
 }

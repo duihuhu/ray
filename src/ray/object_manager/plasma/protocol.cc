@@ -205,7 +205,7 @@ Status SendCreateRequest(const std::shared_ptr<StoreConn> &store_conn,
                          flatbuf::ObjectSource source,
                          int device_num,
                          bool try_immediately) {
-  RAY_LOG(ERROR) << " send create request " << object_id;
+  // RAY_LOG(ERROR) << " send create request " << object_id;
   flatbuffers::FlatBufferBuilder fbb;
   auto message =
       fb::CreatePlasmaCreateRequest(fbb,

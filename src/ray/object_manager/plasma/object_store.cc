@@ -25,8 +25,8 @@ ObjectStore::ObjectStore(IAllocator &allocator)
 const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
                                              plasma::flatbuf::ObjectSource source,
                                              bool fallback_allocate) {
-  RAY_LOG(ERROR) << "attempting to create object " << object_info.object_id << " size "
-                 << object_info.data_size;
+  // RAY_LOG(ERROR) << "attempting to create object " << object_info.object_id << " size "
+                //  << object_info.data_size;
   RAY_CHECK(object_table_.count(object_info.object_id) == 0)
       << object_info.object_id << " already exists!";
   auto object_size = object_info.GetObjectSize();
