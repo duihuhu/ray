@@ -893,6 +893,7 @@ void CoreWorker::RegisterOwnershipInfoAndResolveFuture(
   rpc::GetObjectStatusReply object_status;
   object_status.ParseFromString(serialized_object_status);
 
+  RAY_LOG(ERROR) << " register ownership " << object_id; 
   if (object_status.has_object() && !reference_counter_->OwnedByUs(object_id)) {
     // We already have the inlined object status, process it immediately.
     future_resolver_->ProcessResolvedObject(
@@ -2883,10 +2884,10 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
           reply->set_owner_worker_id(object_info.owner_worker_id.Binary());
           
           reply->set_worker_ip_address(object_info.owner_ip_address);
-          RAY_LOG(WARNING) << "PopulateObjectStatus in reply exists " << object_id << " " << object_info.owner_ip_address;
+          // RAY_LOG(WARNING) << "PopulateObjectStatus in reply exists " << object_id << " " << object_info.owner_ip_address;
 
         } else {
-          RAY_LOG(ERROR) << "PopulateObjectStatus in reply not exists ";
+          // RAY_LOG(ERROR) << "PopulateObjectStatus in reply not exists ";
         }
                 
       } else {
@@ -2917,7 +2918,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
           reply->set_owner_worker_id(it->second.second.owner_worker_id.Binary());
           reply->set_worker_ip_address(it->second.first.second);
 
-          RAY_LOG(WARNING) << "PopulateObjectStatus in reply not exists " << object_id << " " << it->second.second.owner_ip_address << " " << it->second.first.second; 
+          // RAY_LOG(WARNING) << "PopulateObjectStatus in reply not exists " << object_id << " " << it->second.second.owner_ip_address << " " << it->second.first.second; 
       }
     }
   }
