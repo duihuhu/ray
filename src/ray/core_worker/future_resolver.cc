@@ -19,6 +19,8 @@ namespace core {
 
 void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
                                         const rpc::Address &owner_address) {
+  RAY_LOG(ERROR) << " resolv future async object id before " << object_id;
+
   if (rpc_address_.worker_id() == owner_address.worker_id()) {
     // We do not need to resolve objects that we own. This can happen if a task
     // with a borrowed reference executes on the object's owning worker.
@@ -27,7 +29,7 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
 
   auto conn = owner_clients_->GetOrConnect(owner_address);
 
-  RAY_LOG(ERROR) << " resolv future async object id " << object_id;
+  RAY_LOG(ERROR) << " resolv future async object id after " << object_id;
 
   rpc::GetObjectStatusRequest request;
   request.set_object_id(object_id.Binary());
