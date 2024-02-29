@@ -27,6 +27,8 @@ void FutureResolver::ResolveFutureAsync(const ObjectID &object_id,
 
   auto conn = owner_clients_->GetOrConnect(owner_address);
 
+  RAY_LOG(ERROR) << " resolv future async object id " << object_id;
+
   rpc::GetObjectStatusRequest request;
   request.set_object_id(object_id.Binary());
   request.set_owner_worker_id(owner_address.worker_id());
@@ -44,7 +46,7 @@ void FutureResolver::ProcessResolvedObject(const ObjectID &object_id,
                                            const Status &status,
                                            const rpc::GetObjectStatusReply &reply) {
   RAY_LOG(ERROR) << " process resolved object " << object_id;
-  
+
   if (!status.ok()) {
     RAY_LOG(WARNING) << "Error retrieving the value of object ID " << object_id
                      << " that was deserialized: " << status.ToString();
