@@ -263,7 +263,7 @@ bool TaskManager::HandleTaskReturn(const ObjectID &object_id,
   bool direct_return = false;
   reference_counter_->UpdateObjectSize(object_id, return_object.size());
   RAY_LOG(DEBUG) << "Task return object " << object_id << " has size "
-                 << return_object.size();
+                 << return_object.size() << " in plasma " << return_object.in_plasma();
 
   const auto nested_refs =
       VectorFromProtobuf<rpc::ObjectReference>(return_object.nested_inlined_refs());

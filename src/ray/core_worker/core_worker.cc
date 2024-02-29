@@ -1061,6 +1061,7 @@ Status CoreWorker::CreateExisting(const std::shared_ptr<Buffer> &metadata,
 Status CoreWorker::SealOwned(const ObjectID &object_id,
                              bool pin_object,
                              const std::unique_ptr<rpc::Address> &owner_address) {
+  RAY_LOG(ERROR) << " seal owned " << object_id << " pin object " << pin_object;
   auto status =
       SealExisting(object_id, pin_object, ObjectID::Nil(), std::move(owner_address));
   if (status.ok()) return status;
@@ -1097,6 +1098,7 @@ Status CoreWorker::SealExisting(const ObjectID &object_id,
     RAY_RETURN_NOT_OK(plasma_store_provider_->Release(object_id));
     reference_counter_->FreePlasmaObjects({object_id});
   }
+  RAY_LOG(ERROR) << " seal existing " << object_id << " pin_object " << pin_object;
   RAY_CHECK(memory_store_->Put(RayObject(rpc::ErrorType::OBJECT_IN_PLASMA), object_id));
   return Status::OK();
 }
@@ -1123,9 +1125,11 @@ Status CoreWorker::Get(const std::vector<ObjectID> &ids,
   for (auto it = result_map.begin(); it != result_map.end();) {
     auto current = it++;
     if (current->second->IsInPlasmaError()) {
-      RAY_LOG(DEBUG) << current->first << " in plasma, doing fetch-and-get";
+      RAY_LOG(ERROR) << current->first << " in plasma, doing fetch-and-get";
       plasma_object_ids.insert(current->first);
       result_map.erase(current);
+    } else {
+      RAY_LOG(ERROR) << current->first << " not in plasma, doing fetch-and-get";
     }
   }
 
@@ -2716,6 +2720,7 @@ void CoreWorker::PopulateObjectStatus(const ObjectID &object_id,
   // in_plasma indicator on the message, and the caller will
   // have to facilitate a Plasma object transfer to get the
   // object value.
+  RAY_LOG(ERROR) << " populate object status " << object_id;
   auto *object = reply->mutable_object();
   if (obj->HasData()) {
     const auto &data = obj->GetData();

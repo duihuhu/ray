@@ -5269,6 +5269,7 @@ void* dlrealloc_in_place(void* oldmem, size_t bytes) {
 }
 
 void* dlmemalign(size_t alignment, size_t bytes) {
+  fprintf(stderr,"in dlmalloc.c ");
   if (alignment <= MALLOC_ALIGNMENT) {
     return dlmalloc(bytes);
   }
