@@ -71,7 +71,7 @@ const LocalObject *ObjectStore::CreateObject(const ray::ObjectInfo &object_info,
   entry->construct_duration = -1;
   entry->source = source;
 
-  RAY_LOG(ERROR) << "create object " << object_info.object_id << " succeeded";
+  // RAY_LOG(ERROR) << "create object " << object_info.object_id << " succeeded";
   return entry;
 }
 
