@@ -128,7 +128,7 @@ void GetRequest::Set(const ObjectID &object_id, std::shared_ptr<RayObject> objec
   }
   object->SetAccessed();
   objects_.emplace(object_id, object);
-  RAY_LOG(ERROR) << "Set " << objects_.size() << " " <<  num_objects_;
+  // RAY_LOG(ERROR) << "Set " << objects_.size() << " " <<  num_objects_;
   if (objects_.size() == num_objects_ ||
       (abort_if_any_object_is_exception_ && object->IsException() &&
        !object->IsInPlasmaError())) {
