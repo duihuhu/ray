@@ -730,7 +730,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
 
 
   while (!remaining.empty() && !should_break) {
-    RAY_LOG(ERROR) << "remaining.empty() ";
+    // RAY_LOG(ERROR) << "remaining.empty() ";
     auto t1 = current_sys_time_us();
     batch_ids.clear();
     batch_virt_address.clear();
@@ -755,7 +755,7 @@ Status CoreWorkerPlasmaStoreProvider::GetRDMA(
         continue;
       }
       else{
-        RAY_LOG(ERROR)<<"batch remain info " << it->second.first.first << " " << it->second.second.owner_ip_address << " " << id << " is actorid " << ray::ObjectID::IsActorID(id) ;
+        // RAY_LOG(ERROR)<<"batch remain info " << it->second.first.first << " " << it->second.second.owner_ip_address << " " << id << " is actorid " << ray::ObjectID::IsActorID(id) ;
       }
       batch_ids.push_back(id);
       batch_virt_address.push_back(it->second.first.first);

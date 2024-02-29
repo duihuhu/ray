@@ -65,7 +65,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 		auto entry = pair.first;
 		if (entry == nullptr) {
 			// continue;
-			RAY_LOG(ERROR) << "create rdma is null " << object_rdma_info.object_info.object_id;
+			// RAY_LOG(ERROR) << "create rdma is null " << object_rdma_info.object_info.object_id;
 			return;
 		}
 		// auto te_create_object = current_sys_time_us();
@@ -107,7 +107,7 @@ void ObjectManagerRdma::FetchObjectFromRemotePlasmaThreads(ObjectRdmaInfo &objec
 
 
 int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const plasma::Allocation &allocation, const ray::ObjectInfo &object_info, const std::pair<const plasma::LocalObject *, plasma::flatbuf::PlasmaError>& pair, int64_t start_time, int64_t te_fetch_object_rdma_space, int64_t te_fetch_object_post_send, int64_t t_index, unsigned long object_virt_address){
-  RAY_LOG(ERROR) << "PollCompletion Threads start " << object_info.object_id << " " << t_index;
+  // RAY_LOG(ERROR) << "PollCompletion Threads start " << object_info.object_id << " " << t_index;
   // auto ts_fetch_rdma = current_sys_time_us();
   struct ibv_wc wc;
 	int poll_result;
@@ -143,23 +143,23 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 		// RAY_LOG(ERROR) << "ibv_poll_cq " << object_info.object_id << poll_result;
 		char *data = (char *) allocation.address;
 		if (data[0]!='1') {
-			RAY_LOG(ERROR) << "address in allocation.address is change: " << (unsigned long)allocation.address << " remote address "<< object_virt_address << " " << object_info.object_id; 
+			// RAY_LOG(ERROR) << "address in allocation.address is change: " << (unsigned long)allocation.address << " remote address "<< object_virt_address << " " << object_info.object_id; 
 		} else {
-			RAY_LOG(ERROR) << "address in allocation.address is not change: " << (unsigned long)allocation.address << " remote address "<< object_virt_address << " " << object_info.object_id; 
+			// RAY_LOG(ERROR) << "address in allocation.address is not change: " << (unsigned long)allocation.address << " remote address "<< object_virt_address << " " << object_info.object_id; 
 		}
 	} while (poll_result==0);
 	if (poll_result < 0) {
-    RAY_LOG(ERROR) << "poll cq failed";
+    // RAY_LOG(ERROR) << "poll cq failed";
 		rc = 1;
 	} else if (poll_result == 0) {
-    RAY_LOG(ERROR) << "completion wasn't found in the cq after timeout";
+    // RAY_LOG(ERROR) << "completion wasn't found in the cq after timeout";
 		rc = 1;
 	} else {
 		// fprintf(stdout, "completion was found in cq with status 0x%x\n", wc.status);
-		RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << object_info.object_id << " ctx: " << ctx;
+		// RAY_LOG(ERROR) << "completion was found in cq with status " << wc.status << " " << object_info.object_id << " ctx: " << ctx;
     if ( wc.status == IBV_WC_SUCCESS) {
 			if (wc.wr_id != t_index) {
-					RAY_LOG(ERROR) << "wc wr_id is error " << wc.wr_id << " " << t_index;
+					// RAY_LOG(ERROR) << "wc wr_id is error " << wc.wr_id << " " << t_index;
 			}
 			auto tc_fetch_rdma = current_sys_time_us();
 			char *data = (char *) allocation.address;
@@ -176,7 +176,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
 
 			RAY_LOG(DEBUG) << " get object start time end in rdma " << object_info.object_id << " " << tc_fetch_rdma << " " << start_time;
 		
-			RAY_LOG(ERROR) << "before insert object info to thread " << object_info.object_id;
+			// RAY_LOG(ERROR) << "before insert object info to thread " << object_info.object_id;
       // object_manager_.InsertObjectInfo(allocation, object_info);
 			object_manager_.InsertObjectInfoThread(allocation, object_info, pair);
 			// dependency_manager_->InsertObjectInfo(object_info);
@@ -198,7 +198,7 @@ int ObjectManagerRdma::PollCompletionThreads(struct pingpong_context *ctx, const
     }
 		if ( wc.status != IBV_WC_SUCCESS) {
 			// fprintf(stderr, "got bad completion with status 0x:%x, verdor syndrome: 0x%x\n", wc.status, wc.vendor_err);
-      RAY_LOG(ERROR) << "got bad completion with status " << wc.status << " verdor syndrome: " << wc.vendor_err;
+      // RAY_LOG(ERROR) << "got bad completion with status " << wc.status << " verdor syndrome: " << wc.vendor_err;
       rc = 1;
 		} 
 	}
@@ -855,7 +855,7 @@ void ObjectManagerRdma::QueryQp(struct pingpong_context *ctx) {
 
 int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_dest *rem_dest, unsigned long buf, int msg_size, unsigned long remote_address, int opcode, int64_t t_index) {
 	// RAY_LOG(ERROR) << "PostSend start ";
-	RAY_LOG(ERROR) << "Post send ctx: " <<  ctx << " t_index " << t_index << " " << msg_size;
+	// RAY_LOG(ERROR) << "Post send ctx: " <<  ctx << " t_index " << t_index << " " << msg_size;
 	struct ibv_send_wr sr;
 	struct ibv_send_wr *bad_wr;
 	struct ibv_sge sge;
@@ -890,12 +890,12 @@ int ObjectManagerRdma::PostSend(struct pingpong_context *ctx, struct pingpong_de
 		return -1;
 	}
 	if(attr.qp_state != IBV_QPS_RTS){
-		RAY_LOG(ERROR) << "QP state error";
+		// RAY_LOG(ERROR) << "QP state error";
 	}
 	rc = ibv_post_send(ctx->qp, &sr, &bad_wr);
 
 	if (rc)
-      RAY_LOG(ERROR) << "Failed to post sr " << rc;
+      // RAY_LOG(ERROR) << "Failed to post sr " << rc;
 	// else
   //   RAY_LOG(DEBUG) << "RDMA read request was posted";
   	// RAY_LOG(ERROR) << "PostSend end ";
